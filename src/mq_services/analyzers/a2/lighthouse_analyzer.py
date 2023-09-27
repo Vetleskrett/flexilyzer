@@ -14,8 +14,8 @@ def run_lighthouse(url: str):
         "lighthouse",
         url,
         "--output=json",
-        f"--output-path={output_file}",
-        '--chrome-flags="--headless"',
+        f"--output-path=./{output_file}",
+        '--chrome-flags="--headless --no-sandbox"',
     ]
     subprocess.run(command)
     return output_file
@@ -40,8 +40,10 @@ def lighthouse_analyzer(project_id):
     # Load newly generated report
     report: json = read_lighthouse_report(output_file)
 
-    cleaned_report = {
-        "fcp": report["audits"]["first-contentful-paint"],
-        "viewport": report["audits"]["viewport"],
-    }
+    cleaned_report = json.dumps(
+        {
+            "fcp": report["audits"]["first-contentful-paint"],
+            "viewport": report["audits"]["viewport"],
+        }
+    )
     return cleaned_report
