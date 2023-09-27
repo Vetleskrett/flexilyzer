@@ -27,6 +27,13 @@ services:
     container_name: a1
     depends_on:
       - rabbitmq
+  a2:
+    build: 
+      context: ../
+      dockerfile: ./docker/Dockerfile.a2
+    container_name: a2
+    depends_on:
+      - rabbitmq
 
 volumes:
   mongodb_data_container:

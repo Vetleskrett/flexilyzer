@@ -1,0 +1,23 @@
+FROM python:3
+
+WORKDIR /usr/src/app
+
+# Install Node.js, npm, and Chromium
+RUN apt-get update && \
+    apt-get install -y nodejs npm chromium && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Lighthouse
+RUN npm install -g lighthouse
+
+COPY /src/mq_services/globals /usr/src/app/.
+COPY /src/mq_services/analyzers/a2 /usr/src/app/.
+
+RUN pip install --no-cache-dir -r global_requirements.txt
+
+# No external pip packages needed at the moment
+# RUN pip install --no-cache-dir -r requirements.txt
+
+CMD [ "python", "./lighthouse_analyzer.py" ]
+
