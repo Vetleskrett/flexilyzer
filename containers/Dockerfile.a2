@@ -11,7 +11,7 @@ RUN apt-get update && \
 # Install Lighthouse
 RUN npm install -g lighthouse
 
-COPY /src/mq_services/globals /usr/src/app/.
+COPY /src/globals /usr/src/app/.
 COPY /src/mq_services/analyzers/a2 /usr/src/app/.
 
 RUN pip install --no-cache-dir -r global_requirements.txt

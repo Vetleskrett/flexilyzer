@@ -3,7 +3,7 @@ FROM python:3
 WORKDIR /usr/src/app
 
 
-COPY /src/mq_services/globals /usr/src/app/.
+COPY /src/globals /usr/src/app/.
 COPY /src/mq_services/analyzers/a1 /usr/src/app/.
 
 RUN pip install --no-cache-dir -r global_requirements.txt
