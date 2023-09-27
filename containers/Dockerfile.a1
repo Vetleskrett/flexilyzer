@@ -5,9 +5,16 @@ WORKDIR /usr/src/app
 
 COPY /src/globals /usr/src/app/.
 COPY /src/mq_services/analyzers/a1 /usr/src/app/.
+COPY /containers/entrypoint.sh /usr/src/app/entrypoint.sh
+
+# Install netcat
+RUN apt-get update && apt-get install -y netcat-openbsd
+
 
 RUN pip install --no-cache-dir -r global_requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+RUN chmod +x /usr/src/app/entrypoint.sh
 
-CMD [ "python", "./git_analyzer.py" ]
+ENV ANALYZER_SCRIPT=git_analyzer.py
 
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

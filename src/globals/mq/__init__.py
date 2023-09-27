@@ -1,1 +1,1 @@
-from ..mq.wrappers import consumer, publisher
+from mq.wrappers import consumer, publisher

@@ -23,14 +23,14 @@ services:
   a1:
     build: 
       context: ../
-      dockerfile: ./docker/Dockerfile.a1
+      dockerfile: ./containers/Dockerfile.a1
     container_name: a1
     depends_on:
       - rabbitmq
   a2:
     build: 
       context: ../
-      dockerfile: ./docker/Dockerfile.a2
+      dockerfile: ./containers/Dockerfile.a2
     container_name: a2
     depends_on:
       - rabbitmq
@@ -41,4 +41,3 @@ volumes:
 networks:
   default:
     driver: bridge
-  
