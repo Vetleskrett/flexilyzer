@@ -14,7 +14,7 @@ def run_lighthouse(url: str):
         "lighthouse",
         url,
         "--output=json",
-        f"--output-path=./{output_file}",
+        f"--output-path={output_file}",
         '--chrome-flags="--headless --no-sandbox"',
     ]
     subprocess.run(command)
