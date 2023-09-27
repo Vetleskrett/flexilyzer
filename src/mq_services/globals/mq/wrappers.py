@@ -1,4 +1,4 @@
-from mq.mqUtils import MQUtils
+from ..mq.mqUtils import MQUtils
 
 
 def consumer(in_exchange):
