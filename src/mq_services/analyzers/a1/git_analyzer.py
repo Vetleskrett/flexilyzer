@@ -1,38 +1,25 @@
 import requests
-from credentials import Credentials
 from datetime import datetime
-
-from pydantic import BaseModel
-from typing import Dict, List, Optional
-
+from typing import Dict
 import json
 
+import mq
 
-# class UserCommitsData(BaseModel):
-#     username: str
-#     num_commits: int
-
-
-# project_id = 17552
 project_id = 72724
 
-# branches_url = f"https://gitlab.stud.idi.ntnu.no/api/v4/projects/{project_id}/repository/branches?access_token={Credentials.gitlab_access_token}"
-# members_url = f"https://gitlab.stud.idi.ntnu.no/api/v4/projects/{project_id}/members?access_token={Credentials.gitlab_access_token}"
-# files_url = f"https://gitlab.stud.idi.ntnu.no/api/v4/projects/{project_id}/repository/tree?recursive=true"
-
-
-commits_url = f"https://gitlab.com/api/v4/projects/{project_id}/repository/commits"
-# members_url = f"https://gitlab.com/api/v4/projects/{project_id}/repository/commits"
-
-
 def fetch_git(url, params):
-    # params["access_token"] = Credentials.gitlab_access_token
     git_response = requests.get(url, params=params)
 
     return git_response
 
 
-def get_total_count(url):
+@mq.consumer("analyzer")
+@mq.publisher("done")
+def get_total_count(project_id):
+    '''Example function for analyzing gitlab repo'''
+
+    project_id = project_id.decode()
+    url = f"https://gitlab.com/api/v4/projects/{project_id}/repository/commits"
     total_count = 0
     page = 1
     per_page = 100
@@ -74,16 +61,9 @@ def get_total_count(url):
 
         page += 1
 
-    return total_count, commits_per_user, commits_per_day
+
+    report = json.dumps({"total count": total_count, "commits per user": commits_per_user, "commits per day": commits_per_day})
+
+    return report
 
 
-
-
-# if __name__ == "__main__":
-#     num_commits, commits_per_day, commits_per_user = get_total_count(commits_url)
-#     # num_files = get_total_count(files_url)
-
-#     print(num_commits)
-#     print(json.dumps(commits_per_user, indent=4))
-#     print(json.dumps(commits_per_day, indent=4))
-#     # print(num_files)
