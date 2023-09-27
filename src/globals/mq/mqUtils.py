@@ -2,12 +2,18 @@ import pika
 from pika.exchange_type import ExchangeType
 from pika.frame import Method
 
+from dotenv import load_dotenv
+import os
+
 
 #always declare all exchanges to avoid problems at startup
 #TODO: fix this ^
 
+load_dotenv()
+
 class MQUtils:
-    connection_parameters = pika.ConnectionParameters('localhost')
+    rabbitMqTarget = "localhost" if os.getenv("RABBITMQ_CONTEXT")=="LOCAL" else "rabbitmq"
+    connection_parameters = pika.ConnectionParameters(rabbitMqTarget)
     connection = pika.BlockingConnection(connection_parameters)
     
     @classmethod
