@@ -1,4 +1,4 @@
-from mq_services.globals import mq
+import mq
 
 @mq.publisher("analyzer")
 def myfunc(msg):

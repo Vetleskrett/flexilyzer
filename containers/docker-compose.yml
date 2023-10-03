@@ -47,4 +47,3 @@ volumes:
 networks:
   default:
     driver: bridge
-  
