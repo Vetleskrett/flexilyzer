@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User Schema
+
+// Course Schema
+
+model Course {
+  id          Int          @id @default(autoincrement())
+  tag         String
+  name        String?
+  assignments Assignment[]
+}
+
+model Assignment {
+  id           Int          @id @default(autoincrement())
+  name         String
+  dueDate      DateTime?
+  courseId     Int?
+  Course       Course?      @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  repositories Repository[]
+}
+
+model Group {
+  id             Int          @id @default(autoincrement())
+  githubLink     String
+  blackboardLink String?
+  repositories   Repository[]
+}
+
+model Repository {
+  id         Int    @id @default(autoincrement())
+  githubLink String
+
+  Group              Group?               @relation(fields: [groupId], references: [id])
+  groupId            Int?
+  Assignment         Assignment?          @relation(fields: [assignmentId], references: [id])
+  assignmentId       Int?
+  gitAnalysis        GitAnalysis[]
+  lighthouseAnalysis LighthouseAnalysis[]
+}
+
+// Analyzer 1 Schema
+
+model GitAnalysis {
+  id           Int         @id @default(autoincrement())
+  Repository   Repository? @relation(fields: [repositoryId], references: [id])
+  repositoryId Int?
+
+  numberCommits Int
+}
+
+// Analyzer 2 Schema
+
+model LighthouseAnalysis {
+  id           Int         @id @default(autoincrement())
+  fcp          String
+  hasHttps     Boolean
+  hasViewport  Boolean
+  Repository   Repository? @relation(fields: [repositoryId], references: [id])
+  repositoryId Int?
+}
