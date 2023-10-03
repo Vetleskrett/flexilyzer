@@ -1,6 +1,9 @@
 ---
 version: '3'
 
+
+
+
 services:
   rabbitmq:
     image: rabbitmq:management
@@ -11,6 +14,7 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+      
   mongodb_container:
     image: mongo:latest
     environment:
@@ -20,17 +24,19 @@ services:
       - 27017:27017
     volumes:
       - mongodb_data_container:/data/db
+
   a1:
     build: 
       context: ../
-      dockerfile: ./docker/Dockerfile.a1
+      dockerfile: ./containers/Dockerfile.a1
     container_name: a1
     depends_on:
       - rabbitmq
+
   a2:
     build: 
       context: ../
-      dockerfile: ./docker/Dockerfile.a2
+      dockerfile: ./containers/Dockerfile.a2
     container_name: a2
     depends_on:
       - rabbitmq
