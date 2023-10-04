@@ -1,13 +1,11 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Only needed when using a cloud provider that doesn't support the creation of new databases, like Neon. Learn more: https://pris.ly/d/migrate-shadow
 }
 
 // User Schema
@@ -16,7 +14,7 @@ datasource db {
 
 model Course {
   id          Int          @id @default(autoincrement())
-  tag         String
+  tag         String       @unique
   name        String?
   assignments Assignment[]
 }
@@ -52,11 +50,11 @@ model Repository {
 // Analyzer 1 Schema
 
 model GitAnalysis {
-  id           Int         @id @default(autoincrement())
-  Repository   Repository? @relation(fields: [repositoryId], references: [id])
-  repositoryId Int?
-
-  numberCommits Int
+  id             Int         @id @default(autoincrement())
+  Repository     Repository? @relation(fields: [repositoryId], references: [id])
+  repositoryId   Int?
+  numberCommits  Int
+  commitsPerUser Json
 }
 
 // Analyzer 2 Schema
@@ -64,7 +62,7 @@ model GitAnalysis {
 model LighthouseAnalysis {
   id           Int         @id @default(autoincrement())
   fcp          String
-  hasHttps     Boolean
+  hasHttps     Boolean?
   hasViewport  Boolean
   Repository   Repository? @relation(fields: [repositoryId], references: [id])
   repositoryId Int?
