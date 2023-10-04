@@ -43,7 +43,7 @@ def lighthouse_analyzer(project_id):
     cleaned_report = json.dumps(
         {
             "fcp": report["audits"]["first-contentful-paint"],
-            "viewport": report["audits"]["viewport"],
+            "hasViewport": report["audits"]["viewport"],
         }
     )
     return cleaned_report
