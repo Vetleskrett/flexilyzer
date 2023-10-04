@@ -5,12 +5,8 @@ generator client {
 datasource db {
   provider          = "postgresql"
   url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Only needed when using a cloud provider that doesn't support the creation of new databases, like Neon. Learn more: https://pris.ly/d/migrate-shadow
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
-
-// User Schema
-
-// Course Schema
 
 model Course {
   id          Int          @id @default(autoincrement())
@@ -36,34 +32,30 @@ model Group {
 }
 
 model Repository {
-  id         Int    @id @default(autoincrement())
-  githubLink String
-
-  Group              Group?               @relation(fields: [groupId], references: [id])
+  id                 Int                  @id @default(autoincrement())
+  githubLink         String
   groupId            Int?
-  Assignment         Assignment?          @relation(fields: [assignmentId], references: [id])
   assignmentId       Int?
   gitAnalysis        GitAnalysis[]
   lighthouseAnalysis LighthouseAnalysis[]
+  Assignment         Assignment?          @relation(fields: [assignmentId], references: [id])
+  Group              Group?               @relation(fields: [groupId], references: [id])
 }
-
-// Analyzer 1 Schema
 
 model GitAnalysis {
   id             Int         @id @default(autoincrement())
-  Repository     Repository? @relation(fields: [repositoryId], references: [id])
   repositoryId   Int?
   numberCommits  Int
   commitsPerUser Json
+  commitsPerDay  Json
+  Repository     Repository? @relation(fields: [repositoryId], references: [id])
 }
-
-// Analyzer 2 Schema
 
 model LighthouseAnalysis {
   id           Int         @id @default(autoincrement())
   fcp          String
   hasHttps     Boolean?
   hasViewport  Boolean
-  Repository   Repository? @relation(fields: [repositoryId], references: [id])
   repositoryId Int?
+  Repository   Repository? @relation(fields: [repositoryId], references: [id])
 }
