@@ -64,3 +64,9 @@ model LighthouseAnalysis {
     Repository   Repository? @relation(fields: [repositoryId], references: [id])
     repositoryId Int?
 }
+
+model MetricsDescriptions {
+    id          Int    @id @default(autoincrement())
+    metric_name String
+    description String
+}
