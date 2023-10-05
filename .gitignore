@@ -53,4 +53,5 @@ docs/_build/
 # Other 
 .venv
 .env
-
+.next
+node_modules
