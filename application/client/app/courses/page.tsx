@@ -9,7 +9,7 @@ export default async function Home() {
     <main className={styles.main}>
       Hello NTNU
       <div>
-        <h2>Alle fag:</h2>
+        <h2>All courses:</h2>
         {courses.map((course) => {
           return (
             <>

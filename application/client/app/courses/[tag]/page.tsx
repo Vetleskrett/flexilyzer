@@ -13,7 +13,7 @@ export default async function CourseHomePage({ params }: Props) {
   return (
     <main className={styles.main}>
       <h2>
-        Startside for {courseInfo?.tag} - {courseInfo?.name}
+        Start page for {courseInfo?.tag} - {courseInfo?.name}
       </h2>
     </main>
   );

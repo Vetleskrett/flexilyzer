@@ -1,3 +1,3 @@
 export default function CourseLoading() {
-  return <>Laster faget...</>;
+  return <>Loading course...</>;
 }

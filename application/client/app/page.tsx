@@ -7,7 +7,7 @@ export default async function Home() {
     <main className={styles.main}>
       Hello NTNU
       <div className={styles.buttons}>
-        <Link href={"/fag"}>Gå til alle fag</Link>
+        <Link href={"/fag"}>All courses</Link>
       </div>
     </main>
   );
