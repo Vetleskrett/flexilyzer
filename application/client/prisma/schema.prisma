@@ -59,31 +59,28 @@ model LighthouseAnalysis {
   Repository   Repository? @relation(fields: [repositoryId], references: [id])
 }
 
-
-
-
-
-
-
-
-
-
 model Analyzer {
-  id                  Int                   @id @default(autoincrement())
+  id                  Int                  @id @default(autoincrement())
   name                String
   Reports             Report[]
   AnalyzerDefinitions AnalyzerDefinition[]
 }
 
 model AnalyzerDefinition {
-  id            Int       @id @default(autoincrement())
-  keyName       String
-  valueType     String
-  rangeFrom     Int?
-  rangeTo       Int?
-  displayFormat String?
-  analyzerId    Int?
-  Analyzer      Analyzer? @relation(fields: [analyzerId], references: [id])
+  id          Int        @id @default(autoincrement())
+  keyName     String
+  valueType   String
+  analyzerId  Int?
+  Analyzer    Analyzer?  @relation(fields: [analyzerId], references: [id])
+  Component   Component? @relation(fields: [componentId], references: [id])
+  componentId Int?
+}
+
+model Component {
+  id                  Int                  @id @default(autoincrement())
+  name                String
+  parameters          Json?
+  analyzerDefinitions AnalyzerDefinition[]
 }
 
 model Report {

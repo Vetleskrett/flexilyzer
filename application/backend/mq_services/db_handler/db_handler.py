@@ -5,7 +5,8 @@ from prisma import Prisma
 async def main() -> None:    
     db = Prisma()
     await db.connect()
-    courses = await db.course.delete_many()
+
+    
 
     await db.disconnect()
 

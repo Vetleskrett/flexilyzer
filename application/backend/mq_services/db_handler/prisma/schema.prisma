@@ -1,79 +1,95 @@
-datasource db {
-    provider          = "postgresql"
-    url               = env("DATABASE_URL")
-    shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Only needed when using a cloud provider that doesn't support the creation of new databases, like Neon. Learn more: https://pris.ly/d/migrate-shadow
-}
-
 generator client {
-    provider             = "prisma-client-py"
-    interface            = "asyncio"
-    recursive_type_depth = 5
+  provider             = "prisma-client-py"
+  interface            = "asyncio"
+  recursive_type_depth = "5"
 }
 
-// User Schema
-
-// Course Schema
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 
 model Course {
-    id          Int          @id @default(autoincrement())
-    tag         String       @unique
-    name        String?
-    assignments Assignment[]
+  id          Int          @id @default(autoincrement())
+  tag         String       @unique
+  name        String?
+  assignments Assignment[]
 }
 
 model Assignment {
-    id           Int          @id @default(autoincrement())
-    name         String
-    dueDate      DateTime?
-    courseId     Int?
-    Course       Course?      @relation(fields: [courseId], references: [id], onDelete: Cascade)
-    repositories Repository[]
+  id           Int          @id @default(autoincrement())
+  name         String
+  dueDate      DateTime?
+  courseId     Int?
+  Course       Course?      @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  repositories Repository[]
 }
 
 model Group {
-    id             Int          @id @default(autoincrement())
-    githubLink     String
-    blackboardLink String?
-    repositories   Repository[]
+  id             Int          @id @default(autoincrement())
+  githubLink     String
+  blackboardLink String?
+  repositories   Repository[]
 }
 
 model Repository {
-    id         Int    @id @default(autoincrement())
-    githubLink String
-
-    Group              Group?               @relation(fields: [groupId], references: [id])
-    groupId            Int?
-    Assignment         Assignment?          @relation(fields: [assignmentId], references: [id])
-    assignmentId       Int?
-    gitAnalysis        GitAnalysis[]
-    lighthouseAnalysis LighthouseAnalysis[]
+  id                 Int                  @id @default(autoincrement())
+  githubLink         String
+  groupId            Int?
+  assignmentId       Int?
+  gitAnalysis        GitAnalysis[]
+  lighthouseAnalysis LighthouseAnalysis[]
+  Assignment         Assignment?          @relation(fields: [assignmentId], references: [id])
+  Group              Group?               @relation(fields: [groupId], references: [id])
 }
-
-// Analyzer 1 Schema
 
 model GitAnalysis {
-    id             Int         @id @default(autoincrement())
-    Repository     Repository? @relation(fields: [repositoryId], references: [id])
-    repositoryId   Int?
-    numberCommits  Int
-    commitsPerUser Json
-    commitsPerDay  Json
-    shit           Int
+  id             Int         @id @default(autoincrement())
+  repositoryId   Int?
+  numberCommits  Int
+  commitsPerUser Json
+  commitsPerDay  Json
+  Repository     Repository? @relation(fields: [repositoryId], references: [id])
 }
-
-// Analyzer 2 Schema
 
 model LighthouseAnalysis {
-    id           Int         @id @default(autoincrement())
-    fcp          String
-    hasHttps     Boolean?
-    hasViewport  Boolean
-    Repository   Repository? @relation(fields: [repositoryId], references: [id])
-    repositoryId Int?
+  id           Int         @id @default(autoincrement())
+  fcp          String
+  hasHttps     Boolean?
+  hasViewport  Boolean
+  repositoryId Int?
+  Repository   Repository? @relation(fields: [repositoryId], references: [id])
 }
 
-model MetricsDescriptions {
-    id          Int    @id @default(autoincrement())
-    metric_name String
-    description String
+model Analyzer {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  AnalyzerDefinition AnalyzerDefinition[]
+  Report             Report[]
+}
+
+model AnalyzerDefinition {
+  id          Int        @id @default(autoincrement())
+  keyName     String
+  valueType   String
+  analyzerId  Int?
+  componentId Int?
+  Analyzer    Analyzer?  @relation(fields: [analyzerId], references: [id])
+  Component   Component? @relation(fields: [componentId], references: [id])
+}
+
+model Component {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  parameters         Json?
+  AnalyzerDefinition AnalyzerDefinition[]
+}
+
+model Report {
+  id         Int       @id @default(autoincrement())
+  name       String
+  repository Int?
+  jsonblob   Json
+  analyzerId Int?
+  Analyzer   Analyzer? @relation(fields: [analyzerId], references: [id])
 }

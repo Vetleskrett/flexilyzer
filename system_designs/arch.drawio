@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="9NaRCSfCMusq-ZNxLPtp" name="Page-1">
-        <mxGraphModel dx="1843" dy="1344" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="2876" dy="1532" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -145,7 +145,7 @@
                 <mxCell id="55" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#3F8624;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.iot_analytics_pipeline;rotation=-55;" parent="1" vertex="1">
                     <mxGeometry x="-574.2" y="-120" width="86.6" height="46.63" as="geometry"/>
                 </mxCell>
-                <mxCell id="60" value="Add new analyzer" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=-45;" parent="1" vertex="1">
+                <mxCell id="60" value="Add new analyzer" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=-50;" parent="1" vertex="1">
                     <mxGeometry x="-370" y="-140" width="120" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="63" value="pipeline" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
