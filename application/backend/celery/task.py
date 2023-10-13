@@ -1,9 +1,7 @@
-from celery import Celery
 import docker
 import hashlib
 from pathlib import Path
-
-app = Celery("tasks", broker="redis://localhost:6379/0")
+from backend.celery.main import app
 
 ## analyzer_args:
 
