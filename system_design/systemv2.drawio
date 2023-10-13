@@ -43,7 +43,15 @@
                 </mxCell>
                 <mxCell id="15" style="edgeStyle=none;html=1;" parent="1" source="10" edge="1">
                     <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="260" y="370" as="targetPoint"/>
+                        <mxPoint x="270" y="370" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="35" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="10" target="16">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="10" y="220"/>
+                            <mxPoint x="550" y="220"/>
+                        </Array>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="10" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://www.drupal.org/files/project-images/nextjs-icon-dark-background.png;" parent="1" vertex="1">
@@ -103,7 +111,10 @@
                     <mxGeometry x="190" y="533.92" width="120" height="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="31" value="" style="sketch=0;aspect=fixed;html=1;points=[];align=center;image;fontSize=12;image=img/lib/mscae/Docker.svg;fillStyle=solid;" parent="1" vertex="1">
-                    <mxGeometry x="670" y="440" width="135.37" height="111" as="geometry"/>
+                    <mxGeometry x="700.3" y="450" width="135.37" height="111" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="" style="sketch=0;aspect=fixed;html=1;points=[];align=center;image;fontSize=12;image=img/lib/mscae/Cache_Redis_Product.svg;" vertex="1" parent="1">
+                    <mxGeometry x="80.47999999999999" y="650.5" width="109.52" height="92" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
