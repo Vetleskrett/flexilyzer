@@ -62,7 +62,7 @@ def get_total_count(project_id):
         page += 1
 
 
-    report = json.dumps({"total count": total_count, "commits per user": commits_per_user, "commits per day": commits_per_day})
+    report = json.dumps({"1": total_count, "2": commits_per_user, "commits per day": commits_per_day})
 
     return report
 
