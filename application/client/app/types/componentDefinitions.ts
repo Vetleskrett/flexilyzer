@@ -1,17 +1,16 @@
 export type rangeComponent = {
-  key: string;
+  keyName: string;
   value: number;
   fromValue: number;
   toValue: number;
 };
 
 export type boolComponent = {
-  key: string;
+  keyName: string;
   value: boolean;
 };
 
 export type textComponent = {
-  key: string;
+  keyName: string;
   value: string;
 };
-

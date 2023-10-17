@@ -1,10 +1,14 @@
+"use client";
 import { textComponent } from "@/app/types/componentDefinitions";
 
-export default function textComponent({ key, value }: textComponent) {
+import { Card, CardBody, CardHeader } from "@nextui-org/react";
+
+
+export default function TextComponent({ keyName, value }: textComponent) {
   return (
-    <div>
-      <h2>{key}</h2>
-      {value}
-    </div>
+    <Card>
+      <CardHeader>{keyName}</CardHeader>
+      <CardBody>{value}</CardBody>
+    </Card>
   );
 }
