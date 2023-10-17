@@ -1,7 +1,7 @@
 import docker
 import hashlib
 from pathlib import Path
-from backend.celery.main import app
+from celery_app.main import app
 
 ## analyzer_args:
 
@@ -36,7 +36,7 @@ def celery_task(script_path: str, requirements_path: str, analyzer_args: dict):
         # Loop through all repos to be analyzed,
         # for each repo, execute analysis inside container with the correct venv
         for env_vars in analyzer_args:
-
+ 
             env_vars_shell = " ".join(f"{key}={value}" for key, value in env_vars.items())
 
             # Copy the script and venv into the container

@@ -1,0 +1,6 @@
+celery==5.3.4
+docker_py==1.10.6
+fastapi==0.103.2
+pydantic==2.4.2
+pydantic_settings==2.0.3
+uvicorn==0.23.2
