@@ -1,7 +1,7 @@
 from datetime import datetime
 from pony.orm import *
 
-from session import db
+from db.session import db
 
 
 class Course(db.Entity):
@@ -58,6 +58,3 @@ class Report(db.Entity):
     report = Optional(Json)
     analyzer = Optional(Analyzer)
     repository = Optional(Repository)
-
-
-db.generate_mapping()

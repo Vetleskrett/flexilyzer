@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from celery_app.task import celery_task
+# from celery_app.task import celery_task
 
 router = APIRouter(prefix="/api/v1/tasks")
 
