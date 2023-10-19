@@ -2,7 +2,6 @@ from typing import Optional
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from db.session import db
 
 from db.models import (
     Assignment,
@@ -48,6 +47,7 @@ def restructure_metric_definitions(metric_definitions_data):
         structured_data[analyzer_id].append(metric)
 
     return dict(structured_data)
+
 
 
 @router.get(

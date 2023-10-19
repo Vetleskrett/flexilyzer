@@ -3,9 +3,6 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from enum import Enum, auto
 
-from main import prisma
-
-course = prisma
 
 router = APIRouter(prefix="/api/v1/tasks")
 
