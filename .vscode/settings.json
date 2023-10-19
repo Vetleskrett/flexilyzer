@@ -2,9 +2,5 @@
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter"
   },
-  "python.formatting.provider": "none",
-  "python.linting.pylintEnabled": true,
-  "python.linting.enabled": true,
-  "python.analysis.typeCheckingMode": "basic",
   "python.analysis.autoImportCompletions": true
 }

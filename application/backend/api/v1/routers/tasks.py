@@ -1,10 +1,10 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 # from celery_app.task import celery_task
 from pydantic import BaseModel
 from enum import Enum, auto
 
 
-router = APIRouter(prefix="/api/v1/tasks")
+router = APIRouter(prefix="/api/v1/tasks", db=Depends())
 
 class testE(Enum):
     test = auto()
@@ -21,6 +21,7 @@ class Item(BaseModel):
 
 @router.get("/hello-task", operation_id="get-hello-task")
 async def get_tasks() -> testE:
+    db.get()
     
     if 1 == 2: 
         return testE.test

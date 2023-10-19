@@ -21,12 +21,7 @@ router = APIRouter(prefix="/api/v1/courses")
 
 @router.get("/", operation_id="get-all-courses")
 async def get_all_courses() -> List[CourseResponse]:
-    courses = [
-        {"id": course.id, "tag": course.tag, "name": course.name}
-        for course in Course.select()
-    ]
-    # courses = [course.to_dict() for course in Course.select()]
-    return courses
+    return [course.to_dict() for course in Course.select()]
 
 
 @router.get("/{course_id}/assignments", operation_id="get-course-assignments")

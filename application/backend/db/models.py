@@ -1,60 +1,124 @@
 from datetime import datetime
-from pony.orm import PrimaryKey, Required, Optional, Set, Json
+from sqlalchemy import (
+    Table,
+    create_engine,
+    Column,
+    Integer,
+    String,
+    ForeignKey,
+    DateTime,
+    JSON,
+)
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship, backref
+from .database import Base
 
-from db.session import db
-
-
-class Course(db.Entity):
-    id = PrimaryKey(int, auto=True)
-    tag = Required(str, unique=True)
-    name = Optional(str, nullable=True)
-    assignments = Set("Assignment")
-    teams = Set("Team")
-
-
-class Assignment(db.Entity):
-    course = Optional(Course)
-    name = Required(str)
-    due_date = Optional(datetime)
-    repositories = Set("Repository")
-
-
-class Team(db.Entity):
-    id = PrimaryKey(int, auto=True)
-    github_link = Optional(str)
-    blackboard_link = Optional(str)
-    course = Optional(Course)
-    repositories = Set("Repository")
+# Association table for the many-to-many relationship between Assignment and Analyzer
+assignment_analyzer_association = Table(
+    "assignment_analyzer",
+    Base.metadata,
+    Column("assignment_id", Integer, ForeignKey("assignments.id"), primary_key=True),
+    Column("analyzer_id", Integer, ForeignKey("analyzers.id"), primary_key=True),
+)
 
 
-class Repository(db.Entity):
-    id = PrimaryKey(int, auto=True)
-    github_link = Optional(str)
-    assignment = Optional(Assignment)
-    team = Optional(Team)
-    reports = Set("Report")
+class Course(Base):
+    __tablename__ = "courses"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    tag = Column(String, unique=True, index=True)
+    name = Column(String, index=True, nullable=True)
+
+    assignments = relationship("Assignment", back_populates="course")
+    teams = relationship("Team", back_populates="course")
 
 
-class Analyzer(db.Entity):
-    id = PrimaryKey(int, auto=True)
-    name = Required(str, unique=True)
-    creator = Optional(str, nullable=True)
-    metric_definitions = Set("MetricDefinition")
-    reports = Set("Report")
+class Assignment(Base):
+    __tablename__ = "assignments"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    name = Column(String, index=True)
+    due_date = Column(DateTime, index=True, nullable=True)
+
+    course_id = Column(Integer, ForeignKey("courses.id"))
+    course = relationship("Course", back_populates="assignments")
+
+    repositories = relationship("Repository", back_populates="assignment")
+
+    analyzers = relationship(
+        "Analyzer",
+        secondary=assignment_analyzer_association,
+        back_populates="assignments",
+    )
 
 
-class MetricDefinition(db.Entity):
-    id = PrimaryKey(int, auto=True)
-    key_name = Required(str, unique=True)
-    value_type = Required(str)
-    display_name = Optional(str, nullable=True)
-    extended_metadata = Optional(Json)
-    analyzer = Optional(Analyzer)
+class Team(Base):
+    __tablename__ = "teams"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    github_link = Column(String, index=True, nullable=True)
+    blackboard_link = Column(String, index=True, nullable=True)
+
+    course_id = Column(Integer, ForeignKey("courses.id"))
+    course = relationship("Course", back_populates="teams")
+
+    repositories = relationship("Repository", back_populates="team")
 
 
-class Report(db.Entity):
-    id = PrimaryKey(int, auto=True)
-    timestamp = Required(datetime, default=lambda: datetime.now())
-    report = Optional(Json)
-    analyzer = Optional(Analyzer)
-    repository = Optional(Repository)
+class Repository(Base):
+    __tablename__ = "repositories"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    github_link = Column(String, index=True, nullable=True)
+
+    assignment_id = Column(Integer, ForeignKey("assignments.id"))
+    assignment = relationship("Assignment", back_populates="repositories")
+
+    team_id = Column(Integer, ForeignKey("teams.id"))
+    team = relationship("Team", back_populates="repositories")
+
+    reports = relationship("Report", back_populates="repository")
+
+
+class Analyzer(Base):
+    __tablename__ = "analyzers"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    name = Column(String, unique=True, index=True)
+    creator = Column(String, index=True, nullable=True)
+
+    metric_definitions = relationship("MetricDefinition", back_populates="analyzer")
+    reports = relationship("Report", back_populates="analyzer")
+
+    assignments = relationship(
+        "Assignment",
+        secondary=assignment_analyzer_association,
+        back_populates="analyzers",
+    )
+
+
+class MetricDefinition(Base):
+    __tablename__ = "metric_definitions"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    key_name = Column(String, unique=True, index=True)
+    value_type = Column(String, index=True)
+    display_name = Column(String, index=True, nullable=True)
+    extended_metadata = Column(JSON, nullable=True)
+
+    analyzer_id = Column(Integer, ForeignKey("analyzers.id"))
+    analyzer = relationship("Analyzer", back_populates="metric_definitions")
+
+
+class Report(Base):
+    __tablename__ = "reports"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    timestamp = Column(DateTime, default=datetime.now, index=True)
+    report = Column(JSON, nullable=True)
+
+    analyzer_id = Column(Integer, ForeignKey("analyzers.id"))
+    analyzer = relationship("Analyzer", back_populates="reports")
+
+    repository_id = Column(Integer, ForeignKey("repositories.id"))
+    repository = relationship("Repository", back_populates="reports")

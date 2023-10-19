@@ -1,6 +1,5 @@
+from pony.orm import db_session, commit
 from datetime import datetime
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
 from db.models import (
     Course,
     Assignment,
@@ -11,39 +10,31 @@ from db.models import (
     Report,
 )
 import json
-from .database import DATABASE_URL
-
-# Create the engine and session. Replace the connection string with your database connection string.
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(bind=engine)
 
 
+@db_session
 def main():
-    session = SessionLocal()
     try:
         print("Cleaning DB ...")
-        session.query(Course).delete()
-        session.query(Assignment).delete()
-        session.query(Team).delete()
-        session.query(Repository).delete()
-        session.query(Analyzer).delete()
-        session.query(MetricDefinition).delete()
-        session.query(Report).delete()
+        Course.select().delete(bulk=True)
+        Assignment.select().delete(bulk=True)
+        Team.select().delete(bulk=True)
+        Repository.select().delete(bulk=True)
+        Analyzer.select().delete(bulk=True)
+        MetricDefinition.select().delete(bulk=True)
+        Report.select().delete(bulk=True)
         print("Cleaning finished")
 
         print("Creating course ...")
         course = Course(tag="IT2810", name="Webutvikling")
-        session.add(course)
 
         print("Creating assignment ...")
         assignment = Assignment(
             name="Øving 3", due_date=datetime(2023, 12, 20, 23, 59), course=course
         )
-        session.add(assignment)
 
         print("Creating team ...")
         team = Team(github_link="https://github.com/pettelau/tsffbet", course=course)
-        session.add(team)
 
         print("Creating repository ...")
         repository = Repository(
@@ -51,11 +42,9 @@ def main():
             team=team,
             assignment=assignment,
         )
-        session.add(repository)
 
         print("Creating analyzer ...")
         analyzer = Analyzer(name="Lighthouse Analyzer", creator="Enthe Nu")
-        session.add(analyzer)
 
         print("Creating metrics ...")
         metric_definitions = [
@@ -85,7 +74,6 @@ def main():
                 analyzer=analyzer,
             ),
         ]
-        session.add_all(metric_definitions)
 
         print("Creating report 1 ...")
         report1_data = {
@@ -97,7 +85,6 @@ def main():
         report1 = Report(
             report=json.dumps(report1_data), repository=repository, analyzer=analyzer
         )
-        session.add(report1)
 
         print("Creating report 2...")
         report2_data = {
@@ -109,15 +96,11 @@ def main():
         report2 = Report(
             report=json.dumps(report2_data), repository=repository, analyzer=analyzer
         )
-        session.add(report2)
 
-        session.commit()
+        commit()
         print("Finished!")
     except Exception as e:
-        session.rollback()
         print("Something went wrong: ", e)
-    finally:
-        session.close()
 
 
 if __name__ == "__main__":

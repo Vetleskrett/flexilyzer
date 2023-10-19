@@ -44,6 +44,9 @@ class RepositoryCreate(RepositoryBase):
 # Response models
 class CourseResponse(CourseBase):
     id: int
+    
+    class Config:
+        orm_mode = True
 
 
 class AssignmentResponse(AssignmentBase):
