@@ -1,6 +1,7 @@
-from typing import Optional
+from typing import List, Optional
 from fastapi import APIRouter
 from pydantic import BaseModel
+from application.backend.models.entities import CourseResponse
 
 from db.session import db
 
@@ -19,9 +20,9 @@ router = APIRouter(prefix="/api/v1/courses")
 
 
 @router.get("/", operation_id="get-all-courses")
-async def get_all_courses():
+async def get_all_courses() -> List[CourseResponse]:
     courses = [
-        {"id": course.id, "tag_name": course.tag + " " + course.name}
+        {"id": course.id, "tag": course.tag, "name": course.name}
         for course in Course.select()
     ]
     # courses = [course.to_dict() for course in Course.select()]
