@@ -1,13 +1,4 @@
 from db.session import db
-from db.models import (
-    Course,
-    Assignment,
-    Team,
-    Repository,
-    Analyzer,
-    MetricDefinition,
-    Report,
-)
 from db.seed import main as seed_database
 
 print("Setting up database...")

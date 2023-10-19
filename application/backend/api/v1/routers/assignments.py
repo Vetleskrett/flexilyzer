@@ -5,11 +5,8 @@ from pydantic import BaseModel
 from db.session import db
 
 from db.models import (
-    Course,
     Assignment,
-    Team,
     Repository,
-    Analyzer,
     MetricDefinition,
     Report,
 )
