@@ -1,6 +1,8 @@
 celery==5.3.4
 docker_py==1.10.6
-fastapi==0.103.2
+fastapi==0.104.0
+pony==0.7.17
 pydantic==2.4.2
 pydantic_settings==2.0.3
+python-dotenv==1.0.0
 uvicorn==0.23.2
