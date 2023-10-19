@@ -1,10 +1,8 @@
 import Link from "next/link";
 import styles from "./page.module.css";
-import { prisma } from "@/lib/prisma";
 
 export default async function Home() {
-  const courses = await prisma.course.findMany();
-
+  const courses = [{ id: 3, tag_name: "IT3010 Webutvikling" }];
   return (
     <main className={styles.main}>
       Hello NTNU
@@ -13,10 +11,7 @@ export default async function Home() {
         {courses.map((course) => {
           return (
             <>
-              <Link href={`/fag/${course.tag}`}>
-                {" "}
-                {course.tag} - {course.name}
-              </Link>
+              <Link href={`/courses/${course.id}`}> {course.tag_name}</Link>
             </>
           );
         })}

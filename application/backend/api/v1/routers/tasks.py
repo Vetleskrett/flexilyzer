@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from celery_app.task import celery_task
+# from celery_app.task import celery_task
 from pydantic import BaseModel
 from enum import Enum, auto
 

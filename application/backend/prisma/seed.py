@@ -15,7 +15,7 @@ async def main() -> None:
         print("Cleaning DB ...")
         await prisma.course.delete_many()
         await prisma.assignment.delete_many()
-        await prisma.group.delete_many()
+        await prisma.team.delete_many()
         await prisma.repository.delete_many()
         await prisma.analyzer.delete_many()
         await prisma.metric_definition.delete_many()
@@ -35,7 +35,7 @@ async def main() -> None:
             data={"name": "Øving 3", "dueDate": datetime(2023, 12, 20, 23, 59)}
         )
 
-        print("Creating group ...")
+        print("Creating team ...")
         group = await prisma.group.create(
             data={
                 "githubLink": "https://github.com/pettelau/tsffbet",
