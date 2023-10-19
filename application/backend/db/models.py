@@ -9,7 +9,7 @@ class Course(db.Entity):
     tag = Required(str, unique=True)
     name = Optional(str, nullable=True)
     assignments = Set("Assignment")
-    groups = Set("Group")
+    teams = Set("Team")
 
 
 class Assignment(db.Entity):
@@ -19,7 +19,7 @@ class Assignment(db.Entity):
     repositories = Set("Repository")
 
 
-class Group(db.Entity):
+class Team(db.Entity):
     id = PrimaryKey(int, auto=True)
     github_link = Optional(str)
     blackboard_link = Optional(str)
@@ -31,7 +31,7 @@ class Repository(db.Entity):
     id = PrimaryKey(int, auto=True)
     github_link = Optional(str)
     assignment = Optional(Assignment)
-    group = Optional(Group)
+    team = Optional(Team)
     reports = Set("Report")
 
 

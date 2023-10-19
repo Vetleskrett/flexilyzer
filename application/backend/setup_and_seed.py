@@ -2,7 +2,7 @@ from db.session import db
 from db.models import (
     Course,
     Assignment,
-    Group,
+    Team,
     Repository,
     Analyzer,
     MetricDefinition,

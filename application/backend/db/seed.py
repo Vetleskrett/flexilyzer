@@ -3,7 +3,7 @@ from datetime import datetime
 from db.models import (
     Course,
     Assignment,
-    Group,
+    Team,
     Repository,
     Analyzer,
     MetricDefinition,
@@ -18,7 +18,7 @@ def main():
         print("Cleaning DB ...")
         Course.select().delete(bulk=True)
         Assignment.select().delete(bulk=True)
-        Group.select().delete(bulk=True)
+        Team.select().delete(bulk=True)
         Repository.select().delete(bulk=True)
         Analyzer.select().delete(bulk=True)
         MetricDefinition.select().delete(bulk=True)
@@ -29,15 +29,17 @@ def main():
         course = Course(tag="IT2810", name="Webutvikling")
 
         print("Creating assignment ...")
-        assignment = Assignment(name="Øving 3", due_date=datetime(2023, 12, 20, 23, 59))
+        assignment = Assignment(
+            name="Øving 3", due_date=datetime(2023, 12, 20, 23, 59), course=course
+        )
 
-        print("Creating group ...")
-        group = Group(github_link="https://github.com/pettelau/tsffbet", course=course)
+        print("Creating team ...")
+        team = Team(github_link="https://github.com/pettelau/tsffbet", course=course)
 
         print("Creating repository ...")
         repository = Repository(
             github_link="https://github.com/pettelau/tsffbet",
-            group=group,
+            team=team,
             assignment=assignment,
         )
 
@@ -73,14 +75,27 @@ def main():
             ),
         ]
 
-        print("Creating report ...")
-        report_data = {
-            "performance": 84,
+        print("Creating report 1 ...")
+        report1_data = {
+            "performance": 65,
+            "hasViewport": False,
+            "hasHTTPS": False,
+            "js_workload": "JS main thread workload is high, consider optimizing JS code.",
+        }
+        report1 = Report(
+            report=json.dumps(report1_data), repository=repository, analyzer=analyzer
+        )
+
+        print("Creating report 2...")
+        report2_data = {
+            "performance": 88,
             "hasViewport": True,
             "hasHTTPS": False,
             "js_workload": "JS main thread workload is high, consider optimizing JS code.",
         }
-        report = Report(report=json.dumps(report_data), repository=repository)
+        report2 = Report(
+            report=json.dumps(report2_data), repository=repository, analyzer=analyzer
+        )
 
         commit()
         print("Finished!")

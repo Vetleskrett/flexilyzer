@@ -9,3 +9,4 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 db = Database()
 db.bind(provider="postgres", dsn=DATABASE_URL)
 
+
