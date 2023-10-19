@@ -1,0 +1,58 @@
+table course {
+  id integer
+  name varchar
+}
+
+
+Table repos {
+  id integer
+  githubLink varchar
+  assignment_id integer
+  group_id integer
+}
+
+table assignments {
+  id integer
+  course_id integer
+}
+
+table group {
+  id integer
+  course_id integer
+}
+
+table reports {
+  id integer
+  repos_id integer
+  analyzer_id integer
+}
+
+table analyzer {
+  id integer
+  name varchar
+}
+
+table baseDefs {
+  id integer
+  analyzer_id integer
+  key varchar
+  displayname varchar
+  valueType varchar
+  extendedData json
+}
+
+Ref: analyzer.id < reports.analyzer_id
+
+Ref: reports.repos_id > repos.id
+
+Ref: group.course_id > course.id
+
+Ref: group.id < repos.group_id
+
+Ref: repos.assignment_id > assignments.id
+
+Ref: assignments.course_id > course.id
+
+Ref: baseDefs.analyzer_id > analyzer.id
+
+Ref: assignments.id <> analyzer.id
