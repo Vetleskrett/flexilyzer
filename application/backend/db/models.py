@@ -1,7 +1,6 @@
 from datetime import datetime
 from sqlalchemy import (
     Table,
-    create_engine,
     Column,
     Integer,
     String,

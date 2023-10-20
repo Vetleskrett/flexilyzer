@@ -9,6 +9,25 @@
  * ---------------------------------------------------------------
  */
 
+/** AssignmentResponse */
+export interface AssignmentResponse {
+  /** Name */
+  name: string;
+  /** Due Date */
+  due_date?: string | null;
+  course: CourseResponse;
+}
+
+/** CourseResponse */
+export interface CourseResponse {
+  /** Tag */
+  tag: string;
+  /** Name */
+  name?: string | null;
+  /** Id */
+  id: number;
+}
+
 /** HTTPValidationError */
 export interface HTTPValidationError {
   /** Detail */

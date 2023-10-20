@@ -2,7 +2,6 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import List, Optional
 from pydantic import Json
-from models.entities import RepositoryResponse
 
 
 class AnalyzerBase(BaseModel):
@@ -46,4 +45,3 @@ class MetricDefinitionResponse(MetricDefinitionBase):
 class ReportResponse(ReportBase):
     id: int
     analyzer: AnalyzerResponse
-    repository: RepositoryResponse
