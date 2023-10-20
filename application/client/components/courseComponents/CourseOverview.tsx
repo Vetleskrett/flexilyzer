@@ -1,14 +1,9 @@
 "use client";
+import { CourseResponse } from "@/extensions/data-contracts";
 import { Button, Card, CardBody } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
-interface CourseProps {
-  id: number;
-  tag: string;
-  name?: string;
-}
-
-export default function CourseOverview({ id, tag, name }: CourseProps) {
+export default function CourseOverview({ id, tag, name }: CourseResponse) {
   const router = useRouter();
 
   return (

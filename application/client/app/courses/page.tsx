@@ -12,16 +12,14 @@ export default async function Courses() {
   //   { id: 5, tag: "INF3002", name: "Objektorientert programmering" },
   // ];
 
-  const api = new Api();
+  const api = new Api({ baseUrl: "http://localhost:8000" });
 
-  console.log(api);
-
-  const courses = api.getAllCourses();
-  console.log(courses);
+  const courses = await api.getAllCourses();
+  console.log(courses.data);
   return (
     <div>
       <h2 className="h2">All courses:</h2>
-      {/* {courses.map((course: CourseResponse) => {
+      {courses.data.map((course: CourseResponse) => {
         return (
           <>
             <CourseOverview
@@ -31,7 +29,7 @@ export default async function Courses() {
             />
           </>
         );
-      })} */}
+      })}
     </div>
   );
 }
