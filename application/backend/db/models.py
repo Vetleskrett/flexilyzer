@@ -8,9 +8,8 @@ from sqlalchemy import (
     DateTime,
     JSON,
 )
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, backref
-from .database import Base
+from sqlalchemy.orm import relationship
+from db.database import Base
 
 # Association table for the many-to-many relationship between Assignment and Analyzer
 assignment_analyzer_association = Table(
