@@ -24,3 +24,12 @@ async def get_analyzer(
     analyzer_id: int, db: Session = Depends(get_db)
 ) -> analyzer_schema.AnalyzerResponse:
     return AnalyzerService.get_analyzer(db, analyzer_id)
+
+
+@router.get(
+    "/{analyzer_id}/metric_definitions", operation_id="get-analyzer-metricDefinitions"
+)
+async def get_analyzer_metric_definition(
+    analyzer_id: int, db=Depends(get_db)
+) -> List[analyzer_schema.MetricDefinitionResponse]:
+    return AnalyzerService.get_analyser_metric_definition(db, analyzer_id=analyzer_id)

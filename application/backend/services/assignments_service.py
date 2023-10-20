@@ -16,7 +16,6 @@ class AssingmentService:
 
     @staticmethod
     def get_assignment_repositories(db, assignment_id):
-        assignment = AssingmentService.get_assignment(db, assignment_id)
+        AssingmentService.get_assignment(db, assignment_id)
 
-        if assignment:
-            return assignments_crud.get_assignment_repositories(db, assignment_id)
+        return assignments_crud.get_assignment_repositories(db, assignment_id)

@@ -17,7 +17,6 @@ class TeamService:
 
     @staticmethod
     def get_team_repossities(db, team_id):
-        team = TeamService.get_team(db, team_id)
+        TeamService.get_team(db, team_id)
 
-        if team:
-            return teams_crud.get_team_repositiories(db, team_id)
+        return teams_crud.get_team_repositiories(db, team_id)

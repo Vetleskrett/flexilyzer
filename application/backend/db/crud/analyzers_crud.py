@@ -30,7 +30,7 @@ def get_analyzer(db: Session, analyzer_id: int):
     return db.query(Analyzer).filter(Analyzer.id == analyzer_id).first()
 
 
-def get_analyzer_with_metrics_definitions(db: Session, analyzer_id: int):
+def get_analyzer_metric_definitions(db: Session, analyzer_id: int):
     """
     Retrieves a specific analyzer along with its metric definitions.
 

@@ -18,7 +18,6 @@ class RepositoriesService:
 
     @staticmethod
     def get_repository_reports(db, repository_id: int):
-        repository = RepositoriesService.get_repository(db, repository_id)
+        RepositoriesService.get_repository(db, repository_id)
 
-        if repository:
-            return repositories_crud.get_repository_reports(db, repository_id)
+        return repositories_crud.get_repository_reports(db, repository_id)
