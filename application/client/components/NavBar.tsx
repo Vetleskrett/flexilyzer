@@ -12,6 +12,7 @@ import {
   NavbarMenu,
   NavbarMenuItem,
 } from "@nextui-org/react";
+import Image from "next/image";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -40,7 +41,12 @@ export default function NavBar() {
             router.push("/");
           }}
         >
-          <p className="font-bold text-inherit">GitSpect</p>
+          <Image
+            width={170}
+            height={35.86}
+            alt="GitSpect logo"
+            src="/gitspect_logo1.png"
+          ></Image>
         </NavbarBrand>
       </NavbarContent>
 
@@ -55,7 +61,7 @@ export default function NavBar() {
       </NavbarContent>
       <NavbarItem>
         <Button as={Link} color="primary" href="/admin" variant="flat">
-          Admin
+          Profile
         </Button>
       </NavbarItem>
       <NavbarMenu className="mt-5">

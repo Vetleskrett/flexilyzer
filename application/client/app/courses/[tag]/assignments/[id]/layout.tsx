@@ -1,4 +1,6 @@
+"use client";
 import AssignmentMetadata from "@/components/assignmentComponents/AssignmentMetadata";
+import { Divider } from "@nextui-org/react";
 
 interface Props {
   params: { tag: string; id: string };
@@ -28,6 +30,114 @@ export default function AssignmentLayout({
     {
       id: 3,
     },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 3,
+    },
   ];
   console.log(params);
   return (
@@ -37,27 +147,18 @@ export default function AssignmentLayout({
         due_date={assigment_details.due_date}
       />
       <div className="flex">
-        {" "}
-        {/* Set up the horizontal layout */}
         {/* Sidebar */}
-        <div className="flex flex-col p-4 border-r">
-          {" "}
+        <div className="flex flex-col p-4 border-r sticky top-16 max-h-830px overflow-y-auto">
           <b className="mb-3">All teams:</b>
-          {/* Set the width to 1/4 of the container and add padding and a right border */}
+          <Divider className="mb-3" />
           {teams.map((team) => (
             <div key={team.id} className="mb-2">
-              {" "}
-              {/* Key for React and margin-bottom for spacing */}
               Team {team.id}
             </div>
           ))}
         </div>
         {/* Main Content */}
-        <div className="flex-1 p-4">
-          {" "}
-          {/* flex-1 makes this div take up the remaining space */}
-          {children}
-        </div>
+        <div className="flex-1 p-4">{children}</div>
       </div>
     </>
   );

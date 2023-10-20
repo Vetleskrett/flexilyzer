@@ -18,7 +18,7 @@ async def get_all_assignments(
 
 
 @router.get("/{assignment_id}", operation_id="get-assignment")
-async def get_all_assignments(
+async def get_assignment(
     assignment_id: int,
     db=Depends(get_db),
 ) -> assingment_schema.AssignmentResponse:
