@@ -13,7 +13,6 @@ export default function ReposAccordion() {
         subtitle="Press to expand"
         title="Accordion 1"
       >
-        {defaultContent}
       </AccordionItem>
     </Accordion>
   );
