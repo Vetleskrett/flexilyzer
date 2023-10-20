@@ -12,13 +12,12 @@ export default async function Courses() {
   //   { id: 5, tag: "INF3002", name: "Objektorientert programmering" },
   // ];
 
-  const api = new Api({ baseUrl: "http://localhost:8000" });
+  const api = new Api({ baseUrl: "http://127.0.0.1:8000" });
 
   const courses = await api.getAllCourses();
-  console.log(courses.data);
   return (
     <div>
-      <h2 className="h2">All courses:</h2>
+      <h2 className='h2'>All courses:</h2>
       {courses.data.map((course: CourseResponse) => {
         return (
           <>

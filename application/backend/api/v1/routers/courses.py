@@ -26,13 +26,17 @@ async def get_course(id: int, db=Depends(get_db)) -> course_schema.CourseRespons
 
 
 @router.get("/{id}/assignments/", operation_id="get-course-assignments")
-async def get_course_assignments(id: int) -> List[assingment_schema.AssignmentResponse]:
-    pass
+async def get_course_assignments(
+    id: int, db=Depends(get_db)
+) -> List[assingment_schema.AssignmentResponse]:
+    return CourseService.get_course_assingments(db, id)
 
 
 @router.get("/{id}/teams/", operation_id="get-course-teams")
-async def get_courses_teams(id: int) -> List[team_schema.TeamResponse]:
-    pass
+async def get_courses_teams(
+    id: int, db=Depends(get_db)
+) -> List[team_schema.TeamResponse]:
+    return CourseService.get_course_teams(db, id)
 
 
 # @router.get("/{course_id}/assignments", operation_id="get-course-assignments")
