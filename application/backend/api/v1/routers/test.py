@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from enum import Enum, auto
 
 
-router = APIRouter(prefix="/api/v1/tasks")
+router = APIRouter(prefix="/api/v1/test")
 
 
 class testE(Enum):
@@ -21,14 +21,14 @@ class Item(BaseModel):
     tags: list[str] = []
 
 
-@router.get("/hello-task", operation_id="get-hello-task")
+@router.get("/hello-task", operation_id="get-hello-test")
 async def get_tasks() -> testE:
     if 1 == 2:
         return testE.test
     return testE.test2
 
 
-@router.post("/run_task/", operation_id="post-run-task")
+@router.post("/run_task/", operation_id="post-run-test")
 async def run_task(param: int) -> list[Item]:
     # celery_task.apply_async(args=[param])
     return []

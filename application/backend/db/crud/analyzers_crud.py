@@ -13,7 +13,7 @@ def get_analyzers(db: Session):
     Returns:
     A list of all analyzers.
     """
-    return db.query(models.Analyzer).all()
+    return db.query(Analyzer).all()
 
 
 def get_analyzer(db: Session, analyzer_id: int):

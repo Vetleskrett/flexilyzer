@@ -3,17 +3,7 @@ from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from schemas import course_schema, assingment_schema, team_schema
 
-# from db.session import db
-
-# from db.models import (
-#     Course,
-#     Assignment,
-# )
-
-# Check if mapping is not yet generated
-# db.generate_mapping(create_tables=True)
-
-from services.course_service import CourseService
+from services.courses_service import CourseService
 from db.database import get_db
 
 

@@ -19,10 +19,10 @@ async def get_all_assignments(
 
 @router.get("/{assignment_id}", operation_id="get-assignment")
 async def get_all_assignments(
-    assignmnet_id: int,
+    assignment_id: int,
     db=Depends(get_db),
 ) -> assingment_schema.AssignmentResponse:
-    return AssingmentService.get_assignment(db, assignmnet_id)
+    return AssingmentService.get_assignment(db, assignment_id)
 
 
 @router.get("/{assignment_id}/repositories", operation_id="get-assignment-repositories")
