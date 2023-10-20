@@ -1,11 +1,10 @@
 import RangeComponent from "@/components/analyzerComponents/rangeComponent";
-import styles from "./page.module.css";
-import Link from "next/link";
 import TextComponent from "@/components/analyzerComponents/textComponent";
 import BoolComponent from "@/components/analyzerComponents/boolComponent";
+import AssignmentMetadata from "@/components/assignmentComponents/AssignmentMetadata";
 
 interface Props {
-  params: { id: string };
+  params: { tag: string; id: string };
 }
 
 const renderMetrics = (report: any, metric_metadata: any) => {
@@ -114,15 +113,12 @@ export default async function AssigmentStartPage({ params }: Props) {
   };
 
   return (
-    <main className={styles.main}>
-      <h2>Start page for Assignment with ID: {params.id}</h2>
-      <br />
-      <div className="">
-        Name: {assigment_details.name} <br />
-        Due date: {new Date(assigment_details.due_date).toLocaleDateString()}
-      </div>
-      <br />
-      All repositories for this assignment: <br />
+    <div>
+      {/* <AssignmentMetadata
+        name={assigment_details.name}
+        due_date={assigment_details.due_date}
+      /> */}
+
       {detailed_repos_data.repo_data.map((repo) => {
         return (
           <>
@@ -147,6 +143,6 @@ export default async function AssigmentStartPage({ params }: Props) {
           </>
         );
       })}
-    </main>
+    </div>
   );
 }

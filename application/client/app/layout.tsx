@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 import Providers from "./providers";
+import NavBar from "@/components/NavBar";
 
 export const metadata: Metadata = {
   title: "GitSpect",
@@ -19,7 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <div className="mx-auto w-full max-w-screen-xl p-4">
+            <NavBar />
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   );

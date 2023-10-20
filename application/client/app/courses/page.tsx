@@ -1,21 +1,27 @@
+import CourseOverview from "@/components/courseComponents/CourseOverview";
+import { Card, CardBody } from "@nextui-org/react";
 import Link from "next/link";
-import styles from "./page.module.css";
 
-export default async function Home() {
-  const courses = [{ id: 3, tag_name: "IT3010 Webutvikling" }];
+export default async function Courses() {
+  const courses = [
+    { id: 3, tag: "IT3010", name: "Webutviklling" },
+    { id: 4, tag: "DCST1003" },
+    { id: 5, tag: "INF3002", name: "Objektorientert programmering" },
+  ];
   return (
-    <main className={styles.main}>
-      Hello NTNU
-      <div>
-        <h2>All courses:</h2>
-        {courses.map((course) => {
-          return (
-            <>
-              <Link href={`/courses/${course.id}`}> {course.tag_name}</Link>
-            </>
-          );
-        })}
-      </div>
-    </main>
+    <div>
+      <h2 className="h2">All courses:</h2>
+      {courses.map((course) => {
+        return (
+          <>
+            <CourseOverview
+              id={course.id}
+              tag={course.tag}
+              name={course.name}
+            />
+          </>
+        );
+      })}
+    </div>
   );
 }

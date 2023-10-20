@@ -1,4 +1,4 @@
-import styles from "./page.module.css";
+import AssignmentOverview from "@/components/assignmentComponents/assignmentOverview";
 import Link from "next/link";
 
 interface Props {
@@ -6,6 +6,12 @@ interface Props {
 }
 
 export default async function CourseHomePage({ params }: Props) {
+
+  const course_details = {
+    id: 3,
+    tag: "IT3010",
+    name: "Webutvikling",
+  };
   const course_assignments = [
     {
       id: 1,
@@ -16,23 +22,20 @@ export default async function CourseHomePage({ params }: Props) {
   ];
 
   return (
-    <main className={styles.main}>
-      <h2>Start page for {params.tag}</h2>
+    <div className="">
+      <h2 className="h2">Course {course_details.tag}</h2>
 
       <br />
-      <div className="">
-        {course_assignments.map((assignment) => {
-          return (
-            <>
-              {" "}
-              <Link href={`/assignments/${assignment.id}`}>
-                {" "}
-                {assignment.name}
-              </Link>
-            </>
-          );
-        })}
-      </div>
-    </main>
+      {course_assignments.map((assignment) => {
+        return (
+          <AssignmentOverview
+            course_id={course_details.id}
+            assignment_id={assignment.id}
+            name={assignment.name}
+            due_date={assignment.due_date}
+          />
+        );
+      })}
+    </div>
   );
 }
