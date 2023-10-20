@@ -2,7 +2,6 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import List, Optional
 from pydantic import Json
-from models.entities import RepositoryResponse
 
 
 class AnalyzerBase(BaseModel):
@@ -17,20 +16,11 @@ class MetricDefinitionBase(BaseModel):
     extended_metadata: Optional[Json] = None
 
 
-class ReportBase(BaseModel):
-    timestamp: datetime
-    report: Optional[Json] = None
-
-
 class AnalyzerCreate(AnalyzerBase):
     pass
 
 
 class MetricDefinitionCreate(MetricDefinitionBase):
-    pass
-
-
-class ReportCreate(ReportBase):
     pass
 
 
@@ -41,9 +31,3 @@ class AnalyzerResponse(AnalyzerBase):
 class MetricDefinitionResponse(MetricDefinitionBase):
     id: int
     analyzer: AnalyzerResponse
-
-
-class ReportResponse(ReportBase):
-    id: int
-    analyzer: AnalyzerResponse
-    repository: RepositoryResponse
