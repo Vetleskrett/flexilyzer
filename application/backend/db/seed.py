@@ -1,6 +1,7 @@
 from datetime import datetime
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
+import sqlalchemy as sa
+import json
 from db.models import (
     Course,
     Assignment,
@@ -9,27 +10,47 @@ from db.models import (
     Analyzer,
     MetricDefinition,
     Report,
+    assignment_analyzer_association,  # Make sure to import this
 )
-import json
-from .database import DATABASE_URL
 
-# Create the engine and session. Replace the connection string with your database connection string.
-engine = create_engine(DATABASE_URL)
+from db.database import engine, Base
+
+# Create the engine and session
 SessionLocal = sessionmaker(bind=engine)
 
 
-def main():
+def run_seed():
     session = SessionLocal()
     try:
         print("Cleaning DB ...")
-        session.query(Course).delete()
-        session.query(Assignment).delete()
-        session.query(Team).delete()
-        session.query(Repository).delete()
-        session.query(Analyzer).delete()
-        session.query(MetricDefinition).delete()
-        session.query(Report).delete()
-        print("Cleaning finished")
+        # Delete all existing data from tables
+        # Check if table exists before deleting
+
+        if sa.inspect(engine).has_table("course"):
+            session.query(Course).delete()
+
+        if sa.inspect(engine).has_table("assignment"):
+            session.query(Assignment).delete()
+
+        if sa.inspect(engine).has_table("team"):
+            session.query(Team).delete()
+
+        if sa.inspect(engine).has_table("repository"):
+            session.query(Repository).delete()
+
+        if sa.inspect(engine).has_table("analyzer"):
+            session.query(Analyzer).delete()
+
+        if sa.inspect(engine).has_table("metric_definition"):
+            session.query(MetricDefinition).delete()
+
+        if sa.inspect(engine).has_table("report"):
+            session.query(Report).delete()
+        print("Cleanup done...")
+
+        print("Creating tables...")
+        Base.metadata.create_all(bind=engine)
+        print("Tables Created...")
 
         print("Creating course ...")
         course = Course(tag="IT2810", name="Webutvikling")
@@ -56,6 +77,9 @@ def main():
         print("Creating analyzer ...")
         analyzer = Analyzer(name="Lighthouse Analyzer", creator="Enthe Nu")
         session.add(analyzer)
+
+        # Associate the analyzer with the assignment
+        assignment.analyzers.append(analyzer)
 
         print("Creating metrics ...")
         metric_definitions = [
@@ -99,7 +123,7 @@ def main():
         )
         session.add(report1)
 
-        print("Creating report 2...")
+        print("Creating report 2 ...")
         report2_data = {
             "performance": 88,
             "hasViewport": True,
@@ -113,12 +137,10 @@ def main():
 
         session.commit()
         print("Finished!")
+
     except Exception as e:
         session.rollback()
-        print("Something went wrong: ", e)
+        print(f"Something went wrong: {e}")
+
     finally:
         session.close()
-
-
-if __name__ == "__main__":
-    main()
