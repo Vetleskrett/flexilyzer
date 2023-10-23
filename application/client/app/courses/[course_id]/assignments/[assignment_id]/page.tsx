@@ -114,10 +114,7 @@ export default async function AssigmentStartPage({ params }: Props) {
 
   return (
     <div>
-      {/* <AssignmentMetadata
-        name={assigment_details.name}
-        due_date={assigment_details.due_date}
-      /> */}
+
 
       {detailed_repos_data.repo_data.map((repo) => {
         return (

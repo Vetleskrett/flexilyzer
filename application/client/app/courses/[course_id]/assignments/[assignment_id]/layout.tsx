@@ -1,17 +1,20 @@
 "use client";
 import AssignmentMetadata from "@/components/assignmentComponents/AssignmentMetadata";
+import { Api } from "@/extensions/Api";
 import { Divider } from "@nextui-org/react";
-
-interface Props {
-  params: { tag: string; id: string };
-}
+import TeamsList from "./teamsList";
+import DividerComponent from "@/components/DividerComponent";
+import { TeamProvider } from "./providers";
 
 export default function AssignmentLayout({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: Props;
+  params: {
+    course_id: string;
+    assignment_id: string;
+  };
 }) {
   const assigment_details = {
     id: 1,
@@ -20,146 +23,24 @@ export default function AssignmentLayout({
     due_date: "2023-12-20T23:59:00",
   };
 
-  const teams = [
-    {
-      id: 1,
-    },
-    {
-      id: 2,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 3,
-    },
-  ];
-  console.log(params);
   return (
     <>
       <AssignmentMetadata
         name={assigment_details.name}
         due_date={assigment_details.due_date}
       />
-      <div className="flex">
-        {/* Sidebar */}
-        <div className="flex flex-col p-4 border-r sticky top-16 max-h-830px overflow-y-auto">
-          <b className="mb-3">All teams:</b>
-          <Divider className="mb-3" />
-          {teams.map((team) => (
-            <div key={team.id} className="mb-2">
-              Team {team.id}
-            </div>
-          ))}
+      <TeamProvider>
+        <div className="flex">
+          {/* Sidebar */}
+          <div className="flex flex-col p-4 border-r sticky top-16 h-[calc(100vh-80px)] overflow-y-auto">
+            <b className="mb-3">All teams:</b>
+            <DividerComponent />
+            <TeamsList course_id={params.course_id} />
+          </div>
+          {/* Main Content */}
+          <div className="flex-1 p-4">{children}</div>
         </div>
-        {/* Main Content */}
-        <div className="flex-1 p-4">{children}</div>
-      </div>
+      </TeamProvider>
     </>
   );
 }

@@ -1,3 +1,3 @@
 export default function CourseLoading() {
-  return <>Loading course...</>;
+  return <>Loading assignment...</>;
 }
