@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 
 from db.models import Assignment, Repository
+from schemas import assingment_schema
 
 
 def get_assignments(db: Session):
@@ -42,6 +43,24 @@ def get_assignment_repositories(db: Session, assignment_id: int):
     A list of repositories for the specified assignment.
     """
     return db.query(Repository).filter(Repository == assignment_id)
+
+
+def create_assignment(db: Session, assignment: assingment_schema.AssignmentCreate):
+    """
+    Creates a new assignment record.
+
+    Parameters:
+    - db (Session): The database session
+    - assignment (AssignmentCreate): A object containg the details of the assignment to be created
+
+    Returns:
+    The created assignment record.
+    """
+    db_assignment = Assignment(**assignment.model_dump())
+    db.add(db_assignment)
+    db.commit()
+    db.refresh(db_assignment)
+    return db_assignment
 
 
 # def get_assignment_analyzers(db: Session, assignment_id: int):

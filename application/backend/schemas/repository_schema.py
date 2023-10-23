@@ -6,6 +6,8 @@ from pydantic import Json
 
 class RepositoryBase(BaseModel):
     github_link: Optional[str] = None
+    team_id: int
+    assignment_id: int
 
 
 class RepositoryCreate(RepositoryBase):

@@ -30,4 +30,4 @@ class AnalyzerResponse(AnalyzerBase):
 
 class MetricDefinitionResponse(MetricDefinitionBase):
     id: int
-    analyzer: AnalyzerResponse
+    analyzer_id: int
