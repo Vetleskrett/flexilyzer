@@ -18,8 +18,8 @@ export default async function CourseHomePage({ params }: Props) {
   );
 
   return (
-    <div className="">
-      <h2 className="h2">
+    <div className=''>
+      <h2 className='h2'>
         Course {course_details.data.tag} - {course_details.data.name}
       </h2>
 
