@@ -19,14 +19,34 @@ export interface AnalyzerResponse {
   id: number;
 }
 
+/** AssignmentCreate */
+export interface AssignmentCreate {
+  /** Name */
+  name: string;
+  /** Due Date */
+  due_date?: string | null;
+  /** Course Id */
+  course_id: number;
+}
+
 /** AssignmentResponse */
 export interface AssignmentResponse {
   /** Name */
   name: string;
   /** Due Date */
   due_date?: string | null;
+  /** Course Id */
+  course_id: number;
   /** Id */
   id: number;
+}
+
+/** CourseCreate */
+export interface CourseCreate {
+  /** Tag */
+  tag: string;
+  /** Name */
+  name?: string | null;
 }
 
 /** CourseResponse */
@@ -74,7 +94,8 @@ export interface MetricDefinitionResponse {
   extended_metadata?: null;
   /** Id */
   id: number;
-  analyzer: AnalyzerResponse;
+  /** Analyzer Id */
+  analyzer_id: number;
 }
 
 /** ReportResponse */
@@ -86,6 +107,10 @@ export interface ReportResponse {
   timestamp: string;
   /** Report */
   report?: null;
+  /** Analyzer Id */
+  analyzer_id: number;
+  /** Repository Id */
+  repository_id: number;
   /** Id */
   id: number;
 }
@@ -94,6 +119,10 @@ export interface ReportResponse {
 export interface RepositoryResponse {
   /** Github Link */
   github_link?: string | null;
+  /** Team Id */
+  team_id: number;
+  /** Assignment Id */
+  assignment_id: number;
   /** Id */
   id: number;
 }
@@ -104,6 +133,8 @@ export interface TeamResponse {
   github_team_link?: string | null;
   /** Blackboard Link */
   blackboard_link?: string | null;
+  /** Course Id */
+  course_id: number;
   /** Id */
   id: number;
 }

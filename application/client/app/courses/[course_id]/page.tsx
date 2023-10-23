@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default async function CourseHomePage({ params }: Props) {
-  const api = new Api({ baseUrl: "http://localhost:8000" });
+  const api = new Api({ baseUrl: "http://127.0.0.1:8000" });
 
   console.log(params.course_id);
 

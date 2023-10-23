@@ -9,7 +9,7 @@ interface Props {
 
 export default async function TeamsList({ course_id }: Props) {
   const { chosenTeam, setChosenTeam } = useTeam();
-    const api = new Api({ baseUrl: "http://localhost:8000" });
+    const api = new Api({ baseUrl: "http://127.0.0.1:8000" });
     const teams = await api.getCourseTeams(Number(course_id));
 
   // const teams = { data: [{ id: 1 }, { id: 3 }] };
