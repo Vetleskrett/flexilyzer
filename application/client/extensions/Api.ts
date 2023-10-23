@@ -11,7 +11,9 @@
 
 import {
   AnalyzerResponse,
+  AssignmentCreate,
   AssignmentResponse,
+  CourseCreate,
   CourseResponse,
   HTTPValidationError,
   Item,
@@ -21,7 +23,7 @@ import {
   TeamResponse,
   TestE,
 } from "./data-contracts";
-import { HttpClient, RequestParams } from "./http-client";
+import { ContentType, HttpClient, RequestParams } from "./http-client";
 
 export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
@@ -84,10 +86,29 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @summary Post Course
    * @request POST:/api/v1/courses/
    */
-  postCourse = (params: RequestParams = {}) =>
-    this.request<CourseResponse[], any>({
+  postCourse = (data: CourseCreate, params: RequestParams = {}) =>
+    this.request<any, HTTPValidationError>({
       path: `/api/v1/courses/`,
       method: "POST",
+      body: data,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags courses
+   * @name PutCourse
+   * @summary Put Course
+   * @request PUT:/api/v1/courses/{course_id}
+   */
+  putCourse = (courseId: number, data: CourseCreate, params: RequestParams = {}) =>
+    this.request<CourseResponse, HTTPValidationError>({
+      path: `/api/v1/courses/${courseId}`,
+      method: "PUT",
+      body: data,
+      type: ContentType.Json,
       format: "json",
       ...params,
     });
@@ -97,12 +118,27 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @tags courses
    * @name GetCourse
    * @summary Get Course
-   * @request GET:/api/v1/courses/{id}
+   * @request GET:/api/v1/courses/{course_id}
    */
-  getCourse = (id: number, params: RequestParams = {}) =>
+  getCourse = (courseId: number, params: RequestParams = {}) =>
     this.request<CourseResponse, HTTPValidationError>({
-      path: `/api/v1/courses/${id}`,
+      path: `/api/v1/courses/${courseId}`,
       method: "GET",
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags courses
+   * @name DeleteCourse
+   * @summary Delete Course
+   * @request DELETE:/api/v1/courses/{course_id}
+   */
+  deleteCourse = (courseId: number, params: RequestParams = {}) =>
+    this.request<CourseResponse, HTTPValidationError>({
+      path: `/api/v1/courses/${courseId}`,
+      method: "DELETE",
       format: "json",
       ...params,
     });
@@ -112,11 +148,11 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @tags courses
    * @name GetCourseAssignments
    * @summary Get Course Assignments
-   * @request GET:/api/v1/courses/{id}/assignments/
+   * @request GET:/api/v1/courses/{course_id}/assignments/
    */
-  getCourseAssignments = (id: number, params: RequestParams = {}) =>
+  getCourseAssignments = (courseId: number, params: RequestParams = {}) =>
     this.request<AssignmentResponse[], HTTPValidationError>({
-      path: `/api/v1/courses/${id}/assignments/`,
+      path: `/api/v1/courses/${courseId}/assignments/`,
       method: "GET",
       format: "json",
       ...params,
@@ -127,11 +163,11 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @tags courses
    * @name GetCourseTeams
    * @summary Get Courses Teams
-   * @request GET:/api/v1/courses/{id}/teams/
+   * @request GET:/api/v1/courses/{course_id}/teams/
    */
-  getCourseTeams = (id: number, params: RequestParams = {}) =>
+  getCourseTeams = (courseId: number, params: RequestParams = {}) =>
     this.request<TeamResponse[], HTTPValidationError>({
-      path: `/api/v1/courses/${id}/teams/`,
+      path: `/api/v1/courses/${courseId}/teams/`,
       method: "GET",
       format: "json",
       ...params,
@@ -148,6 +184,23 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
     this.request<AssignmentResponse[], any>({
       path: `/api/v1/assignments/`,
       method: "GET",
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags assignments
+   * @name CreateAssignmentApiV1AssignmentsPost
+   * @summary Create Assignment
+   * @request POST:/api/v1/assignments/
+   */
+  createAssignmentApiV1AssignmentsPost = (data: AssignmentCreate, params: RequestParams = {}) =>
+    this.request<any, HTTPValidationError>({
+      path: `/api/v1/assignments/`,
+      method: "POST",
+      body: data,
+      type: ContentType.Json,
       format: "json",
       ...params,
     });
