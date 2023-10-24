@@ -1,4 +1,4 @@
-from db.crud import assignments_crud
+from db.crud import assignments_crud, teams_crud
 from schemas import assingment_schema
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
@@ -30,3 +30,11 @@ class AssingmentService:
         CourseService.get_course(db=db, course_id=course_id)
 
         return assignments_crud.create_assignment(db=db, assignment=assignment)
+
+    @staticmethod
+    def get_assignment_team_repos_reports(
+        db: Session, assignment_id: int, team_id: int
+    ):
+        return assignments_crud.get_assignment_team_repos_reports(
+            db, assignment_id=assignment_id, team_id=team_id
+        )

@@ -1,6 +1,6 @@
-from sqlalchemy.orm import Session
-
-from db.models import Assignment, Repository
+from sqlalchemy.orm import Session, aliased
+from sqlalchemy import and_
+from db.models import Assignment, Repository, Report, Team
 from schemas import assingment_schema
 
 
@@ -61,6 +61,34 @@ def create_assignment(db: Session, assignment: assingment_schema.AssignmentCreat
     db.commit()
     db.refresh(db_assignment)
     return db_assignment
+
+
+def get_assignment_team_repos_reports(db: Session, assignment_id: int, team_id: int):
+    """
+    Retrieves report IDs and report content for a specific assignment and team.
+
+    Parameters:
+    - db (Session): The database session.
+    - assignment_id (int): The ID of the assignment.
+    - team_id (int): The ID of the team.
+
+    Returns:
+    A query object containing report IDs and report content for the specified assignment and team.
+    """
+
+    report = aliased(Report)
+    repository = aliased(Repository)
+    team = aliased(Team)
+    assignment = aliased(Assignment)
+
+    return (
+        db.query(report)
+        .outerjoin(repository, report.repository_id == repository.id)
+        .outerjoin(team, repository.team_id == team.id)
+        .outerjoin(assignment, repository.assignment_id == assignment.id)
+        .filter(and_(team.id == team_id, assignment.id == assignment_id))
+        .all()
+    )
 
 
 # def get_assignment_analyzers(db: Session, assignment_id: int):

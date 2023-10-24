@@ -2,6 +2,7 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from schemas import reports_schema
 
 from db.database import get_db
 from schemas import assingment_schema, repository_schema
@@ -37,6 +38,15 @@ def create_assignment(
     assignment: assingment_schema.AssignmentCreate, db: Session = Depends(get_db)
 ):
     return AssingmentService.create_assignment(db, assignment)
+
+
+@router.get("/{assignment_id}/teams/{team_id}/repositories/reports")
+def get_assignment_team_repos_reports(
+    assignment_id: int, team_id: int, db=Depends(get_db)
+) -> List[reports_schema.ReportResponse]:
+    return AssingmentService.get_assignment_team_repos_reports(
+        db=db, assignment_id=assignment_id, team_id=team_id
+    )
 
 
 # def restructure_metric_definitions(metric_definitions_data):

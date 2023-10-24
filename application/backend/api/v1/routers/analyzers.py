@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, UploadFile, File
 from sqlalchemy.orm import Session
 from schemas import analyzer_schema
 
@@ -32,4 +32,33 @@ async def get_analyzer(
 async def get_analyzer_metric_definition(
     analyzer_id: int, db=Depends(get_db)
 ) -> List[analyzer_schema.MetricDefinitionResponse]:
-    return AnalyzerService.get_analyser_metric_definition(db, analyzer_id=analyzer_id)
+    return AnalyzerService.get_analyzer_metric_definition(db, analyzer_id=analyzer_id)
+
+
+@router.post("/", operation_id="post-analyzer-metadata")
+async def post_analyzer_metadata(
+    analyzer: analyzer_schema.AnalyzerCreate, db: Session = Depends(get_db)
+) -> analyzer_schema.AnalyzerResponse:
+    return AnalyzerService.post_analyzer(db=db, analyzer=analyzer)
+
+
+@router.post("/{analyzer_id}/upload/script", operation_id="upload-analyzer-script")
+async def upload_analyzer_script(
+    analyzer_id: int,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+) -> int:
+    return AnalyzerService.upload_script(db=db, analyzer_id=analyzer_id, file=file)
+
+
+@router.post(
+    "/{analyzer_id}/upload/requirements", operation_id="upload-analyzer-requirements"
+)
+async def upload_analyzer_requirements(
+    analyzer_id: int,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+) -> int:
+    return AnalyzerService.upload_requirements(
+        db=db, analyzer_id=analyzer_id, file=file
+    )
