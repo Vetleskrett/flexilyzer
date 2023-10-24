@@ -1,13 +1,8 @@
-"use client";
 import RangeComponent from "@/components/analyzerComponents/rangeComponent";
+import { useTeam } from "../../../providers";
 import TextComponent from "@/components/analyzerComponents/textComponent";
 import BoolComponent from "@/components/analyzerComponents/boolComponent";
-import AssignmentMetadata from "@/components/assignmentComponents/AssignmentMetadata";
-import { useTeam } from "../providers";
-
-interface Props {
-  params: { tag: string; id: string };
-}
+import { Api } from "@/extensions/Api";
 
 const renderMetrics = (report: any, metric_metadata: any) => {
   const metrics = JSON.parse(report.report); // Convert the report string to an object.
@@ -41,7 +36,11 @@ const renderMetrics = (report: any, metric_metadata: any) => {
   });
 };
 
-export default async function AssigmentReportsPage({ params }: Props) {
+interface Props {
+  params: { course_id: string; assignment_id: string; team_id: string };
+}
+
+export default async function TeamAssignmentPage({ params }: Props) {
   const assigment_details = {
     id: 1,
     course: 1,
@@ -114,11 +113,49 @@ export default async function AssigmentReportsPage({ params }: Props) {
     },
   };
 
+  const api = new Api({ baseUrl: "http://127.0.0.1:8000" });
+  const reports = await api.getRepositoryReports(Number(params.course_id));
+
+  console.log(reports);
 
   return (
-    <div className="text-center mt-10">
-      No team chosen. Choose one from the left menu to show reports for this
-      team
+    <div>
+      {params.team_id ? (
+        detailed_repos_data.repo_data.map((repo) => {
+          return (
+            <>
+              <div
+                id={`${repo.id}`}
+                style={{ backgroundColor: "gainsboro", padding: 30 }}
+              >
+                Team ID: {params.team_id} <br />
+                Repo ID: {repo.id} <br />
+                GitHub Link: {repo.github_link} <br />
+                Analyses of this repo: <br />
+                {repo.reports.map((report) => {
+                  return (
+                    <div id={`${report.id}`} style={{ marginBottom: 10 }}>
+                      <br />
+                      <div>
+                        {renderMetrics(
+                          report,
+                          detailed_repos_data.metric_metadata
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          );
+        })
+      ) : (
+        <div className="text-center mt-10">
+          No team chosen. Choose one from the left menu to show reports for this
+          team
+        </div>
+      )}
+      {}
     </div>
   );
 }

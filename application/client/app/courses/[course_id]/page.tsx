@@ -9,8 +9,6 @@ interface Props {
 export default async function CourseHomePage({ params }: Props) {
   const api = new Api({ baseUrl: "http://127.0.0.1:8000" });
 
-  console.log(params.course_id);
-
   const course_details = await api.getCourse(Number(params.course_id));
 
   const course_assignments = await api.getCourseAssignments(
@@ -18,8 +16,8 @@ export default async function CourseHomePage({ params }: Props) {
   );
 
   return (
-    <div className=''>
-      <h2 className='h2'>
+    <div className="">
+      <h2 className="h2">
         Course {course_details.data.tag} - {course_details.data.name}
       </h2>
 
