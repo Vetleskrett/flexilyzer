@@ -1,32 +1,51 @@
 "use client";
 import { Api } from "@/extensions/Api";
-import { useContext } from "react";
-import { useTeam } from "./providers";
+import { useContext, useEffect, useState } from "react";
+import { useTeam } from "../providers";
+import { TeamResponse } from "@/extensions/data-contracts";
+import { usePathname, useRouter } from "next/navigation";
 
-interface Props {
+interface TeamsList {
   course_id: string;
+  assignment_id: string;
+  teams: TeamResponse[];
 }
 
-export default async function TeamsList({ course_id }: Props) {
-  const { chosenTeam, setChosenTeam } = useTeam();
-    const api = new Api({ baseUrl: "http://127.0.0.1:8000" });
-    const teams = await api.getCourseTeams(Number(course_id));
+export default async function TeamsList({
+  course_id,
+  assignment_id,
+  teams,
+}: TeamsList) {
+  // const { chosenTeam, setChosenTeam, teamIds } = useTeam();
 
-  // const teams = { data: [{ id: 1 }, { id: 3 }] };
+  const pathName = usePathname();
+
+  const router = useRouter();
 
   return (
     <>
-      {teams.data.map((team) => (
+      {teams.map((team) => (
         <div
           onClick={() => {
-            console.log("here");
-            console.log(chosenTeam);
-            setChosenTeam(team.id);
+            if (pathName.endsWith(`/team/${team.id}`)) {
+              console.log("true");
+              router.push(
+                `/courses/${course_id}/assignments/${assignment_id}/`
+              );
+            } else {
+              router.push(
+                `/courses/${course_id}/assignments/${assignment_id}/team/${team.id}`
+              );
+            }
           }}
           key={team.id}
           className="mb-2"
         >
-          {chosenTeam === team.id ? <b>Team {team.id}</b> : <>Team {team.id}</>}
+          {pathName.endsWith(`/team/${team.id}`) ? (
+            <b>Team {team.id}</b>
+          ) : (
+            <>Team {team.id}</>
+          )}
         </div>
       ))}
     </>
