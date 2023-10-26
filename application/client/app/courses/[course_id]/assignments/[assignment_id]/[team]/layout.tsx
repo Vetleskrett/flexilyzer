@@ -1,4 +1,6 @@
+import AssignmentMetadata from "@/components/assignmentComponents/AssignmentMetadata";
 import AssignmentSideBar from "@/components/assignmentComponents/SideBar";
+import { Api } from "@/extensions/Api";
 
 export default async function AssignmentLayout({
   children,
@@ -11,12 +13,14 @@ export default async function AssignmentLayout({
     team: string;
   };
 }) {
+  const api = new Api({ baseUrl: "http://127.0.0.1:8000" });
+  const assignment_details = await api.getAssignment(params.assignment_id);
   return (
     <>
-      {/* <AssignmentMetadata
-        name={assigment_details.name}
-        due_date={assigment_details.due_date}
-      /> */}
+      <AssignmentMetadata
+        name={assignment_details.data.name}
+        due_date={assignment_details.data.due_date}
+      />
       <div className="flex">
         {/* Sidebar */}
         <AssignmentSideBar

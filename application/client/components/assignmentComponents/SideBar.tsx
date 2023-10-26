@@ -1,7 +1,5 @@
 import { Api } from "@/extensions/Api";
-import { Divider } from "@nextui-org/react";
 import Link from "next/link";
-import SideBarTeams from "./SideBarTeams";
 import DividerComponent from "../DividerComponent";
 
 import { headers } from "next/headers";
@@ -20,9 +18,7 @@ export default async function AssignmentSideBar({
   const api = new Api({ baseUrl: "http://127.0.0.1:8000" });
   const teams = await api.getCourseTeams(Number(course_id));
 
-  const headersList = headers();
-
-  console.log(headersList);
+  console.log(team_name);
 
   return (
     <div className="flex flex-col p-4 border-r sticky top-16 h-[calc(100vh-80px)] overflow-y-auto">
@@ -30,15 +26,14 @@ export default async function AssignmentSideBar({
       <DividerComponent />
       {teams.data.map((team) => (
         <Link
-          href={`/courses/${course_id}/assignments/${assignment_id}/${team_name}`}
+          href={`/courses/${course_id}/assignments/${assignment_id}/team-${team.id}`}
         >
           <div key={team.id} className="mb-2">
-            {/* {pathName.endsWith(`/team-${team.id}`) ? (
-            <b>Team {team.id}</b>
-          ) : (
-            <>Team {team.id}</>
-          )} */}
-            <>Team {team.id}</>
+            {team_name === `team-${team.id}` ? (
+              <b>Team {team.id}</b>
+            ) : (
+              <>Team {team.id}</>
+            )}
           </div>
         </Link>
       ))}
