@@ -6,14 +6,18 @@
 /assignments/
 /assignments/{id}
 /assignments/{id}/repositories/
+/assignments/{id}/teams/{id}/repositories/reports
+
 
 /teams/
 /teams/{id}
 /teams/{id}/repositories/
 
+
 /repositories
 /repositories/{id}
 /repositories/{id}/reports
+
 
 /reports/
 /reports/{id}
@@ -21,3 +25,5 @@
 /analyzers 
 /analyzers/{id}
 /analyzers/{id}/metric_definitions/
+
+
