@@ -44,10 +44,10 @@ export default async function AssignmentLayout({
 
   return (
     <>
-      <AssignmentMetadata
+      {/* <AssignmentMetadata
         name={assigment_details.name}
         due_date={assigment_details.due_date}
-      />
+      /> */}
       <div className="flex">
         {/* Sidebar */}
         <div className="flex flex-col p-4 border-r sticky top-16 h-[calc(100vh-80px)] overflow-y-auto">

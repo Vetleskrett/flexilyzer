@@ -53,4 +53,5 @@ async def get_course_assignments(
 async def get_courses_teams(
     course_id: int, db=Depends(get_db)
 ) -> List[team_schema.TeamResponse]:
+ 
     return CourseService.get_course_teams(db, course_id)

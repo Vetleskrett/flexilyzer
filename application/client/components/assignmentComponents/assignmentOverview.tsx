@@ -27,7 +27,7 @@ export default function AssignmentOverview({
           <div className="flex-initial my-auto mr-15">
             <Button
               onClick={() => {
-                router.push(`/courses/${course_id}/assignments/${id}`);
+                router.push(`/courses/${course_id}/assignments/${id}/team-1`);
               }}
               variant="faded"
             >

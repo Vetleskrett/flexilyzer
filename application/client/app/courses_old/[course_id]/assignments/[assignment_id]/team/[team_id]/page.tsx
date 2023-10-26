@@ -1,8 +1,11 @@
-import RangeComponent from "@/components/analyzerComponents/rangeComponent";
+"use client";
 import { useTeam } from "../../../providers";
+import RangeComponent from "@/components/analyzerComponents/rangeComponent";
 import TextComponent from "@/components/analyzerComponents/textComponent";
 import BoolComponent from "@/components/analyzerComponents/boolComponent";
 import { Api } from "@/extensions/Api";
+
+import { Tabs, Tab } from "@nextui-org/react";
 
 const renderMetrics = (report: any, metric_metadata: any) => {
   const metrics = JSON.parse(report.report); // Convert the report string to an object.
@@ -47,6 +50,8 @@ export default async function TeamAssignmentPage({ params }: Props) {
     name: "Øving 3",
     due_date: "2023-12-20T23:59:00",
   };
+
+  // KALL 1:
 
   const detailed_repos_data = {
     repo_data: [
@@ -119,7 +124,19 @@ export default async function TeamAssignmentPage({ params }: Props) {
   console.log(reports);
 
   return (
-    <div>
+    <div className="max-w-5xl">
+      <Tabs fullWidth>
+        <Tab title="Analyzer 1">Analyzer 1</Tab>
+        <Tab>Lighthouse</Tab>
+        <Tab>Analyzer 3</Tab>
+        <Tab>Analyzer 2</Tab>
+        <Tab>Analyzer 3</Tab>
+        <Tab>Analyzer 2</Tab>
+        <Tab>Analyzer 3</Tab>
+        <Tab>Analyzer 2</Tab>
+  
+        <Tab>Analyzer 3</Tab>
+      </Tabs>
       {params.team_id ? (
         detailed_repos_data.repo_data.map((repo) => {
           return (
