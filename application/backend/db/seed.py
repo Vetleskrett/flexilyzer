@@ -69,7 +69,6 @@ def run_seed():
 
         print("Creating projects ...")
         project = Project(
-            github_link="https://github.com/pettelau/tsffbet",
             team=team,
             assignment=assignment,
         )

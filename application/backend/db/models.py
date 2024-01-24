@@ -41,7 +41,7 @@ class Assignment(Base):
     course_id = Column(Integer, ForeignKey("courses.id"))
     course = relationship("Course", back_populates="assignments")
 
-    prtojects = relationship("Project", back_populates="assignment")
+    projects = relationship("Project", back_populates="assignment")
 
     analyzers = relationship(
         "Analyzer",
@@ -89,7 +89,7 @@ class ProjectMetadata(Base):
     value_type = Column(String, index=True, nullable=False)
 
     project_id = Column(Integer, ForeignKey("projects.id"))
-    project = relationship("Project", back_populates="projects")
+    project = relationship("Project", back_populates="project_metadata")
 
 
 class Analyzer(Base):
