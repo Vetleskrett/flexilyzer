@@ -41,7 +41,7 @@ class Assignment(Base):
     course_id = Column(Integer, ForeignKey("courses.id"))
     course = relationship("Course", back_populates="assignments")
 
-    repositories = relationship("Repository", back_populates="assignment")
+    prtojects = relationship("Project", back_populates="assignment")
 
     analyzers = relationship(
         "Analyzer",
@@ -60,14 +60,13 @@ class Team(Base):
     course_id = Column(Integer, ForeignKey("courses.id"))
     course = relationship("Course", back_populates="teams")
 
-    repositories = relationship("Repository", back_populates="team")
+    projects = relationship("Project", back_populates="team")
 
 
-class Repository(Base):
-    __tablename__ = "repositories"
+class Project(Base):
+    __tablename__ = "projects"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    github_link = Column(String, index=True, nullable=True)
 
     assignment_id = Column(Integer, ForeignKey("assignments.id"))
     assignment = relationship("Assignment", back_populates="repositories")
@@ -75,7 +74,22 @@ class Repository(Base):
     team_id = Column(Integer, ForeignKey("teams.id"))
     team = relationship("Team", back_populates="repositories")
 
-    reports = relationship("Report", back_populates="repository")
+    reports = relationship("Report", back_populates="project")
+
+    project_metadata = relationship("ProjectMetadata", back_populates="project")
+
+
+class ProjectMetadata(Base):
+    __tablename__ = "project_metadata"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+
+    key_name = Column(String, index=True, nullable=False)
+    value = Column(String, index=True, nullable=True)
+    value_type = Column(String, index=True, nullable=False)
+
+    project_id = Column(Integer, ForeignKey("projects.id"))
+    project = relationship("Project", back_populates="projects")
 
 
 class Analyzer(Base):
@@ -85,7 +99,9 @@ class Analyzer(Base):
     name = Column(String, unique=True, index=True)
     creator = Column(String, index=True, nullable=True)
 
-    metric_definitions = relationship("MetricDefinition", back_populates="analyzer")
+    analyzer_inputs = relationship("AnalyzerInput", back_populates="analyzer")
+    analyzer_outputs = relationship("AnalyzerOutput", back_populates="analyzer")
+    
     reports = relationship("Report", back_populates="analyzer")
 
     assignments = relationship(
@@ -95,8 +111,19 @@ class Analyzer(Base):
     )
 
 
-class MetricDefinition(Base):
-    __tablename__ = "metric_definitions"
+class AnalyzerInput(Base):
+    __tablename__ = "analyzer_inputs"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    key_name = Column(String, unique=True, index=True)
+    value_type = Column(String, index=True)
+
+    analyzer_id = Column(Integer, ForeignKey("analyzers.id"))
+    analyzer = relationship("Analyzer", back_populates="analyzer_inputs")
+
+
+class AnalyzerOutput(Base):
+    __tablename__ = "analyzer_outputs"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     key_name = Column(String, unique=True, index=True)
@@ -105,7 +132,7 @@ class MetricDefinition(Base):
     extended_metadata = Column(JSON, nullable=True)
 
     analyzer_id = Column(Integer, ForeignKey("analyzers.id"))
-    analyzer = relationship("Analyzer", back_populates="metric_definitions")
+    analyzer = relationship("Analyzer", back_populates="analyzer_outputs")
 
 
 class Report(Base):
@@ -118,5 +145,5 @@ class Report(Base):
     analyzer_id = Column(Integer, ForeignKey("analyzers.id"))
     analyzer = relationship("Analyzer", back_populates="reports")
 
-    repository_id = Column(Integer, ForeignKey("repositories.id"))
-    repository = relationship("Repository", back_populates="reports")
+    project_id = Column(Integer, ForeignKey("projects.id"))
+    project = relationship("Project", back_populates="reports")
