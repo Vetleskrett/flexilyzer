@@ -4,17 +4,17 @@ from typing import List, Optional
 from pydantic import Json
 
 
-class RepositoryBase(BaseModel):
+class ProjectBase(BaseModel):
     github_link: Optional[str] = None
     team_id: int
     assignment_id: int
 
 
-class RepositoryCreate(RepositoryBase):
+class ProjectCreate(ProjectBase):
     pass
 
 
-class RepositoryResponse(RepositoryBase):
+class ProjectResponse(ProjectBase):
     id: int
 
     class Config:

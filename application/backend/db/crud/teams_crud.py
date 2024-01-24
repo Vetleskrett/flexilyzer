@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from db.models import Team, Repository
+from db.models import Team, Project
 
 
 def get_teams(db: Session):
@@ -29,15 +29,15 @@ def get_team(db: Session, team_id: int):
     return db.query(Team).filter(Team.id == team_id).first()
 
 
-def get_team_repositiories(db: Session, team_id: int):
+def get_team_projects(db: Session, team_id: int):
     """
-    Retrieves a all repositories for a specific team.
+    Retrieves a all projects for a specific team.
 
     Parameters:
     - db (Session)
     - team_id: int
 
     Returns:
-    A list of all repositoris for the specified team.
+    A list of all projects for the specified team.
     """
-    return db.query(Repository).filter(Repository.team_id == team_id).all()
+    return db.query(Project).filter(Project.team_id == team_id).all()

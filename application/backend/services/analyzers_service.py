@@ -19,12 +19,10 @@ class AnalyzerService:
         return analyzer
 
     @staticmethod
-    def get_analyzer_metric_definition(db, analyzer_id: int):
+    def get_analyzer_io(db, analyzer_id: int):
         AnalyzerService.get_analyzer(db, analyzer_id=analyzer_id)
 
-        return AnalyzerRepository.get_analyzer_metric_definitions(
-            db, analyzer_id=analyzer_id
-        )
+        return AnalyzerRepository.get_analyzer_io(db, analyzer_id=analyzer_id)
 
     @staticmethod
     def post_analyzer(db, analyzer):

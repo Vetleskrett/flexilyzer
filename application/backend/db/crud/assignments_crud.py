@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session, aliased
 from sqlalchemy import and_
-from db.models import Assignment, Repository, Report, Team
+from db.models import Assignment, Project, Report, Team
 from schemas import assingment_schema
 
 
@@ -31,18 +31,18 @@ def get_assignment(db: Session, assignment_id: int):
     return db.query(Assignment).filter(Assignment.id == assignment_id).first()
 
 
-def get_assignment_repositories(db: Session, assignment_id: int):
+def get_assignment_projects(db: Session, assignment_id: int):
     """
-    Retrieves all repositories for a specific assignment
+    Retrieves all projects for a specific assignment
 
     Parameters:
     - db (Session): The database session
     - assignment_id: The ID of the assignment
 
     Returns:
-    A list of repositories for the specified assignment.
+    A list of projects for the specified assignment.
     """
-    return db.query(Repository).filter(Repository == assignment_id)
+    return db.query(Project).filter(Project == assignment_id)
 
 
 def create_assignment(db: Session, assignment: assingment_schema.AssignmentCreate):
@@ -77,15 +77,15 @@ def get_assignment_team_repos_reports(db: Session, assignment_id: int, team_id: 
     """
 
     report = aliased(Report)
-    repository = aliased(Repository)
+    project = aliased(Project)
     team = aliased(Team)
     assignment = aliased(Assignment)
 
     return (
         db.query(report)
-        .outerjoin(repository, report.repository_id == repository.id)
-        .outerjoin(team, repository.team_id == team.id)
-        .outerjoin(assignment, repository.assignment_id == assignment.id)
+        .outerjoin(project, report.project_id == project.id)
+        .outerjoin(team, project.team_id == team.id)
+        .outerjoin(assignment, project.assignment_id == assignment.id)
         .filter(and_(team.id == team_id, assignment.id == assignment_id))
         .all()
     )

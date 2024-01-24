@@ -2,10 +2,10 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from schemas import reports_schema
+from schemas import reports_schema, project_schema
 
 from db.database import get_db
-from schemas import assingment_schema, repository_schema
+from schemas import assingment_schema
 from services.assignments_service import AssingmentService
 
 router = APIRouter(prefix="/api/v1/assignments")
@@ -26,11 +26,11 @@ async def get_assignment(
     return AssingmentService.get_assignment(db, assignment_id)
 
 
-@router.get("/{assignment_id}/repositories", operation_id="get-assignment-repositories")
-async def get_assignment_repositories(
+@router.get("/{assignment_id}/projects", operation_id="get-assignment-projects")
+async def get_assignment_projects(
     assignment_id: int, db=Depends(get_db)
-) -> List[repository_schema.RepositoryResponse]:
-    return AssingmentService.get_assignment_repositories(db, assignment_id)
+) -> List[project_schema.ProjectResponse]:
+    return AssingmentService.get_assignment_projects(db, assignment_id)
 
 
 @router.post("/")
@@ -40,7 +40,7 @@ def create_assignment(
     return AssingmentService.create_assignment(db, assignment)
 
 
-@router.get("/{assignment_id}/teams/{team_id}/repositories/reports")
+@router.get("/{assignment_id}/teams/{team_id}/projects/reports")
 def get_assignment_team_repos_reports(
     assignment_id: int, team_id: int, db=Depends(get_db)
 ) -> List[reports_schema.ReportResponse]:

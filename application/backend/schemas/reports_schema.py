@@ -8,7 +8,7 @@ class ReportBase(BaseModel):
     timestamp: datetime
     report: Optional[Json] = None
     analyzer_id: int
-    repository_id: int
+    project_id: int
 
 
 class ReportCreate(ReportBase):

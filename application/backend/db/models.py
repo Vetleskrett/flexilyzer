@@ -69,10 +69,10 @@ class Project(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
 
     assignment_id = Column(Integer, ForeignKey("assignments.id"))
-    assignment = relationship("Assignment", back_populates="repositories")
+    assignment = relationship("Assignment", back_populates="projects")
 
     team_id = Column(Integer, ForeignKey("teams.id"))
-    team = relationship("Team", back_populates="repositories")
+    team = relationship("Team", back_populates="projects")
 
     reports = relationship("Report", back_populates="project")
 
@@ -101,7 +101,7 @@ class Analyzer(Base):
 
     analyzer_inputs = relationship("AnalyzerInput", back_populates="analyzer")
     analyzer_outputs = relationship("AnalyzerOutput", back_populates="analyzer")
-    
+
     reports = relationship("Report", back_populates="analyzer")
 
     assignments = relationship(

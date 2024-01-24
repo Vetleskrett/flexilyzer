@@ -10,18 +10,23 @@ class AnalyzerBase(BaseModel):
     creator: Optional[str] = None
 
 
-class MetricDefinitionBase(BaseModel):
+class AnalyzerOutputBase(BaseModel):
     key_name: str
     value_type: str
     display_name: Optional[str] = None
     extended_metadata: Optional[Json] = None
 
 
+class AnalyzerInputBase(BaseModel):
+    key_name: str
+    value_type: str
+
+
 class AnalyzerCreate(AnalyzerBase):
     pass
 
 
-class MetricDefinitionCreate(MetricDefinitionBase):
+class AnalyzerOutputCreate(AnalyzerOutputBase):
     pass
 
 
@@ -32,9 +37,17 @@ class AnalyzerResponse(AnalyzerBase):
         from_attributes: True
 
 
-class MetricDefinitionResponse(MetricDefinitionBase):
+class AnalyzerOutputResponse(AnalyzerOutputBase):
     id: int
-    analyzer_id: int
+
+
+class AnalyzerInputResponse(AnalyzerInputBase):
+    id: int
+
+
+class AnalyzerIOResponse(AnalyzerBase):
+    anlyzer_output: List[AnalyzerOutputResponse]
+    analyzer_input: List[AnalyzerInputResponse]
 
 
 class ScriptSchema(BaseModel):

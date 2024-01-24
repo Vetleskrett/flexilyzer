@@ -26,13 +26,11 @@ async def get_analyzer(
     return AnalyzerService.get_analyzer(db, analyzer_id)
 
 
-@router.get(
-    "/{analyzer_id}/metric_definitions", operation_id="get-analyzer-metricDefinitions"
-)
-async def get_analyzer_metric_definition(
+@router.get("/{analyzer_id}/io", operation_id="get-analyzer-io")
+async def get_analyzer_io(
     analyzer_id: int, db=Depends(get_db)
-) -> List[analyzer_schema.MetricDefinitionResponse]:
-    return AnalyzerService.get_analyzer_metric_definition(db, analyzer_id=analyzer_id)
+) -> List[analyzer_schema.AnalyzerIOResponse]:
+    return AnalyzerService.get_analyzer_io(db, analyzer_id=analyzer_id)
 
 
 @router.post("/", operation_id="post-analyzer-metadata")

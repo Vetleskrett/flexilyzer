@@ -6,9 +6,10 @@ from db.models import (
     Course,
     Assignment,
     Team,
-    Repository,
+    Project,
     Analyzer,
-    MetricDefinition,
+    AnalyzerInput,
+    AnalyzerOutput,
     Report,
     assignment_analyzer_association,  # Make sure to import this
 )
@@ -35,14 +36,14 @@ def run_seed():
         if sa.inspect(engine).has_table("team"):
             session.query(Team).delete()
 
-        if sa.inspect(engine).has_table("repository"):
-            session.query(Repository).delete()
+        if sa.inspect(engine).has_table("project"):
+            session.query(Project).delete()
 
         if sa.inspect(engine).has_table("analyzer"):
             session.query(Analyzer).delete()
 
-        if sa.inspect(engine).has_table("metric_definition"):
-            session.query(MetricDefinition).delete()
+        if sa.inspect(engine).has_table("analyzerOutput"):
+            session.query().delete()
 
         if sa.inspect(engine).has_table("report"):
             session.query(Report).delete()
@@ -66,13 +67,13 @@ def run_seed():
         team = Team(github_link="https://github.com/pettelau/tsffbet", course=course)
         session.add(team)
 
-        print("Creating repository ...")
-        repository = Repository(
+        print("Creating projects ...")
+        project = Project(
             github_link="https://github.com/pettelau/tsffbet",
             team=team,
             assignment=assignment,
         )
-        session.add(repository)
+        session.add(project)
 
         print("Creating analyzer ...")
         analyzer = Analyzer(name="Lighthouse Analyzer", creator="Enthe Nu")
@@ -82,34 +83,34 @@ def run_seed():
         assignment.analyzers.append(analyzer)
 
         print("Creating metrics ...")
-        metric_definitions = [
-            MetricDefinition(
+        analyzer_outputs = [
+            AnalyzerOutput(
                 key_name="performance",
                 display_name="Performance rating",
                 value_type="range",
                 extended_metadata=json.dumps({"fromRange": 1, "toRange": 100}),
                 analyzer=analyzer,
             ),
-            MetricDefinition(
+            AnalyzerOutput(
                 key_name="hasViewport",
                 display_name="Viewport",
                 value_type="bool",
                 analyzer=analyzer,
             ),
-            MetricDefinition(
+            AnalyzerOutput(
                 key_name="hasHTTPS",
                 display_name="HTTPS",
                 value_type="bool",
                 analyzer=analyzer,
             ),
-            MetricDefinition(
+            AnalyzerOutput(
                 key_name="js_workload",
                 display_name="JS Main thread work",
                 value_type="text",
                 analyzer=analyzer,
             ),
         ]
-        session.add_all(metric_definitions)
+        session.add_all(analyzer_outputs)
 
         print("Creating report 1 ...")
         report1_data = {
@@ -119,7 +120,7 @@ def run_seed():
             "js_workload": "JS main thread workload is high, consider optimizing JS code.",
         }
         report1 = Report(
-            report=json.dumps(report1_data), repository=repository, analyzer=analyzer
+            report=json.dumps(report1_data), project=project, analyzer=analyzer
         )
         session.add(report1)
 
@@ -131,7 +132,7 @@ def run_seed():
             "js_workload": "JS main thread workload is high, consider optimizing JS code.",
         }
         report2 = Report(
-            report=json.dumps(report2_data), repository=repository, analyzer=analyzer
+            report=json.dumps(report2_data), project=project, analyzer=analyzer
         )
         session.add(report2)
 

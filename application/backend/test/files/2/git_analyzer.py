@@ -7,6 +7,7 @@ import mq
 
 project_id = 72724
 
+
 def fetch_git(url, params):
     git_response = requests.get(url, params=params)
 
@@ -16,7 +17,7 @@ def fetch_git(url, params):
 @mq.consumer("analyzer")
 @mq.publisher("done")
 def get_total_count(project_id):
-    '''Example function for analyzing gitlab repo'''
+    """Example function for analyzing gitlab repo"""
 
     project_id = project_id.decode()
     url = f"https://gitlab.com/api/v4/projects/{project_id}/repository/commits"
@@ -61,9 +62,8 @@ def get_total_count(project_id):
 
         page += 1
 
-
-    report = json.dumps({"1": total_count, "2": commits_per_user, "commits per day": commits_per_day})
+    report = json.dumps(
+        {"1": total_count, "2": commits_per_user, "commits per day": commits_per_day}
+    )
 
     return report
-
-

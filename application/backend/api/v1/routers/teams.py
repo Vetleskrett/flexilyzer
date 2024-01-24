@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import APIRouter, Depends
-from schemas import team_schema, repository_schema
+from schemas import team_schema, project_schema
 
 from services.teams_service import TeamService
 from db.database import get_db
@@ -21,8 +21,8 @@ async def get_all_teams(
     return TeamService.get_team(db, team_id)
 
 
-@router.get("/{team_id}/repositories", operation_id="get-team-repositories")
+@router.get("/{team_id}/projects", operation_id="get-team-projects")
 async def get_all_teams(
     team_id: int, db=Depends(get_db)
 ) -> List[team_schema.TeamResponse]:
-    return TeamService.get_team_repossities(db, team_id)
+    return TeamService.get_team_projects(db, team_id)

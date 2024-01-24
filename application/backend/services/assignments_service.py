@@ -19,10 +19,10 @@ class AssingmentService:
         return assignemnt
 
     @staticmethod
-    def get_assignment_repositories(db, assignment_id):
+    def get_assignment_projects(db, assignment_id):
         AssingmentService.get_assignment(db, assignment_id)
 
-        return assignments_crud.get_assignment_repositories(db, assignment_id)
+        return assignments_crud.get_assignment_projects(db, assignment_id)
 
     @staticmethod
     def create_assignment(db: Session, assignment: assingment_schema.AssignmentCreate):

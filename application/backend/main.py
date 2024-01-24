@@ -7,7 +7,7 @@ from api.v1.routers import (
     test,
     teams,
     reports,
-    repositories,
+    projects,
     analyzers,
 )
 from db.database import engine
@@ -33,7 +33,7 @@ app.include_router(test.router, tags=["tests"])
 app.include_router(courses.router, tags=["courses"])
 app.include_router(assignments.router, tags=["assignments"])
 app.include_router(teams.router, tags=["teams"])
-app.include_router(repositories.router, tags=["repositories"])
+app.include_router(projects.router, tags=["projects"])
 app.include_router(reports.router, tags=["reports"])
 app.include_router(analyzers.router, tags=["analyzers"])
 

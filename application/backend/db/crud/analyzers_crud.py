@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from schemas import analyzer_schema
 
-from db.models import Analyzer, MetricDefinition
+from db.models import Analyzer, AnalyzerInput, AnalyzerOutput
 
 
 class AnalyzerRepository:
@@ -33,9 +33,9 @@ class AnalyzerRepository:
         return db.query(Analyzer).filter(Analyzer.id == analyzer_id).first()
 
     @staticmethod
-    def get_analyzer_metric_definitions(db: Session, analyzer_id: int):
+    def get_analyzer_io(db: Session, analyzer_id: int):
         """
-        Retrieves a specific analyzer along with its metric definitions.
+        Retrieves a specific analyzer along with its outputs.
 
         Parameters:
         - db (Session): The database session.
@@ -46,9 +46,14 @@ class AnalyzerRepository:
         """
         analyzer = db.query(Analyzer).filter(Analyzer.id == analyzer_id).first()
         if analyzer:
-            analyzer.metric_definitions = (
-                db.query(MetricDefinition)
-                .filter(MetricDefinition.analyzer_id == analyzer.id)
+            analyzer.analyzer_outputs = (
+                db.query(AnalyzerOutput)
+                .filter(AnalyzerOutput.analyzer_id == analyzer.id)
+                .all()
+            )
+            analyzer.analyzer_inputs = (
+                db.query(AnalyzerInput)
+                .filter(AnalyzerInput.analyzer_id == analyzer.id)
                 .all()
             )
         return analyzer
