@@ -21,7 +21,7 @@ def get_project(db: Session, project_id: int):
 
     Parameters:
     - db (Session)
-    - prokect_id: int
+    - project_id: int
 
     Returns:
     The requested project if found, otherwise None

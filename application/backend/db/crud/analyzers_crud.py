@@ -35,14 +35,14 @@ class AnalyzerRepository:
     @staticmethod
     def get_analyzer_io(db: Session, analyzer_id: int):
         """
-        Retrieves a specific analyzer along with its outputs.
+        Retrieves a specific analyzer along with its inputs and outputs.
 
         Parameters:
         - db (Session): The database session.
         - analyzer_id (int): The ID of the analyzer.
 
         Returns:
-        The requested analyzer with its associated metric definitions if found, otherwise None.
+        The requested analyzer with its associated inputs/outputs if found, otherwise None.
         """
         analyzer = db.query(Analyzer).filter(Analyzer.id == analyzer_id).first()
         if analyzer:
