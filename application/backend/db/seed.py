@@ -1,3 +1,4 @@
+from curses import keyname
 from datetime import datetime
 from sqlalchemy.orm import sessionmaker
 import sqlalchemy as sa
@@ -5,6 +6,7 @@ import json
 from db.models import (
     Course,
     Assignment,
+    ProjectMetadata,
     Team,
     Project,
     Analyzer,
@@ -74,6 +76,12 @@ def run_seed():
         )
         session.add(project)
 
+        print("Creating project metadata ...")
+        project_metadata = ProjectMetadata(
+            key_name="url", value="https://laubet.no", value_type="string", project=project
+        )
+        session.add(project_metadata)
+        
         print("Creating analyzer ...")
         analyzer = Analyzer(name="Lighthouse Analyzer", creator="Enthe Nu")
         session.add(analyzer)
@@ -81,7 +89,13 @@ def run_seed():
         # Associate the analyzer with the assignment
         assignment.analyzers.append(analyzer)
 
-        print("Creating metrics ...")
+        print("Creating analyzer inputs ...")
+        analyzer_inputs = [
+            AnalyzerInput(key_name="url", value_type="string", analyzer=analyzer)
+        ]
+        session.add_all(analyzer_inputs)
+
+        print("Creating analyzer outputs ...")
         analyzer_outputs = [
             AnalyzerOutput(
                 key_name="performance",
