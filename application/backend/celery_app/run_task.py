@@ -34,7 +34,7 @@ def celery_task(
     )
 
     # Fetch all required analyzer inputs from DB
-    required_input_objects = AnalyzerService.get_analyzer_io(db, analyzer_id).inputs
+    required_input_objects = AnalyzerService.get_analyzer_inputs()
 
     # Extract the key_name from each AnalyzerInput object into a set
     required_inputs = {input_obj.key_name for input_obj in required_input_objects}

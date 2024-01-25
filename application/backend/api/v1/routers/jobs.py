@@ -13,7 +13,7 @@ router = APIRouter(prefix="/api/v1/jobs")
 
 
 @router.post("/{analyzer}", operation_id="run-job")
-async def get_all_analyzers(
+async def run_job(
     data: job_schema.JobCreate,
     analyzer: int,
     db: Session = Depends(get_db),

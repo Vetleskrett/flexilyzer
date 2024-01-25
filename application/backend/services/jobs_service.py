@@ -27,4 +27,4 @@ class JobsService:
                     detail=f"Project(s) with id {' '.join(str(e) for e in errors)} not found",
                 )
 
-        suii = run_task()
+        suii = run_task(db, analyzer_id, project_ids)
