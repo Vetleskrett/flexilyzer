@@ -9,12 +9,14 @@ from services.projects_service import ProjectsService
 
 ## analyzer_args:
 
-"""The celery task for executing an analyzer on a set of of projects"""
+"""The celery task for executing an analyzer on a set of projects"""
 
+requirements_path = ""
+script_path = ""
 
 @app.task
 def celery_task(
-    db, script_path: str, requirements_path: str, analyzer_id: int, project_ids: list
+    db, analyzer_id: int, project_ids: list
 ):
     client = docker.from_env()
 
