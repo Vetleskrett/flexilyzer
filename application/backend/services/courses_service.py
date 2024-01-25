@@ -14,7 +14,9 @@ class CourseService:
     def get_course(db: Session, course_id: int):
         course = CourseRepository.get_course(db=db, course_id=course_id)
         if not course:
-            raise HTTPException(status_code=404, detail="Course not found")
+            raise HTTPException(
+                status_code=404, detail=f"Course with id {course_id} not found"
+            )
         return course
 
     @staticmethod

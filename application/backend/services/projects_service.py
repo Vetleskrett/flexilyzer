@@ -13,7 +13,9 @@ class ProjectsService:
     def get_project(db, project_id: int):
         project = projects_crud.get_project(db, project_id)
         if not project:
-            raise HTTPException(status_code=404, detail="Project not found")
+            raise HTTPException(
+                status_code=404, detail=f"Project with id {project_id} not found"
+            )
         return project
 
     @staticmethod

@@ -12,7 +12,9 @@ class TeamService:
     def get_team(db, team_id):
         team = teams_crud.get_team(db, team_id)
         if not team:
-            raise HTTPException(status_code=404, detail="Team not found")
+            raise HTTPException(
+                status_code=404, detail=f"Team with id {team_id} not found"
+            )
         return team
 
     @staticmethod

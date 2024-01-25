@@ -15,7 +15,9 @@ class AnalyzerService:
     def get_analyzer(db, analyzer_id: int):
         analyzer = AnalyzerRepository.get_analyzer(db, analyzer_id)
         if not analyzer:
-            raise HTTPException(status_code=404, detail="Analyzer not found")
+            raise HTTPException(
+                status_code=404, detail=f"Analyzer with id {analyzer_id} not found"
+            )
         return analyzer
 
     @staticmethod

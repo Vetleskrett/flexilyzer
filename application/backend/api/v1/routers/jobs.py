@@ -18,4 +18,4 @@ async def get_all_analyzers(
     analyzer: int,
     db: Session = Depends(get_db),
 ) -> List[analyzer_schema.AnalyzerResponse]:
-    return JobsService.run_job(db, analyzer, data)
+    return JobsService.run_job(db, analyzer, data.asssingment_id, data.project_ids)

@@ -15,7 +15,9 @@ class AssingmentService:
     def get_assignment(db, assignment_id):
         assignemnt = assignments_crud.get_assignment(db, assignment_id)
         if assignemnt is None:
-            raise HTTPException(status_code=404, detail="Assignment not found")
+            raise HTTPException(
+                status_code=404, detail=f"Assignment with id {assignment_id} not found"
+            )
         return assignemnt
 
     @staticmethod

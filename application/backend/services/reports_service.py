@@ -13,5 +13,7 @@ class ReportService:
     def get_report(db, report_id: int):
         report = reports_crud.get_report(db, report_id)
         if not report:
-            raise HTTPException(status_code=404, detail="Report not found")
+            raise HTTPException(
+                status_code=404, detail=f"Report with id {report_id} not found"
+            )
         return report
