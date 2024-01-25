@@ -11,6 +11,7 @@ class AnalyzerBase(BaseModel):
 
 
 class AnalyzerOutputBase(BaseModel):
+    analyzer_id: int
     key_name: str
     value_type: str
     display_name: Optional[str] = None
@@ -40,14 +41,15 @@ class AnalyzerResponse(AnalyzerBase):
 class AnalyzerOutputResponse(AnalyzerOutputBase):
     id: int
 
+    class Config:
+        from_attributes: True
+
 
 class AnalyzerInputResponse(AnalyzerInputBase):
     id: int
 
-
-class AnalyzerIOResponse(AnalyzerBase):
-    anlyzer_output: List[AnalyzerOutputResponse]
-    analyzer_input: List[AnalyzerInputResponse]
+    class Config:
+        from_attributes: True
 
 
 class ScriptSchema(BaseModel):

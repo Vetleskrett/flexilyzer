@@ -26,11 +26,18 @@ async def get_analyzer(
     return AnalyzerService.get_analyzer(db, analyzer_id)
 
 
-@router.get("/{analyzer_id}/io", operation_id="get-analyzer-io")
-async def get_analyzer_io(
+@router.get("/{analyzer_id}/inputs", operation_id="get-analyzer-inputs")
+async def get_analyzer_inputs(
     analyzer_id: int, db=Depends(get_db)
-) -> List[analyzer_schema.AnalyzerIOResponse]:
-    return AnalyzerService.get_analyzer_io(db, analyzer_id=analyzer_id)
+) -> List[analyzer_schema.AnalyzerInputResponse]:
+    return AnalyzerService.get_analyzer_inputs(db, analyzer_id=analyzer_id)
+
+
+@router.get("/{analyzer_id}/outputs", operation_id="get-analyzer-outputs")
+async def get_analyzer_outputs(
+    analyzer_id: int, db=Depends(get_db)
+) -> List[analyzer_schema.AnalyzerOutputResponse]:
+    return AnalyzerService.get_analyzer_outputs(db, analyzer_id=analyzer_id)
 
 
 @router.post("/", operation_id="post-analyzer-metadata")

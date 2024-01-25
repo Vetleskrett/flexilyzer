@@ -1,7 +1,12 @@
 from fastapi import HTTPException, UploadFile
 from pydantic import ValidationError
 from db.crud.analyzers_crud import AnalyzerRepository
-from schemas.analyzer_schema import RequirementsSchema, ScriptSchema
+from schemas.analyzer_schema import (
+    RequirementsSchema,
+    ScriptSchema,
+    AnalyzerOutputResponse,
+    AnalyzerInputResponse,
+)
 from utils.validationUtils import validatePydanticToHTTPError
 from utils.storeUtils import store_file
 
@@ -21,10 +26,16 @@ class AnalyzerService:
         return analyzer
 
     @staticmethod
-    def get_analyzer_io(db, analyzer_id: int):
+    def get_analyzer_inputs(db, analyzer_id: int):
         AnalyzerService.get_analyzer(db, analyzer_id=analyzer_id)
 
-        return AnalyzerRepository.get_analyzer_io(db, analyzer_id=analyzer_id)
+        return AnalyzerRepository.get_analyzer_inputs(db, analyzer_id=analyzer_id)
+
+    @staticmethod
+    def get_analyzer_outputs(db, analyzer_id: int):
+        AnalyzerService.get_analyzer(db, analyzer_id=analyzer_id)
+
+        return AnalyzerRepository.get_analyzer_outputs(db, analyzer_id=analyzer_id)
 
     @staticmethod
     def post_analyzer(db, analyzer):

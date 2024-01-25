@@ -33,7 +33,7 @@ class AnalyzerRepository:
         return db.query(Analyzer).filter(Analyzer.id == analyzer_id).first()
 
     @staticmethod
-    def get_analyzer_io(db: Session, analyzer_id: int):
+    def get_analyzer_inputs(db: Session, analyzer_id: int):
         """
         Retrieves a specific analyzer along with its inputs and outputs.
 
@@ -42,21 +42,31 @@ class AnalyzerRepository:
         - analyzer_id (int): The ID of the analyzer.
 
         Returns:
-        The requested analyzer with its associated inputs/outputs if found, otherwise None.
+        The requested analyzer inputs
         """
-        analyzer = db.query(Analyzer).filter(Analyzer.id == analyzer_id).first()
-        if analyzer:
-            analyzer.analyzer_outputs = (
-                db.query(AnalyzerOutput)
-                .filter(AnalyzerOutput.analyzer_id == analyzer.id)
-                .all()
-            )
-            analyzer.analyzer_inputs = (
-                db.query(AnalyzerInput)
-                .filter(AnalyzerInput.analyzer_id == analyzer.id)
-                .all()
-            )
-        return analyzer
+        return (
+            db.query(AnalyzerInput)
+            .filter(AnalyzerInput.analyzer_id == analyzer_id)
+            .all()
+        )
+
+    @staticmethod
+    def get_analyzer_outputs(db: Session, analyzer_id: int):
+        """
+        Retrieves a specific analyzer along with its inputs and outputs.
+
+        Parameters:
+        - db (Session): The database session.
+        - analyzer_id (int): The ID of the analyzer.
+
+        Returns:
+        The requested analyzer outputs
+        """
+        return (
+            db.query(AnalyzerOutput)
+            .filter(AnalyzerOutput.analyzer_id == analyzer_id)
+            .all()
+        )
 
     @staticmethod
     def create_analyzer(db: Session, analyzer: analyzer_schema.AnalyzerCreate):
