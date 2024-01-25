@@ -2,7 +2,7 @@ from services.analyzers_service import AnalyzerService
 from services.assignments_service import AssingmentService
 from services.projects_service import ProjectsService
 
-from celery_app.run_task import celery_task
+from celery_app.tasks import celery_task
 
 from fastapi import HTTPException
 
