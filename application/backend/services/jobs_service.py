@@ -2,7 +2,7 @@ from services.analyzers_service import AnalyzerService
 from services.assignments_service import AssingmentService
 from services.projects_service import ProjectsService
 
-from celery_app import run_task
+from celery_app.run_task import celery_task
 
 from fastapi import HTTPException
 
@@ -27,4 +27,4 @@ class JobsService:
                     detail=f"Project(s) with id {' '.join(str(e) for e in errors)} not found",
                 )
 
-        suii = run_task(db, analyzer_id, project_ids)
+        suii = celery_task(db, analyzer_id, project_ids)
