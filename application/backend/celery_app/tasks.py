@@ -1,31 +1,29 @@
-import docker
-import hashlib
-from pathlib import Path
-from db.database import get_db
-
 from celery_app.main import app
-
-from services.analyzers_service import AnalyzerService
-from services.projects_service import ProjectsService
 
 ## analyzer_args:
 
 """The celery task for executing an analyzer on a set of projects"""
 
-requirements_path = ""
-script_path = ""
-
 
 @app.task
 def celery_task(analyzer_id: int, project_ids: list):
-    db = get_db()
+    import docker
+    from pathlib import Path
 
-    client = docker.from_env()
+    from services.analyzers_service import AnalyzerService
+    from services.projects_service import ProjectsService
+
+    print("hello mf")
+
+    # requirements_path = "test/celery_test/requirments.txt"
+    script_path = "test/celery_test/test_analyzer.py"
 
     # Generate a hash based on the requirements.txt to identify the virtual environment
-    requirements_data = Path(requirements_path).read_text()
-    env_hash = hashlib.md5(requirements_data.encode()).hexdigest()
-    venv_path = f"/venvs/{env_hash}"
+    # requirements_data = Path(requirements_path).read_text()
+    # env_hash = hashlib.md5(requirements_data.encode()).hexdigest()
+    # venv_path = f"/venvs/{env_hash}"
+
+    client = docker.from_env()
 
     # Create docker container
     container = client.containers.create(
@@ -67,7 +65,7 @@ def celery_task(analyzer_id: int, project_ids: list):
             # Copy the script and venv into the container
 
             # Run the script using the virtual environment and env variables
-            run_command = f"env {env_vars_shell} {venv_path}/bin/python /app/{Path(script_path).name}"
+            run_command = f"python /app/{Path(script_path).name}"
             result = container.exec_run(run_command)
 
             # Return the output (or error message)
