@@ -9,9 +9,9 @@ from fastapi import HTTPException
 
 class JobsService:
     @staticmethod
-    def run_job(db, analyzer_id, asssingment_id, project_ids):
+    def run_job(db, analyzer_id, assignment_id, project_ids):
         AnalyzerService.get_analyzer(db, analyzer_id=analyzer_id)
-        AssingmentService.get_assignment(db, assignment_id=asssingment_id)
+        AssingmentService.get_assignment(db, assignment_id=assignment_id)
 
         if project_ids:
             errors = []
@@ -27,4 +27,6 @@ class JobsService:
                     detail=f"Project(s) with id {' '.join(str(e) for e in errors)} not found",
                 )
 
-        suii = celery_task(db, analyzer_id, project_ids)
+        celery_task.delay(analyzer_id, project_ids)
+
+        return {"status": "Job started successfully", "code": 0}

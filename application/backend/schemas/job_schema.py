@@ -6,7 +6,7 @@ from sqlalchemy import true
 
 
 class JobBase(BaseModel):
-    asssingment_id: int
+    assignment_id: int
     project_ids: Optional[List[int]] = None
 
 

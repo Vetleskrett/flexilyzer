@@ -7,17 +7,23 @@ from celery_app.main import app
 from services.analyzers_service import AnalyzerService
 from services.projects_service import ProjectsService
 
+from db.database import get_db
+
 ## analyzer_args:
 
 """The celery task for executing an analyzer on a set of projects"""
 
-requirements_path = ""
-script_path = ""
+requirements_path = (
+    "/Users/petterlauvrak/master-draft/application/test_files/requirements.txt"
+)
+script_path = (
+    "/Users/petterlauvrak/master-draft/application/test_files/test_analyzer.py"
+)
+
 
 @app.task
-def celery_task(
-    db, analyzer_id: int, project_ids: list
-):
+def celery_task(analyzer_id: int, project_ids: list):
+    db = get_db()
     client = docker.from_env()
 
     # Generate a hash based on the requirements.txt to identify the virtual environment
@@ -33,8 +39,10 @@ def celery_task(
         detach=True,
     )
 
+    container.start()
+
     # Fetch all required analyzer inputs from DB
-    required_input_objects = AnalyzerService.get_analyzer_inputs()
+    required_input_objects = AnalyzerService.get_analyzer_inputs(db, analyzer_id)
 
     # Extract the key_name from each AnalyzerInput object into a set
     required_inputs = {input_obj.key_name for input_obj in required_input_objects}
@@ -43,7 +51,7 @@ def celery_task(
     # Fetch all required metadata for all projects
     for id in project_ids:
         # Fetch project metadata, assuming it returns a dict-like object
-        project_metadata_objects = ProjectsService.get_project(id).project_metadata
+        project_metadata_objects = ProjectsService.get_project(db, id).project_metadata
 
         filtered_metadata = {
             meta.key_name: meta.value
