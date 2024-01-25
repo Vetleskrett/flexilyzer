@@ -13,7 +13,7 @@ def celery_task(analyzer_id: int, project_ids: list):
     from services.analyzers_service import AnalyzerService
     from services.projects_service import ProjectsService
 
-    print("hello mf")
+    from db.database import get_db
 
     # requirements_path = "test/celery_test/requirments.txt"
     script_path = "test/celery_test/test_analyzer.py"
@@ -33,17 +33,21 @@ def celery_task(analyzer_id: int, project_ids: list):
         detach=True,
     )
 
-    # Fetch all required analyzer inputs from DB
-    required_input_objects = AnalyzerService.get_analyzer_inputs()
+    container.start()
+    print(container.status)
 
+    db = next(get_db())
+    # Fetch all required analyzer inputs from DB
+    required_input_objects = AnalyzerService.get_analyzer_inputs(db, analyzer_id)
+    print(required_input_objects[0].__dict__)
     # Extract the key_name from each AnalyzerInput object into a set
     required_inputs = {input_obj.key_name for input_obj in required_input_objects}
-
+    print(required_inputs)
     projects_with_metadata = {}
     # Fetch all required metadata for all projects
     for id in project_ids:
         # Fetch project metadata, assuming it returns a dict-like object
-        project_metadata_objects = ProjectsService.get_project(id).project_metadata
+        project_metadata_objects = ProjectsService.get_project(db, id).project_metadata
 
         filtered_metadata = {
             meta.key_name: meta.value
@@ -53,7 +57,7 @@ def celery_task(analyzer_id: int, project_ids: list):
 
         # Store the filtered metadata in projects_with_metadata
         projects_with_metadata[id] = filtered_metadata
-
+    print(projects_with_metadata)
     try:
         # Loop through all projects to be analyzed,
         # for each repo, execute analysis inside container with the correct venv
@@ -83,3 +87,10 @@ def celery_task(analyzer_id: int, project_ids: list):
         # Clean up: stop and remove the container
         container.stop()
         container.remove()
+
+
+@app.task
+def show_python_path():
+    import sys
+
+    return sys.path
