@@ -19,3 +19,17 @@ export function CreateCourseButton() {
     </Button>
   );
 }
+
+export function CreateAnalyzerButton() {
+  const { push } = useRouter();
+
+  return (
+    <Button
+      onClick={() => {
+        push(`/analyzers/new`);
+      }}
+    >
+      Create Analyzer
+    </Button>
+  );
+}
