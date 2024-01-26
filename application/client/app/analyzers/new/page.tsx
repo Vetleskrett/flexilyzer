@@ -8,15 +8,16 @@ import {
   Select,
   SelectItem,
 } from "@nextui-org/react"; // Assuming Next UI components
-import { FormDataT } from "@/app/types/analyzerDefinitions";
+import { FormDataT, RangeMetadata } from "@/app/types/analyzerDefinitions";
+import { v4 as uuidv4 } from "uuid";
 
 export default function NewAnalyzerPage() {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [formData, setFormData] = useState<FormDataT>({
     name: "",
     description: "",
-    inputParameters: [],
-    outputParameters: [],
+    input_parameters: [],
+    output_parameters: [],
   });
 
   const formSteps = {
@@ -35,16 +36,16 @@ export default function NewAnalyzerPage() {
   const addInputParameter = () => {
     setFormData((prev) => ({
       ...prev,
-      inputParameters: [
-        ...prev.inputParameters,
-        { keyName: "", valueType: "string" },
-      ], // Default valueType can be adjusted
+      input_parameters: [
+        ...prev.input_parameters,
+        { id: uuidv4(), key_name: "", value_type: "string" },
+      ], // Default value_type can be adjusted
     }));
   };
 
   // Function to update an existing parameter
   const updateInputParameter = (index: number, key: string, value: string) => {
-    const updatedParameters = formData.inputParameters.map((param, i) => {
+    const updatedParameters = formData.input_parameters.map((param, i) => {
       if (i === index) {
         return { ...param, [key]: value };
       }
@@ -53,7 +54,7 @@ export default function NewAnalyzerPage() {
 
     setFormData((prev) => ({
       ...prev,
-      inputParameters: updatedParameters,
+      input_parameters: updatedParameters,
     }));
   };
 
@@ -61,7 +62,7 @@ export default function NewAnalyzerPage() {
   const removeInputParameter = (index: number) => {
     setFormData((prev) => ({
       ...prev,
-      inputParameters: prev.inputParameters.filter((_, i) => i !== index),
+      input_parameters: prev.input_parameters.filter((_, i) => i !== index),
     }));
   };
 
@@ -69,25 +70,81 @@ export default function NewAnalyzerPage() {
   const addOutputParameter = () => {
     setFormData((prev) => ({
       ...prev,
-      inputParameters: [
-        ...prev.inputParameters,
-        { keyName: "", valueType: "string" },
-      ], // Default valueType can be adjusted
+      output_parameters: [
+        ...prev.output_parameters,
+        { id: uuidv4(), key_name: "", display_name: "", value_type: "string" },
+      ], // Default value_type can be adjusted
     }));
   };
 
-  // Function to update an existing parameter
+  // Function to update an existing output parameter
   const updateOutputParameter = (index: number, key: string, value: string) => {
-    const updatedParameters = formData.inputParameters.map((param, i) => {
+    const updatedParameters = formData.output_parameters.map((param, i) => {
       if (i === index) {
-        return { ...param, [key]: value };
+        if (key === "value_type") {
+          if (value === "range") {
+            // Add or update the extended_metadata with default range values
+            return {
+              ...param,
+              [key]: value,
+              extended_metadata: {
+                from_value: 0,
+                to_value: 100,
+              },
+            };
+          } else {
+            // If another value type is chosen, ensure extended_metadata is removed
+            // Use object destructuring to omit extended_metadata from the updated object
+            const { extended_metadata, ...rest } = param;
+            return { ...rest, [key]: value };
+          }
+        } else {
+          // For updates to fields other than value_type, just update the field
+          return { ...param, [key]: value };
+        }
       }
       return param;
     });
 
     setFormData((prev) => ({
       ...prev,
-      inputParameters: updatedParameters,
+      output_parameters: updatedParameters,
+    }));
+  };
+
+  // Function to update an existing output parameter
+  const updateExtendedMetadata = (
+    index: number,
+    key: keyof RangeMetadata,
+    value: string
+  ) => {
+    const updatedParameters = formData.output_parameters.map((param, i) => {
+      if (i === index) {
+        console.log(value);
+        let newValue = undefined;
+
+        if (value) {
+          newValue = Number(value);
+        }
+        if (Number.isNaN(newValue)) {
+          return param;
+        }
+        let prevExtendedMetadata = param.extended_metadata;
+
+        if (prevExtendedMetadata) {
+          prevExtendedMetadata[key] = newValue;
+        }
+        return {
+          ...param,
+          extended_metadata: prevExtendedMetadata,
+        };
+      }
+      return param;
+    });
+
+    setFormData((prev) => ({
+      ...prev,
+      output_parameters: updatedParameters,
     }));
   };
 
@@ -95,7 +152,7 @@ export default function NewAnalyzerPage() {
   const removeOutputParameter = (index: number) => {
     setFormData((prev) => ({
       ...prev,
-      inputParameters: prev.inputParameters.filter((_, i) => i !== index),
+      output_parameters: prev.output_parameters.filter((_, i) => i !== index),
     }));
   };
 
@@ -146,23 +203,26 @@ export default function NewAnalyzerPage() {
         return (
           <>
             <h2 className="h2">{formSteps[2].name}</h2>
-            {formData.inputParameters.map((param, index) => (
-              <div key={index} className="flex items-center space-x-2 mb-4">
+            {formData.input_parameters.map((param, index) => (
+              <div key={param.id} className="flex items-center space-x-2 mb-4">
                 <Input
                   label="Key Name"
                   placeholder="Enter key name"
-                  value={param.keyName}
-                  onChange={(e) =>
-                    updateInputParameter(index, "keyName", e.target.value)
-                  }
+                  value={param.key_name}
+                  onChange={(e) => {
+                    const isValid = /^[a-z_]+$/.test(e.target.value);
+                    if (isValid || e.target.value === "") {
+                      updateInputParameter(index, "key_name", e.target.value);
+                    }
+                  }}
                 />
                 <Select
                   label="Select value type"
                   className="max-w-xs"
-                  value={param.valueType}
-                  defaultSelectedKeys={[param.valueType]}
+                  value={param.value_type}
+                  defaultSelectedKeys={[param.value_type]}
                   onChange={(e) => {
-                    updateInputParameter(index, "valueType", e.target.value);
+                    updateInputParameter(index, "value_type", e.target.value);
                   }}
                 >
                   <SelectItem key={"string"} value={"string"}>
@@ -194,46 +254,114 @@ export default function NewAnalyzerPage() {
         return (
           <>
             <h2 className="h2">{formSteps[3].name}</h2>
-            {formData.inputParameters.map((param, index) => (
-              <div key={index} className="flex items-center space-x-2 mb-4">
-                <Input
-                  label="Key Name"
-                  placeholder="Enter key name"
-                  value={param.keyName}
-                  onChange={(e) =>
-                    updateInputParameter(index, "keyName", e.target.value)
-                  }
-                />
-                <Select
-                  label="Select value type"
-                  className="max-w-xs"
-                  value={param.valueType}
-                  defaultSelectedKeys={[param.valueType]}
-                  onChange={(e) => {
-                    updateInputParameter(index, "valueType", e.target.value);
-                  }}
-                >
-                  <SelectItem key={"string"} value={"string"}>
-                    String
-                  </SelectItem>
-                  <SelectItem key={"number"} value={"number"}>
-                    Number
-                  </SelectItem>
-                  <SelectItem key={"bool"} value={"bool"}>
-                    Boolean
-                  </SelectItem>
-                </Select>
-                {/* Optional: Button to remove this parameter */}
-                <Button
-                  color="danger"
-                  onClick={() => removeInputParameter(index)}
-                >
-                  Remove
-                </Button>
-              </div>
+            {formData.output_parameters.map((param, index) => (
+              <>
+                <div key={index} className="flex items-center space-x-2 mb-4">
+                  <Input
+                    pattern="\S+"
+                    label="Key Name"
+                    placeholder="Enter key name"
+                    value={param.key_name}
+                    onChange={(e) => {
+                      const isValid = /^[a-z_]+$/.test(e.target.value);
+                      if (isValid || e.target.value === "") {
+                        updateOutputParameter(
+                          index,
+                          "key_name",
+                          e.target.value
+                        );
+                      }
+                    }}
+                  />
+                  <Input
+                    label="Display Name"
+                    placeholder="Enter display name"
+                    value={param.display_name}
+                    onChange={(e) =>
+                      updateOutputParameter(
+                        index,
+                        "display_name",
+                        e.target.value
+                      )
+                    }
+                  />
+                  <Select
+                    label="Select value type"
+                    className="max-w-xs"
+                    value={param.value_type}
+                    defaultSelectedKeys={[param.value_type]}
+                    onChange={(e) => {
+                      updateOutputParameter(
+                        index,
+                        "value_type",
+                        e.target.value
+                      );
+                    }}
+                  >
+                    <SelectItem key={"string"} value={"string"}>
+                      String
+                    </SelectItem>
+                    <SelectItem key={"number"} value={"number"}>
+                      Number
+                    </SelectItem>
+                    <SelectItem key={"bool"} value={"bool"}>
+                      Boolean
+                    </SelectItem>
+                    <SelectItem key={"range"} value={"range"}>
+                      Range
+                    </SelectItem>
+                  </Select>
+                  {param.extended_metadata ? (
+                    <>
+                      <div className="flex items-center space-x-2">
+                        <Input
+                          label="Min"
+                          placeholder="Enter from value"
+                          value={
+                            param.extended_metadata.from_value === undefined
+                              ? ""
+                              : param.extended_metadata.from_value.toString()
+                          }
+                          onChange={(e) =>
+                            updateExtendedMetadata(
+                              index,
+                              "from_value",
+                              e.target.value
+                            )
+                          }
+                        />
+                        <Input
+                          label="Max"
+                          placeholder="Enter to value"
+                          value={
+                            param.extended_metadata.to_value === undefined
+                              ? ""
+                              : param.extended_metadata.to_value.toString()
+                          }
+                          onChange={(e) =>
+                            updateExtendedMetadata(
+                              index,
+                              "to_value",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                  <Button
+                    color="danger"
+                    onClick={() => removeOutputParameter(index)}
+                  >
+                    Remove
+                  </Button>
+                </div>
+              </>
             ))}
             <div className="flex justify-center w-full">
-              <Button onClick={addInputParameter}>Add Parameter</Button>
+              <Button onClick={addOutputParameter}>Add Parameter</Button>
             </div>
           </>
         );

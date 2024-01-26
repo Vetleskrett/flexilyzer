@@ -1,15 +1,25 @@
 import json
+import os
+
+url = os.getenv("url")
+
+def main(url):
+
+    # Your code here:
+
+    performance: int = 0
+    hasViewport = False
+    hasHTTPS = False
+    js_workload = ""
 
 
-def main():
-    # report = json.dumps({"param1": True, "param2": "hello world", "param3": 42})
-
+    # Report to be returned:
     report = json.dumps(
         {
-            "performance": 76,
-            "hasViewport": True,
-            "hasHTTPS": False,
-            "js_workload": "Good!!",
+            "performance": performance,
+            "hasViewport": hasViewport,
+            "hasHTTPS": hasHTTPS,
+            "js_workload": js_workload,
         }
     )
     return report
