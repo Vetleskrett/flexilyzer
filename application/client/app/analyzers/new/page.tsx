@@ -15,7 +15,8 @@ export default function NewAnalyzerPage() {
   const [formData, setFormData] = useState<FormDataT>({
     name: "",
     description: "",
-    parameters: [],
+    inputParameters: [],
+    outputParameters: [],
   });
 
   const formSteps = {
@@ -31,16 +32,19 @@ export default function NewAnalyzerPage() {
   };
 
   // Function to add a new parameter
-  const addParameter = () => {
+  const addInputParameter = () => {
     setFormData((prev) => ({
       ...prev,
-      parameters: [...prev.parameters, { keyName: "", valueType: "string" }], // Default valueType can be adjusted
+      inputParameters: [
+        ...prev.inputParameters,
+        { keyName: "", valueType: "string" },
+      ], // Default valueType can be adjusted
     }));
   };
 
   // Function to update an existing parameter
-  const updateParameter = (index: number, key: string, value: string) => {
-    const updatedParameters = formData.parameters.map((param, i) => {
+  const updateInputParameter = (index: number, key: string, value: string) => {
+    const updatedParameters = formData.inputParameters.map((param, i) => {
       if (i === index) {
         return { ...param, [key]: value };
       }
@@ -49,15 +53,49 @@ export default function NewAnalyzerPage() {
 
     setFormData((prev) => ({
       ...prev,
-      parameters: updatedParameters,
+      inputParameters: updatedParameters,
     }));
   };
 
   // Optional: Function to remove a parameter
-  const removeParameter = (index: number) => {
+  const removeInputParameter = (index: number) => {
     setFormData((prev) => ({
       ...prev,
-      parameters: prev.parameters.filter((_, i) => i !== index),
+      inputParameters: prev.inputParameters.filter((_, i) => i !== index),
+    }));
+  };
+
+  // Function to add a new parameter
+  const addOutputParameter = () => {
+    setFormData((prev) => ({
+      ...prev,
+      inputParameters: [
+        ...prev.inputParameters,
+        { keyName: "", valueType: "string" },
+      ], // Default valueType can be adjusted
+    }));
+  };
+
+  // Function to update an existing parameter
+  const updateOutputParameter = (index: number, key: string, value: string) => {
+    const updatedParameters = formData.inputParameters.map((param, i) => {
+      if (i === index) {
+        return { ...param, [key]: value };
+      }
+      return param;
+    });
+
+    setFormData((prev) => ({
+      ...prev,
+      inputParameters: updatedParameters,
+    }));
+  };
+
+  // Optional: Function to remove a parameter
+  const removeOutputParameter = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      inputParameters: prev.inputParameters.filter((_, i) => i !== index),
     }));
   };
 
@@ -108,23 +146,24 @@ export default function NewAnalyzerPage() {
         return (
           <>
             <h2 className="h2">{formSteps[2].name}</h2>
-            {formData.parameters.map((param, index) => (
-              <div key={index} className="flex flex-col mb-4">
+            {formData.inputParameters.map((param, index) => (
+              <div key={index} className="flex items-center space-x-2 mb-4">
                 <Input
                   label="Key Name"
                   placeholder="Enter key name"
                   value={param.keyName}
                   onChange={(e) =>
-                    updateParameter(index, "keyName", e.target.value)
+                    updateInputParameter(index, "keyName", e.target.value)
                   }
                 />
                 <Select
                   label="Select value type"
                   className="max-w-xs"
                   value={param.valueType}
-                  onChange={(e) =>
-                    updateParameter(index, "valueType", e.target.value)
-                  }
+                  defaultSelectedKeys={[param.valueType]}
+                  onChange={(e) => {
+                    updateInputParameter(index, "valueType", e.target.value);
+                  }}
                 >
                   <SelectItem key={"string"} value={"string"}>
                     String
@@ -136,19 +175,69 @@ export default function NewAnalyzerPage() {
                     Boolean
                   </SelectItem>
                 </Select>
-
                 {/* Optional: Button to remove this parameter */}
-                <Button color="danger" onClick={() => removeParameter(index)}>
+                <Button
+                  color="danger"
+                  onClick={() => removeInputParameter(index)}
+                >
                   Remove
                 </Button>
               </div>
             ))}
-            <Button onClick={addParameter}>Add Parameter</Button>
+            <div className="flex justify-center w-full">
+              <Button onClick={addInputParameter}>Add Parameter</Button>
+            </div>
           </>
         );
       case 3:
         // Step 3 form elements
-        return <h2 className="h2">{formSteps[3].name}</h2>;
+        return (
+          <>
+            <h2 className="h2">{formSteps[3].name}</h2>
+            {formData.inputParameters.map((param, index) => (
+              <div key={index} className="flex items-center space-x-2 mb-4">
+                <Input
+                  label="Key Name"
+                  placeholder="Enter key name"
+                  value={param.keyName}
+                  onChange={(e) =>
+                    updateInputParameter(index, "keyName", e.target.value)
+                  }
+                />
+                <Select
+                  label="Select value type"
+                  className="max-w-xs"
+                  value={param.valueType}
+                  defaultSelectedKeys={[param.valueType]}
+                  onChange={(e) => {
+                    updateInputParameter(index, "valueType", e.target.value);
+                  }}
+                >
+                  <SelectItem key={"string"} value={"string"}>
+                    String
+                  </SelectItem>
+                  <SelectItem key={"number"} value={"number"}>
+                    Number
+                  </SelectItem>
+                  <SelectItem key={"bool"} value={"bool"}>
+                    Boolean
+                  </SelectItem>
+                </Select>
+                {/* Optional: Button to remove this parameter */}
+                <Button
+                  color="danger"
+                  onClick={() => removeInputParameter(index)}
+                >
+                  Remove
+                </Button>
+              </div>
+            ))}
+            <div className="flex justify-center w-full">
+              <Button onClick={addInputParameter}>Add Parameter</Button>
+            </div>
+          </>
+        );
+
       case 4:
         return <h2 className="h2">{formSteps[4].name}</h2>;
       default:
