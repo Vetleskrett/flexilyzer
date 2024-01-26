@@ -9,14 +9,20 @@ from celery_app.main import app
 def celery_task(analyzer_id: int, project_ids: list):
     import docker
     from pathlib import Path
+    import json
 
     from services.analyzers_service import AnalyzerService
     from services.projects_service import ProjectsService
 
     from db.database import get_db
 
+    from .validation_utils import validate_report, validate_type
+
     # requirements_path = "test/celery_test/requirments.txt"
-    script_path = "test/celery_test/test_analyzer.py"
+    script_path = "test/celery_testing/test_analyzer.py"
+    abs_script_path = Path(script_path).absolute()
+
+    container_script_path = "/app/test_analyzer.py"
 
     # Generate a hash based on the requirements.txt to identify the virtual environment
     # requirements_data = Path(requirements_path).read_text()
@@ -29,20 +35,33 @@ def celery_task(analyzer_id: int, project_ids: list):
     container = client.containers.create(
         "python:3.11",
         "tail -f /dev/null",
-        volumes={"python-envs": {"bind": "/venvs", "mode": "rw"}},
+        volumes={
+            str(abs_script_path): {"bind": container_script_path, "mode": "ro"},
+            "python-envs": {"bind": "/venvs", "mode": "rw"},
+        },
         detach=True,
     )
 
     container.start()
-    print(container.status)
 
     db = next(get_db())
     # Fetch all required analyzer inputs from DB
     required_input_objects = AnalyzerService.get_analyzer_inputs(db, analyzer_id)
-    print(required_input_objects[0].__dict__)
     # Extract the key_name from each AnalyzerInput object into a set
     required_inputs = {input_obj.key_name for input_obj in required_input_objects}
-    print(required_inputs)
+    required_output_objects = AnalyzerService.get_analyzer_outputs(db, analyzer_id)
+    # Extract the key_name from each AnalyzerInput object into a set
+
+    required_outputs = {
+        output_obj.key_name: {
+            "value_type": output_obj.value_type,
+            "extended_metadata": output_obj.extended_metadata
+            if output_obj.extended_metadata
+            else None,
+        }
+        for output_obj in required_output_objects
+    }
+    print(required_outputs)
     projects_with_metadata = {}
     # Fetch all required metadata for all projects
     for id in project_ids:
@@ -57,7 +76,6 @@ def celery_task(analyzer_id: int, project_ids: list):
 
         # Store the filtered metadata in projects_with_metadata
         projects_with_metadata[id] = filtered_metadata
-    print(projects_with_metadata)
     try:
         # Loop through all projects to be analyzed,
         # for each repo, execute analysis inside container with the correct venv
@@ -66,7 +84,8 @@ def celery_task(analyzer_id: int, project_ids: list):
                 f"{key}={value}" for key, value in metadata.items()
             )
 
-            # Copy the script and venv into the container
+            # Execute `ls` command in the container directory
+            exec_result = container.exec_run(f"ls -l /app")
 
             # Run the script using the virtual environment and env variables
             run_command = f"python /app/{Path(script_path).name}"
@@ -78,6 +97,20 @@ def celery_task(analyzer_id: int, project_ids: list):
 
                 # Send "result" to db with the corresponding project_id
                 print(project_id, ": ", result.output.decode("utf-8"))
+                try:
+                    parsed_result = json.loads(result.output.decode("utf-8"))
+                    
+                    # Assume required_outputs is constructed as shown previously
+                    validation_errors = validate_report(parsed_result, required_outputs)
+
+                    if validation_errors:
+                        # Handle validation errors as needed
+                        print("Validation errors:", validation_errors)
+                    else:
+                        # Result is valid; proceed with storing in the database
+                        print("Validation successful.")
+                except json.JSONDecodeError:
+                    pass
             else:
                 print("Something wrong: ", result.exit_code, result)
                 # Need some kind of error handling here
