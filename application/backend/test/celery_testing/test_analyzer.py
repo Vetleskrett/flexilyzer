@@ -27,3 +27,24 @@ def main(url):
 
 if __name__ == "__main__":
     print(main())
+
+
+import json
+import os
+from pydantic import BaseModel
+
+
+class Return(BaseModel):
+    ARGB: str
+
+
+def main(arg: int) -> Return:
+    # code goes here
+
+    return
+
+
+if __name__ == "__main__":
+    arga = int(os.getenv("ARGA"))
+
+    print(json.dumps(main(arga)))
