@@ -1,11 +1,13 @@
 import { SummaryStepProps } from "@/app/types/analyzerDefinitions";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
+  const [paramIDCounter, setParamIDCounter] = useState<number>(1);
   // Function to update an existing parameter
   const updateInputParameter = (index: number, key: string, value: string) => {
-    const updatedParameters = formData.input_parameters.map((param, i) => {
+    const updatedParameters = formData.inputs.map((param, i) => {
       if (i === index) {
         return { ...param, [key]: value };
       }
@@ -14,7 +16,7 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
 
     setFormData((prev) => ({
       ...prev,
-      input_parameters: updatedParameters,
+      inputs: updatedParameters,
     }));
   };
 
@@ -22,8 +24,8 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
   const addInputParameter = () => {
     setFormData((prev) => ({
       ...prev,
-      input_parameters: [
-        ...prev.input_parameters,
+      inputs: [
+        ...prev.inputs,
         { id: uuidv4(), key_name: "", value_type: "string" },
       ], // Default value_type can be adjusted
     }));
@@ -33,13 +35,13 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
   const removeInputParameter = (index: number) => {
     setFormData((prev) => ({
       ...prev,
-      input_parameters: prev.input_parameters.filter((_, i) => i !== index),
+      inputs: prev.inputs.filter((_, i) => i !== index),
     }));
   };
   return (
     <>
       <h2 className="h2">Input Parameters</h2>
-      {formData.input_parameters.map((param, index) => (
+      {formData.inputs.map((param, index) => (
         <div key={param.id} className="flex items-center space-x-2 mb-4">
           <Input
             isRequired

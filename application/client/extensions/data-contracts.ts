@@ -77,6 +77,10 @@ export interface AnalyzerResponse {
   creator?: string | null;
   /** Id */
   id: number;
+  /** Inputs */
+  inputs: AnalyzerInputResponse[];
+  /** Outputs */
+  outputs: AnalyzerOutputResponse[];
 }
 
 /** AssignmentCreate */

@@ -11,7 +11,7 @@ export default function OutputParamsStep({
 }: SummaryStepProps) {
   // Function to update an existing output parameter
   const updateOutputParameter = (index: number, key: string, value: string) => {
-    const updatedParameters = formData.output_parameters.map((param, i) => {
+    const updatedParameters = formData.outputs.map((param, i) => {
       if (i === index) {
         if (key === "value_type") {
           if (value === "range") {
@@ -40,7 +40,7 @@ export default function OutputParamsStep({
 
     setFormData((prev) => ({
       ...prev,
-      output_parameters: updatedParameters,
+      outputs: updatedParameters,
     }));
   };
   const updateExtendedMetadata = (
@@ -48,7 +48,7 @@ export default function OutputParamsStep({
     key: keyof RangeMetadata,
     value: string
   ) => {
-    const updatedParameters = formData.output_parameters.map((param, i) => {
+    const updatedParameters = formData.outputs.map((param, i) => {
       if (i === index) {
         console.log(value);
         let newValue = undefined;
@@ -74,7 +74,7 @@ export default function OutputParamsStep({
 
     setFormData((prev) => ({
       ...prev,
-      output_parameters: updatedParameters,
+      outputs: updatedParameters,
     }));
   };
 
@@ -82,7 +82,7 @@ export default function OutputParamsStep({
   const removeOutputParameter = (index: number) => {
     setFormData((prev) => ({
       ...prev,
-      output_parameters: prev.output_parameters.filter((_, i) => i !== index),
+      outputs: prev.outputs.filter((_, i) => i !== index),
     }));
   };
 
@@ -90,8 +90,8 @@ export default function OutputParamsStep({
   const addOutputParameter = () => {
     setFormData((prev) => ({
       ...prev,
-      output_parameters: [
-        ...prev.output_parameters,
+      outputs: [
+        ...prev.outputs,
         { id: uuidv4(), key_name: "", display_name: "", value_type: "string" },
       ], // Default value_type can be adjusted
     }));
@@ -100,9 +100,9 @@ export default function OutputParamsStep({
   return (
     <>
       <h2 className="h2">Output Parameters</h2>
-      {formData.output_parameters.map((param, index) => (
+      {formData.outputs.map((param, index) => (
         <>
-          <div key={uuidv4()} className="flex items-center space-x-2 mb-4">
+          <div key={param.id} className="flex items-center space-x-2 mb-4">
             <Input
               isRequired
               pattern="\S+"
@@ -182,7 +182,7 @@ export default function OutputParamsStep({
                   />
                 </div>
               </>
-            ) }
+            )}
             <Button color="danger" onClick={() => removeOutputParameter(index)}>
               Remove
             </Button>
@@ -190,7 +190,9 @@ export default function OutputParamsStep({
         </>
       ))}
       <div className="flex justify-center w-full">
-        <Button color="secondary" onClick={addOutputParameter}>Add Parameter</Button>
+        <Button color="secondary" onClick={addOutputParameter}>
+          Add Parameter
+        </Button>
       </div>
     </>
   );
