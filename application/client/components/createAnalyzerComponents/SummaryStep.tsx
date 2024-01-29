@@ -7,19 +7,13 @@ import {
 import { Button, Card, Kbd } from "@nextui-org/react";
 import { useState } from "react";
 import CodeTemplate from "./CodeTemplate";
+import api from "@/api_utils";
 
 export default function SummaryStep({
   formData,
   setFormData,
 }: SummaryStepProps) {
-  const [codeTemplate, setCodeTemplate] = useState<string | undefined>(
-    `
-def hello_world():
-  print("Hello, world!")
-
-hello_world()
-  `
-  );
+  const [codeTemplate, setCodeTemplate] = useState<string | undefined>();
 
   const renderParameter = (param: InputParameter | OutputParameter) => {
     switch (param.value_type) {
@@ -82,7 +76,9 @@ hello_world()
           {codeTemplate ? (
             <CodeTemplate codeTemplate={codeTemplate} />
           ) : (
-            <Button>Generate template</Button>
+            <div className="flex justify-center mt-8">
+              <Button>Generate template</Button>
+            </div>
           )}
         </div>
       </div>
