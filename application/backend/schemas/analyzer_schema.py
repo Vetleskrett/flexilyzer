@@ -7,11 +7,11 @@ from sqlalchemy import true
 
 class AnalyzerBase(BaseModel):
     name: str
+    description: str
     creator: Optional[str] = None
 
 
 class AnalyzerOutputBase(BaseModel):
-    analyzer_id: int
     key_name: str
     value_type: str
     display_name: Optional[str] = None
@@ -23,12 +23,17 @@ class AnalyzerInputBase(BaseModel):
     value_type: str
 
 
-class AnalyzerCreate(AnalyzerBase):
-    pass
-
-
 class AnalyzerOutputCreate(AnalyzerOutputBase):
     pass
+
+
+class AnalyzerInputCreate(AnalyzerInputBase):
+    pass
+
+
+class AnalyzerCreate(AnalyzerBase):
+    inputs: List[AnalyzerInputCreate]
+    outputs: List[AnalyzerOutputCreate]
 
 
 class AnalyzerResponse(AnalyzerBase):

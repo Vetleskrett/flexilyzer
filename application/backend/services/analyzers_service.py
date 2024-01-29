@@ -6,9 +6,11 @@ from schemas.analyzer_schema import (
     ScriptSchema,
     AnalyzerOutputResponse,
     AnalyzerInputResponse,
+    AnalyzerCreate,
 )
 from utils.validationUtils import validatePydanticToHTTPError
 from utils.storeUtils import store_file
+from utils.templateUtils import generate_template
 
 
 class AnalyzerService:
@@ -38,8 +40,14 @@ class AnalyzerService:
         return AnalyzerRepository.get_analyzer_outputs(db, analyzer_id=analyzer_id)
 
     @staticmethod
-    def post_analyzer(db, analyzer):
+    def post_analyzer(db, analyzer: AnalyzerCreate):
+        base_analyzer = {}
+
         return AnalyzerRepository.create_analyzer(db=db, analyzer=analyzer)
+
+    @staticmethod
+    def get_analyzer_template(db, analyzer: AnalyzerCreate):
+        return generate_template(inputs=analyzer.inputs, outputs=analyzer.outputs)
 
     @staticmethod
     def upload_script(db, analyzer_id, file: UploadFile):

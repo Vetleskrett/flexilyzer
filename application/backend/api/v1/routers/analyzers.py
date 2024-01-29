@@ -40,11 +40,19 @@ async def get_analyzer_outputs(
     return AnalyzerService.get_analyzer_outputs(db, analyzer_id=analyzer_id)
 
 
-@router.post("/", operation_id="post-analyzer-metadata")
-async def post_analyzer_metadata(
+@router.post("/", operation_id="post-analyzer")
+async def post_analyzer(
     analyzer: analyzer_schema.AnalyzerCreate, db: Session = Depends(get_db)
 ) -> analyzer_schema.AnalyzerResponse:
     return AnalyzerService.post_analyzer(db=db, analyzer=analyzer)
+
+
+@router.get("/template", operation_id="get-analyzer-template")
+async def get_analyzer_template(
+    analyzer: analyzer_schema.AnalyzerCreate,
+    db: Session = Depends(get_db),
+) -> str:
+    return AnalyzerService.get_analyzer_template(db=db, analyzer)
 
 
 @router.post("/{analyzer_id}/upload/script", operation_id="upload-analyzer-script")
