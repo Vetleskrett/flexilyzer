@@ -27,9 +27,8 @@ export default function SummaryStep({
         value_type: e.value_type,
       })),
     };
+    const codeTemplate = api.getAnalyzerTemplate(data);
   };
-
-  //const codeTemplate = api.getAnalyzerTemplate({inputs: formData.input_parameters, });
 
   const renderParameter = (param: InputParameter | OutputParameter) => {
     switch (param.value_type) {
