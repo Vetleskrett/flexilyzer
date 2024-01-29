@@ -14,6 +14,9 @@ const config = {
         oswald: ["var(--font-oswald)"],
         cabin: ["var(--font-cabin)"],
       },
+      maxHeight: {
+        "screen-minus-navbar": "calc(100vh - 250px)", // Replace 60px with your navbar's height
+      },
     },
   },
   darkMode: "class",
