@@ -7,8 +7,8 @@ import {
   Textarea,
 } from "@nextui-org/react"; // Assuming Next UI components
 
-import { SummaryStepProps } from "@/app/types/analyzerDefinitions";
 import InfoCardContent from "./AnalyzerInfoCard";
+import { SummaryStepProps } from "@/types/analyzerDefinitions";
 
 const BasicInfoStep = ({ formData, setFormData }: SummaryStepProps) => {
   const updateFormData = (key: string, value: string) => {
