@@ -4,32 +4,17 @@ import {
   OutputParameter,
   SummaryStepProps,
 } from "@/app/types/analyzerDefinitions";
-import { Button, Card, Kbd } from "@nextui-org/react";
-import { useState } from "react";
+import { Button, Card, Kbd, Spinner } from "@nextui-org/react";
+import { Suspense, useState } from "react";
 import CodeTemplate from "./CodeTemplate";
 import api from "@/api_utils";
 import { AnalyzerCreate } from "@/extensions/data-contracts";
 
-export default function SummaryStep({
+export default async function SummaryStep({
   formData,
-  setFormData,
-}: SummaryStepProps) {
-  const getTemplate = () => {
-    const data: AnalyzerCreate = {
-      name: formData.name,
-      description: formData.description,
-      inputs: formData.inputs.map((e) => ({
-        key_name: e.key_name,
-        value_type: e.value_type,
-      })),
-      outputs: formData.outputs.map((e) => ({
-        key_name: e.key_name,
-        value_type: e.value_type,
-      })),
-    };
-    const codeTemplate = api.getAnalyzerTemplate(data);
-  };
-
+}: {
+  formData: FormDataT;
+}) {
   const renderParameter = (param: InputParameter | OutputParameter) => {
     switch (param.value_type) {
       case "string":
@@ -63,38 +48,33 @@ export default function SummaryStep({
 
   return (
     <>
-      <div className='flex justify-between p-4 pt-1 w-full'>
-        <div className='flex-grow max-w-50p p-4 text-center'>
-          <h2 className='h2'>Summary</h2>
-          <Card className='mb-5 p-3'>
-            <h3 className='h3'>{formData.name}</h3>
+      <div className="flex justify-between p-4 pt-1 w-full">
+        <div className="flex-grow max-w-50p p-4 text-center">
+          <h2 className="h2">Summary</h2>
+          <Card className="mb-5 p-3">
+            <h3 className="h3">{formData.name}</h3>
             <p>{formData.description}</p>
           </Card>
 
-          <Card className='mb-5 p-3'>
-            <h3 className='h3'>Input Parameters</h3>
+          <Card className="mb-5 p-3">
+            <h3 className="h3">Input Parameters</h3>
             {formData.inputs.map((param, index) => (
               <>{renderParameter(param)}</>
             ))}
           </Card>
 
-          <Card className='p-3'>
-            <h3 className='h3'>Output Parameters</h3>
+          <Card className="p-3">
+            <h3 className="h3">Output Parameters</h3>
             {formData.outputs.map((param, index) => (
               <>{renderParameter(param)}</>
             ))}
           </Card>
         </div>
-        <div className='flex-grow p-4'>
-          <h2 className='h2 text-center'>Analyzer template</h2>
-
-          {/* {codeTemplate ? (
-            <CodeTemplate codeTemplate={codeTemplate} />
-          ) : (
-            <div className="flex justify-center mt-8">
-              <Button>Generate template</Button>
-            </div>
-          )} */}
+        <div className="flex-grow p-4">
+          <h2 className="h2 text-center">Analyzer template</h2>
+          <Suspense fallback={<Spinner />}>
+            <CodeTemplate formData={formData} />
+          </Suspense>
         </div>
       </div>
     </>

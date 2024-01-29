@@ -63,7 +63,7 @@ export default function NewAnalyzerPage() {
       case 4:
         return (
           <>
-            <SummaryStep formData={formData} setFormData={setFormData} />
+            <SummaryStep formData={formData} />
           </>
         );
       default:

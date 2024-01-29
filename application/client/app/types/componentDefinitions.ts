@@ -14,3 +14,4 @@ export type textComponent = {
   keyName: string;
   value: string;
 };
+
