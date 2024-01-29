@@ -7,17 +7,38 @@ import {
   Progress,
   Select,
   SelectItem,
+  Card,
+  Kbd,
 } from "@nextui-org/react"; // Assuming Next UI components
-import { FormDataT, RangeMetadata } from "@/app/types/analyzerDefinitions";
+
+import {
+  FormDataT,
+  InputParameter,
+  OutputParameter,
+  RangeMetadata,
+} from "@/app/types/analyzerDefinitions";
 import { v4 as uuidv4 } from "uuid";
 
 export default function NewAnalyzerPage() {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [formData, setFormData] = useState<FormDataT>({
-    name: "",
-    description: "",
-    input_parameters: [],
-    output_parameters: [],
+    name: "lighthouse analyzer",
+    description: "analyzer to measure performance of web page",
+    input_parameters: [{ id: uuidv4(), key_name: "url", value_type: "string" }],
+    output_parameters: [
+      {
+        id: uuidv4(),
+        key_name: "performance",
+        display_name: "Performance",
+        value_type: "number",
+      },
+      {
+        id: uuidv4(),
+        key_name: "hashttps",
+        display_name: "hasHTTPS",
+        value_type: "boolean",
+      },
+    ],
   });
 
   const formSteps = {
@@ -169,6 +190,36 @@ export default function NewAnalyzerPage() {
       console.error("Error submitting form", error);
     }
   };
+  const renderParameter = (param: InputParameter | OutputParameter) => {
+    switch (param.value_type) {
+      case "string":
+      case "number":
+      case "boolean":
+        return (
+          <p>
+            <b>{param.key_name}</b>: <Kbd>{param.value_type}</Kbd>
+          </p>
+        );
+      case "range":
+        // Here, check if the parameter is an OutputParameter and has extended_metadata
+        if ("extended_metadata" in param && param.extended_metadata) {
+          return (
+            <div>
+              <p>
+                <b>{param.key_name}</b>:{" "}
+                <Kbd>
+                  number, range ({param.extended_metadata.from_value} -{" "}
+                  {param.extended_metadata.to_value})
+                </Kbd>
+              </p>
+            </div>
+          );
+        }
+        return <p>{param.key_name}: Range (No data)</p>;
+      default:
+        return null;
+    }
+  };
 
   // Conditional rendering based on currentStep
   const renderStep = () => {
@@ -206,6 +257,7 @@ export default function NewAnalyzerPage() {
             {formData.input_parameters.map((param, index) => (
               <div key={param.id} className="flex items-center space-x-2 mb-4">
                 <Input
+                  isRequired
                   label="Key Name"
                   placeholder="Enter key name"
                   value={param.key_name}
@@ -217,6 +269,7 @@ export default function NewAnalyzerPage() {
                   }}
                 />
                 <Select
+                  isRequired
                   label="Select value type"
                   className="max-w-xs"
                   value={param.value_type}
@@ -258,6 +311,7 @@ export default function NewAnalyzerPage() {
               <>
                 <div key={index} className="flex items-center space-x-2 mb-4">
                   <Input
+                    isRequired
                     pattern="\S+"
                     label="Key Name"
                     placeholder="Enter key name"
@@ -286,6 +340,7 @@ export default function NewAnalyzerPage() {
                     }
                   />
                   <Select
+                    isRequired
                     label="Select value type"
                     className="max-w-xs"
                     value={param.value_type}
@@ -315,6 +370,7 @@ export default function NewAnalyzerPage() {
                     <>
                       <div className="flex items-center space-x-2">
                         <Input
+                          isRequired
                           label="Min"
                           placeholder="Enter from value"
                           value={
@@ -331,6 +387,7 @@ export default function NewAnalyzerPage() {
                           }
                         />
                         <Input
+                          isRequired
                           label="Max"
                           placeholder="Enter to value"
                           value={
@@ -367,7 +424,37 @@ export default function NewAnalyzerPage() {
         );
 
       case 4:
-        return <h2 className="h2">{formSteps[4].name}</h2>;
+        return (
+          <>
+            <div className="flex justify-between p-4 w-full">
+              <div className="flex-grow max-w-50p p-4 text-center">
+                <h2 className="h2">Summary</h2>
+                <Card className="mb-5 p-3">
+                  <h3 className="h3">{formData.name}</h3>
+                  <p>{formData.description}</p>
+                </Card>
+
+                <Card className="mb-5 p-3">
+                  <h3 className="h3">Input Parameters</h3>
+                  {formData.input_parameters.map((param, index) => (
+                    <>{renderParameter(param)}</>
+                  ))}
+                </Card>
+
+                <Card className="p-3">
+                  <h3 className="h3">Output Parameters</h3>
+                  {formData.output_parameters.map((param, index) => (
+                    <>{renderParameter(param)}</>
+                  ))}
+                </Card>
+              </div>
+              <div className="flex-grow p-4 text-center">
+                <h2 className="h2">Analyzer template</h2>
+                <Button>Generate template</Button>
+              </div>
+            </div>
+          </>
+        );
       default:
         return <div></div>;
     }

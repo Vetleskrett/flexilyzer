@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.max-w-50p {
+    max-width: 50%;
+  }
+
 @layer components {
     .h2 {
         @apply text-2xl font-bold leading-tight text-gray-700 mb-3;
