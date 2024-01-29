@@ -29,19 +29,11 @@ class AnalyzerBase(BaseModel):
     name: str
     description: str
     creator: Optional[str] = None
-    inputs: List[AnalyzerInputCreate]
-    outputs: List[AnalyzerOutputCreate]
 
 
 class AnalyzerCreate(AnalyzerBase):
-    pass
-
-
-class AnalyzerResponse(AnalyzerBase):
-    id: int
-
-    class Config:
-        from_attributes: True
+    inputs: List[AnalyzerInputCreate]
+    outputs: List[AnalyzerOutputCreate]
 
 
 class AnalyzerOutputResponse(AnalyzerOutputBase):
@@ -53,6 +45,15 @@ class AnalyzerOutputResponse(AnalyzerOutputBase):
 
 class AnalyzerInputResponse(AnalyzerInputBase):
     id: int
+
+    class Config:
+        from_attributes: True
+
+
+class AnalyzerResponse(AnalyzerBase):
+    id: int
+    inputs: List[AnalyzerInputResponse]
+    outputs: List[AnalyzerOutputResponse]
 
     class Config:
         from_attributes: True
