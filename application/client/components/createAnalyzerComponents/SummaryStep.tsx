@@ -13,7 +13,7 @@ export default function SummaryStep({
   formData,
   setFormData,
 }: SummaryStepProps) {
-  const [codeTemplate, setCodeTemplate] = useState<string | undefined>();
+  // const codeTemplate = api.getAnalyzerTemplate({inputs: formData.input_parameters, });
 
   const renderParameter = (param: InputParameter | OutputParameter) => {
     switch (param.value_type) {
@@ -73,13 +73,13 @@ export default function SummaryStep({
         <div className="flex-grow p-4">
           <h2 className="h2 text-center">Analyzer template</h2>
 
-          {codeTemplate ? (
+          {/* {codeTemplate ? (
             <CodeTemplate codeTemplate={codeTemplate} />
           ) : (
             <div className="flex justify-center mt-8">
               <Button>Generate template</Button>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </>

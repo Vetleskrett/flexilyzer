@@ -102,7 +102,7 @@ export default function OutputParamsStep({
       <h2 className="h2">Output Parameters</h2>
       {formData.output_parameters.map((param, index) => (
         <>
-          <div key={index} className="flex items-center space-x-2 mb-4">
+          <div key={uuidv4()} className="flex items-center space-x-2 mb-4">
             <Input
               isRequired
               pattern="\S+"

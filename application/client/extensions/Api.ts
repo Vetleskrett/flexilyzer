@@ -10,16 +10,21 @@
  */
 
 import {
+  AnalyzerCreate,
+  AnalyzerInputResponse,
+  AnalyzerOutputResponse,
   AnalyzerResponse,
   AssignmentCreate,
   AssignmentResponse,
+  BodyUploadAnalyzerRequirements,
+  BodyUploadAnalyzerScript,
   CourseCreate,
   CourseResponse,
   HTTPValidationError,
   Item,
-  MetricDefinitionResponse,
+  JobCreate,
+  ProjectResponse,
   ReportResponse,
-  RepositoryResponse,
   TeamResponse,
   TestE,
 } from "./data-contracts";
@@ -223,13 +228,32 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags assignments
-   * @name GetAssignmentRepositories
-   * @summary Get Assignment Repositories
-   * @request GET:/api/v1/assignments/{assignment_id}/repositories
+   * @name GetAssignmentProjects
+   * @summary Get Assignment Projects
+   * @request GET:/api/v1/assignments/{assignment_id}/projects
    */
-  getAssignmentRepositories = (assignmentId: number, params: RequestParams = {}) =>
-    this.request<RepositoryResponse[], HTTPValidationError>({
-      path: `/api/v1/assignments/${assignmentId}/repositories`,
+  getAssignmentProjects = (assignmentId: number, params: RequestParams = {}) =>
+    this.request<ProjectResponse[], HTTPValidationError>({
+      path: `/api/v1/assignments/${assignmentId}/projects`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags assignments
+   * @name GetAssignmentTeamReposReportsApiV1AssignmentsAssignmentIdTeamsTeamIdProjectsReportsGet
+   * @summary Get Assignment Team Repos Reports
+   * @request GET:/api/v1/assignments/{assignment_id}/teams/{team_id}/projects/reports
+   */
+  getAssignmentTeamReposReportsApiV1AssignmentsAssignmentIdTeamsTeamIdProjectsReportsGet = (
+    assignmentId: number,
+    teamId: number,
+    params: RequestParams = {},
+  ) =>
+    this.request<ReportResponse[], HTTPValidationError>({
+      path: `/api/v1/assignments/${assignmentId}/teams/${teamId}/projects/reports`,
       method: "GET",
       format: "json",
       ...params,
@@ -268,13 +292,13 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags teams
-   * @name GetTeamRepositories
+   * @name GetTeamProjects
    * @summary Get All Teams
-   * @request GET:/api/v1/teams/{team_id}/repositories
+   * @request GET:/api/v1/teams/{team_id}/projects
    */
-  getTeamRepositories = (teamId: number, params: RequestParams = {}) =>
+  getTeamProjects = (teamId: number, params: RequestParams = {}) =>
     this.request<TeamResponse[], HTTPValidationError>({
-      path: `/api/v1/teams/${teamId}/repositories`,
+      path: `/api/v1/teams/${teamId}/projects`,
       method: "GET",
       format: "json",
       ...params,
@@ -282,14 +306,14 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags repositories
-   * @name GetAllRepositories
+   * @tags projects
+   * @name GetAllProjects
    * @summary Get All Teams
-   * @request GET:/api/v1/repositories/
+   * @request GET:/api/v1/projects/
    */
-  getAllRepositories = (params: RequestParams = {}) =>
-    this.request<RepositoryResponse[], any>({
-      path: `/api/v1/repositories/`,
+  getAllProjects = (params: RequestParams = {}) =>
+    this.request<ProjectResponse[], any>({
+      path: `/api/v1/projects/`,
       method: "GET",
       format: "json",
       ...params,
@@ -297,14 +321,14 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags repositories
-   * @name GetRepository
+   * @tags projects
+   * @name GetProject
    * @summary Get All Teams
-   * @request GET:/api/v1/repositories/{repository_id}
+   * @request GET:/api/v1/projects/{project_id}
    */
-  getRepository = (repositoryId: number, params: RequestParams = {}) =>
-    this.request<RepositoryResponse, HTTPValidationError>({
-      path: `/api/v1/repositories/${repositoryId}`,
+  getProject = (projectId: number, params: RequestParams = {}) =>
+    this.request<ProjectResponse, HTTPValidationError>({
+      path: `/api/v1/projects/${projectId}`,
       method: "GET",
       format: "json",
       ...params,
@@ -312,14 +336,14 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags repositories
-   * @name GetRepositoryReports
+   * @tags projects
+   * @name GetProjectReports
    * @summary Get All Teams
-   * @request GET:/api/v1/repositories/{repository_id}/reports
+   * @request GET:/api/v1/projects/{project_id}/reports
    */
-  getRepositoryReports = (repositoryId: number, params: RequestParams = {}) =>
+  getProjectReports = (projectId: number, params: RequestParams = {}) =>
     this.request<ReportResponse[], HTTPValidationError>({
-      path: `/api/v1/repositories/${repositoryId}/reports`,
+      path: `/api/v1/projects/${projectId}/reports`,
       method: "GET",
       format: "json",
       ...params,
@@ -373,6 +397,23 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags analyzers
+   * @name PostAnalyzer
+   * @summary Post Analyzer
+   * @request POST:/api/v1/analyzers/
+   */
+  postAnalyzer = (data: AnalyzerCreate, params: RequestParams = {}) =>
+    this.request<AnalyzerResponse, HTTPValidationError>({
+      path: `/api/v1/analyzers/`,
+      method: "POST",
+      body: data,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags analyzers
    * @name GetAnalyzer
    * @summary Get Analyzer
    * @request GET:/api/v1/analyzers/{analyzer_id}
@@ -388,14 +429,97 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags analyzers
-   * @name GetAnalyzerMetricDefinitions
-   * @summary Get Analyzer Metric Definition
-   * @request GET:/api/v1/analyzers/{analyzer_id}/metric_definitions
+   * @name GetAnalyzerInputs
+   * @summary Get Analyzer Inputs
+   * @request GET:/api/v1/analyzers/{analyzer_id}/inputs
    */
-  getAnalyzerMetricDefinitions = (analyzerId: number, params: RequestParams = {}) =>
-    this.request<MetricDefinitionResponse[], HTTPValidationError>({
-      path: `/api/v1/analyzers/${analyzerId}/metric_definitions`,
+  getAnalyzerInputs = (analyzerId: number, params: RequestParams = {}) =>
+    this.request<AnalyzerInputResponse[], HTTPValidationError>({
+      path: `/api/v1/analyzers/${analyzerId}/inputs`,
       method: "GET",
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags analyzers
+   * @name GetAnalyzerOutputs
+   * @summary Get Analyzer Outputs
+   * @request GET:/api/v1/analyzers/{analyzer_id}/outputs
+   */
+  getAnalyzerOutputs = (analyzerId: number, params: RequestParams = {}) =>
+    this.request<AnalyzerOutputResponse[], HTTPValidationError>({
+      path: `/api/v1/analyzers/${analyzerId}/outputs`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags analyzers
+   * @name GetAnalyzerTemplate
+   * @summary Get Analyzer Template
+   * @request POST:/api/v1/analyzers/template
+   */
+  getAnalyzerTemplate = (data: AnalyzerCreate, params: RequestParams = {}) =>
+    this.request<string, HTTPValidationError>({
+      path: `/api/v1/analyzers/template`,
+      method: "POST",
+      body: data,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags analyzers
+   * @name UploadAnalyzerScript
+   * @summary Upload Analyzer Script
+   * @request POST:/api/v1/analyzers/{analyzer_id}/upload/script
+   */
+  uploadAnalyzerScript = (analyzerId: number, data: BodyUploadAnalyzerScript, params: RequestParams = {}) =>
+    this.request<number, HTTPValidationError>({
+      path: `/api/v1/analyzers/${analyzerId}/upload/script`,
+      method: "POST",
+      body: data,
+      type: ContentType.FormData,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags analyzers
+   * @name UploadAnalyzerRequirements
+   * @summary Upload Analyzer Requirements
+   * @request POST:/api/v1/analyzers/{analyzer_id}/upload/requirements
+   */
+  uploadAnalyzerRequirements = (analyzerId: number, data: BodyUploadAnalyzerRequirements, params: RequestParams = {}) =>
+    this.request<number, HTTPValidationError>({
+      path: `/api/v1/analyzers/${analyzerId}/upload/requirements`,
+      method: "POST",
+      body: data,
+      type: ContentType.FormData,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags jobs
+   * @name RunJob
+   * @summary Run Job
+   * @request POST:/api/v1/jobs/{analyzer}
+   */
+  runJob = (analyzer: number, data: JobCreate, params: RequestParams = {}) =>
+    this.request<any, HTTPValidationError>({
+      path: `/api/v1/jobs/${analyzer}`,
+      method: "POST",
+      body: data,
+      type: ContentType.Json,
       format: "json",
       ...params,
     });

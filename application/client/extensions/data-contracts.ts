@@ -9,10 +9,70 @@
  * ---------------------------------------------------------------
  */
 
+/** AnalyzerCreate */
+export interface AnalyzerCreate {
+  /** Name */
+  name: string;
+  /** Description */
+  description: string;
+  /** Creator */
+  creator?: string | null;
+  /** Inputs */
+  inputs: AnalyzerInputCreate[];
+  /** Outputs */
+  outputs: AnalyzerOutputCreate[];
+}
+
+/** AnalyzerInputCreate */
+export interface AnalyzerInputCreate {
+  /** Key Name */
+  key_name: string;
+  /** Value Type */
+  value_type: string;
+}
+
+/** AnalyzerInputResponse */
+export interface AnalyzerInputResponse {
+  /** Key Name */
+  key_name: string;
+  /** Value Type */
+  value_type: string;
+  /** Id */
+  id: number;
+}
+
+/** AnalyzerOutputCreate */
+export interface AnalyzerOutputCreate {
+  /** Key Name */
+  key_name: string;
+  /** Value Type */
+  value_type: string;
+  /** Display Name */
+  display_name?: string | null;
+  /** Extended Metadata */
+  extended_metadata?: string | null;
+}
+
+/** AnalyzerOutputResponse */
+export interface AnalyzerOutputResponse {
+  /** Key Name */
+  key_name: string;
+  /** Value Type */
+  value_type: string;
+  /** Display Name */
+  display_name?: string | null;
+  /** Extended Metadata */
+  extended_metadata?: null;
+  /** Id */
+  id: number;
+}
+
 /** AnalyzerResponse */
 export interface AnalyzerResponse {
   /** Name */
   name: string;
+  /** Description */
+  description: string;
   /** Creator */
   creator?: string | null;
   /** Id */
@@ -39,6 +99,24 @@ export interface AssignmentResponse {
   course_id: number;
   /** Id */
   id: number;
+}
+
+/** Body_upload-analyzer-requirements */
+export interface BodyUploadAnalyzerRequirements {
+  /**
+   * File
+   * @format binary
+   */
+  file: File;
+}
+
+/** Body_upload-analyzer-script */
+export interface BodyUploadAnalyzerScript {
+  /**
+   * File
+   * @format binary
+   */
+  file: File;
 }
 
 /** CourseCreate */
@@ -82,20 +160,24 @@ export interface Item {
   tags?: string[];
 }
 
-/** MetricDefinitionResponse */
-export interface MetricDefinitionResponse {
-  /** Key Name */
-  key_name: string;
-  /** Value Type */
-  value_type: string;
-  /** Display Name */
-  display_name?: string | null;
-  /** Extended Metadata */
-  extended_metadata?: null;
+/** JobCreate */
+export interface JobCreate {
+  /** Assignment Id */
+  assignment_id: number;
+  /** Project Ids */
+  project_ids?: number[] | null;
+}
+
+/** ProjectResponse */
+export interface ProjectResponse {
+  /** Github Link */
+  github_link?: string | null;
+  /** Team Id */
+  team_id: number;
+  /** Assignment Id */
+  assignment_id: number;
   /** Id */
   id: number;
-  /** Analyzer Id */
-  analyzer_id: number;
 }
 
 /** ReportResponse */
@@ -109,20 +191,8 @@ export interface ReportResponse {
   report?: null;
   /** Analyzer Id */
   analyzer_id: number;
-  /** Repository Id */
-  repository_id: number;
-  /** Id */
-  id: number;
-}
-
-/** RepositoryResponse */
-export interface RepositoryResponse {
-  /** Github Link */
-  github_link?: string | null;
-  /** Team Id */
-  team_id: number;
-  /** Assignment Id */
-  assignment_id: number;
+  /** Project Id */
+  project_id: number;
   /** Id */
   id: number;
 }

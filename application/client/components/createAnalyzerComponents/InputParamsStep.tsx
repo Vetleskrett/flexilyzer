@@ -1,6 +1,4 @@
-import {
-  SummaryStepProps,
-} from "@/app/types/analyzerDefinitions";
+import { SummaryStepProps } from "@/app/types/analyzerDefinitions";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -82,7 +80,9 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
         </div>
       ))}
       <div className="flex justify-center w-full">
-        <Button color="secondary" onClick={addInputParameter}>Add Parameter</Button>
+        <Button color="secondary" onClick={addInputParameter}>
+          Add Parameter
+        </Button>
       </div>
     </>
   );
