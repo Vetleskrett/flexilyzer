@@ -18,10 +18,10 @@ def generate_template(
 
     env_vars = "\n    ".join(
         [
-            f"{name} = {type}(os.getenv('{name.upper()}'))"
-            if type in ["int", "float"]
-            else f"{name} = os.getenv('{name.upper()}')"
-            for name, type in inputs.items()
+            f"{input.key_name} = {input.value_type}(os.getenv('{input.key_name.upper()}'))"
+            if input.value_type in ["int", "bool"]
+            else f"{input.key_name} = os.getenv('{input.key_name.upper()}')"
+            for input in inputs
         ]
     )
 
@@ -37,7 +37,7 @@ def main({input_params}) -> {'Return' if outputs else 'None'}:
 
 if __name__ == "__main__":
     {env_vars}
-    print(json.dumps(main({', '.join(inputs.keys())}), default=str))
+    print(json.dumps(main({', '.join([input.key_name for input in inputs])})))
 """
 
     return template

@@ -47,7 +47,7 @@ async def post_analyzer(
     return AnalyzerService.post_analyzer(db=db, analyzer=analyzer)
 
 
-@router.get("/template", operation_id="get-analyzer-template")
+@router.post("/template", operation_id="get-analyzer-template")
 async def get_analyzer_template(
     analyzer: analyzer_schema.AnalyzerCreate,
 ) -> str:
