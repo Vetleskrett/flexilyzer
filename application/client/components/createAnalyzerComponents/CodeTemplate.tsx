@@ -1,30 +1,20 @@
 import api from "@/api_utils";
-import { FormDataT } from "@/app/types/analyzerDefinitions";
+import { FormDataT } from "@/types/analyzerDefinitions";
 import { AnalyzerCreate } from "@/extensions/data-contracts";
-import { Button, code } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import SnackBarComponent from "../SnackBarComponent";
 import { useEffect, useState } from "react";
-import { SnackBarDefinitions } from "@/app/types/generalDefinitions";
+import { useSnackBar } from "@/context/snackbarContext";
 
-export default async function CodeTemplate({
-  formData,
-}: {
-  formData: FormDataT;
-}) {
-  const [snackbar, setSnackbar] = useState<SnackBarDefinitions>({
-    open: false,
-    message: "",
-    severity: "info",
-  });
+export default function CodeTemplate({ formData }: { formData: FormDataT }) {
+  const { openSnackbar } = useSnackBar();
 
   const [codeTemplate, setCodeTemplate] = useState<string | undefined>();
 
   const getTemplate = () => {
-    console.log("fetching data");
     const data: AnalyzerCreate = {
       name: formData.name,
       description: formData.description,
@@ -58,50 +48,40 @@ export default async function CodeTemplate({
     if (codeTemplate) {
       try {
         await navigator.clipboard.writeText(codeTemplate);
-        // setSnackbar({
-        //   open: true,
-        //   message: "Code copied to clipboard!",
-        //   severity: "success",
-        // });
+        openSnackbar({
+          message: "Code copied to clipboard!",
+          severity: "success",
+        });
       } catch (err) {
-        // setSnackbar({
-        //   open: true,
-        //   message: `Could not copy code to clipboard, error: ${err}`,
-        //   severity: "warning",
-        // });
+        openSnackbar({
+          message: `Could not copy code to clipboard, error: ${err}`,
+          severity: "warning",
+        });
       }
     }
   }
 
   return (
     <>
-      {codeTemplate ? (
+      {codeTemplate && (
         <>
           <SyntaxHighlighter
             customStyle={{ paddingLeft: "30px", fontSize: "small" }}
-            language="python"
+            language='python'
             style={docco}
           >
             {codeTemplate}
           </SyntaxHighlighter>
-          <div className="flex justify-center mt-4">
+          <div className='flex justify-center mt-4'>
             <Button
               startContent={<ContentCopyIcon />}
-              color="secondary"
+              color='secondary'
               onClick={copyToClipboard}
             >
               Copy code
             </Button>
-            {/* <SnackBarComponent
-              open={snackbar.open}
-              msg={snackbar.message}
-              severity={snackbar.severity}
-              onClose={() => setSnackbar({ ...snackbar, open: false })}
-            /> */}
           </div>
         </>
-      ) : (
-        "Loading ..."
       )}
     </>
   );

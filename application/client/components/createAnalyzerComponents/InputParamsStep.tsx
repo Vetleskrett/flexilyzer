@@ -1,4 +1,4 @@
-import { SummaryStepProps } from "@/app/types/analyzerDefinitions";
+import { SummaryStepProps } from "@/types/analyzerDefinitions";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -40,13 +40,13 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
   };
   return (
     <>
-      <h2 className="h2">Input Parameters</h2>
+      <h2 className='h2'>Input Parameters</h2>
       {formData.inputs.map((param, index) => (
-        <div key={param.id} className="flex items-center space-x-2 mb-4">
+        <div key={param.id} className='flex items-center space-x-2 mb-4'>
           <Input
             isRequired
-            label="Key Name"
-            placeholder="Enter key name"
+            label='Key Name'
+            placeholder='Enter key name'
             value={param.key_name}
             onChange={(e) => {
               const isValid = /^[a-z_]+$/.test(e.target.value);
@@ -57,8 +57,8 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
           />
           <Select
             isRequired
-            label="Select value type"
-            className="max-w-xs"
+            label='Select value type'
+            className='max-w-xs'
             value={param.value_type}
             defaultSelectedKeys={[param.value_type]}
             onChange={(e) => {
@@ -76,13 +76,13 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
             </SelectItem>
           </Select>
           {/* Optional: Button to remove this parameter */}
-          <Button color="danger" onClick={() => removeInputParameter(index)}>
+          <Button color='danger' onClick={() => removeInputParameter(index)}>
             Remove
           </Button>
         </div>
       ))}
-      <div className="flex justify-center w-full">
-        <Button color="secondary" onClick={addInputParameter}>
+      <div className='flex justify-center w-full'>
+        <Button color='secondary' onClick={addInputParameter}>
           Add Parameter
         </Button>
       </div>

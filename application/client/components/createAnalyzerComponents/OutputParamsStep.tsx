@@ -1,7 +1,4 @@
-import {
-  RangeMetadata,
-  SummaryStepProps,
-} from "@/app/types/analyzerDefinitions";
+import { RangeMetadata, SummaryStepProps } from "@/types/analyzerDefinitions";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -99,15 +96,15 @@ export default function OutputParamsStep({
 
   return (
     <>
-      <h2 className="h2">Output Parameters</h2>
+      <h2 className='h2'>Output Parameters</h2>
       {formData.outputs.map((param, index) => (
         <>
-          <div key={param.id} className="flex items-center space-x-2 mb-4">
+          <div key={param.id} className='flex items-center space-x-2 mb-4'>
             <Input
               isRequired
-              pattern="\S+"
-              label="Key Name"
-              placeholder="Enter key name"
+              pattern='\S+'
+              label='Key Name'
+              placeholder='Enter key name'
               value={param.key_name}
               onChange={(e) => {
                 const isValid = /^[a-z_]+$/.test(e.target.value);
@@ -117,8 +114,8 @@ export default function OutputParamsStep({
               }}
             />
             <Input
-              label="Display Name"
-              placeholder="Enter display name"
+              label='Display Name'
+              placeholder='Enter display name'
               value={param.display_name}
               onChange={(e) =>
                 updateOutputParameter(index, "display_name", e.target.value)
@@ -126,8 +123,8 @@ export default function OutputParamsStep({
             />
             <Select
               isRequired
-              label="Select value type"
-              className="max-w-xs"
+              label='Select value type'
+              className='max-w-xs'
               value={param.value_type}
               defaultSelectedKeys={[param.value_type]}
               onChange={(e) => {
@@ -149,11 +146,11 @@ export default function OutputParamsStep({
             </Select>
             {param.extended_metadata && (
               <>
-                <div className="flex items-center space-x-2">
+                <div className='flex items-center space-x-2'>
                   <Input
                     isRequired
-                    label="Min"
-                    placeholder="Enter from value"
+                    label='Min'
+                    placeholder='Enter from value'
                     value={
                       param.extended_metadata.from_value === undefined
                         ? ""
@@ -169,8 +166,8 @@ export default function OutputParamsStep({
                   />
                   <Input
                     isRequired
-                    label="Max"
-                    placeholder="Enter to value"
+                    label='Max'
+                    placeholder='Enter to value'
                     value={
                       param.extended_metadata.to_value === undefined
                         ? ""
@@ -183,14 +180,14 @@ export default function OutputParamsStep({
                 </div>
               </>
             )}
-            <Button color="danger" onClick={() => removeOutputParameter(index)}>
+            <Button color='danger' onClick={() => removeOutputParameter(index)}>
               Remove
             </Button>
           </div>
         </>
       ))}
-      <div className="flex justify-center w-full">
-        <Button color="secondary" onClick={addOutputParameter}>
+      <div className='flex justify-center w-full'>
+        <Button color='secondary' onClick={addOutputParameter}>
           Add Parameter
         </Button>
       </div>

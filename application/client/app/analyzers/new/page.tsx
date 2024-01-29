@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Button, Progress } from "@nextui-org/react"; // Assuming Next UI components
-import { FormDataT } from "@/app/types/analyzerDefinitions";
+import { FormDataT } from "@/types/analyzerDefinitions";
 import { v4 as uuidv4 } from "uuid";
 import SummaryStep from "@/components/createAnalyzerComponents/SummaryStep";
 import BasicInfoStep from "@/components/createAnalyzerComponents/BasicInfoStep";
@@ -61,13 +61,9 @@ export default function NewAnalyzerPage() {
           <OutputParamsStep formData={formData} setFormData={setFormData} />
         );
       case 4:
-        return (
-          <>
-            <SummaryStep formData={formData} />
-          </>
-        );
+        return <SummaryStep formData={formData} />;
       default:
-        return <div></div>;
+        return <></>;
     }
   };
 
@@ -75,16 +71,10 @@ export default function NewAnalyzerPage() {
     <div>
       <Progress
         value={(currentStep / TOTAL_STEPS) * 100}
-        className="mb-8 mt-8"
+        className='mb-8 mt-8'
       />
       {renderStep()}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: "20px",
-        }}
-      >
+      <div className='flex justify-between mt-5'>
         {currentStep > 1 ? (
           <Button onClick={prevStep}>Back</Button>
         ) : (
@@ -93,11 +83,11 @@ export default function NewAnalyzerPage() {
           </div>
         )}
         {currentStep < TOTAL_STEPS ? (
-          <Button color="primary" onClick={nextStep}>
+          <Button color='primary' onClick={nextStep}>
             Next
           </Button>
         ) : (
-          <Button color="primary" onClick={submitForm}>
+          <Button color='primary' onClick={submitForm}>
             Finish
           </Button>
         )}
