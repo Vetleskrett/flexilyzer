@@ -50,9 +50,8 @@ async def post_analyzer(
 @router.get("/template", operation_id="get-analyzer-template")
 async def get_analyzer_template(
     analyzer: analyzer_schema.AnalyzerCreate,
-    db: Session = Depends(get_db),
 ) -> str:
-    return AnalyzerService.get_analyzer_template(db=db, analyzer)
+    return AnalyzerService.get_analyzer_template(analyzer=analyzer)
 
 
 @router.post("/{analyzer_id}/upload/script", operation_id="upload-analyzer-script")

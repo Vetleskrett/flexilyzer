@@ -46,7 +46,7 @@ class AnalyzerService:
         return AnalyzerRepository.create_analyzer(db=db, analyzer=analyzer)
 
     @staticmethod
-    def get_analyzer_template(db, analyzer: AnalyzerCreate):
+    def get_analyzer_template(analyzer: AnalyzerCreate):
         return generate_template(inputs=analyzer.inputs, outputs=analyzer.outputs)
 
     @staticmethod
