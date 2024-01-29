@@ -17,6 +17,9 @@ const config = {
       maxHeight: {
         "screen-minus-navbar": "calc(100vh - 250px)", // Replace 60px with your navbar's height
       },
+      minHeight: {
+        "screen-minus-navbar": "calc(100vh - 130px)",
+      }
     },
   },
   darkMode: "class",

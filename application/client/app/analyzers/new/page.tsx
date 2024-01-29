@@ -68,29 +68,34 @@ export default function NewAnalyzerPage() {
   };
 
   return (
-    <div>
+    <div className="relative min-h-screen-minus-navbar">
       <Progress
         value={(currentStep / TOTAL_STEPS) * 100}
-        className='mb-8 mt-8'
+        className="mb-8 mt-8"
       />
       {renderStep()}
-      <div className='flex justify-between mt-5'>
-        {currentStep > 1 ? (
-          <Button onClick={prevStep}>Back</Button>
-        ) : (
-          <div style={{ visibility: "hidden" }}>
-            <Button disabled>Back</Button>
-          </div>
-        )}
-        {currentStep < TOTAL_STEPS ? (
-          <Button color='primary' onClick={nextStep}>
-            Next
-          </Button>
-        ) : (
-          <Button color='primary' onClick={submitForm}>
-            Finish
-          </Button>
-        )}
+      <div className="absolute bottom-5 inset-x-0 px-4">
+        <div className="flex justify-between">
+          {/* Back button on the left */}
+          {currentStep > 1 ? (
+            <Button onClick={prevStep}>Back</Button>
+          ) : (
+            <div className="opacity-0">
+              <Button disabled>Back</Button>
+            </div>
+          )}
+
+          {/* Next/Finish button on the right */}
+          {currentStep < TOTAL_STEPS ? (
+            <Button color="primary" onClick={nextStep}>
+              Next
+            </Button>
+          ) : (
+            <Button color="primary" onClick={submitForm}>
+              Finish
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );
