@@ -23,3 +23,8 @@ export type FormDataT = {
   input_parameters: InputParameter[];
   output_parameters: OutputParameter[];
 };
+
+export interface SummaryStepProps {
+  formData: FormDataT;
+  setFormData: React.Dispatch<React.SetStateAction<FormDataT>>;
+}
