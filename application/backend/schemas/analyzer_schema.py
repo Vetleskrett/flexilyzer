@@ -5,12 +5,6 @@ from pydantic import Json
 from sqlalchemy import true
 
 
-class AnalyzerBase(BaseModel):
-    name: str
-    description: str
-    creator: Optional[str] = None
-
-
 class AnalyzerOutputBase(BaseModel):
     key_name: str
     value_type: str
@@ -31,9 +25,16 @@ class AnalyzerInputCreate(AnalyzerInputBase):
     pass
 
 
-class AnalyzerCreate(AnalyzerBase):
+class AnalyzerBase(BaseModel):
+    name: str
+    description: str
+    creator: Optional[str] = None
     inputs: List[AnalyzerInputCreate]
     outputs: List[AnalyzerOutputCreate]
+
+
+class AnalyzerCreate(AnalyzerBase):
+    pass
 
 
 class AnalyzerResponse(AnalyzerBase):
