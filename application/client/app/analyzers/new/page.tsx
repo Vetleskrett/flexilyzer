@@ -7,6 +7,7 @@ import SummaryStep from "@/components/createAnalyzerComponents/SummaryStep";
 import BasicInfoStep from "@/components/createAnalyzerComponents/BasicInfoStep";
 import OutputParamsStep from "@/components/createAnalyzerComponents/OutputParamsStep";
 import InputParameters from "@/components/createAnalyzerComponents/InputParamsStep";
+import { AnalyzerCreate, AnalyzerResponse } from "@/extensions/data-contracts";
 
 export default function NewAnalyzerPage() {
   const TOTAL_STEPS = 4;
@@ -15,8 +16,8 @@ export default function NewAnalyzerPage() {
   const [formData, setFormData] = useState<FormDataT>({
     name: "lighthouse analyzer",
     description: "analyzer to measure performance of web page",
-    input_parameters: [{ id: uuidv4(), key_name: "url", value_type: "string" }],
-    output_parameters: [
+    inputs: [{ id: uuidv4(), key_name: "url", value_type: "string" }],
+    outputs: [
       {
         id: uuidv4(),
         key_name: "performance",
@@ -92,9 +93,13 @@ export default function NewAnalyzerPage() {
           </div>
         )}
         {currentStep < TOTAL_STEPS ? (
-          <Button color="primary" onClick={nextStep}>Next</Button>
+          <Button color="primary" onClick={nextStep}>
+            Next
+          </Button>
         ) : (
-          <Button color="primary" onClick={submitForm}>Finish</Button>
+          <Button color="primary" onClick={submitForm}>
+            Finish
+          </Button>
         )}
       </div>
     </div>

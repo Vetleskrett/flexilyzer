@@ -20,8 +20,8 @@ export type OutputParameter = {
 export type FormDataT = {
   name: string;
   description: string;
-  input_parameters: InputParameter[];
-  output_parameters: OutputParameter[];
+  inputs: InputParameter[];
+  outputs: OutputParameter[];
 };
 
 export interface SummaryStepProps {

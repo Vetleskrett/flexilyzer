@@ -58,14 +58,14 @@ export default function SummaryStep({
 
           <Card className="mb-5 p-3">
             <h3 className="h3">Input Parameters</h3>
-            {formData.input_parameters.map((param, index) => (
+            {formData.inputs.map((param, index) => (
               <>{renderParameter(param)}</>
             ))}
           </Card>
 
           <Card className="p-3">
             <h3 className="h3">Output Parameters</h3>
-            {formData.output_parameters.map((param, index) => (
+            {formData.outputs.map((param, index) => (
               <>{renderParameter(param)}</>
             ))}
           </Card>
