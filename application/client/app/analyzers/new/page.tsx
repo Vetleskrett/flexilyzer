@@ -19,8 +19,8 @@ export default function NewAnalyzerPage() {
 
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [formData, setFormData] = useState<FormDataT>({
-    name: "lighthouse analyzer",
-    description: "analyzer to measure performance of web page",
+    name: "Lighthouse Analyzer",
+    description: "Analyzer to measure performance of web page.",
     inputs: [{ id: uuidv4(), key_name: "url", value_type: "string" }],
     outputs: [
       {

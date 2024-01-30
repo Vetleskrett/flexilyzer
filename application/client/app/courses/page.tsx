@@ -5,19 +5,16 @@ import CourseOverview from "@/components/courseComponents/CourseOverview";
 import { CourseResponse } from "@/extensions/data-contracts";
 
 export default async function Courses() {
-
   const courses = await api.getAllCourses();
+
+  console.log(courses);
   return (
     <div>
       <h2 className="h2">All courses:</h2>
       {courses.data.map((course: CourseResponse) => {
         return (
           <>
-            <CourseOverview
-              id={course.id}
-              tag={course.tag}
-              name={course.name}
-            />
+            <CourseOverview course={course} />
           </>
         );
       })}
