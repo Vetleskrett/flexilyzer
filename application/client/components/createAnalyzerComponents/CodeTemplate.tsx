@@ -8,30 +8,16 @@ import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useEffect, useState } from "react";
 import { useSnackBar } from "@/context/snackbarContext";
+import { formatAnalyzerData } from "./analyzerUtils";
 
 export default function CodeTemplate({ formData }: { formData: FormDataT }) {
   const { openSnackbar } = useSnackBar();
 
   const [codeTemplate, setCodeTemplate] = useState<string | undefined>();
 
-  const getTemplate = () => {
-    const data: AnalyzerCreate = {
-      name: formData.name,
-      description: formData.description,
-      inputs: formData.inputs.map((e) => ({
-        key_name: e.key_name,
-        value_type: e.value_type,
-      })),
-      outputs: formData.outputs.map((e) => ({
-        key_name: e.key_name,
-        value_type: e.value_type,
-      })),
-    };
-    return data;
-  };
 
   async function fetchCodeTemplate() {
-    const resp = await api.getAnalyzerTemplate(getTemplate());
+    const resp = await api.getAnalyzerTemplate(formatAnalyzerData(formData));
 
     if (resp.ok) {
       setCodeTemplate(resp.data);
@@ -67,15 +53,15 @@ export default function CodeTemplate({ formData }: { formData: FormDataT }) {
         <>
           <SyntaxHighlighter
             customStyle={{ paddingLeft: "30px", fontSize: "small" }}
-            language='python'
+            language="python"
             style={docco}
           >
             {codeTemplate}
           </SyntaxHighlighter>
-          <div className='flex justify-center mt-4'>
+          <div className="flex justify-center mt-4">
             <Button
               startContent={<ContentCopyIcon />}
-              color='secondary'
+              color="secondary"
               onClick={copyToClipboard}
             >
               Copy code

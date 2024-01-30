@@ -40,51 +40,55 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
   };
   return (
     <>
-      <h2 className='h2'>Input Parameters</h2>
-      {formData.inputs.map((param, index) => (
-        <div key={param.id} className='flex items-center space-x-2 mb-4'>
-          <Input
-            isRequired
-            label='Key Name'
-            placeholder='Enter key name'
-            value={param.key_name}
-            onChange={(e) => {
-              const isValid = /^[a-z_]+$/.test(e.target.value);
-              if (isValid || e.target.value === "") {
-                updateInputParameter(index, "key_name", e.target.value);
-              }
-            }}
-          />
-          <Select
-            isRequired
-            label='Select value type'
-            className='max-w-xs'
-            value={param.value_type}
-            defaultSelectedKeys={[param.value_type]}
-            onChange={(e) => {
-              updateInputParameter(index, "value_type", e.target.value);
-            }}
-          >
-            <SelectItem key={"string"} value={"string"}>
-              String
-            </SelectItem>
-            <SelectItem key={"number"} value={"number"}>
-              Number
-            </SelectItem>
-            <SelectItem key={"bool"} value={"bool"}>
-              Boolean
-            </SelectItem>
-          </Select>
-          {/* Optional: Button to remove this parameter */}
-          <Button color='danger' onClick={() => removeInputParameter(index)}>
-            Remove
+      <div className="pb-16">
+        <h2 className="h2">Input Parameters</h2>
+        {formData.inputs.map((param, index) => (
+          <div key={param.id} className="flex items-center space-x-2 mb-4">
+            <Input
+              isRequired
+              label="Key Name"
+              placeholder="Enter key name"
+              value={param.key_name}
+              onChange={(e) => {
+                // Regular expression: starts with a lowercase letter, followed by any mix of lowercase, uppercase letters, or underscores
+                const isValid = /^[a-z][a-zA-Z_]*$/.test(e.target.value);
+                if (isValid || e.target.value === "") {
+                  updateInputParameter(index, "key_name", e.target.value);
+                }
+              }}
+            />
+
+            <Select
+              isRequired
+              label="Select value type"
+              className="max-w-xs"
+              value={param.value_type}
+              defaultSelectedKeys={[param.value_type]}
+              onChange={(e) => {
+                updateInputParameter(index, "value_type", e.target.value);
+              }}
+            >
+              <SelectItem key={"string"} value={"string"}>
+                String
+              </SelectItem>
+              <SelectItem key={"number"} value={"number"}>
+                Number
+              </SelectItem>
+              <SelectItem key={"bool"} value={"bool"}>
+                Boolean
+              </SelectItem>
+            </Select>
+            {/* Optional: Button to remove this parameter */}
+            <Button color="danger" onClick={() => removeInputParameter(index)}>
+              Remove
+            </Button>
+          </div>
+        ))}
+        <div className="flex justify-center w-full">
+          <Button color="secondary" onClick={addInputParameter}>
+            Add Parameter
           </Button>
         </div>
-      ))}
-      <div className='flex justify-center w-full'>
-        <Button color='secondary' onClick={addInputParameter}>
-          Add Parameter
-        </Button>
       </div>
     </>
   );
