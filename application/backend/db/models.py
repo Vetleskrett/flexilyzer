@@ -98,6 +98,7 @@ class Analyzer(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String, unique=True, index=True)
     creator = Column(String, index=True, nullable=True)
+    description = Column(String, index=True, nullable=True)
 
     analyzer_inputs = relationship("AnalyzerInput", back_populates="analyzer")
     analyzer_outputs = relationship("AnalyzerOutput", back_populates="analyzer")
@@ -115,7 +116,7 @@ class AnalyzerInput(Base):
     __tablename__ = "analyzer_inputs"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    key_name = Column(String, unique=True, index=True)
+    key_name = Column(String, index=True)
     value_type = Column(String, index=True)
 
     analyzer_id = Column(Integer, ForeignKey("analyzers.id"))
@@ -126,7 +127,7 @@ class AnalyzerOutput(Base):
     __tablename__ = "analyzer_outputs"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    key_name = Column(String, unique=True, index=True)
+    key_name = Column(String, index=True)
     value_type = Column(String, index=True)
     display_name = Column(String, index=True, nullable=True)
     extended_metadata = Column(JSON, nullable=True)

@@ -78,12 +78,17 @@ def run_seed():
 
         print("Creating project metadata ...")
         project_metadata = ProjectMetadata(
-            key_name="url", value="https://laubet.no", value_type="string", project=project
+            key_name="url",
+            value="https://laubet.no",
+            value_type="string",
+            project=project,
         )
         session.add(project_metadata)
-        
+
         print("Creating analyzer ...")
-        analyzer = Analyzer(name="Lighthouse Analyzer", creator="Enthe Nu")
+        analyzer = Analyzer(
+            name="Lighthouse Analyzer", description="du er en bæaj", creator="Enthe Nu"
+        )
         session.add(analyzer)
 
         # Associate the analyzer with the assignment
