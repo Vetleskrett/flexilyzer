@@ -9,6 +9,18 @@
  * ---------------------------------------------------------------
  */
 
+/** AnalyzerBase */
+export interface AnalyzerBase {
+  /** Name */
+  name: string;
+  /** Description */
+  description: string;
+  /** Creator */
+  creator?: string | null;
+  /** Hasscript */
+  hasScript?: boolean | null;
+}
+
 /** AnalyzerCreate */
 export interface AnalyzerCreate {
   /** Name */
@@ -17,6 +29,8 @@ export interface AnalyzerCreate {
   description: string;
   /** Creator */
   creator?: string | null;
+  /** Hasscript */
+  hasScript?: boolean | null;
   /** Inputs */
   inputs: AnalyzerInputCreate[];
   /** Outputs */
@@ -75,12 +89,28 @@ export interface AnalyzerResponse {
   description: string;
   /** Creator */
   creator?: string | null;
+  /** Hasscript */
+  hasScript?: boolean | null;
   /** Id */
   id: number;
   /** Inputs */
   inputs: AnalyzerInputResponse[];
   /** Outputs */
   outputs: AnalyzerOutputResponse[];
+}
+
+/** AnalyzerSimplifiedResponse */
+export interface AnalyzerSimplifiedResponse {
+  /** Name */
+  name: string;
+  /** Description */
+  description: string;
+  /** Creator */
+  creator?: string | null;
+  /** Hasscript */
+  hasScript?: boolean | null;
+  /** Id */
+  id: number;
 }
 
 /** AssignmentCreate */

@@ -1,13 +1,12 @@
+import api from "@/api_utils";
 import AssignmentOverview from "@/components/assignmentComponents/assignmentOverview";
 import CourseDetails from "@/components/courseComponents/CourseDetails";
-import { Api } from "@/extensions/Api";
 
 interface Props {
   params: { course_id: string };
 }
 
 export default async function CourseHomePage({ params }: Props) {
-  const api = new Api({ baseUrl: "http://127.0.0.1:8000" });
 
   const course_details = await api.getCourse(Number(params.course_id));
 

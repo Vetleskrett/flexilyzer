@@ -1,12 +1,12 @@
 "use client";
-import { AnalyzerResponse } from "@/extensions/data-contracts";
+import { AnalyzerResponse, AnalyzerSimplifiedResponse } from "@/extensions/data-contracts";
 import { Button, Card, CardBody } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
 export default function AnalyzerOverview({
   analyzer,
 }: {
-  analyzer: AnalyzerResponse;
+  analyzer: AnalyzerSimplifiedResponse;
 }) {
   const router = useRouter();
 

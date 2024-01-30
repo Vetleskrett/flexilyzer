@@ -10,10 +10,12 @@
  */
 
 import {
+  AnalyzerBase,
   AnalyzerCreate,
   AnalyzerInputResponse,
   AnalyzerOutputResponse,
   AnalyzerResponse,
+  AnalyzerSimplifiedResponse,
   AssignmentCreate,
   AssignmentResponse,
   BodyUploadAnalyzerRequirements,
@@ -387,7 +389,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request GET:/api/v1/analyzers/
    */
   getAllAnalyzers = (params: RequestParams = {}) =>
-    this.request<AnalyzerResponse[], any>({
+    this.request<AnalyzerSimplifiedResponse[], any>({
       path: `/api/v1/analyzers/`,
       method: "GET",
       format: "json",
@@ -419,7 +421,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request GET:/api/v1/analyzers/{analyzer_id}
    */
   getAnalyzer = (analyzerId: number, params: RequestParams = {}) =>
-    this.request<AnalyzerResponse, HTTPValidationError>({
+    this.request<AnalyzerBase, HTTPValidationError>({
       path: `/api/v1/analyzers/${analyzerId}`,
       method: "GET",
       format: "json",
@@ -481,11 +483,26 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/v1/analyzers/{analyzer_id}/upload/script
    */
   uploadAnalyzerScript = (analyzerId: number, data: BodyUploadAnalyzerScript, params: RequestParams = {}) =>
-    this.request<number, HTTPValidationError>({
+    this.request<string, HTTPValidationError>({
       path: `/api/v1/analyzers/${analyzerId}/upload/script`,
       method: "POST",
       body: data,
       type: ContentType.FormData,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags analyzers
+   * @name GetAnalyzerScript
+   * @summary Upload Analyzer Script
+   * @request GET:/api/v1/analyzers/{analyzer_id}/script
+   */
+  getAnalyzerScript = (analyzerId: number, params: RequestParams = {}) =>
+    this.request<string, HTTPValidationError>({
+      path: `/api/v1/analyzers/${analyzerId}/script`,
+      method: "GET",
       format: "json",
       ...params,
     });
@@ -498,7 +515,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/v1/analyzers/{analyzer_id}/upload/requirements
    */
   uploadAnalyzerRequirements = (analyzerId: number, data: BodyUploadAnalyzerRequirements, params: RequestParams = {}) =>
-    this.request<number, HTTPValidationError>({
+    this.request<string, HTTPValidationError>({
       path: `/api/v1/analyzers/${analyzerId}/upload/requirements`,
       method: "POST",
       body: data,

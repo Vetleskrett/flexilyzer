@@ -11,9 +11,12 @@ import { AnalyzerCreate, AnalyzerResponse } from "@/extensions/data-contracts";
 import api from "@/api_utils";
 import { formatAnalyzerData } from "@/components/createAnalyzerComponents/analyzerUtils";
 import { useSnackbar } from "@/context/snackbarContext";
+import { useRouter } from "next/navigation";
 
 export default function NewAnalyzerPage() {
   const TOTAL_STEPS = 4;
+
+  const router = useRouter();
 
   const { openSnackbar } = useSnackbar();
 
@@ -51,6 +54,7 @@ export default function NewAnalyzerPage() {
         message: "Analyzer submitted successfully!",
         severity: "success",
       });
+      router.push("/analyzers");
     } else {
       openSnackbar({
         message: `Something wrong while submitting Analyzer: ${resp.error}`,
@@ -114,19 +118,19 @@ export default function NewAnalyzerPage() {
   }
 
   return (
-    <div className='relative min-h-screen-minus-navbar'>
+    <div className="relative min-h-screen-minus-navbar">
       <Progress
         value={(currentStep / TOTAL_STEPS) * 100}
-        className='mb-8 mt-8'
+        className="mb-8 mt-8"
       />
       {renderStep()}
-      <div className='absolute bottom-5 inset-x-0 px-4'>
-        <div className='flex justify-between'>
+      <div className="absolute bottom-5 inset-x-0 px-4">
+        <div className="flex justify-between">
           {/* Back button on the left */}
           {currentStep > 1 ? (
             <Button onClick={prevStep}>Back</Button>
           ) : (
-            <div className='opacity-0'>
+            <div className="opacity-0">
               <Button disabled>Back</Button>
             </div>
           )}
@@ -141,9 +145,9 @@ export default function NewAnalyzerPage() {
                   : "All Key Names must be non-empty and unique"
               }
             >
-              <span className='inline-block' style={{ cursor: "not-allowed" }}>
+              <span className="inline-block" style={{ cursor: "not-allowed" }}>
                 <Button
-                  color='primary'
+                  color="primary"
                   isDisabled={!isCurrentStepValid(currentStep)}
                   onClick={nextStep}
                 >
@@ -152,7 +156,7 @@ export default function NewAnalyzerPage() {
               </span>
             </Tooltip>
           ) : (
-            <Button color='primary' onClick={submitForm}>
+            <Button color="primary" onClick={submitForm}>
               Submit Analyzer
             </Button>
           )}
