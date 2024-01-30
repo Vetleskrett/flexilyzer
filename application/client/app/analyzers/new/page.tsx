@@ -103,14 +103,14 @@ export default function NewAnalyzerPage() {
         return allInputFieldsValid && allInputNamesUnique;
 
       case 3:
-        const allOutputFieldsValid = formData.inputs.every(
-          (input) =>
-            input.key_name.trim() !== "" && input.value_type.trim() !== ""
+        const allOutputFieldsValid = formData.outputs.every(
+          (output) =>
+            output.key_name.trim() !== "" && output.value_type.trim() !== ""
         );
 
-        const allOutputNamesUnique = formData.inputs.every(
-          (input, index, self) =>
-            self.findIndex((i) => i.key_name === input.key_name) === index
+        const allOutputNamesUnique = formData.outputs.every(
+          (output, index, self) =>
+            self.findIndex((i) => i.key_name === output.key_name) === index
         );
 
         return allOutputFieldsValid && allOutputNamesUnique;
