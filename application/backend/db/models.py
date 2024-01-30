@@ -1,5 +1,6 @@
 from datetime import datetime
 from sqlalchemy import (
+    Boolean,
     Table,
     Column,
     Integer,
@@ -109,6 +110,7 @@ class Analyzer(Base):
     name = Column(String, unique=True, index=True)
     creator = Column(String, index=True, nullable=True)
     description = Column(String, index=True, nullable=True)
+    hasScript = Column(Boolean, index=True, default=False)
 
     analyzer_inputs = relationship("AnalyzerInput", back_populates="analyzer")
     analyzer_outputs = relationship("AnalyzerOutput", back_populates="analyzer")

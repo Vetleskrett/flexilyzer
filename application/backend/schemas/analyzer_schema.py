@@ -29,6 +29,7 @@ class AnalyzerBase(BaseModel):
     name: str
     description: str
     creator: Optional[str] = None
+    hasScript: Optional[bool] = None
 
 
 class AnalyzerCreate(AnalyzerBase):

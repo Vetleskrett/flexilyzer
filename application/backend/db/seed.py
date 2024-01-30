@@ -87,7 +87,10 @@ def run_seed():
 
         print("Creating analyzer ...")
         analyzer = Analyzer(
-            name="Lighthouse Analyzer", description="du er en bæaj", creator="Enthe Nu"
+            name="Lighthouse Analyzer",
+            description="du er en bæaj",
+            creator="Enthe Nu",
+            hasScript=False,
         )
         session.add(analyzer)
 

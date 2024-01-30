@@ -148,3 +148,50 @@ class AnalyzerRepository:
             .filter(AnalyzerOutput.analyzer_id == analyzer_id)
             .all()
         )
+
+    @staticmethod
+    def create_analyzer_outputs(
+        db: Session, analyzer_id: int, outputs: List[AnalyzerOutputCreate]
+    ):
+        """
+        Creates analyzer outputs.
+
+        Parameters:
+        - db (Session): The database session.
+        - analyzer_id (int): The ID of the analyzer to which the outputs belong.
+        - outputs (List[AnalyzerOutputCreate]): A list of outputs to be created.
+
+        Returns:
+        A list of created analyzer outputs.
+        """
+        for output_data in outputs:
+            new_output = AnalyzerOutput(
+                analyzer_id=analyzer_id, **output_data.model_dump()
+            )
+            db.add(new_output)
+        db.commit()
+        return (
+            db.query(AnalyzerOutput)
+            .filter(AnalyzerOutput.analyzer_id == analyzer_id)
+            .all()
+        )
+
+    @staticmethod
+    def update_analyzer(db: Session, analyzer_id: int, analyzer: AnalyzerBase):
+        """
+        Update an existing Analyzer.
+
+        Parameters:
+        - db (Session): The database session.
+        - Analyzer_id (int): The Analyzer ID.
+        - Analyzer (AnalyzerBase): The updated analyzer data.
+
+        Returns:
+        The updated Analyzer.
+        """
+        db_analyzer = db.query(Analyzer).filter(Analyzer.id == analyzer_id).first()
+        for key, value in analyzer.model_dump().items():
+            setattr(db_analyzer, key, value)
+        db.commit()
+        db.refresh(db_analyzer)
+        return db_analyzer

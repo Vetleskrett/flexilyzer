@@ -62,8 +62,16 @@ async def upload_analyzer_script(
     analyzer_id: int,
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-) -> int:
+) -> str:
     return AnalyzerService.upload_script(db=db, analyzer_id=analyzer_id, file=file)
+
+
+@router.get("/{analyzer_id}/script", operation_id="get-analyzer-script")
+async def upload_analyzer_script(
+    analyzer_id: int,
+    db: Session = Depends(get_db),
+) -> str:
+    return AnalyzerService.get_script(db=db, analyzer_id=analyzer_id)
 
 
 @router.post(
@@ -73,7 +81,7 @@ async def upload_analyzer_requirements(
     analyzer_id: int,
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-) -> int:
+) -> str:
     return AnalyzerService.upload_requirements(
         db=db, analyzer_id=analyzer_id, file=file
     )
