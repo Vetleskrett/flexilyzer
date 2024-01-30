@@ -15,8 +15,18 @@ from db.database import Base
 assignment_analyzer_association = Table(
     "assignment_analyzer",
     Base.metadata,
-    Column("assignment_id", Integer, ForeignKey("assignments.id"), primary_key=True),
-    Column("analyzer_id", Integer, ForeignKey("analyzers.id"), primary_key=True),
+    Column(
+        "assignment_id",
+        Integer,
+        ForeignKey("assignments.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
+    Column(
+        "analyzer_id",
+        Integer,
+        ForeignKey("analyzers.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
 )
 
 
@@ -119,7 +129,7 @@ class AnalyzerInput(Base):
     key_name = Column(String, index=True)
     value_type = Column(String, index=True)
 
-    analyzer_id = Column(Integer, ForeignKey("analyzers.id"))
+    analyzer_id = Column(Integer, ForeignKey("analyzers.id", ondelete="CASCADE"))
     analyzer = relationship("Analyzer", back_populates="analyzer_inputs")
 
 
@@ -132,7 +142,7 @@ class AnalyzerOutput(Base):
     display_name = Column(String, index=True, nullable=True)
     extended_metadata = Column(JSON, nullable=True)
 
-    analyzer_id = Column(Integer, ForeignKey("analyzers.id"))
+    analyzer_id = Column(Integer, ForeignKey("analyzers.id", ondelete="CASCADE"))
     analyzer = relationship("Analyzer", back_populates="analyzer_outputs")
 
 
