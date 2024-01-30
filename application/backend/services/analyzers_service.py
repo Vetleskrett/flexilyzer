@@ -62,17 +62,29 @@ class AnalyzerService:
             db=db, analyzer_id=created_analyzer.id, outputs=analyzer.outputs
         )
 
-        print([inputs. for inputs in created_inputs])
-
         casted_resp_inputs = [
-            AnalyzerInputResponse(inputs) for inputs in created_inputs
+            AnalyzerInputResponse(
+                id=input.id, key_name=input.key_name, value_type=input.value_type
+            )
+            for input in created_inputs
         ]
         casted_resp_outputs = [
-            AnalyzerOutputResponse(output) for output in created_outputs
+            AnalyzerOutputResponse(
+                id=output.id,
+                key_name=output.key_name,
+                value_type=output.value_type,
+                display_name=output.display_name,
+                extended_metadata=output.extended_metadata,
+            )
+            for output in created_outputs
         ]
 
         return AnalyzerResponse(
-            inputs=casted_resp_inputs, outputs=casted_resp_outputs, **created_analyzer
+            id=created_analyzer.id,
+            name=created_analyzer.name,
+            description=created_analyzer.description,
+            inputs=casted_resp_inputs,
+            outputs=casted_resp_outputs,
         )
 
     @staticmethod
