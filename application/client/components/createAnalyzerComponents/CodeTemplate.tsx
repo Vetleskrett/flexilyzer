@@ -7,10 +7,10 @@ import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useEffect, useState } from "react";
-import { useSnackBar } from "@/context/snackbarContext";
+import { useSnackbar } from "@/context/snackbarContext";
 
 export default function CodeTemplate({ formData }: { formData: FormDataT }) {
-  const { openSnackbar } = useSnackBar();
+  const { openSnackbar } = useSnackbar();
 
   const [codeTemplate, setCodeTemplate] = useState<string | undefined>();
 

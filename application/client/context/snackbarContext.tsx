@@ -1,28 +1,28 @@
 import React, { createContext, useContext, useState } from "react";
 import SnackBarComponent from "@/components/SnackBarComponent";
 
-interface ModalContextType {
+interface SnackbarContextType {
   isSnackbarOpen: boolean;
   openSnackbar: ({ message, severity }: SnackBarDefinitions) => void;
   closeSnackbar: () => void;
 }
 
-export type SnackBarDefinitions = {
+type SnackBarDefinitions = {
   message: string;
   severity: "success" | "info" | "warning" | "error";
 };
 
-const SnackContext = createContext<ModalContextType | undefined>(undefined);
+const SnackContext = createContext<SnackbarContextType | undefined>(undefined);
 
-export const useSnackBar = () => {
+export const useSnackbar = () => {
   const context = useContext(SnackContext);
   if (!context) {
-    throw new Error("useModal must be used within a ModalProvider");
+    throw new Error("useSnackbar must be used within the snackbarprovider");
   }
   return context;
 };
 
-export const SnackBarProvider = ({
+export const SnackbarProvider = ({
   children,
 }: {
   children: React.ReactNode;
