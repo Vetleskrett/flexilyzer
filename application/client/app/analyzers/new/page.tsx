@@ -10,12 +10,12 @@ import InputParameters from "@/components/createAnalyzerComponents/InputParamsSt
 import { AnalyzerCreate, AnalyzerResponse } from "@/extensions/data-contracts";
 import api from "@/api_utils";
 import { formatAnalyzerData } from "@/components/createAnalyzerComponents/analyzerUtils";
-import { useSnackBar } from "@/context/snackbarContext";
+import { useSnackbar } from "@/context/snackbarContext";
 
 export default function NewAnalyzerPage() {
   const TOTAL_STEPS = 4;
 
-  const { openSnackbar } = useSnackBar();
+  const { openSnackbar } = useSnackbar();
 
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [formData, setFormData] = useState<FormDataT>({
