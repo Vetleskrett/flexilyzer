@@ -15,8 +15,6 @@ from utils.validationUtils import validatePydanticToHTTPError
 from utils.storeUtils import store_file
 from utils.templateUtils import generate_template
 
-from db.models import Analyzer, AnalyzerInput, AnalyzerOutput
-
 
 class AnalyzerService:
     @staticmethod
