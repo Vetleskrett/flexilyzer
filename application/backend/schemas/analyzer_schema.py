@@ -32,6 +32,13 @@ class AnalyzerBase(BaseModel):
     hasScript: Optional[bool] = None
 
 
+class AnalyzerSimplifiedResponse(AnalyzerBase):
+    id: int
+
+    class Config:
+        from_attributes: True
+
+
 class AnalyzerCreate(AnalyzerBase):
     inputs: List[AnalyzerInputCreate]
     outputs: List[AnalyzerOutputCreate]

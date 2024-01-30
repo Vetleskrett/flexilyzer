@@ -15,7 +15,7 @@ router = APIRouter(prefix="/api/v1/analyzers")
 @router.get("/", operation_id="get-all-analyzers")
 async def get_all_analyzers(
     db: Session = Depends(get_db),
-) -> List[analyzer_schema.AnalyzerBase]:
+) -> List[analyzer_schema.AnalyzerSimplifiedResponse]:
     return AnalyzerService.get_all_analyzers(db)
 
 
