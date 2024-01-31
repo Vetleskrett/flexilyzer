@@ -4,7 +4,7 @@ import { CreateAnalyzerButton } from "@/components/buttons";
 import { useRouter } from "next/navigation";
 
 export default async function Analyzers() {
-  const analyzers = await api.getAllAnalyzers({ cache: "no-cache" });
+  const analyzers = await api.getAllAnalyzers({ cache: "no-store" });
 
   return (
     <div>

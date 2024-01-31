@@ -5,7 +5,7 @@ import CourseOverview from "@/components/courseComponents/CourseOverview";
 import { CourseResponse } from "@/extensions/data-contracts";
 
 export default async function Courses() {
-  const courses = await api.getAllCourses();
+  const courses = await api.getAllCourses({ cache: "no-cache" });
 
   return (
     <div>

@@ -9,6 +9,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useEffect, useState } from "react";
 import { useSnackbar } from "@/context/snackbarContext";
 import { formatAnalyzerData } from "../analyzerComponents/analyzerUtils";
+import CodeDisplay from "../analyzerComponents/CodeDisplay";
 
 export default function CodeTemplate({ formData }: { formData: FormDataT }) {
   const { openSnackbar } = useSnackbar();
@@ -50,13 +51,7 @@ export default function CodeTemplate({ formData }: { formData: FormDataT }) {
     <>
       {codeTemplate && (
         <>
-          <SyntaxHighlighter
-            customStyle={{ paddingLeft: "30px", fontSize: "small" }}
-            language="python"
-            style={docco}
-          >
-            {codeTemplate}
-          </SyntaxHighlighter>
+          <CodeDisplay code_string={codeTemplate} />
           <div className="flex justify-center mt-4">
             <Button
               startContent={<ContentCopyIcon />}
