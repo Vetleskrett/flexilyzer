@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 import sqlalchemy as sa
 import json
 from db.models import (
+    Batch,
     Course,
     Assignment,
     ProjectMetadata,
@@ -13,6 +14,7 @@ from db.models import (
     AnalyzerInput,
     AnalyzerOutput,
     Report,
+    AssignmentMetadata,
     assignment_analyzer_association,  # Make sure to import this
 )
 
@@ -49,6 +51,9 @@ def run_seed():
 
         if sa.inspect(engine).has_table("report"):
             session.query(Report).delete()
+
+        if sa.inspect(engine).has_table("batch"):
+            session.query(Batch).delete()
         print("Cleanup done...")
 
         print("Creating tables...")
@@ -64,6 +69,13 @@ def run_seed():
             name="Øving 3", due_date=datetime(2023, 12, 20, 23, 59), course=course
         )
         session.add(assignment)
+        session.flush()
+
+        assignment_metadata = AssignmentMetadata(
+            assignment_id=assignment.id, key_name="Some Key", value_type="Some Type"
+        )
+        session.add(assignment_metadata)
+        session.flush()  # Ensures assignment_metadata gets an ID
 
         print("Creating team ...")
         team = Team(github_link="https://github.com/pettelau/tsffbet", course=course)
@@ -82,6 +94,7 @@ def run_seed():
             value="https://laubet.no",
             value_type="string",
             project=project,
+            assignment_metadata_id=assignment_metadata.id,
         )
         session.add(project_metadata)
 
@@ -96,6 +109,12 @@ def run_seed():
 
         # Associate the analyzer with the assignment
         assignment.analyzers.append(analyzer)
+        session.flush()
+
+        print("creating batch")
+        batch = Batch(assignment_id=assignment.id, analyzer_id=analyzer.id)
+        session.add(batch)
+        session.flush()
 
         print("Creating analyzer inputs ...")
         analyzer_inputs = [
@@ -141,7 +160,7 @@ def run_seed():
             "js_workload": "JS main thread workload is high, consider optimizing JS code.",
         }
         report1 = Report(
-            report=json.dumps(report1_data), project=project, analyzer=analyzer
+            report=json.dumps(report1_data), project=project, batch_id=batch.id
         )
         session.add(report1)
 
@@ -153,7 +172,7 @@ def run_seed():
             "js_workload": "JS main thread workload is high, consider optimizing JS code.",
         }
         report2 = Report(
-            report=json.dumps(report2_data), project=project, analyzer=analyzer
+            report=json.dumps(report2_data), project=project, batch_id=batch.id
         )
         session.add(report2)
 

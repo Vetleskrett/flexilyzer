@@ -8,9 +8,11 @@ from sqlalchemy import (
     ForeignKey,
     DateTime,
     JSON,
+    Enum,
 )
 from sqlalchemy.orm import relationship
 from db.database import Base
+from schemas.shared import BatchEnum, VenvEnum
 
 # Association table for the many-to-many relationship between Assignment and Analyzer
 assignment_analyzer_association = Table(
@@ -96,11 +98,12 @@ class ProjectMetadata(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
 
     key_name = Column(String, index=True, nullable=False)
-    value = Column(String, index=True, nullable=True)
     value_type = Column(String, index=True, nullable=False)
+    value = Column(JSON, nullable=True)
 
     project_id = Column(Integer, ForeignKey("projects.id"))
     project = relationship("Project", back_populates="project_metadata")
+    assignment_metadata_id = Column(Integer, ForeignKey("assignment_metadata.id"))
 
 
 class Analyzer(Base):
@@ -111,11 +114,12 @@ class Analyzer(Base):
     creator = Column(String, index=True, nullable=True)
     description = Column(String, index=True, nullable=True)
     hasScript = Column(Boolean, index=True, default=False)
+    hasVenv = Column(Enum(VenvEnum), index=True, default=VenvEnum.NO_VENV)
 
     analyzer_inputs = relationship("AnalyzerInput", back_populates="analyzer")
     analyzer_outputs = relationship("AnalyzerOutput", back_populates="analyzer")
 
-    reports = relationship("Report", back_populates="analyzer")
+    batches = relationship("Batch", back_populates="analyzer")
 
     assignments = relationship(
         "Assignment",
@@ -152,11 +156,29 @@ class Report(Base):
     __tablename__ = "reports"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    timestamp = Column(DateTime, default=datetime.now, index=True)
     report = Column(JSON, nullable=True)
-
-    analyzer_id = Column(Integer, ForeignKey("analyzers.id"))
-    analyzer = relationship("Analyzer", back_populates="reports")
 
     project_id = Column(Integer, ForeignKey("projects.id"))
     project = relationship("Project", back_populates="reports")
+
+    batch_id = Column(Integer, ForeignKey("batches.id"))
+
+
+class Batch(Base):
+    __tablename__ = "batches"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    timestamp = Column(DateTime, default=datetime.now, index=True)
+    assignment_id = Column(Integer, ForeignKey("assignments.id"))
+    status = Column(Enum(BatchEnum), index=True, nullable=True)
+    analyzer_id = Column(Integer, ForeignKey("analyzers.id"))
+    analyzer = relationship("Analyzer", back_populates="batches")
+
+
+class AssignmentMetadata(Base):
+    __tablename__ = "assignment_metadata"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    assignment_id = Column(Integer, ForeignKey("assignments.id"), nullable=False)
+    key_name = Column(String, nullable=False)
+    value_type = Column(String, nullable=False)

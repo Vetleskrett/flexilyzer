@@ -1,22 +1,29 @@
 from celery_app.main import app
 
-## analyzer_args:
 
-"""The celery task for executing an analyzer on a set of projects"""
+import docker
+from pathlib import Path
+import json
+
+from services.analyzers_service import AnalyzerService
+from services.projects_service import ProjectsService
+
+from db.database import get_db
+
+from .validation_utils import validate_report, validate_type
+from schemas.shared import BatchEnum
+from schemas.reports_schema import ReportCreate
+from db.crud.batches_crud import BatchesRepository
+from db.crud.reports_crud import ReportRepository
 
 
 @app.task
-def celery_task(analyzer_id: int, project_ids: list):
-    import docker
-    from pathlib import Path
-    import json
+def celery_task(analyzer_id: int, project_ids: list[int], batch_id: int):
+    db = next(get_db())
 
-    from services.analyzers_service import AnalyzerService
-    from services.projects_service import ProjectsService
-
-    from db.database import get_db
-
-    from .validation_utils import validate_report, validate_type
+    BatchesRepository.update_batch_status(
+        db=db, batch_id=batch_id, status=BatchEnum.RUNNING
+    )
 
     # requirements_path = "test/celery_test/requirments.txt"
     script_path = "test/celery_testing/test_analyzer.py"
@@ -44,7 +51,6 @@ def celery_task(analyzer_id: int, project_ids: list):
 
     container.start()
 
-    db = next(get_db())
     # Fetch all required analyzer inputs from DB
     required_input_objects = AnalyzerService.get_analyzer_inputs(db, analyzer_id)
     # Extract the key_name from each AnalyzerInput object into a set
@@ -61,7 +67,7 @@ def celery_task(analyzer_id: int, project_ids: list):
         }
         for output_obj in required_output_objects
     }
-    print(required_outputs)
+
     projects_with_metadata = {}
     # Fetch all required metadata for all projects
     for id in project_ids:
@@ -84,11 +90,8 @@ def celery_task(analyzer_id: int, project_ids: list):
                 f"{key}={value}" for key, value in metadata.items()
             )
 
-            # Execute `ls` command in the container directory
-            exec_result = container.exec_run(f"ls -l /app")
-
             # Run the script using the virtual environment and env variables
-            run_command = f"python /app/{Path(script_path).name}"
+            run_command = f"python {env_vars_shell} /app/{Path(script_path).name}"
             result = container.exec_run(run_command)
 
             # Return the output (or error message)
@@ -96,10 +99,10 @@ def celery_task(analyzer_id: int, project_ids: list):
                 # return {"status": "success", "output": result.output.decode('utf-8')}
 
                 # Send "result" to db with the corresponding project_id
-                print(project_id, ": ", result.output.decode("utf-8"))
+                # print(project_id, ": ", result.output.decode("utf-8"))
                 try:
                     parsed_result = json.loads(result.output.decode("utf-8"))
-                    
+
                     # Assume required_outputs is constructed as shown previously
                     validation_errors = validate_report(parsed_result, required_outputs)
 
@@ -109,12 +112,25 @@ def celery_task(analyzer_id: int, project_ids: list):
                     else:
                         # Result is valid; proceed with storing in the database
                         print("Validation successful.")
+
+                        ReportRepository.create_report(
+                            db,
+                            report=ReportCreate(
+                                report=parsed_result,
+                                project_id=project_id,
+                                batch_id=batch_id,
+                            ),
+                        )
                 except json.JSONDecodeError:
                     pass
             else:
                 print("Something wrong: ", result.exit_code, result)
                 # Need some kind of error handling here
                 # return {"status": "failure", "error": result.output.decode('utf-8')}
+
+        BatchesRepository.update_batch_status(
+            db=db, batch_id=batch_id, status=BatchEnum.FINISHED
+        )
 
     finally:
         # Clean up: stop and remove the container
