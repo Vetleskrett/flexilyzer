@@ -1,6 +1,4 @@
-from typing import List
 from fastapi import HTTPException, UploadFile
-from pydantic import ValidationError, type_adapter
 from db.crud.analyzers_crud import AnalyzerRepository
 from schemas.analyzer_schema import (
     RequirementsSchema,
