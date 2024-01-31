@@ -103,7 +103,7 @@ def run_seed():
             name="Lighthouse Analyzer",
             description="du er en bæaj",
             creator="Enthe Nu",
-            hasScript=False,
+            has_script=False,
         )
         session.add(analyzer)
 
