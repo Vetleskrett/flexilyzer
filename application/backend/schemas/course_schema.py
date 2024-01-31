@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
 from typing import List, Optional
-from pydantic import Json
 
 
 class CourseBase(BaseModel):

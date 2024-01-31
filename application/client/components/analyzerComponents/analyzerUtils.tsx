@@ -18,10 +18,12 @@ export function formatAnalyzerData(formData: FormDataT) {
       key_name: e.key_name,
       value_type: e.value_type,
       display_name: e.display_name ? e.display_name : null,
-      extended_metadata: e.extended_metadata ? JSON.stringify(e.extended_metadata) : null,
+      extended_metadata: e.extended_metadata
+        ? JSON.stringify(e.extended_metadata)
+        : null,
     })),
   };
-
+  console.log(data);
   return data;
 }
 

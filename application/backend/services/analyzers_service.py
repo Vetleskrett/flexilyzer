@@ -1,3 +1,4 @@
+import json
 from fastapi import HTTPException, UploadFile
 from db.crud.analyzers_crud import AnalyzerRepository
 from schemas.analyzer_schema import (

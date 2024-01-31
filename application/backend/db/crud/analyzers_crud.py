@@ -5,6 +5,7 @@ from schemas.analyzer_schema import (
     AnalyzerInputCreate,
     AnalyzerOutputCreate,
 )
+import json
 
 from db.models import Analyzer, AnalyzerInput, AnalyzerOutput
 
@@ -154,8 +155,13 @@ class AnalyzerRepository:
         """
 
         for output_data in outputs:
+            model = output_data.model_dump()
             new_output = AnalyzerOutput(
-                analyzer_id=analyzer_id, **output_data.model_dump()
+                analyzer_id=analyzer_id,
+                extended_metadata=json.dumps(model["extended_metadata"]),
+                value_type=model["value_type"],
+                key_name=model["key_name"],
+                display_name=model["display_name"],
             )
             db.add(new_output)
         db.commit()
