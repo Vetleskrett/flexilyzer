@@ -57,7 +57,6 @@ export default function OutputParamsStep({
   ) => {
     const updatedParameters = formData.outputs.map((param, i) => {
       if (i === index) {
-        console.log(value);
         let newValue = undefined;
 
         if (value) {

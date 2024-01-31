@@ -7,7 +7,6 @@ import { CourseResponse } from "@/extensions/data-contracts";
 export default async function Courses() {
   const courses = await api.getAllCourses();
 
-  console.log(courses);
   return (
     <div>
       <h2 className="h2">All courses:</h2>

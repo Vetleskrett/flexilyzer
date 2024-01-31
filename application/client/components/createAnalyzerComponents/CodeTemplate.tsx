@@ -8,13 +8,12 @@ import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useEffect, useState } from "react";
 import { useSnackbar } from "@/context/snackbarContext";
-import { formatAnalyzerData } from "./analyzerUtils";
+import { formatAnalyzerData } from "../analyzerComponents/analyzerUtils";
 
 export default function CodeTemplate({ formData }: { formData: FormDataT }) {
   const { openSnackbar } = useSnackbar();
 
   const [codeTemplate, setCodeTemplate] = useState<string | undefined>();
-
 
   async function fetchCodeTemplate() {
     const resp = await api.getAnalyzerTemplate(formatAnalyzerData(formData));

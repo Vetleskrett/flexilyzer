@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 export default async function Analyzers() {
   const analyzers = await api.getAllAnalyzers({ cache: "no-cache" });
 
-  console.log(analyzers);
   return (
     <div>
       <h2 className='h2'>All Analyzers:</h2>

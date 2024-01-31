@@ -10,7 +10,6 @@
  */
 
 import {
-  AnalyzerBase,
   AnalyzerCreate,
   AnalyzerInputResponse,
   AnalyzerOutputResponse,
@@ -421,7 +420,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request GET:/api/v1/analyzers/{analyzer_id}
    */
   getAnalyzer = (analyzerId: number, params: RequestParams = {}) =>
-    this.request<AnalyzerBase, HTTPValidationError>({
+    this.request<AnalyzerSimplifiedResponse, HTTPValidationError>({
       path: `/api/v1/analyzers/${analyzerId}`,
       method: "GET",
       format: "json",

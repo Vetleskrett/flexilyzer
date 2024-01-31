@@ -9,18 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-/** AnalyzerBase */
-export interface AnalyzerBase {
-  /** Name */
-  name: string;
-  /** Description */
-  description: string;
-  /** Creator */
-  creator?: string | null;
-  /** Hasscript */
-  hasScript?: boolean | null;
-}
-
 /** AnalyzerCreate */
 export interface AnalyzerCreate {
   /** Name */
