@@ -10,6 +10,11 @@ export default async function AnalyzerScriptDisplay({
     cache: "no-cache",
   });
 
+  console.log(resp.status);
+  if (resp.status !== 200) {
+    return <>Something wrong</>;
+  }
+
   return (
     <>
       {" "}

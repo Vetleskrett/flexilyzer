@@ -1,4 +1,4 @@
-import { AnalyzerCreate } from "@/extensions/data-contracts";
+import { AnalyzerCreate, AnalyzerResponse } from "@/extensions/data-contracts";
 import {
   FormDataT,
   InputParameter,
@@ -6,7 +6,7 @@ import {
 } from "@/types/analyzerDefinitions";
 import { Kbd } from "@nextui-org/react";
 
-export function formatAnalyzerData(formData: FormDataT) {
+export function formatAnalyzerData(formData: FormDataT | AnalyzerResponse) {
   const data: AnalyzerCreate = {
     name: formData.name,
     description: formData.description,
@@ -23,7 +23,6 @@ export function formatAnalyzerData(formData: FormDataT) {
         : null,
     })),
   };
-  console.log(data);
   return data;
 }
 

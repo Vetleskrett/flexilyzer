@@ -13,6 +13,7 @@ import {
   AnalyzerSimplifiedResponse,
 } from "@/extensions/data-contracts";
 import { FormDataT } from "@/types/analyzerDefinitions";
+import { formatAnalyzerData } from "./analyzerUtils";
 
 export default async function AnalyzerMissingScript({
   analyzer,
@@ -29,12 +30,21 @@ export default async function AnalyzerMissingScript({
   const [codeTemplate, setCodeTemplate] = useState<string | undefined>();
 
   async function fetchCodeTemplate() {
-    const resp = await api.getAnalyzerTemplate({
-      name: analyzer.name,
-      description: analyzer.description,
-      inputs: inputs,
-      outputs: outputs,
-    });
+    const resp = await api.getAnalyzerTemplate(
+      formatAnalyzerData({
+        id: analyzer.id,
+        name: analyzer.name,
+        description: analyzer.description,
+        inputs: inputs,
+        outputs: outputs,
+      })
+    );
+    // const resp = await api.getAnalyzerTemplate({
+    //   name: analyzer.name,
+    //   description: analyzer.description,
+    //   inputs: inputs,
+    //   outputs: outputs,
+    // });
 
     if (resp.ok) {
       setCodeTemplate(resp.data);
@@ -84,18 +94,17 @@ export default async function AnalyzerMissingScript({
       <div className="flex w-full flex-col items-center">
         <Tabs>
           <Tab key="upload" title="Upload script">
-          <div className="mt-6">
-
-            <form
-              className="flex flex-col items-center justify-center"
-              onSubmit={handleSubmit}
-            >
-              <input type="file" accept=".py" onChange={handleFileChange} />
-              <br />
-              <Button color="primary" type="submit">
-                Upload Script
-              </Button>
-            </form>
+            <div className="mt-6">
+              <form
+                className="flex flex-col items-center justify-center"
+                onSubmit={handleSubmit}
+              >
+                <input type="file" accept=".py" onChange={handleFileChange} />
+                <br />
+                <Button color="primary" type="submit">
+                  Upload Script
+                </Button>
+              </form>
             </div>
           </Tab>
           <Tab key="template" title="Show Template">

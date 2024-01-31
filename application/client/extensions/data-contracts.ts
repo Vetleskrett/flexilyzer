@@ -19,6 +19,7 @@ export interface AnalyzerCreate {
   creator?: string | null;
   /** Hasscript */
   hasScript?: boolean | null;
+  hasVenv?: VenvEnum | null;
   /** Inputs */
   inputs: AnalyzerInputCreate[];
   /** Outputs */
@@ -79,6 +80,7 @@ export interface AnalyzerResponse {
   creator?: string | null;
   /** Hasscript */
   hasScript?: boolean | null;
+  hasVenv?: VenvEnum | null;
   /** Id */
   id: number;
   /** Inputs */
@@ -97,6 +99,7 @@ export interface AnalyzerSimplifiedResponse {
   creator?: string | null;
   /** Hasscript */
   hasScript?: boolean | null;
+  hasVenv?: VenvEnum | null;
   /** Id */
   id: number;
 }
@@ -204,17 +207,12 @@ export interface ProjectResponse {
 
 /** ReportResponse */
 export interface ReportResponse {
-  /**
-   * Timestamp
-   * @format date-time
-   */
-  timestamp: string;
   /** Report */
   report?: null;
-  /** Analyzer Id */
-  analyzer_id: number;
   /** Project Id */
   project_id: number;
+  /** Batch Id */
+  batch_id: number;
   /** Id */
   id: number;
 }
@@ -239,6 +237,13 @@ export interface ValidationError {
   msg: string;
   /** Error Type */
   type: string;
+}
+
+/** VenvEnum */
+export enum VenvEnum {
+  HAS_VENV = "HAS_VENV",
+  CREATING_VENV = "CREATING_VENV",
+  NO_VENV = "NO_VENV",
 }
 
 /** testE */
