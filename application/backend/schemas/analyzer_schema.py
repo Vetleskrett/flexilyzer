@@ -1,6 +1,7 @@
 from pydantic import BaseModel, validator
 from typing import List, Optional
 from pydantic import Json
+from schemas.shared import VenvEnum
 
 
 class AnalyzerOutputBase(BaseModel):
@@ -28,6 +29,7 @@ class AnalyzerBase(BaseModel):
     description: str
     creator: Optional[str] = None
     hasScript: Optional[bool] = None
+    hasVenv: Optional[VenvEnum] = None
 
 
 class AnalyzerSimplifiedResponse(AnalyzerBase):
