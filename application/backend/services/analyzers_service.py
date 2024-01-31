@@ -31,6 +31,15 @@ class AnalyzerService:
         return analyzer
 
     @staticmethod
+    def get_analyzer_by_name(db, analyzer_name: str):
+        analyzer = AnalyzerRepository.get_analyzer_by_name(db, analyzer_name)
+        if not analyzer:
+            raise HTTPException(
+                status_code=404, detail=f"Analyzer with name {analyzer_name} not found"
+            )
+        return analyzer
+
+    @staticmethod
     def get_analyzer_inputs(db, analyzer_id: int):
         AnalyzerService.get_analyzer(db, analyzer_id=analyzer_id)
 
@@ -44,6 +53,16 @@ class AnalyzerService:
 
     @staticmethod
     def post_analyzer(db, analyzer: AnalyzerCreate):
+        try:
+            AnalyzerService.get_analyzer_by_name(db, analyzer.name)
+        except HTTPException:
+            pass
+        else:
+            raise HTTPException(
+                status_code=409,
+                detail=f"Analyzer with name '{analyzer.name}' already exists",
+            )
+
         base_analyzer = {"name": analyzer.name, "description": analyzer.description}
 
         base_analyzer_casted: AnalyzerBase = AnalyzerBase(**base_analyzer)

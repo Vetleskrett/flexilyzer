@@ -22,7 +22,7 @@ async def get_all_analyzers(
 @router.get("/{analyzer_id}", operation_id="get-analyzer")
 async def get_analyzer(
     analyzer_id: int, db: Session = Depends(get_db)
-) -> analyzer_schema.AnalyzerBase:
+) -> analyzer_schema.AnalyzerSimplifiedResponse:
     return AnalyzerService.get_analyzer(db, analyzer_id)
 
 
@@ -44,10 +44,7 @@ async def get_analyzer_outputs(
 async def post_analyzer(
     analyzer: analyzer_schema.AnalyzerCreate, db: Session = Depends(get_db)
 ) -> analyzer_schema.AnalyzerResponse:
-    a = AnalyzerService.post_analyzer(db=db, analyzer=analyzer)
-
-    print(a)
-    return a
+    return AnalyzerService.post_analyzer(db=db, analyzer=analyzer)
 
 
 @router.post("/template", operation_id="get-analyzer-template")

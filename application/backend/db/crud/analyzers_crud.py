@@ -38,6 +38,20 @@ class AnalyzerRepository:
         return db.query(Analyzer).filter(Analyzer.id == analyzer_id).first()
 
     @staticmethod
+    def get_analyzer_by_name(db: Session, analyzer_name: str):
+        """
+        Retrieves a specific analyzer by name.
+
+        Parameters:
+        - db (Session): The database session.
+        - analyzer_name (str): The name of the analyzer.
+
+        Returns:
+        The requested analyzer if found, otherwise None.
+        """
+        return db.query(Analyzer).filter(Analyzer.name == analyzer_name).first()
+
+    @staticmethod
     def get_analyzer_inputs(db: Session, analyzer_id: int):
         """
         Retrieves a specific analyzer along with its inputs and outputs.
