@@ -113,8 +113,8 @@ class Analyzer(Base):
     name = Column(String, unique=True, index=True)
     creator = Column(String, index=True, nullable=True)
     description = Column(String, index=True, nullable=True)
-    hasScript = Column(Boolean, index=True, default=False)
-    hasVenv = Column(Enum(VenvEnum), index=True, default=VenvEnum.NO_VENV)
+    has_script = Column(Boolean, index=True, default=False)
+    has_venv = Column(Enum(VenvEnum), index=True, default=VenvEnum.NO_VENV)
 
     analyzer_inputs = relationship("AnalyzerInput", back_populates="analyzer")
     analyzer_outputs = relationship("AnalyzerOutput", back_populates="analyzer")

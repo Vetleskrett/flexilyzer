@@ -28,8 +28,8 @@ class AnalyzerBase(BaseModel):
     name: str
     description: str
     creator: Optional[str] = None
-    hasScript: Optional[bool] = None
-    hasVenv: Optional[VenvEnum] = None
+    has_script: Optional[bool] = None
+    has_venv: Optional[VenvEnum] = None
 
 
 class AnalyzerSimplifiedResponse(AnalyzerBase):
