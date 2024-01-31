@@ -124,6 +124,7 @@ class AnalyzerRepository:
         Returns:
         A list of created analyzer inputs.
         """
+
         for input_data in inputs:
             new_input = AnalyzerInput(
                 analyzer_id=analyzer_id, **input_data.model_dump()
@@ -151,33 +152,7 @@ class AnalyzerRepository:
         Returns:
         A list of created analyzer outputs.
         """
-        for output_data in outputs:
-            new_output = AnalyzerOutput(
-                analyzer_id=analyzer_id, **output_data.model_dump()
-            )
-            db.add(new_output)
-        db.commit()
-        return (
-            db.query(AnalyzerOutput)
-            .filter(AnalyzerOutput.analyzer_id == analyzer_id)
-            .all()
-        )
 
-    @staticmethod
-    def create_analyzer_outputs(
-        db: Session, analyzer_id: int, outputs: List[AnalyzerOutputCreate]
-    ):
-        """
-        Creates analyzer outputs.
-
-        Parameters:
-        - db (Session): The database session.
-        - analyzer_id (int): The ID of the analyzer to which the outputs belong.
-        - outputs (List[AnalyzerOutputCreate]): A list of outputs to be created.
-
-        Returns:
-        A list of created analyzer outputs.
-        """
         for output_data in outputs:
             new_output = AnalyzerOutput(
                 analyzer_id=analyzer_id, **output_data.model_dump()
