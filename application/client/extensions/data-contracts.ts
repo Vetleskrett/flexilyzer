@@ -17,9 +17,9 @@ export interface AnalyzerCreate {
   description: string;
   /** Creator */
   creator?: string | null;
-  /** Hasscript */
-  hasScript?: boolean | null;
-  hasVenv?: VenvEnum | null;
+  /** Has Script */
+  has_script?: boolean | null;
+  has_venv?: VenvEnum | null;
   /** Inputs */
   inputs: AnalyzerInputCreate[];
   /** Outputs */
@@ -78,9 +78,9 @@ export interface AnalyzerResponse {
   description: string;
   /** Creator */
   creator?: string | null;
-  /** Hasscript */
-  hasScript?: boolean | null;
-  hasVenv?: VenvEnum | null;
+  /** Has Script */
+  has_script?: boolean | null;
+  has_venv?: VenvEnum | null;
   /** Id */
   id: number;
   /** Inputs */
@@ -97,9 +97,9 @@ export interface AnalyzerSimplifiedResponse {
   description: string;
   /** Creator */
   creator?: string | null;
-  /** Hasscript */
-  hasScript?: boolean | null;
-  hasVenv?: VenvEnum | null;
+  /** Has Script */
+  has_script?: boolean | null;
+  has_venv?: VenvEnum | null;
   /** Id */
   id: number;
 }

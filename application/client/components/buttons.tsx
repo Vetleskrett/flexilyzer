@@ -6,30 +6,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export function CreateCourseButton() {
+export function CreateButton({ route, text }: { route: string; text: string }) {
   const { push } = useRouter();
 
   return (
     <Button
+      color="secondary"
       onClick={() => {
-        push(`/courses/new`);
+        push(route);
       }}
     >
-      Create course
-    </Button>
-  );
-}
-
-export function CreateAnalyzerButton() {
-  const { push } = useRouter();
-
-  return (
-    <Button
-      onClick={() => {
-        push(`/analyzers/new`);
-      }}
-    >
-      Create Analyzer
+      {text}
     </Button>
   );
 }

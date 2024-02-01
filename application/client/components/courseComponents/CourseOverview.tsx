@@ -19,10 +19,10 @@ export default function CourseOverview({ course }: { course: CourseResponse }) {
           </div>
           <div className="flex-initial my-auto mr-15">
             <Button
+              color="primary"
               onClick={() => {
                 router.push(`/courses/${course.id}`);
               }}
-              variant="faded"
             >
               Go to course
             </Button>

@@ -27,7 +27,7 @@ export default async function Analyzer({ params }: Props) {
         </div>
         <div className="flex-grow max-w-50p p-4">
           <h2 className="h2 text-center">Analyzer script</h2>
-          {analyzer.hasScript ? (
+          {analyzer.has_script ? (
             <AnalyzerScriptDisplay analyzer_id={analyzer.id} />
           ) : (
             <>
