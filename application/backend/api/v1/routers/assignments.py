@@ -2,11 +2,13 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from schemas import batch_schema
+from services.batch_service import BatchService
 from schemas import reports_schema, project_schema, analyzer_schema
 
 from db.database import get_db
 from schemas import assingment_schema
-from services.assignments_service import AssingmentService
+from services.assignments_service import AssignmentService
 
 router = APIRouter(prefix="/api/v1/assignments")
 
@@ -15,7 +17,7 @@ router = APIRouter(prefix="/api/v1/assignments")
 async def get_all_assignments(
     db=Depends(get_db),
 ) -> List[assingment_schema.AssignmentResponse]:
-    return AssingmentService.get_assignments(db)
+    return AssignmentService.get_assignments(db)
 
 
 @router.get("/{assignment_id}", operation_id="get-assignment")
@@ -23,38 +25,50 @@ async def get_assignment(
     assignment_id: int,
     db=Depends(get_db),
 ) -> assingment_schema.AssignmentResponse:
-    return AssingmentService.get_assignment(db, assignment_id)
+    return AssignmentService.get_assignment(db, assignment_id)
 
 
 @router.get("/{assignment_id}/projects", operation_id="get-assignment-projects")
 async def get_assignment_projects(
     assignment_id: int, db=Depends(get_db)
 ) -> List[project_schema.ProjectResponse]:
-    return AssingmentService.get_assignment_projects(db, assignment_id)
+    return AssignmentService.get_assignment_projects(db, assignment_id)
 
 
 @router.post("/")
 def create_assignment(
     assignment: assingment_schema.AssignmentCreate, db: Session = Depends(get_db)
 ):
-    return AssingmentService.create_assignment(db, assignment)
+    return AssignmentService.create_assignment(db, assignment)
 
 
 @router.get("/{assignment_id}/teams/{team_id}/projects/reports")
 def get_assignment_team_repos_reports(
     assignment_id: int, team_id: int, db=Depends(get_db)
 ) -> List[reports_schema.ReportResponse]:
-    return AssingmentService.get_assignment_team_repos_reports(
+    return AssignmentService.get_assignment_team_repos_reports(
         db=db, assignment_id=assignment_id, team_id=team_id
     )
 
 
-@router.get("/{assignment_id}/analyzers")
-def get_assignment_team_repos_reports(
+@router.get("/{assignment_id}/analyzers", operation_id="get-assignment-analyzers")
+def get_assignment_analyzers(
     assignment_id: int, db=Depends(get_db)
 ) -> List[analyzer_schema.AnalyzerSimplifiedResponse]:
-    return AssingmentService.get_assignment_analyzers(
+    return AssignmentService.get_assignment_analyzers(
         db=db, assignemnt_id=assignment_id
+    )
+
+
+@router.get(
+    "/{assignment_id}/analyzers/{analyzer_id}/batches",
+    operation_id="get-assignment-analyzers-batches",
+)
+def get_assignment_analyzers(
+    assignment_id: int, analyzer_id: int, db=Depends(get_db)
+) -> List[batch_schema.BatchReponse]:
+    return BatchService.get_assignment_analyzers_batches(
+        db=db, assignemnt_id=assignment_id, analyzer_id=analyzer_id
     )
 
 

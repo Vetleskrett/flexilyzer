@@ -69,3 +69,13 @@ class BatchesRepository:
         db.commit()
         db.refresh(db_batch)
         return db_batch
+
+    @staticmethod
+    def get_batch_by_assignment_and_analyzer(db: Session, assignemnt_id, analyzer_id):
+        return (
+            db.query(Batch)
+            .filter(
+                Batch.analyzer_id == analyzer_id, Batch.assignment_id == assignemnt_id
+            )
+            .all()
+        )

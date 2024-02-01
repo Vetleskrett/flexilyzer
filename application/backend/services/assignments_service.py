@@ -8,7 +8,7 @@ from services.courses_service import CourseService
 from services.teams_service import TeamService
 
 
-class AssingmentService:
+class AssignmentService:
     @staticmethod
     def get_assignments(db):
         return AssignmentRepository.get_assignments(db)
@@ -24,7 +24,7 @@ class AssingmentService:
 
     @staticmethod
     def get_assignment_projects(db, assignment_id):
-        AssingmentService.get_assignment(db, assignment_id)
+        AssignmentService.get_assignment(db, assignment_id)
 
         return AssignmentRepository.get_assignment_projects(db, assignment_id)
 
@@ -39,7 +39,7 @@ class AssingmentService:
     def get_assignment_team_repos_reports(
         db: Session, assignment_id: int, team_id: int
     ):
-        AssingmentService.get_assignment(db, assignment_id)
+        AssignmentService.get_assignment(db, assignment_id)
         TeamService.get_team(db, team_id)
 
         return AssignmentRepository.get_assignment_team_repos_reports(
@@ -48,6 +48,6 @@ class AssingmentService:
 
     @staticmethod
     def get_assignment_analyzers(db: Session, assignemnt_id: int):
-        AssingmentService.get_assignment(db, assignemnt_id)
+        AssignmentService.get_assignment(db, assignemnt_id)
 
         return AnalyzerRepository.get_analyzers_by_assignment_id(db, assignemnt_id)

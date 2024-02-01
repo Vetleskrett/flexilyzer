@@ -1,6 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends, UploadFile, File
 from sqlalchemy.orm import Session
+from services.jobs_service import JobsService
 from schemas import analyzer_schema
 
 from services.analyzers_service import (
@@ -100,6 +101,4 @@ async def upload_analyzer_requirements(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
 ) -> str:
-    return AnalyzerService.upload_requirements(
-        db=db, analyzer_id=analyzer_id, file=file
-    )
+    return JobsService.upload_requirements(db=db, analyzer_id=analyzer_id, file=file)

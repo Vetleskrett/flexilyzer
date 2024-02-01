@@ -204,13 +204,6 @@ class AnalyzerService:
         return "Script stored successfully."
 
     @staticmethod
-    def upload_requirements(db, analyzer_id, file: UploadFile):
-        validatePydanticToHTTPError(RequirementsSchema, {"file_name": file.filename})
-        analyzer = AnalyzerService.get_analyzer(db=db, analyzer_id=analyzer_id)
-
-        return 1
-
-    @staticmethod
     def get_script(db, analyzer_id):
         analyzer = AnalyzerRepository.get_analyzer(db, analyzer_id)
 

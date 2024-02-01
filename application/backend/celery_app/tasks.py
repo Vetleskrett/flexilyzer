@@ -1,5 +1,8 @@
+from fastapi import UploadFile
 from celery_app.main import app
 
+import sys
+import subprocess
 
 import docker
 from pathlib import Path
@@ -10,11 +13,13 @@ from services.projects_service import ProjectsService
 
 from db.database import get_db
 
-from .validation_utils import validate_report, validate_type
+from utils.validationUtils import validate_report, validate_type
+from utils.fileUtils import createIfNotExists, validate_venv
 from schemas.shared import BatchEnum
 from schemas.reports_schema import ReportCreate
 from db.crud.batches_crud import BatchesRepository
 from db.crud.reports_crud import ReportRepository
+from configs.config import settings
 
 
 @app.task
@@ -26,8 +31,9 @@ def celery_task(analyzer_id: int, project_ids: list[int], batch_id: int):
     )
 
     # requirements_path = "test/celery_test/requirments.txt"
-    script_path = "test/celery_testing/test_analyzer.py"
-    abs_script_path = Path(script_path).absolute()
+    abs_script_path = (
+        Path(settings.BASE_DIR) / analyzer_id / settings.DEFAULT_SCRIPT_NAME
+    )
 
     container_script_path = "/app/test_analyzer.py"
 
@@ -136,6 +142,31 @@ def celery_task(analyzer_id: int, project_ids: list[int], batch_id: int):
         # Clean up: stop and remove the container
         container.stop()
         container.remove()
+
+
+@app.task
+def create_venv_from_requirements(
+    analyzer_id: int,
+):
+    analyzer_path = Path(settings.BASE_DIR) / analyzer_id
+    createIfNotExists(analyzer_path)
+
+    venv_path = analyzer_path / settings.DEFAULT_VENV_NAME
+
+    if validate_venv(analyzer_id):
+        return {"Venv already exists"}
+
+    subprocess.check_call([sys.executable, "-m", "venv", str(venv_path)])
+
+    try:
+        # Create the venv at path
+        pass
+
+    except Exception as e:
+        # Handle any exceptions here (Logging, alerting, etc.)
+        print(f"An error occurred: {e}")
+
+    return
 
 
 @app.task
