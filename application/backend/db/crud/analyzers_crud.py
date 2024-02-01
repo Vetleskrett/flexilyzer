@@ -7,7 +7,13 @@ from schemas.analyzer_schema import (
 )
 import json
 
-from db.models import Analyzer, AnalyzerInput, AnalyzerOutput
+from db.models import (
+    Analyzer,
+    AnalyzerInput,
+    AnalyzerOutput,
+    Assignment,
+    assignment_analyzer_association,
+)
 
 
 class AnalyzerRepository:
@@ -51,6 +57,33 @@ class AnalyzerRepository:
         The requested analyzer if found, otherwise None.
         """
         return db.query(Analyzer).filter(Analyzer.name == analyzer_name).first()
+
+    @staticmethod
+    def get_analyzers_by_assignment_id(db: Session, assignment_id: int):
+        """
+        Retrieves all analyzers connected to a specific assignment.
+
+        Parameters:
+        - db (Session): The database session.
+        - assignment_id (int): The ID of the assignment.
+
+        Returns:
+        A list of analyzers connected to the specified assignment.
+        """
+        return (
+            db.query(Analyzer)
+            .select_from(Analyzer)
+            .join(
+                assignment_analyzer_association,
+                Analyzer.id == assignment_analyzer_association.c.analyzer_id,
+            )
+            .join(
+                Assignment,
+                Assignment.id == assignment_analyzer_association.c.assignment_id,
+            )
+            .filter(Assignment.id == assignment_id)
+            .all()
+        )
 
     @staticmethod
     def get_analyzer_inputs(db: Session, analyzer_id: int):
@@ -109,6 +142,26 @@ class AnalyzerRepository:
         db.refresh(new_analyzer)
 
         return new_analyzer
+
+    @staticmethod
+    def update_analyzer(db: Session, analyzer_id: int, analyzer: AnalyzerBase):
+        """
+        Update an existing Analyzer.
+
+        Parameters:
+        - db (Session): The database session.
+        - analyzer_id (int): The analyzer ID.
+        - analyzer (AnalyzerBase): The updated analyzer data.
+
+        Returns:
+        The updated analyzer.
+        """
+        db_analyzer = db.query(Analyzer).filter(Analyzer.id == analyzer_id).first()
+        for key, value in analyzer.model_dump().items():
+            setattr(db_analyzer, key, value)
+        db.commit()
+        db.refresh(db_analyzer)
+        return db_analyzer
 
     @staticmethod
     def create_analyzer_inputs(

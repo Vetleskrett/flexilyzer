@@ -47,6 +47,15 @@ async def post_analyzer(
     return AnalyzerService.post_analyzer(db=db, analyzer=analyzer)
 
 
+# @router.put("/{analyzer_id}", operation_id="update-analyzer")
+# async def update_analyzer(
+#     analyzer_id: int,
+#     analyzer: analyzer_schema.AnalyzerCreate,
+#     db: Session = Depends(get_db),
+# ) -> analyzer_schema.AnalyzerResponse:
+#     return AnalyzerService.update_analyzer(db, analyzer)
+
+
 @router.post("/template", operation_id="get-analyzer-template")
 async def get_analyzer_template(
     analyzer: analyzer_schema.AnalyzerCreate,
@@ -60,7 +69,19 @@ async def upload_analyzer_script(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
 ) -> str:
-    return AnalyzerService.upload_script(db=db, analyzer_id=analyzer_id, file=file)
+    return await AnalyzerService.upload_script(
+        db=db, analyzer_id=analyzer_id, file=file
+    )
+
+
+@router.delete(
+    "/{analyzer_id}/script", operation_id="delete-analyzer-script", status_code=204
+)
+async def delete_analyzer_script(
+    analyzer_id: int,
+    db: Session = Depends(get_db),
+) -> None:
+    return AnalyzerService.delete_script(db=db, analyzer_id=analyzer_id)
 
 
 @router.get("/{analyzer_id}/script", operation_id="get-analyzer-script")
