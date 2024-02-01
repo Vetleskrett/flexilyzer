@@ -1,57 +1,56 @@
-from fastapi import UploadFile
-import os
-from fastapi import HTTPException
+from fastapi import UploadFile, HTTPException
+from pathlib import Path
+import aiofiles
 
 
 base_dir = "test/upload/files"
 script_name = "main.py"
 
 
-def store_file(analyzer_id: int, file: UploadFile):
+async def store_file(analyzer_id: int, file: UploadFile):
     try:
-        directory = f"{base_dir}/{analyzer_id}"
+        directory = Path(base_dir) / str(analyzer_id)
+        directory.mkdir(parents=True, exist_ok=True)
 
-        if not os.path.exists(directory):
-            os.makedirs(directory)
+        file_path = directory / script_name
 
-        file_path = os.path.join(directory, script_name)
+        async with aiofiles.open(file_path, mode="wb") as buffer:
+            while content := await file.read(1024):
+                await buffer.write(content)
 
-        with open(file_path, "wb") as buffer:
-            buffer.write(file.file.read())
-
-    except IOError as e:
+    except OSError as e:
         print(e)
         raise HTTPException(status_code=500, detail="File storage failed.")
 
 
 def validate_file(analyzer_id: int):
-    try:
-        fileExists = os.path.isfile(f"{base_dir}/{analyzer_id}/{script_name}")
-    except Exception as e:
-        print(e)
-        raise HTTPException(status_code=500, detail="Error checking file existence.")
-
-    return fileExists
+    file_path = Path(base_dir) / str(analyzer_id) / script_name
+    return file_path.is_file()
 
 
 def validate_venv(analyzer_id: int):
-    try:
-        venvExists = os.path.isdir(f"{base_dir}/{analyzer_id}/venv")
-    except Exception as e:
-        print(e)
-        raise HTTPException(
-            status_code=500, detail="Error checking virtual environment existence."
-        )
-
-    return venvExists
+    venv_path = Path(base_dir) / str(analyzer_id) / "venv"
+    return venv_path.is_dir()
 
 
 def read_file(analyzer_id: int):
     try:
-        with open(f"{base_dir}/{analyzer_id}/{script_name}") as f:
+        file_path = Path(base_dir) / str(analyzer_id) / script_name
+        with file_path.open() as f:
             content = f.read()
-    except IOError as e:
+    except OSError as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error reading file")
 
     return content
+
+
+def delete_file(analyzer_id: int):
+    try:
+        file_path = Path(base_dir) / str(analyzer_id) / script_name
+        file_path.unlink(missing_ok=True)
+    except OSError as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Error deleting file")
+
+    return None

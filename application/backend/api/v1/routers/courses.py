@@ -1,5 +1,5 @@
 from typing import List, Optional
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from schemas import course_schema, assingment_schema, team_schema
 from sqlalchemy.orm import Session
@@ -53,5 +53,4 @@ async def get_course_assignments(
 async def get_courses_teams(
     course_id: int, db=Depends(get_db)
 ) -> List[team_schema.TeamResponse]:
- 
     return CourseService.get_course_teams(db, course_id)
