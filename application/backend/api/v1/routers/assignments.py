@@ -2,7 +2,7 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from schemas import reports_schema, project_schema
+from schemas import reports_schema, project_schema, analyzer_schema
 
 from db.database import get_db
 from schemas import assingment_schema
@@ -46,6 +46,15 @@ def get_assignment_team_repos_reports(
 ) -> List[reports_schema.ReportResponse]:
     return AssingmentService.get_assignment_team_repos_reports(
         db=db, assignment_id=assignment_id, team_id=team_id
+    )
+
+
+@router.get("/{assignment_id}/analyzers")
+def get_assignment_team_repos_reports(
+    assignment_id: int, db=Depends(get_db)
+) -> List[analyzer_schema.AnalyzerSimplifiedResponse]:
+    return AssingmentService.get_assignment_analyzers(
+        db=db, assignemnt_id=assignment_id
     )
 
 

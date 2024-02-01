@@ -47,6 +47,15 @@ async def post_analyzer(
     return AnalyzerService.post_analyzer(db=db, analyzer=analyzer)
 
 
+# @router.put("/{analyzer_id}", operation_id="update-analyzer")
+# async def update_analyzer(
+#     analyzer_id: int,
+#     analyzer: analyzer_schema.AnalyzerCreate,
+#     db: Session = Depends(get_db),
+# ) -> analyzer_schema.AnalyzerResponse:
+#     return AnalyzerService.update_analyzer(db, analyzer)
+
+
 @router.post("/template", operation_id="get-analyzer-template")
 async def get_analyzer_template(
     analyzer: analyzer_schema.AnalyzerCreate,

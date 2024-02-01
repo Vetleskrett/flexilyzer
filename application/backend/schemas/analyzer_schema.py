@@ -28,8 +28,6 @@ class AnalyzerBase(BaseModel):
     name: str
     description: str
     creator: Optional[str] = None
-    has_script: Optional[bool] = None
-    has_venv: Optional[VenvEnum] = None
 
 
 class AnalyzerSimplifiedResponse(AnalyzerBase):
@@ -60,6 +58,8 @@ class AnalyzerInputResponse(AnalyzerInputBase):
 
 class AnalyzerResponse(AnalyzerBase):
     id: int
+    has_script: Optional[bool] = None
+    has_venv: Optional[VenvEnum] = None
     inputs: List[AnalyzerInputResponse]
     outputs: List[AnalyzerOutputResponse]
 
