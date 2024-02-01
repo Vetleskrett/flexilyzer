@@ -1,6 +1,6 @@
 import api from "@/api_utils";
 import AnalyzerOverview from "@/components/analyzerComponents/AnalyzerOverview";
-import { CreateAnalyzerButton } from "@/components/buttons";
+import { CreateButton } from "@/components/buttons";
 import { useRouter } from "next/navigation";
 
 export default async function Analyzers() {
@@ -8,12 +8,12 @@ export default async function Analyzers() {
 
   return (
     <div>
-      <h2 className='h2'>All Analyzers:</h2>
+      <h2 className="h2">All Analyzers:</h2>
       {analyzers.data.map((analyzer) => {
         return <AnalyzerOverview analyzer={analyzer} />;
       })}
-      <div className='flex flex-col items-center mt-30'>
-        <CreateAnalyzerButton />
+      <div className="flex flex-col items-center mt-30">
+        <CreateButton route={"/analyzers/new"} text={"New Analyzer"} />
       </div>
     </div>
   );

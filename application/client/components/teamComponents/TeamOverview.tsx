@@ -1,18 +1,15 @@
 "use client";
-import { AssignmentResponse } from "@/extensions/data-contracts";
+import { CourseResponse } from "@/extensions/data-contracts";
 import { Button, Card, CardBody } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
-interface AssignmentOverview extends AssignmentResponse {
-  course_id: number;
-}
-
-export default function AssignmentOverview({
+export default function TeamOverview({
+  team_id,
   course_id,
-  id,
-  name,
-  due_date,
-}: AssignmentOverview) {
+}: {
+  team_id: number;
+  course_id: number;
+}) {
   const router = useRouter();
 
   return (
@@ -20,18 +17,17 @@ export default function AssignmentOverview({
       <CardBody>
         <div className="flex">
           <div className="flex-auto">
-            <h3 className="h3">{name}</h3>
-            <b>Due Date: </b>
-            {due_date ? new Date(due_date).toLocaleDateString("no-NO") : ""}
+            <h3 className="h3">Team {team_id}</h3>
+            More info here ? ...
           </div>
           <div className="flex-initial my-auto mr-15">
             <Button
               onClick={() => {
-                router.push(`/courses/${course_id}/assignments/${id}`);
+                router.push(`/courses/${course_id}/teams/${team_id}`);
               }}
               variant="faded"
             >
-              Go to Assignment
+              Go to Team
             </Button>
           </div>
         </div>
