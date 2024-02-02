@@ -17,9 +17,6 @@ export interface AnalyzerCreate {
   description: string;
   /** Creator */
   creator?: string | null;
-  /** Has Script */
-  has_script?: boolean | null;
-  has_venv?: VenvEnum | null;
   /** Inputs */
   inputs: AnalyzerInputCreate[];
   /** Outputs */
@@ -78,11 +75,11 @@ export interface AnalyzerResponse {
   description: string;
   /** Creator */
   creator?: string | null;
+  /** Id */
+  id: number;
   /** Has Script */
   has_script?: boolean | null;
   has_venv?: VenvEnum | null;
-  /** Id */
-  id: number;
   /** Inputs */
   inputs: AnalyzerInputResponse[];
   /** Outputs */
@@ -97,9 +94,6 @@ export interface AnalyzerSimplifiedResponse {
   description: string;
   /** Creator */
   creator?: string | null;
-  /** Has Script */
-  has_script?: boolean | null;
-  has_venv?: VenvEnum | null;
   /** Id */
   id: number;
 }
@@ -124,6 +118,30 @@ export interface AssignmentResponse {
   course_id: number;
   /** Id */
   id: number;
+}
+
+/** BatchEnum */
+export enum BatchEnum {
+  STARTED = "STARTED",
+  RUNNING = "RUNNING",
+  FAILED = "FAILED",
+  FINISHED = "FINISHED",
+}
+
+/** BatchReponse */
+export interface BatchReponse {
+  /** Assignment Id */
+  assignment_id: number;
+  /** Analyzer Id */
+  analyzer_id: number;
+  /** Id */
+  id: number;
+  status?: BatchEnum | null;
+  /**
+   * Timestamp
+   * @format date-time
+   */
+  timestamp: string;
 }
 
 /** Body_upload-analyzer-requirements */

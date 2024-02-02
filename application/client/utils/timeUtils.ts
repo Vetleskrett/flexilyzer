@@ -1,5 +1,5 @@
 "use client";
-export function calcTimeLeft(due_date: string) {
+export function calcTimeDifference(due_date: string) {
   // Calculate the difference between now and the due date
   // Ensure due_date is a valid Date object
 

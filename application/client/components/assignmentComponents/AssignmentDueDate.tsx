@@ -1,6 +1,6 @@
 "use client";
 
-import { calcTimeLeft } from "@/utils/timeUtils";
+import { calcTimeDifference } from "@/utils/timeUtils";
 import { Card } from "@nextui-org/react";
 import { format } from "date-fns";
 import { useState } from "react";
@@ -22,7 +22,7 @@ export default function AssignmentDueDate({ assignment_id, due_date }: Params) {
         {due_date ? (
           <>
             Due date: {format(new Date(due_date), dateTimeFormat)} (
-            {calcTimeLeft(due_date)})
+            {calcTimeDifference(due_date)})
           </>
         ) : (
           "No Due date set"

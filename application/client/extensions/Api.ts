@@ -17,6 +17,7 @@ import {
   AnalyzerSimplifiedResponse,
   AssignmentCreate,
   AssignmentResponse,
+  BatchReponse,
   BodyUploadAnalyzerRequirements,
   BodyUploadAnalyzerScript,
   CourseCreate,
@@ -262,6 +263,36 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
+   * @tags assignments
+   * @name GetAssignmentAnalyzers
+   * @summary Get Assignment Analyzers
+   * @request GET:/api/v1/assignments/{assignment_id}/analyzers
+   */
+  getAssignmentAnalyzers = (assignmentId: number, params: RequestParams = {}) =>
+    this.request<AnalyzerSimplifiedResponse[], HTTPValidationError>({
+      path: `/api/v1/assignments/${assignmentId}/analyzers`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags assignments
+   * @name GetAssignmentAnalyzersBatches
+   * @summary Get Assignment Analyzers
+   * @request GET:/api/v1/assignments/{assignment_id}/analyzers/{analyzer_id}/batches
+   */
+  getAssignmentAnalyzersBatches = (assignmentId: number, analyzerId: number, params: RequestParams = {}) =>
+    this.request<BatchReponse[], HTTPValidationError>({
+      path: `/api/v1/assignments/${assignmentId}/analyzers/${analyzerId}/batches`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
    * @tags teams
    * @name GetAllTeams
    * @summary Get All Teams
@@ -488,6 +519,20 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       body: data,
       type: ContentType.FormData,
       format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags analyzers
+   * @name DeleteAnalyzerScript
+   * @summary Delete Analyzer Script
+   * @request DELETE:/api/v1/analyzers/{analyzer_id}/script
+   */
+  deleteAnalyzerScript = (analyzerId: number, params: RequestParams = {}) =>
+    this.request<void, HTTPValidationError>({
+      path: `/api/v1/analyzers/${analyzerId}/script`,
+      method: "DELETE",
       ...params,
     });
   /**
