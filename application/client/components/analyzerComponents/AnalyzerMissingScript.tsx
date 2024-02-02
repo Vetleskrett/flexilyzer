@@ -103,8 +103,8 @@ export default async function AnalyzerMissingScript({
   };
   const handleReqSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!selectedReqFile) {
-      alert("Please select a file to upload");
+    if (!selectedReqFile || selectedReqFile.name !== "requirements.txt") {
+      alert("Please select a valid to upload");
       return;
     }
 
