@@ -214,3 +214,17 @@ class AnalyzerService:
             )
 
         return read_file(analyzer_id)
+
+    @staticmethod
+    def get_requirements(db, analyzer_id):
+        analyzer = AnalyzerRepository.get_analyzer(db, analyzer_id)
+
+        if not script_exists(
+            analyzer_id=analyzer_id, requirements=True
+        ):  # or analyzer.has_vevn != "NO_VENV":
+            raise HTTPException(
+                status_code=404,
+                detail=f"Script for analyzer with id {analyzer_id} is not yet uploaded",
+            )
+
+        return read_file(analyzer_id)

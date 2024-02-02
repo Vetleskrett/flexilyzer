@@ -1,3 +1,4 @@
+from typing import List
 from db.crud.analyzers_crud import AnalyzerRepository
 from db.crud.assignments_crud import AssignmentRepository
 from schemas import assingment_schema
@@ -51,3 +52,11 @@ class AssignmentService:
         AssignmentService.get_assignment(db, assignemnt_id)
 
         return AnalyzerRepository.get_analyzers_by_assignment_id(db, assignemnt_id)
+
+    @staticmethod
+    def get_assignment_metadata(
+        db: Session, assignemnt_id: int
+    ) -> List[assingment_schema.AssignmentMetadataResponse]:
+        return AssignmentRepository.get_assignment_metadata_for_assignment(
+            db, assignemnt_id
+        )

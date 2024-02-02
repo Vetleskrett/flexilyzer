@@ -1,4 +1,5 @@
 from celery_app.main import app
+from celery_app.helpers import fetchProjectsAndMetadataHelper, fetchIOHelper
 
 import sys
 import subprocess
@@ -22,69 +23,43 @@ from configs.config import settings
 
 
 @app.task
-def celery_task(analyzer_id: int, project_ids: list[int], batch_id: int):
+def run_analyzer(project_ids: list[int], batch_id: int):
     db = next(get_db())
 
-    BatchesRepository.update_batch_status(
+    batch = BatchesRepository.update_batch_status(
         db=db, batch_id=batch_id, status=BatchEnum.RUNNING
     )
 
+    analyzer_id = batch.analyzer_id
+    assignment_id = batch.assignment_id
+
+    # construct paths
     base_path = Path(settings.BASE_DIR) / str(analyzer_id)
-
     script_path = base_path / settings.DEFAULT_SCRIPT_NAME
-
     venv_path = base_path / settings.DEFAULT_VENV_NAME
+    container_base_path = Path("/app")
+    container_script_path = container_base_path / settings.DEFAULT_SCRIPT_NAME
+    container_venv_path = container_base_path / settings.DEFAULT_VENV_NAME
 
-    container_default_path = Path("/path")
-
-    container_script_path = container_default_path / settings.DEFAULT_SCRIPT_NAME
-
+    # construct docker
     client = docker.from_env()
-
-    # Create docker container
     container = client.containers.create(
         "python:3.11",
         "tail -f /dev/null",
         volumes={
             str(script_path): {"bind": container_script_path, "mode": "ro"},
-            "python-envs": {"bind": "/venvs", "mode": "rw"},
+            str(venv_path): {"bind": container_venv_path, "mode": "ro"},
         },
         detach=True,
     )
-
     container.start()
 
-    # Fetch all required analyzer inputs from DB
-    required_input_objects = AnalyzerService.get_analyzer_inputs(db, analyzer_id)
-    # Extract the key_name from each AnalyzerInput object into a set
-    required_inputs = {input_obj.key_name for input_obj in required_input_objects}
-    required_output_objects = AnalyzerService.get_analyzer_outputs(db, analyzer_id)
-    # Extract the key_name from each AnalyzerInput object into a set
+    required_inputs, required_outputs = fetchIOHelper(db, analyzer_id)
 
-    required_outputs = {
-        output_obj.key_name: {
-            "value_type": output_obj.value_type,
-            "extended_metadata": output_obj.extended_metadata
-            if output_obj.extended_metadata
-            else None,
-        }
-        for output_obj in required_output_objects
-    }
+    projects_with_metadata = fetchProjectsAndMetadataHelper(
+        db, project_ids, required_inputs, assignment_id
+    )
 
-    projects_with_metadata = {}
-    # Fetch all required metadata for all projects
-    for id in project_ids:
-        # Fetch project metadata, assuming it returns a dict-like object
-        project_metadata_objects = ProjectsService.get_project(db, id).project_metadata
-
-        filtered_metadata = {
-            meta.key_name: meta.value
-            for meta in project_metadata_objects
-            if meta.key_name in required_inputs
-        }
-
-        # Store the filtered metadata in projects_with_metadata
-        projects_with_metadata[id] = filtered_metadata
     try:
         # Loop through all projects to be analyzed,
         # for each repo, execute analysis inside container with the correct venv
@@ -93,8 +68,12 @@ def celery_task(analyzer_id: int, project_ids: list[int], batch_id: int):
                 f"{key}={value}" for key, value in metadata.items()
             )
 
+            container_python_executable = container_venv_path / "bin" / "python"
+
             # Run the script using the virtual environment and env variables
-            run_command = f"python {env_vars_shell} /app/{Path(script_path).name}"
+            run_command = f"{container_python_executable} {env_vars_shell} {container_script_path}"
+            print(run_command)
+
             result = container.exec_run(run_command)
 
             # Return the output (or error message)

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session, aliased
 from sqlalchemy import and_
-from db.models import Assignment, Project, Report, Team
+from db.models import Assignment, AssignmentMetadata, Project, Report, Team
 from schemas import assingment_schema
 
 
@@ -91,6 +91,13 @@ class AssignmentRepository:
             .outerjoin(team, project.team_id == team.id)
             .outerjoin(assignment, project.assignment_id == assignment.id)
             .filter(and_(team.id == team_id, assignment.id == assignment_id))
+            .all()
+        )
+
+    def get_assignment_metadata_for_assignment(db: Session, assignemnt_id):
+        return (
+            db.query(AssignmentMetadata)
+            .filter(AssignmentMetadata.assignment_id == assignemnt_id)
             .all()
         )
 

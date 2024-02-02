@@ -19,3 +19,16 @@ class ProjectResponse(ProjectBase):
 
     class Config:
         from_attributes = True
+
+
+class ProjectMetadataBase(BaseModel):
+    value: str
+    project_id: int
+    assignment_metadata_id: int
+
+
+class ProjectMetadataResponse(ProjectMetadataBase):
+    id: int
+
+    class Config:
+        from_attributes = True

@@ -8,7 +8,7 @@ from db.crud.batches_crud import BatchesRepository
 from schemas.batch_schema import BatchCreate
 from schemas.shared import BatchEnum
 
-from celery_app.tasks import celery_task, create_venv_from_requirements
+from celery_app.tasks import create_venv_from_requirements, run_analyzer
 
 from fastapi import HTTPException, UploadFile
 
@@ -42,7 +42,7 @@ class JobsService:
             db, batch_id=batch.id, status=BatchEnum.STARTED
         )
 
-        celery_task.delay(analyzer_id, project_ids, batch.id)
+        run_analyzer.delay(project_ids, batch.id)
 
         return {"status": "Job started successfully", "code": 0}
 

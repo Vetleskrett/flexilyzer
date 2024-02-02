@@ -18,3 +18,16 @@ class AssignmentResponse(AssignmentBase):
 
     class Config:
         from_attributes = True
+
+
+class AssignmentMetadataBase(BaseModel):
+    assignment_id: int
+    key_name: str
+    value_type: str
+
+
+class AssignmentMetadataResponse(AssignmentMetadataBase):
+    id: int
+
+    class Config:
+        from_attributes = True

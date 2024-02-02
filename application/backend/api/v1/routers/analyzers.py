@@ -86,11 +86,19 @@ async def delete_analyzer_script(
 
 
 @router.get("/{analyzer_id}/script", operation_id="get-analyzer-script")
-async def upload_analyzer_script(
+async def get_analyzer_script(
     analyzer_id: int,
     db: Session = Depends(get_db),
 ) -> str:
     return AnalyzerService.get_script(db=db, analyzer_id=analyzer_id)
+
+
+@router.get("/{analyzer_id}/requirements", operation_id="get-analyzer-requirements")
+async def get_analyzer_script(
+    analyzer_id: int,
+    db: Session = Depends(get_db),
+) -> str:
+    return AnalyzerService.get_requirements(db=db, analyzer_id=analyzer_id)
 
 
 @router.post(
