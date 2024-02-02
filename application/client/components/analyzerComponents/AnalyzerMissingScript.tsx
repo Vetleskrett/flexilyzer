@@ -168,7 +168,7 @@ export default async function AnalyzerMissingScript({
               >
                 <input
                   type="file"
-                  accept=".py"
+                  accept=".txt"
                   onChange={handleReqFileChange}
                 />
                 <br />
