@@ -1,4 +1,3 @@
-from fastapi import UploadFile
 from celery_app.main import app
 
 import sys
@@ -14,7 +13,7 @@ from services.projects_service import ProjectsService
 from db.database import get_db
 
 from utils.validationUtils import validate_report, validate_type
-from utils.fileUtils import createIfNotExists, validate_venv
+from utils.fileUtils import create_if_not_exists, script_exists, venv_exists
 from schemas.shared import BatchEnum
 from schemas.reports_schema import ReportCreate
 from db.crud.batches_crud import BatchesRepository
@@ -30,17 +29,15 @@ def celery_task(analyzer_id: int, project_ids: list[int], batch_id: int):
         db=db, batch_id=batch_id, status=BatchEnum.RUNNING
     )
 
-    # requirements_path = "test/celery_test/requirments.txt"
-    abs_script_path = (
-        Path(settings.BASE_DIR) / analyzer_id / settings.DEFAULT_SCRIPT_NAME
-    )
+    base_path = Path(settings.BASE_DIR) / str(analyzer_id)
 
-    container_script_path = "/app/test_analyzer.py"
+    script_path = base_path / settings.DEFAULT_SCRIPT_NAME
 
-    # Generate a hash based on the requirements.txt to identify the virtual environment
-    # requirements_data = Path(requirements_path).read_text()
-    # env_hash = hashlib.md5(requirements_data.encode()).hexdigest()
-    # venv_path = f"/venvs/{env_hash}"
+    venv_path = base_path / settings.DEFAULT_VENV_NAME
+
+    container_default_path = Path("/path")
+
+    container_script_path = container_default_path / settings.DEFAULT_SCRIPT_NAME
 
     client = docker.from_env()
 
@@ -49,7 +46,7 @@ def celery_task(analyzer_id: int, project_ids: list[int], batch_id: int):
         "python:3.11",
         "tail -f /dev/null",
         volumes={
-            str(abs_script_path): {"bind": container_script_path, "mode": "ro"},
+            str(script_path): {"bind": container_script_path, "mode": "ro"},
             "python-envs": {"bind": "/venvs", "mode": "rw"},
         },
         detach=True,
@@ -148,23 +145,43 @@ def celery_task(analyzer_id: int, project_ids: list[int], batch_id: int):
 def create_venv_from_requirements(
     analyzer_id: int,
 ):
-    analyzer_path = Path(settings.BASE_DIR) / analyzer_id
-    createIfNotExists(analyzer_path)
+    analyzer_path = Path(settings.BASE_DIR) / str(analyzer_id)
+    create_if_not_exists(analyzer_path)
 
     venv_path = analyzer_path / settings.DEFAULT_VENV_NAME
 
-    if validate_venv(analyzer_id):
+    if venv_exists(analyzer_id):
         return {"Venv already exists"}
 
-    subprocess.check_call([sys.executable, "-m", "venv", str(venv_path)])
-
     try:
-        # Create the venv at path
-        pass
+        subprocess.check_call([sys.executable, "-m", "venv", str(venv_path)])
+    except subprocess.CalledProcessError as e:
+        print(e)
+        return
 
-    except Exception as e:
-        # Handle any exceptions here (Logging, alerting, etc.)
-        print(f"An error occurred: {e}")
+    python_executable = venv_path / "bin" / "python"
+
+    if not script_exists(analyzer_id=analyzer_id, requirements=True):
+        print(
+            f"Something went wrong while localizing requirements.txt for analyzer with id {analyzer_id}"
+        )
+
+    requirements_path = analyzer_path / settings.DEFAULT_REQUIREMENTS_NAME
+    try:
+        subprocess.check_call(
+            [
+                str(python_executable),
+                "-m",
+                "pip",
+                "install",
+                "-r",
+                str(requirements_path),
+            ]
+        )
+
+    except subprocess.CalledProcessError as e:
+        print(e)
+        return
 
     return
 

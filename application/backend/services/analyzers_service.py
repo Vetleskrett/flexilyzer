@@ -11,7 +11,7 @@ from schemas.analyzer_schema import (
     AnalyzerCreate,
 )
 from utils.validationUtils import validatePydanticToHTTPError
-from utils.fileUtils import delete_file, read_file, store_file, validate_file
+from utils.fileUtils import delete_file, read_file, store_file, script_exists
 from utils.templateUtils import generate_template
 
 
@@ -163,7 +163,7 @@ class AnalyzerService:
     def delete_script(db, analyzer_id):
         analyzer = AnalyzerRepository.get_analyzer(db, analyzer_id)
 
-        if not validate_file(analyzer_id=analyzer_id):  # or not analyzer.has_script:
+        if not script_exists(analyzer_id=analyzer_id):  # or not analyzer.has_script:
             raise HTTPException(
                 status_code=404,
                 detail=f"Script for analyzer with id {analyzer_id} is not yet uploaded",
@@ -182,7 +182,7 @@ class AnalyzerService:
         validatePydanticToHTTPError(ScriptSchema, {"file_name": file.filename})
         analyzer = AnalyzerService.get_analyzer(db=db, analyzer_id=analyzer_id)
 
-        if validate_file(analyzer_id=analyzer_id):  # or analyzer.has_script:
+        if script_exists(analyzer_id=analyzer_id):  # or analyzer.has_script:
             raise HTTPException(
                 status_code=409,
                 detail=f"Script for analyzer with id {analyzer_id} is already uploaded",
@@ -207,7 +207,7 @@ class AnalyzerService:
     def get_script(db, analyzer_id):
         analyzer = AnalyzerRepository.get_analyzer(db, analyzer_id)
 
-        if not validate_file(analyzer_id=analyzer_id):  # or not analyzer.hasScript:
+        if not script_exists(analyzer_id=analyzer_id):  # or not analyzer.hasScript:
             raise HTTPException(
                 status_code=404,
                 detail=f"Script for analyzer with id {analyzer_id} is not yet uploaded",
