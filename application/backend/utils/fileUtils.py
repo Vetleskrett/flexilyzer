@@ -4,14 +4,14 @@ import aiofiles
 from configs.config import settings
 
 
-def createIfNotExists(path: Path):
+def create_if_not_exists(path: Path):
     return path.mkdir(parents=True, exist_ok=True)
 
 
 async def store_file(analyzer_id: int, file: UploadFile, requirements: bool = False):
     try:
         directory = Path(settings.BASE_DIR) / str(analyzer_id)
-        createIfNotExists(directory)
+        create_if_not_exists(directory)
 
         file_path = directory / (
             settings.DEFAULT_SCRIPT_NAME
@@ -28,7 +28,7 @@ async def store_file(analyzer_id: int, file: UploadFile, requirements: bool = Fa
         raise HTTPException(status_code=500, detail="File storage failed.")
 
 
-def validate_file(analyzer_id: int, requirements: bool = False):
+def script_exists(analyzer_id: int, requirements: bool = False):
     file_path = (
         Path(settings.BASE_DIR)
         / str(analyzer_id)
@@ -42,7 +42,7 @@ def validate_file(analyzer_id: int, requirements: bool = False):
     return file_path.is_file()
 
 
-def validate_venv(analyzer_id: int):
+def venv_exists(analyzer_id: int):
     venv_path = Path(settings.BASE_DIR) / str(analyzer_id) / settings.DEFAULT_VENV_NAME
     return venv_path.is_dir()
 

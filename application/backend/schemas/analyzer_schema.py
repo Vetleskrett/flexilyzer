@@ -32,6 +32,8 @@ class AnalyzerBase(BaseModel):
 
 class AnalyzerSimplifiedResponse(AnalyzerBase):
     id: int
+    has_script: Optional[bool] = None
+    has_venv: Optional[VenvEnum] = None
 
     class Config:
         from_attributes: True

@@ -53,7 +53,7 @@ docs/_build/
 .venv
 .env
 .next
-
+venv/
 
 # dependencies
 node_modules
