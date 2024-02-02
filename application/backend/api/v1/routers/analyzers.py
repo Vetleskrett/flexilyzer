@@ -94,7 +94,7 @@ async def get_analyzer_script(
 
 
 @router.get("/{analyzer_id}/requirements", operation_id="get-analyzer-requirements")
-async def get_analyzer_script(
+async def get_analyzer_requirements(
     analyzer_id: int,
     db: Session = Depends(get_db),
 ) -> str:

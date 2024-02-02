@@ -540,7 +540,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags analyzers
    * @name GetAnalyzerScript
-   * @summary Upload Analyzer Script
+   * @summary Get Analyzer Script
    * @request GET:/api/v1/analyzers/{analyzer_id}/script
    */
   getAnalyzerScript = (analyzerId: number, params: RequestParams = {}) =>
@@ -554,12 +554,27 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags analyzers
+   * @name GetAnalyzerRequirements
+   * @summary Get Analyzer Script
+   * @request GET:/api/v1/analyzers/{analyzer_id}/requirements
+   */
+  getAnalyzerRequirements = (analyzerId: number, params: RequestParams = {}) =>
+    this.request<string, HTTPValidationError>({
+      path: `/api/v1/analyzers/${analyzerId}/requirements`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags analyzers
    * @name UploadAnalyzerRequirements
    * @summary Upload Analyzer Requirements
    * @request POST:/api/v1/analyzers/{analyzer_id}/upload/requirements
    */
   uploadAnalyzerRequirements = (analyzerId: number, data: BodyUploadAnalyzerRequirements, params: RequestParams = {}) =>
-    this.request<string, HTTPValidationError>({
+    this.request<number, HTTPValidationError>({
       path: `/api/v1/analyzers/${analyzerId}/upload/requirements`,
       method: "POST",
       body: data,

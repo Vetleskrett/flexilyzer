@@ -57,27 +57,40 @@ export default async function AnalyzerMissingScript({
     fetchCodeTemplate();
   }, []);
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedScriptFile, setSelectedScriptFile] = useState<File | null>(
+    null
+  );
+  const [selectedReqFile, setSelectedReqFile] = useState<File | null>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleScriptFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (event.target.files) {
-      setSelectedFile(event.target.files[0]);
+      setSelectedScriptFile(event.target.files[0]);
     }
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleReqFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setSelectedReqFile(event.target.files[0]);
+    }
+  };
+
+  const handleScriptSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
-    if (!selectedFile) {
+    if (!selectedScriptFile) {
       alert("Please select a file to upload");
       return;
     }
 
     const resp = await api.uploadAnalyzerScript(analyzer.id, {
-      file: selectedFile,
+      file: selectedScriptFile,
     });
     if (resp.ok) {
       openSnackbar({
-        message: "Analyzer submitted successfully!",
+        message: "Analyzer script submitted successfully!",
         severity: "success",
       });
       router.refresh();
@@ -88,31 +101,86 @@ export default async function AnalyzerMissingScript({
       });
     }
   };
+  const handleReqSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!selectedReqFile) {
+      alert("Please select a file to upload");
+      return;
+    }
+
+    const resp = await api.uploadAnalyzerRequirements(analyzer.id, {
+      file: selectedReqFile,
+    });
+    if (resp.ok) {
+      openSnackbar({
+        message: "Requirements.txt file submitted successfully!",
+        severity: "success",
+      });
+      router.refresh();
+    } else {
+      openSnackbar({
+        message: `Something wrong while submitting requirements.txt: ${resp.error}`,
+        severity: "warning",
+      });
+    }
+  };
 
   return (
     <>
       <div className="flex w-full flex-col items-center">
         <Tabs>
-          <Tab key="upload" title="Upload script">
-            <div className="mt-6">
-              <form
-                className="flex flex-col items-center justify-center"
-                onSubmit={handleSubmit}
-              >
-                <input type="file" accept=".py" onChange={handleFileChange} />
-                <br />
-                <Button color="primary" type="submit">
-                  Upload Script
-                </Button>
-              </form>
-            </div>
-          </Tab>
-          <Tab key="template" title="Show Template">
+          <Tab key="template" title="Script Template">
             <Suspense fallback={<Spinner />}>
               <div className="mt-6">
                 <CodeDisplay code_string={codeTemplate ? codeTemplate : ""} />
               </div>
             </Suspense>
+          </Tab>
+          <Tab key="upload_script" title="Upload script">
+            <div className="mt-6">
+              <form
+                className="flex flex-col items-center justify-center"
+                onSubmit={handleScriptSubmit}
+              >
+                <input
+                  type="file"
+                  id="fileInput"
+                  accept=".py"
+                  onChange={handleScriptFileChange}
+                />
+
+                <br />
+                <Button
+                  isDisabled={selectedScriptFile == null ? true : false}
+                  color="primary"
+                  type="submit"
+                >
+                  Upload Script
+                </Button>
+              </form>
+            </div>
+          </Tab>
+          <Tab key="upload_req" title="Upload Requirements">
+            <div className="mt-6">
+              <form
+                className="flex flex-col items-center justify-center"
+                onSubmit={handleReqSubmit}
+              >
+                <input
+                  type="file"
+                  accept=".py"
+                  onChange={handleReqFileChange}
+                />
+                <br />
+                <Button
+                  isDisabled={selectedReqFile == null ? true : false}
+                  color="primary"
+                  type="submit"
+                >
+                  Upload Requirements
+                </Button>
+              </form>
+            </div>
           </Tab>
         </Tabs>
       </div>

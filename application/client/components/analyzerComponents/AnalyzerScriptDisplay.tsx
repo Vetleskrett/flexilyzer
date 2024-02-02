@@ -1,42 +1,117 @@
+"use client";
 import api from "@/api_utils";
 import CodeDisplay from "./CodeDisplay";
-import { ReactElement } from "react";
+import React, { useState } from "react";
+import { VenvEnum } from "@/extensions/data-contracts";
+import { Button, Card, Tab, Tabs } from "@nextui-org/react";
+import { useSnackbar } from "@/context/snackbarContext";
+import { useRouter } from "next/navigation";
 
+interface AnalyzerScriptDisplayProps {
+  analyzer_id: number;
+  script: string | null;
+  has_venv: boolean;
+  requirements: string | null;
+}
 // Define the function as async but ensure it catches errors internally
 export default async function AnalyzerScriptDisplay({
   analyzer_id,
-}: {
-  analyzer_id: number;
-}): Promise<ReactElement> {
-  try {
-    const resp = await api.getAnalyzerScript(analyzer_id, {
-      cache: "no-cache",
-    });
+  script,
+  has_venv,
+  requirements,
+}: AnalyzerScriptDisplayProps) {
+  const router = useRouter();
 
-    // Log status for debugging
-    console.log(resp.status);
+  const { openSnackbar } = useSnackbar();
 
-    // Check for a successful response
-    if (resp.status !== 200) {
-      // Return a user-friendly message or component
-      return <div>Something went wrong</div>;
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!selectedFile) {
+      alert("Please select a file to upload");
+      return;
     }
 
-    // If the response is successful, proceed to render the component
-    return (
-      <div className="flex-grow p-4">
-        <CodeDisplay code_string={resp.data} />
-      </div>
-    );
-  } catch (error) {
-    // Log the error for debugging
-    console.error(error);
+    const resp = await api.uploadAnalyzerRequirements(analyzer_id, {
+      file: selectedFile,
+    });
+    if (resp.ok) {
+      openSnackbar({
+        message: "Requirements file submitted successfully!",
+        severity: "success",
+      });
+      router.refresh();
+    } else {
+      openSnackbar({
+        message: `Something wrong while submitting Requirements file: ${resp.error}`,
+        severity: "warning",
+      });
+    }
+  };
 
-    // Handle the case where the fetch fails, such as a network error or 404 not found
-    return (
-      <div className="flex justify-center bg-red-500 pt-8 pb-8 mr-8 ml-8 rounded-xl text-white">
-        Something went wrong while trying to fetch script
+  // If the response is successful, proceed to render the component
+  return (
+    <>
+      <div className="flex w-full flex-col items-center">
+        <Tabs>
+          <Tab key="script" title="Analyzer script">
+            <div className="mt-6">
+              {script ? (
+                <CodeDisplay code_string={script} />
+              ) : (
+                "Mismatch between server and DB."
+              )}
+            </div>
+          </Tab>
+          <Tab
+            key="requirements"
+            title={has_venv ? "requirements.txt" : "Upload requirements.txt"}
+          >
+            {has_venv ? (
+              <div className="mt-6">
+                {requirements ? (
+                  <CodeDisplay code_string={requirements} />
+                ) : (
+                  "Mismatch between server and DB."
+                )}
+              </div>
+            ) : (
+              <div className="mt-6">
+                <form
+                  className="flex flex-col items-center justify-center mt-8"
+                  onSubmit={handleSubmit}
+                >
+                  <input
+                    id="fileInput"
+                    type="file"
+                    accept=".txt"
+                    onChange={handleFileChange}
+                  />
+                  
+                  <br />
+                  <Card className="p-3 text-xs bg-slate-100 mb-8">
+                    <p>PS: The file must be named exactly "<i>requirements.txt</i>".</p>
+                  </Card>
+                  <Button
+                    isDisabled={selectedFile !== null ? false : true}
+                    color="primary"
+                    type="submit"
+                  >
+                    Upload Requirements file
+                  </Button>
+                </form>
+              </div>
+            )}
+          </Tab>
+        </Tabs>
       </div>
-    );
-  }
+    </>
+  );
 }

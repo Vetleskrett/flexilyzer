@@ -36,7 +36,7 @@ export default function SummaryStep({ formData }: { formData: FormDataT }) {
             ))}
           </Card>
         </div>
-        <div className="flex-grow p-4">
+        <div className="flex-grow p-4 justify-center">
           <h2 className="h2 text-center">Analyzer template</h2>
           <Suspense fallback={<Spinner />}>
             <CodeTemplate formData={formData} />

@@ -14,6 +14,20 @@ export default async function Analyzer({ params }: Props) {
   const inputs = (await api.getAnalyzerInputs(Number(params.analyzer_id))).data;
   const outputs = (await api.getAnalyzerOutputs(Number(params.analyzer_id)))
     .data;
+
+  const script = analyzer.has_script
+    ? await api.getAnalyzerScript(Number(params.analyzer_id), {
+        cache: "no-cache",
+      })
+    : null;
+
+  const requirements =
+    analyzer.has_venv === "HAS_VENV"
+      ? await api.getAnalyzerRequirements(Number(params.analyzer_id), {
+          cache: "no-cache",
+        })
+      : null;
+
   return (
     <>
       <div className="flex justify-between p-4 pt-1 w-full">
@@ -28,7 +42,14 @@ export default async function Analyzer({ params }: Props) {
         <div className="flex-grow max-w-50p p-4">
           <h2 className="h2 text-center">Analyzer script</h2>
           {analyzer.has_script ? (
-            <AnalyzerScriptDisplay analyzer_id={analyzer.id} />
+            <div className="flex justify-center items-start mt-4">
+              <AnalyzerScriptDisplay
+                analyzer_id={analyzer.id}
+                script={script ? script?.data : null}
+                has_venv={analyzer.has_venv === "HAS_VENV" ? true : false}
+                requirements={requirements ? requirements?.data : null}
+              />
+            </div>
           ) : (
             <>
               <div className="flex justify-center items-start mt-4">
@@ -40,9 +61,6 @@ export default async function Analyzer({ params }: Props) {
               </div>
             </>
           )}
-          {/* <Suspense fallback={<Spinner />}>
-            <CodeTemplate formData={formData} />
-          </Suspense> */}
         </div>
       </div>
     </>

@@ -96,6 +96,9 @@ export interface AnalyzerSimplifiedResponse {
   creator?: string | null;
   /** Id */
   id: number;
+  /** Has Script */
+  has_script?: boolean | null;
+  has_venv?: VenvEnum | null;
 }
 
 /** AssignmentCreate */
@@ -261,6 +264,7 @@ export interface ValidationError {
 export enum VenvEnum {
   HAS_VENV = "HAS_VENV",
   CREATING_VENV = "CREATING_VENV",
+  FAILED_CREATING_VENV = "FAILED_CREATING_VENV",
   NO_VENV = "NO_VENV",
 }
 

@@ -194,7 +194,7 @@ class AnalyzerService:
             name=analyzer.name,
             creator=analyzer.creator,
             description=analyzer.description,
-            hasScript=True,
+            has_script=True,
         )
 
         AnalyzerRepository.update_analyzer(
@@ -224,7 +224,7 @@ class AnalyzerService:
         ):  # or analyzer.has_vevn != "NO_VENV":
             raise HTTPException(
                 status_code=404,
-                detail=f"Script for analyzer with id {analyzer_id} is not yet uploaded",
+                detail=f"Requirements file for analyzer with id {analyzer_id} is not yet uploaded",
             )
 
-        return read_file(analyzer_id)
+        return read_file(analyzer_id, requirements=True)
