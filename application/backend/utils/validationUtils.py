@@ -55,7 +55,7 @@ def validate_type(key, value, expected_type, extended_metadata=None):
         )
     elif expected_type == "bool":
         return isinstance(value, bool), f"{base_error_msg}, got {type(value).__name__}"
-    elif expected_type == "text":
+    elif expected_type == "string":
         return isinstance(value, str), f"{base_error_msg}, got {type(value).__name__}"
     else:
         return False, f"Unknown or unsupported type, {key} - {value}"

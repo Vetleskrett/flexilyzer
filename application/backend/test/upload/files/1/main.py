@@ -17,4 +17,4 @@ def main(a: str) -> Return:
 
 if __name__ == "__main__":
     a = os.getenv("A")
-    print(json.dumps(main(a)))
+    print(json.dumps(main(a).model_dump()))

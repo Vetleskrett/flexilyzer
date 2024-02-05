@@ -23,9 +23,7 @@ def fetchIOHelper(db, analyzer_id):
 
 
 def fetchProjectsAndMetadataHelper(db, project_ids, required_inputs, assignment_id):
-    print(assignment_id, required_inputs, project_ids)
     assignment_metadatas = AssignmentService.get_assignment_metadata(db, assignment_id)
-    print(assignment_metadatas)
     keys = {am.id: am.key_name for am in assignment_metadatas}
 
     projects_with_metadata = {}
@@ -35,7 +33,7 @@ def fetchProjectsAndMetadataHelper(db, project_ids, required_inputs, assignment_
         )
 
         filtered_metadata = {
-            keys[meta.assignment_metadata_id]: meta.value
+            keys[meta.assignment_metadata_id].upper(): meta.value
             for meta in project_metadata_objects
             if keys[meta.assignment_metadata_id] in required_inputs
         }

@@ -37,28 +37,27 @@ def run_analyzer(project_ids: list[int], batch_id: int):
     # construct paths
     base_path = Path(settings.BASE_DIR) / str(analyzer_id)
     script_path = base_path / settings.DEFAULT_SCRIPT_NAME
-    venv_path = base_path / settings.DEFAULT_VENV_NAME
     container_base_path = Path("/app")
     container_script_path = container_base_path / settings.DEFAULT_SCRIPT_NAME
-    container_venv_path = container_base_path / settings.DEFAULT_VENV_NAME
 
-    # requirements.txt path
-    requirements_path = base_path / settings.DEFAULT_REQUIREMENTS_NAME
+    dockerfile_path = Path(settings.BASE_DIR)
 
-    print("1")
     try:
         # construct docker
         client = docker.from_env()
+
+        client.images.build(
+            path=str(dockerfile_path.resolve()),
+            buildargs={"ANALYZER_ID": str(analyzer_id)},
+            tag=f"analyzer-app:{analyzer_id}",
+        )
+
         container: Container = client.containers.create(
-            "python:3.11",
+            f"analyzer-app:{analyzer_id}",
             "tail -f /dev/null",
             volumes={
                 str(script_path.resolve()): {
                     "bind": str(container_script_path),
-                    "mode": "ro",
-                },
-                str(venv_path.resolve()): {
-                    "bind": str(container_venv_path),
                     "mode": "ro",
                 },
             },
@@ -72,22 +71,9 @@ def run_analyzer(project_ids: list[int], batch_id: int):
             db, project_ids, required_inputs, assignment_id
         )
 
-        print("2")
-        print(projects_with_metadata)
-
         for project_id, metadata in projects_with_metadata.items():
-            # env_vars_shell = " ".join(
-            #     f'{key.upper()}="{value}"' for key, value in metadata.items()
-            # )
-
-            container_python_executable = container_venv_path / "bin" / "python"
-
             # Run the script using the virtual environment and env variables
-            run_command = (
-                f"{str(container_python_executable)}  {str(container_script_path)}"
-            )
-            print(run_command)
-            print(metadata)
+            run_command = f"python {str(container_script_path)}"
 
             try:
                 result = container.exec_run(run_command, environment=metadata)
@@ -117,7 +103,7 @@ def run_analyzer(project_ids: list[int], batch_id: int):
                             ReportRepository.create_report(
                                 db,
                                 report=ReportCreate(
-                                    report=parsed_result,
+                                    report=json.dumps(parsed_result),
                                     project_id=project_id,
                                     batch_id=batch_id,
                                 ),
@@ -128,6 +114,7 @@ def run_analyzer(project_ids: list[int], batch_id: int):
                     print(
                         "Something wrong executing the script in the container: ",
                         result.exit_code,
+                        result.output,
                         result,
                     )
 
@@ -138,9 +125,9 @@ def run_analyzer(project_ids: list[int], batch_id: int):
     except Exception as e:
         print(e)
 
-    # finally:
-    #     container.stop()
-    #     container.remove()
+    finally:
+        container.stop()
+        container.remove()
 
 
 @app.task
