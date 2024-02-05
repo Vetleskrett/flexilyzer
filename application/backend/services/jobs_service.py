@@ -42,6 +42,11 @@ class JobsService:
             db, batch_id=batch.id, status=BatchEnum.STARTED
         )
 
+        if project_ids is None:
+            # get project ids for assingment
+
+            project_ids = [1]
+
         run_analyzer.delay(project_ids, batch.id)
 
         return {"status": "Job started successfully", "code": 0}

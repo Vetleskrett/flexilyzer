@@ -5,8 +5,6 @@ from pydantic import Json
 
 
 class TeamBase(BaseModel):
-    github_team_link: Optional[str] = None
-    blackboard_link: Optional[str] = None
     course_id: int
 
 
