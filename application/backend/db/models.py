@@ -67,8 +67,6 @@ class Team(Base):
     __tablename__ = "teams"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    github_link = Column(String, index=True, nullable=True)
-    blackboard_link = Column(String, index=True, nullable=True)
 
     course_id = Column(Integer, ForeignKey("courses.id"))
     course = relationship("Course", back_populates="teams")
@@ -96,9 +94,6 @@ class ProjectMetadata(Base):
     __tablename__ = "project_metadata"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-
-    key_name = Column(String, index=True, nullable=False)
-    value_type = Column(String, index=True, nullable=False)
     value = Column(JSON, nullable=True)
 
     project_id = Column(Integer, ForeignKey("projects.id"))

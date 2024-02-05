@@ -72,13 +72,13 @@ def run_seed():
         session.flush()
 
         assignment_metadata = AssignmentMetadata(
-            assignment_id=assignment.id, key_name="Some Key", value_type="Some Type"
+            assignment_id=assignment.id, key_name="a", value_type="string"
         )
         session.add(assignment_metadata)
-        session.flush()  # Ensures assignment_metadata gets an ID
+        session.flush()
 
         print("Creating team ...")
-        team = Team(github_link="https://github.com/pettelau/tsffbet", course=course)
+        team = Team(course=course)
         session.add(team)
 
         print("Creating projects ...")
@@ -90,9 +90,7 @@ def run_seed():
 
         print("Creating project metadata ...")
         project_metadata = ProjectMetadata(
-            key_name="url",
-            value="https://laubet.no",
-            value_type="string",
+            value="Ligma Balls",
             project=project,
             assignment_metadata_id=assignment_metadata.id,
         )
@@ -100,10 +98,9 @@ def run_seed():
 
         print("Creating analyzer ...")
         analyzer = Analyzer(
-            name="Lighthouse Analyzer",
-            description="du er en bæaj",
+            name="Test Analyzer",
+            description="Generic description",
             creator="Enthe Nu",
-            has_script=False,
         )
         session.add(analyzer)
 
@@ -118,36 +115,36 @@ def run_seed():
 
         print("Creating analyzer inputs ...")
         analyzer_inputs = [
-            AnalyzerInput(key_name="url", value_type="string", analyzer=analyzer)
+            AnalyzerInput(key_name="a", value_type="string", analyzer=analyzer)
         ]
         session.add_all(analyzer_inputs)
 
         print("Creating analyzer outputs ...")
         analyzer_outputs = [
             AnalyzerOutput(
-                key_name="performance",
-                display_name="Performance rating",
-                value_type="range",
-                extended_metadata=json.dumps({"fromRange": 1, "toRange": 100}),
+                key_name="b",
+                display_name="Main output",
+                value_type="string",
+                # extended_metadata=json.dumps({"fromRange": 1, "toRange": 100}),
                 analyzer=analyzer,
-            ),
-            AnalyzerOutput(
-                key_name="hasViewport",
-                display_name="Viewport",
-                value_type="bool",
-                analyzer=analyzer,
-            ),
-            AnalyzerOutput(
-                key_name="hasHTTPS",
-                display_name="HTTPS",
-                value_type="bool",
-                analyzer=analyzer,
-            ),
-            AnalyzerOutput(
-                key_name="js_workload",
-                display_name="JS Main thread work",
-                value_type="text",
-                analyzer=analyzer,
+                # ),
+                # AnalyzerOutput(
+                #     key_name="hasViewport",
+                #     display_name="Viewport",
+                #     value_type="bool",
+                #     analyzer=analyzer,
+                # ),
+                # AnalyzerOutput(
+                #     key_name="hasHTTPS",
+                #     display_name="HTTPS",
+                #     value_type="bool",
+                #     analyzer=analyzer,
+                # ),
+                # AnalyzerOutput(
+                #     key_name="js_workload",
+                #     display_name="JS Main thread work",
+                #     value_type="text",
+                #     analyzer=analyzer,
             ),
         ]
         session.add_all(analyzer_outputs)
