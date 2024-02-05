@@ -98,7 +98,9 @@ export default function NewAnalyzerPage() {
 
         const allInputNamesUnique = formData.inputs.every(
           (input, index, self) =>
-            self.findIndex((i) => i.key_name === input.key_name) === index
+            self.findIndex(
+              (i) => i.key_name.toLowerCase() === input.key_name.toLowerCase()
+            ) === index
         );
 
         return allInputFieldsValid && allInputNamesUnique;
@@ -111,7 +113,9 @@ export default function NewAnalyzerPage() {
 
         const allOutputNamesUnique = formData.outputs.every(
           (output, index, self) =>
-            self.findIndex((i) => i.key_name === output.key_name) === index
+            self.findIndex(
+              (i) => i.key_name.toLowerCase() === output.key_name.toLowerCase()
+            ) === index
         );
 
         return allOutputFieldsValid && allOutputNamesUnique;
