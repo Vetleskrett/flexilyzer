@@ -1,8 +1,6 @@
-from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
+from typing import List
+from fastapi import APIRouter, Depends
 from schemas import course_schema, assingment_schema, team_schema
-from sqlalchemy.orm import Session
 
 from services.courses_service import CourseService
 from db.database import get_db

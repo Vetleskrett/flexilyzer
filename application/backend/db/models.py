@@ -12,7 +12,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 from db.database import Base
-from schemas.shared import BatchEnum, VenvEnum
+from schemas.shared import BatchEnum
 
 # Association table for the many-to-many relationship between Assignment and Analyzer
 assignment_analyzer_association = Table(
@@ -109,7 +109,7 @@ class Analyzer(Base):
     creator = Column(String, index=True, nullable=True)
     description = Column(String, index=True, nullable=True)
     has_script = Column(Boolean, index=True, default=False)
-    has_venv = Column(Enum(VenvEnum), index=True, default=VenvEnum.NO_VENV)
+    has_requirements = Column(Boolean, index=True, default=False)
 
     analyzer_inputs = relationship("AnalyzerInput", back_populates="analyzer")
     analyzer_outputs = relationship("AnalyzerOutput", back_populates="analyzer")
@@ -165,7 +165,7 @@ class Batch(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     timestamp = Column(DateTime, default=datetime.now, index=True)
     assignment_id = Column(Integer, ForeignKey("assignments.id"))
-    status = Column(Enum(BatchEnum), index=True, nullable=True)
+    status = Column(Enum(BatchEnum), index=True, default=BatchEnum.STARTED)
     analyzer_id = Column(Integer, ForeignKey("analyzers.id"))
     analyzer = relationship("Analyzer", back_populates="batches")
 
