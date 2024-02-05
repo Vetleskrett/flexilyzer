@@ -31,25 +31,28 @@ class JobsService:
                     detail=f"Project(s) with id {' '.join(str(e) for e in errors)} not found",
                 )
 
-        if not analyzer.has_requirements or analyzer.has_script:
+        if not analyzer.has_requirements or not analyzer.has_script:
             raise HTTPException(
                 status_code=400,
                 detail=f"Analyzer with id {analyzer_id} is missing one or more of the following: 'requirements', 'script'",
             )
 
+        if project_ids is None:
+            project_ids = ProjectRepository.get_project_ids_by_assignment_id(
+                db=db, assignment_id=assignment_id
+            )
+            if not project_ids:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Assignment with id {assignment_id} dont have any projects related to itself",
+                )
+
+        project_ids = [id for id, in project_ids]
+
         batch = BatchesRepository.create_batch(
             db=db,
             batch=BatchCreate(assignment_id=assignment_id, analyzer_id=analyzer_id),
         )
-
-        batch = BatchesRepository.update_batch_status(
-            db, batch_id=batch.id, status=BatchEnum.STARTED
-        )
-
-        if project_ids is None:
-            project_ids = ProjectRepository.get_projects_by_assignment_id(
-                db=db, assignment_id=assignment_id
-            )
 
         run_analyzer.delay(project_ids, batch.id)
 

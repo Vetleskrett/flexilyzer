@@ -53,5 +53,5 @@ class ProjectRepository:
         )
 
     @staticmethod
-    def get_projects_by_assignment_id(db: Session, assignment_id: int):
-        return db.query(Project).filter(Project.assignment_id == assignment_id).all()
+    def get_project_ids_by_assignment_id(db: Session, assignment_id: int):
+        return db.query(Project.id).filter(Project.assignment_id == assignment_id).all()
