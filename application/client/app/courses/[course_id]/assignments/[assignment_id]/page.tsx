@@ -42,7 +42,7 @@ export default async function AssignmentDetails({ params }: Props) {
           Connected analyzers: <ConnectAsssignmentAnalyzer />
         </h2>
       </div>
-      <div className='flex overflow-x-auto  space-x-4'>
+      <div className='flex overflow-x-auto p-2 space-x-4'>
         {analyzers.data.map((analyzer) => {
           return (
             <>
