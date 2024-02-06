@@ -24,19 +24,19 @@ export default function NewAnalyzerPage() {
   const [formData, setFormData] = useState<FormDataT>({
     name: "Lighthouseasdasd  Analyzer",
     description: "Analyzer to measure performance of web page.",
-    inputs: [{ id: uuidv4(), key_name: "url", value_type: "string" }],
+    inputs: [{ id: uuidv4(), key_name: "url", value_type: "str" }],
     outputs: [
       {
         id: uuidv4(),
         key_name: "performance",
         display_name: "Performance",
-        value_type: "number",
+        value_type: "int",
       },
       {
         id: uuidv4(),
         key_name: "hashttps",
         display_name: "hasHTTPS",
-        value_type: "boolean",
+        value_type: "bool",
       },
     ],
   });

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
-  const [paramIDCounter, setParamIDCounter] = useState<number>(1);
   // Function to update an existing parameter
   const updateInputParameter = (index: number, key: string, value: string) => {
     const updatedParameters = formData.inputs.map((param, i) => {
@@ -68,14 +67,14 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
                 updateInputParameter(index, "value_type", e.target.value);
               }}
             >
-              <SelectItem key={"string"} value={"string"}>
-                String
+              <SelectItem key={"str"} value={"str"}>
+                str
               </SelectItem>
-              <SelectItem key={"number"} value={"number"}>
-                Number
+              <SelectItem key={"int"} value={"int"}>
+                int
               </SelectItem>
               <SelectItem key={"bool"} value={"bool"}>
-                Boolean
+                bool
               </SelectItem>
             </Select>
             {/* Optional: Button to remove this parameter */}
