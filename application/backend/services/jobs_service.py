@@ -56,4 +56,4 @@ class JobsService:
 
         run_analyzer.delay(project_ids, batch.id)
 
-        return "Job started successfully"
+        return batch
