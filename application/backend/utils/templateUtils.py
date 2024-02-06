@@ -1,5 +1,6 @@
 from typing import List
 from schemas.analyzer_schema import AnalyzerInputCreate, AnalyzerOutputCreate
+from schemas.shared import ValueTypes
 
 
 def generate_template(
@@ -11,7 +12,7 @@ def generate_template(
 
     output_class_fields = "\n    ".join(
         [
-            f"{output.key_name}: {output.value_type if output.value_type != 'range' else 'int'}"
+            f"{output.key_name}: {output.value_type.value if output.value_type != ValueTypes.range else ValueTypes.int.value}"
             for output in outputs
         ]
     )
