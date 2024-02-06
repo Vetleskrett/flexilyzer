@@ -14,17 +14,16 @@ const STATUS_COLOR_MAPPING = {
 export default function AnalyzerBatchInfo({ batch }: { batch: BatchReponse }) {
   return (
     <>
-      <Card className="flex justify-center items-center py-2 text-center">
+      <Card className="flex justify-center py-2 px-4 mb-4">
         <p className="flex items-center justify-center gap-2 m-0">
-          Batch ID: {batch.id} | Analyzer ID: {batch.analyzer_id} | Run:{" "}
-          {calcTimeDifference(batch.timestamp)} | Status:
+          Batch: {batch.id} Run: {calcTimeDifference(batch.timestamp)} |
           {batch.status ? (
             <>
               <Dot color={STATUS_COLOR_MAPPING[batch.status]} size={10} />
               {batch.status}
             </>
           ) : (
-            "Unknown"
+            "Unknown status"
           )}
         </p>
       </Card>

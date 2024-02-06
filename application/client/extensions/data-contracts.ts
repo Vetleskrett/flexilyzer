@@ -216,8 +216,6 @@ export interface JobCreate {
 
 /** ProjectResponse */
 export interface ProjectResponse {
-  /** Github Link */
-  github_link?: string | null;
   /** Team Id */
   team_id: number;
   /** Assignment Id */
@@ -240,10 +238,6 @@ export interface ReportResponse {
 
 /** TeamResponse */
 export interface TeamResponse {
-  /** Github Team Link */
-  github_team_link?: string | null;
-  /** Blackboard Link */
-  blackboard_link?: string | null;
   /** Course Id */
   course_id: number;
   /** Id */

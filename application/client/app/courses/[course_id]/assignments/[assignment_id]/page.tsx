@@ -1,7 +1,8 @@
 import api from "@/api_utils";
-import AnalyzerBatchInfo from "@/components/analyzerComponents/AnalyzerBatchInfo";
+import AssignmentAnalyzer from "@/components/assignmentComponents/AssignmentAnalyzer";
 import AssignmentDueDate from "@/components/assignmentComponents/AssignmentDueDate";
-import { calcTimeDifference } from "@/utils/timeUtils";
+import { CreateButton } from "@/components/buttons";
+import { BatchReponse } from "@/extensions/data-contracts";
 
 interface Props {
   params: { course_id: string; assignment_id: string };
@@ -15,13 +16,10 @@ export default async function AssignmentDetails({ params }: Props) {
     cache: "no-cache",
   });
 
-  const assignment_analyzers_batches = await api.getAssignmentAnalyzersBatches(
+  const analyzers = await api.getAssignmentAnalyzers(
     Number(params.assignment_id),
-    Number(params.course_id),
     { cache: "no-cache" }
   );
-
-  const analyzers = await api.getAllAnalyzers();
 
   return (
     <>
@@ -37,14 +35,26 @@ export default async function AssignmentDetails({ params }: Props) {
           }
         />
       </div>
-      <h2 className="h2 mt-8 flex justify-center">Connected analyzers:</h2>
-      {assignment_analyzers_batches.data.map((batch) => {
-        return (
-          <>
-            <AnalyzerBatchInfo batch={batch} />
-          </>
-        );
-      })}
+      <h2 className="h2 my-8 flex justify-center">
+        Connected analyzers:{" "}
+        <CreateButton
+          route={`/courses/${params.course_id}/assignments/${params.assignment_id}/connectanalyzer`}
+          text="+"
+        />
+      </h2>
+      <div className="flex overflow-x-auto  space-x-4">
+        {analyzers.data.map((analyzer) => {
+          return (
+            <>
+              <AssignmentAnalyzer
+                analyzer_id={analyzer.id}
+                analyzer_name={analyzer.name}
+                assignment_id={Number(params.assignment_id)}
+              />
+            </>
+          );
+        })}
+      </div>
     </>
   );
 }

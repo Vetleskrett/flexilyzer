@@ -555,7 +555,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags analyzers
    * @name GetAnalyzerRequirements
-   * @summary Get Analyzer Script
+   * @summary Get Analyzer Requirements
    * @request GET:/api/v1/analyzers/{analyzer_id}/requirements
    */
   getAnalyzerRequirements = (analyzerId: number, params: RequestParams = {}) =>
