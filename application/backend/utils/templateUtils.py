@@ -10,7 +10,10 @@ def generate_template(
     )
 
     output_class_fields = "\n    ".join(
-        [f"{output.key_name}: {output.value_type}" for output in outputs]
+        [
+            f"{output.key_name}: {output.value_type if output.value_type != 'range' else 'int'}"
+            for output in outputs
+        ]
     )
     output_class = (
         f"class Return(BaseModel):\n    {output_class_fields}" if outputs else ""
@@ -18,9 +21,11 @@ def generate_template(
 
     env_vars = "\n    ".join(
         [
-            f"{input.key_name} = {input.value_type}(os.getenv('{input.key_name.upper()}'))"
-            if input.value_type in ["int", "bool"]
-            else f"{input.key_name} = os.getenv('{input.key_name.upper()}')"
+            (
+                f"{input.key_name} = {input.value_type}(os.getenv('{input.key_name.upper()}'))"
+                if input.value_type in ["int", "bool"]
+                else f"{input.key_name} = os.getenv('{input.key_name.upper()}')"
+            )
             for input in inputs
         ]
     )

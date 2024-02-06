@@ -6,3 +6,10 @@ class BatchEnum(enum.Enum):
     RUNNING = "RUNNING"
     FAILED = "FAILED"
     FINISHED = "FINISHED"
+
+
+class ValueTypes(enum.Enum):
+    str = "str"
+    int = "int"
+    bool = "bool"
+    range = "range"
