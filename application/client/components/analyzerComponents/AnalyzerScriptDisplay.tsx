@@ -2,7 +2,6 @@
 import api from "@/api_utils";
 import CodeDisplay from "./CodeDisplay";
 import React, { useState } from "react";
-import { VenvEnum } from "@/extensions/data-contracts";
 import { Button, Card, Tab, Tabs } from "@nextui-org/react";
 import { useSnackbar } from "@/context/snackbarContext";
 import { useRouter } from "next/navigation";
@@ -10,14 +9,14 @@ import { useRouter } from "next/navigation";
 interface AnalyzerScriptDisplayProps {
   analyzer_id: number;
   script: string | null;
-  has_venv: boolean;
+  has_requirements: boolean;
   requirements: string | null;
 }
 // Define the function as async but ensure it catches errors internally
 export default async function AnalyzerScriptDisplay({
   analyzer_id,
   script,
-  has_venv,
+  has_requirements,
   requirements,
 }: AnalyzerScriptDisplayProps) {
   const router = useRouter();
@@ -72,9 +71,11 @@ export default async function AnalyzerScriptDisplay({
           </Tab>
           <Tab
             key="requirements"
-            title={has_venv ? "requirements.txt" : "Upload requirements.txt"}
+            title={
+              has_requirements ? "requirements.txt" : "Upload requirements.txt"
+            }
           >
-            {has_venv ? (
+            {has_requirements ? (
               <div className="mt-6">
                 {requirements ? (
                   <CodeDisplay code_string={requirements} />
@@ -94,10 +95,13 @@ export default async function AnalyzerScriptDisplay({
                     accept=".txt"
                     onChange={handleFileChange}
                   />
-                  
+
                   <br />
                   <Card className="p-3 text-xs bg-slate-100 mb-8">
-                    <p>PS: The file must be named exactly "<i>requirements.txt</i>".</p>
+                    <p>
+                      PS: The file must be named exactly "
+                      <i>requirements.txt</i>".
+                    </p>
                   </Card>
                   <Button
                     isDisabled={selectedFile !== null ? false : true}

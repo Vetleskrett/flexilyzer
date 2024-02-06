@@ -574,7 +574,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/v1/analyzers/{analyzer_id}/upload/requirements
    */
   uploadAnalyzerRequirements = (analyzerId: number, data: BodyUploadAnalyzerRequirements, params: RequestParams = {}) =>
-    this.request<number, HTTPValidationError>({
+    this.request<string, HTTPValidationError>({
       path: `/api/v1/analyzers/${analyzerId}/upload/requirements`,
       method: "POST",
       body: data,
@@ -591,7 +591,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/v1/jobs/{analyzer}
    */
   runJob = (analyzer: number, data: JobCreate, params: RequestParams = {}) =>
-    this.request<any, HTTPValidationError>({
+    this.request<string, HTTPValidationError>({
       path: `/api/v1/jobs/${analyzer}`,
       method: "POST",
       body: data,

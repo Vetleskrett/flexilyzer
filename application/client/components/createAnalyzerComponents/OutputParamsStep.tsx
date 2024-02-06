@@ -11,6 +11,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 
 import HelpIcon from "@mui/icons-material/Help";
+import { ValueTypesOutput } from "@/extensions/data-contracts";
 
 export default function OutputParamsStep({
   formData,
@@ -21,7 +22,7 @@ export default function OutputParamsStep({
     const updatedParameters = formData.outputs.map((param, i) => {
       if (i === index) {
         if (key === "value_type") {
-          if (value === "range") {
+          if (value === ValueTypesOutput.Range) {
             // Add or update the extended_metadata with default range values
             return {
               ...param,
@@ -35,7 +36,7 @@ export default function OutputParamsStep({
             // If another value type is chosen, ensure extended_metadata is removed
             // Use object destructuring to omit extended_metadata from the updated object
             const { extended_metadata, ...rest } = param;
-            return { ...rest, [key]: value };
+            return { ...rest, [key]: value as ValueTypesOutput };
           }
         } else {
           // For updates to fields other than value_type, just update the field
@@ -98,7 +99,12 @@ export default function OutputParamsStep({
       ...prev,
       outputs: [
         ...prev.outputs,
-        { id: uuidv4(), key_name: "", display_name: "", value_type: "string" },
+        {
+          id: uuidv4(),
+          key_name: "",
+          display_name: "",
+          value_type: ValueTypesOutput.Str,
+        },
       ], // Default value_type can be adjusted
     }));
   };
@@ -173,16 +179,16 @@ export default function OutputParamsStep({
                   updateOutputParameter(index, "value_type", e.target.value);
                 }}
               >
-                <SelectItem key={"str"} value={"str"}>
+                <SelectItem key={"str"} value={ValueTypesOutput.Str}>
                   str
                 </SelectItem>
-                <SelectItem key={"int"} value={"int"}>
+                <SelectItem key={"int"} value={ValueTypesOutput.Int}>
                   int
                 </SelectItem>
-                <SelectItem key={"bool"} value={"bool"}>
+                <SelectItem key={"bool"} value={ValueTypesOutput.Bool}>
                   bool
                 </SelectItem>
-                <SelectItem key={"range"} value={"range"}>
+                <SelectItem key={"range"} value={ValueTypesOutput.Range}>
                   int (range)
                 </SelectItem>
               </Select>

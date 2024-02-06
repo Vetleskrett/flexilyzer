@@ -27,16 +27,14 @@ export interface AnalyzerCreate {
 export interface AnalyzerInputCreate {
   /** Key Name */
   key_name: string;
-  /** Value Type */
-  value_type: string;
+  value_type: ValueTypesInput;
 }
 
 /** AnalyzerInputResponse */
 export interface AnalyzerInputResponse {
   /** Key Name */
   key_name: string;
-  /** Value Type */
-  value_type: string;
+  value_type: ValueTypesInput;
   /** Id */
   id: number;
 }
@@ -45,8 +43,7 @@ export interface AnalyzerInputResponse {
 export interface AnalyzerOutputCreate {
   /** Key Name */
   key_name: string;
-  /** Value Type */
-  value_type: string;
+  value_type: ValueTypesOutput;
   /** Display Name */
   display_name?: string | null;
   /** Extended Metadata */
@@ -57,8 +54,7 @@ export interface AnalyzerOutputCreate {
 export interface AnalyzerOutputResponse {
   /** Key Name */
   key_name: string;
-  /** Value Type */
-  value_type: string;
+  value_type: ValueTypesOutput;
   /** Display Name */
   display_name?: string | null;
   /** Extended Metadata */
@@ -79,7 +75,8 @@ export interface AnalyzerResponse {
   id: number;
   /** Has Script */
   has_script?: boolean | null;
-  has_venv?: VenvEnum | null;
+  /** Has Venv */
+  has_venv?: boolean | null;
   /** Inputs */
   inputs: AnalyzerInputResponse[];
   /** Outputs */
@@ -98,7 +95,8 @@ export interface AnalyzerSimplifiedResponse {
   id: number;
   /** Has Script */
   has_script?: boolean | null;
-  has_venv?: VenvEnum | null;
+  /** Has Requirements */
+  has_requirements?: boolean | null;
 }
 
 /** AssignmentCreate */
@@ -139,7 +137,7 @@ export interface BatchReponse {
   analyzer_id: number;
   /** Id */
   id: number;
-  status?: BatchEnum | null;
+  status: BatchEnum;
   /**
    * Timestamp
    * @format date-time
@@ -254,12 +252,19 @@ export interface ValidationError {
   type: string;
 }
 
-/** VenvEnum */
-export enum VenvEnum {
-  HAS_VENV = "HAS_VENV",
-  CREATING_VENV = "CREATING_VENV",
-  FAILED_CREATING_VENV = "FAILED_CREATING_VENV",
-  NO_VENV = "NO_VENV",
+/** ValueTypesInput */
+export enum ValueTypesInput {
+  Str = "str",
+  Int = "int",
+  Bool = "bool",
+}
+
+/** ValueTypesOutput */
+export enum ValueTypesOutput {
+  Str = "str",
+  Int = "int",
+  Bool = "bool",
+  Range = "range",
 }
 
 /** testE */

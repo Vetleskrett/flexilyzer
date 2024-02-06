@@ -1,7 +1,9 @@
+import { ValueTypesInput, ValueTypesOutput } from "@/extensions/data-contracts";
+
 export type InputParameter = {
   id: string;
   key_name: string;
-  value_type: string;
+  value_type: ValueTypesInput;
 };
 
 export type RangeMetadata = {
@@ -12,7 +14,7 @@ export type RangeMetadata = {
 export type OutputParameter = {
   id: string;
   key_name: string;
-  value_type: string;
+  value_type: ValueTypesOutput;
   display_name: string;
   extended_metadata?: RangeMetadata;
 };

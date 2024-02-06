@@ -7,7 +7,12 @@ import SummaryStep from "@/components/createAnalyzerComponents/SummaryStep";
 import BasicInfoStep from "@/components/createAnalyzerComponents/BasicInfoStep";
 import OutputParamsStep from "@/components/createAnalyzerComponents/OutputParamsStep";
 import InputParameters from "@/components/createAnalyzerComponents/InputParamsStep";
-import { AnalyzerCreate, AnalyzerResponse } from "@/extensions/data-contracts";
+import {
+  AnalyzerCreate,
+  AnalyzerResponse,
+  ValueTypesInput,
+  ValueTypesOutput,
+} from "@/extensions/data-contracts";
 import api from "@/api_utils";
 import { formatAnalyzerData } from "@/components/analyzerComponents/analyzerUtils";
 import { useSnackbar } from "@/context/snackbarContext";
@@ -24,19 +29,21 @@ export default function NewAnalyzerPage() {
   const [formData, setFormData] = useState<FormDataT>({
     name: "Lighthouseasdasd  Analyzer",
     description: "Analyzer to measure performance of web page.",
-    inputs: [{ id: uuidv4(), key_name: "url", value_type: "str" }],
+    inputs: [
+      { id: uuidv4(), key_name: "url", value_type: ValueTypesInput.Str },
+    ],
     outputs: [
       {
         id: uuidv4(),
         key_name: "performance",
         display_name: "Performance",
-        value_type: "int",
+        value_type: ValueTypesOutput.Str,
       },
       {
         id: uuidv4(),
         key_name: "hashttps",
         display_name: "hasHTTPS",
-        value_type: "bool",
+        value_type: ValueTypesOutput.Bool,
       },
     ],
   });

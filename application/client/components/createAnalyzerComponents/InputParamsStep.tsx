@@ -1,3 +1,4 @@
+import { ValueTypesInput } from "@/extensions/data-contracts";
 import { SummaryStepProps } from "@/types/analyzerDefinitions";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { useState } from "react";
@@ -25,7 +26,7 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
       ...prev,
       inputs: [
         ...prev.inputs,
-        { id: uuidv4(), key_name: "", value_type: "string" },
+        { id: uuidv4(), key_name: "", value_type: ValueTypesInput.Str },
       ], // Default value_type can be adjusted
     }));
   };

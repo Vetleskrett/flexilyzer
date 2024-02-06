@@ -21,12 +21,11 @@ export default async function Analyzer({ params }: Props) {
       })
     : null;
 
-  const requirements =
-    analyzer.has_venv === "HAS_VENV"
-      ? await api.getAnalyzerRequirements(Number(params.analyzer_id), {
-          cache: "no-cache",
-        })
-      : null;
+  const requirements = analyzer.has_requirements
+    ? await api.getAnalyzerRequirements(Number(params.analyzer_id), {
+        cache: "no-cache",
+      })
+    : null;
 
   return (
     <>
@@ -46,7 +45,9 @@ export default async function Analyzer({ params }: Props) {
               <AnalyzerScriptDisplay
                 analyzer_id={analyzer.id}
                 script={script ? script?.data : null}
-                has_venv={analyzer.has_venv === "HAS_VENV" ? true : false}
+                has_requirements={
+                  analyzer.has_requirements ? analyzer.has_requirements : false
+                }
                 requirements={requirements ? requirements?.data : null}
               />
             </div>
