@@ -66,7 +66,7 @@ def get_assignment_analyzers(
 )
 def get_assignment_analyzers(
     assignment_id: int, analyzer_id: int, db=Depends(get_db)
-) -> List[batch_schema.BatchReponse]:
+) -> List[batch_schema.BatchResponse]:
     return BatchService.get_assignment_analyzers_batches(
         db=db, assignemnt_id=assignment_id, analyzer_id=analyzer_id
     )
