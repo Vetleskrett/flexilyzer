@@ -7,7 +7,7 @@ import Dot from "../DotComponent";
 import AnalyzerBatchInfo from "../analyzerComponents/AnalyzerBatchInfo";
 import api from "@/api_utils";
 import { useRouter } from "next/navigation";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { useSnackbar } from "@/context/snackbarContext";
 
 interface AssignmentAnalyzerProps {
@@ -15,13 +15,14 @@ interface AssignmentAnalyzerProps {
   analyzer_name: string;
   assignment_id: number;
 }
-export default async function AssignmentAnalyzer({
+export default function AssignmentAnalyzer({
   analyzer_id,
   analyzer_name,
   assignment_id,
 }: AssignmentAnalyzerProps) {
   const router = useRouter();
   const { openSnackbar } = useSnackbar();
+  const queryClient = useQueryClient();
 
   const fetchBatches = async () => {
     const resp = await api.getAssignmentAnalyzersBatches(
@@ -37,7 +38,13 @@ export default async function AssignmentAnalyzer({
     data: batches,
     error,
     isLoading,
-  } = useQuery<BatchReponse[], Error>("batches", fetchBatches);
+  } = useQuery<BatchReponse[], Error>(
+    ["batches", { assignment_id, analyzer_id }],
+    fetchBatches,
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>An error occurred: {error.message}</div>;
@@ -51,9 +58,11 @@ export default async function AssignmentAnalyzer({
         message: "Analyzer job started successfully!",
         severity: "success",
       });
-      setTimeout(() => {
-        router.refresh();
-      }, 2000);
+      queryClient.invalidateQueries([
+        "batches",
+        { assignment_id, analyzer_id },
+      ]);
+      // re-fetch here to get the newly created batch data
     } else {
       openSnackbar({
         message: `Something wrong while starting Analyzer job: ${resp.error}`,
@@ -63,10 +72,7 @@ export default async function AssignmentAnalyzer({
   }
   return (
     <>
-      <Card
-        className="overflow-y-auto bg-slate-100"
-        style={{ minWidth: "400px", height: "400px" }}
-      >
+      <Card className="h-[300px] w-[350px] p-2 bg-slate-100">
         <h3
           className="h3 text-center mt-3 text-blue-500 cursor-pointer"
           onClick={() => {
@@ -75,15 +81,38 @@ export default async function AssignmentAnalyzer({
         >
           {analyzer_name}
         </h3>
-        <Button color="primary" onClick={runAnalyzer}>
-          Run analyzer
-        </Button>
-        {batches &&
-          batches
-            .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
-            .map((batch) => {
-              return <AnalyzerBatchInfo batch={batch} />;
-            })}
+        <div className="flex flex-row justify-center gap-2 ml-5 mr-5 h-[50px]">
+          <Button color="primary" onClick={runAnalyzer} className="w-[100px]">
+            Run analyzer
+          </Button>
+          <Button
+            color="secondary"
+            onClick={() => {
+              queryClient.invalidateQueries([
+                "batches",
+                { assignment_id, analyzer_id },
+              ]);
+            }}
+            className="w-[100px]"
+          >
+            Refresh
+          </Button>
+        </div>
+        <div className="overflow-y-auto">
+          {batches &&
+            batches
+              .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+              .map((batch, i) => {
+                return (
+                  <>
+                    <div key={i} className="my-2">
+                      {" "}
+                      <AnalyzerBatchInfo batch={batch} />
+                    </div>
+                  </>
+                );
+              })}
+        </div>
       </Card>
     </>
   );

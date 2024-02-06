@@ -3,6 +3,7 @@ import AssignmentAnalyzer from "@/components/assignmentComponents/AssignmentAnal
 import AssignmentDueDate from "@/components/assignmentComponents/AssignmentDueDate";
 import { CreateButton } from "@/components/buttons";
 import { BatchReponse } from "@/extensions/data-contracts";
+import { Suspense } from "react";
 
 interface Props {
   params: { course_id: string; assignment_id: string };
@@ -46,11 +47,14 @@ export default async function AssignmentDetails({ params }: Props) {
         {analyzers.data.map((analyzer) => {
           return (
             <>
-              <AssignmentAnalyzer
-                analyzer_id={analyzer.id}
-                analyzer_name={analyzer.name}
-                assignment_id={Number(params.assignment_id)}
-              />
+              <Suspense fallback={"Loading ..."}>
+                <AssignmentAnalyzer
+                  analyzer_id={analyzer.id}
+                  analyzer_name={analyzer.name}
+                  assignment_id={Number(params.assignment_id)}
+                />
+              </Suspense>
+              
             </>
           );
         })}
