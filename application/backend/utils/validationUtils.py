@@ -1,5 +1,6 @@
 from fastapi import HTTPException
 from pydantic import ValidationError
+import json
 from schemas.shared import ValueTypesOutput
 
 
@@ -14,9 +15,6 @@ def validatePydanticToHTTPError(schema, to_validate):
             for error in e.errors()
         ]
         raise HTTPException(status_code=400, detail=simplified_errors)
-
-
-import json
 
 
 def validate_type(key, value, expected_type, extended_metadata=None):
