@@ -25,5 +25,9 @@ export function CreateButton({
     }
   };
 
-  return <Button onClick={handleClick}>{text}</Button>;
+  return (
+    <Button color='secondary' onClick={handleClick}>
+      {text}
+    </Button>
+  );
 }
