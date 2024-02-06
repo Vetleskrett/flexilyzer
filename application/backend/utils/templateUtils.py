@@ -7,7 +7,10 @@ def generate_template(
     inputs: List[AnalyzerInputCreate], outputs: List[AnalyzerOutputCreate]
 ):
     input_params = ", ".join(
-        [f"{input.key_name}: {input.value_type}" for input in inputs]
+        [
+            f"{input.key_name}: {ValueTypesMapping[input.value_type.value].value}"
+            for input in inputs
+        ]
     )
 
     output_class_fields = "\n    ".join(

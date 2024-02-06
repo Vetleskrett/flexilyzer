@@ -14,7 +14,7 @@ class BatchCreate(BatchBase):
     pass
 
 
-class BatchReponse(BatchBase):
+class BatchResponse(BatchBase):
     id: int
     status: BatchEnum
     timestamp: datetime
