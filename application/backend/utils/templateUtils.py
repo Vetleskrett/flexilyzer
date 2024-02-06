@@ -1,6 +1,6 @@
 from typing import List
 from schemas.analyzer_schema import AnalyzerInputCreate, AnalyzerOutputCreate
-from schemas.shared import ValueTypes
+from schemas.shared import ValueTypesMapping
 
 
 def generate_template(
@@ -12,7 +12,7 @@ def generate_template(
 
     output_class_fields = "\n    ".join(
         [
-            f"{output.key_name}: {output.value_type.value if output.value_type != ValueTypes.range else ValueTypes.int.value}"
+            f"{output.key_name}: {ValueTypesMapping[output.value_type.value].value}"
             for output in outputs
         ]
     )
@@ -23,9 +23,7 @@ def generate_template(
     env_vars = "\n    ".join(
         [
             (
-                f"{input.key_name} = {input.value_type}(os.getenv('{input.key_name.upper()}'))"
-                if input.value_type in ["int", "bool"]
-                else f"{input.key_name} = os.getenv('{input.key_name.upper()}')"
+                f"{input.key_name} = {ValueTypesMapping[input.value_type.value].value}(os.getenv('{input.key_name.upper()}'))"
             )
             for input in inputs
         ]
@@ -43,7 +41,7 @@ def main({input_params}) -> {'Return' if outputs else 'None'}:
 
 if __name__ == "__main__":
     {env_vars}
-    print(json.dumps(main({', '.join([input.key_name for input in inputs])})))
+    print(json.dumps(main({', '.join([input.key_name for input in inputs])}).model_dump()))
 """
 
     return template

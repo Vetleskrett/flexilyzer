@@ -72,7 +72,7 @@ def run_seed():
         session.flush()
 
         assignment_metadata = AssignmentMetadata(
-            assignment_id=assignment.id, key_name="a", value_type="string"
+            assignment_id=assignment.id, key_name="a", value_type="str"
         )
         session.add(assignment_metadata)
         session.flush()
@@ -115,7 +115,7 @@ def run_seed():
 
         print("Creating analyzer inputs ...")
         analyzer_inputs = [
-            AnalyzerInput(key_name="a", value_type="string", analyzer=analyzer)
+            AnalyzerInput(key_name="a", value_type="str", analyzer=analyzer)
         ]
         session.add_all(analyzer_inputs)
 
@@ -124,7 +124,7 @@ def run_seed():
             AnalyzerOutput(
                 key_name="b",
                 display_name="Main output",
-                value_type="string",
+                value_type="str",
                 # extended_metadata=json.dumps({"fromRange": 1, "toRange": 100}),
                 analyzer=analyzer,
                 # ),

@@ -8,8 +8,21 @@ class BatchEnum(enum.Enum):
     FINISHED = "FINISHED"
 
 
-class ValueTypes(enum.Enum):
+class ValueTypesInput(enum.Enum):
+    str = "str"
+    int = "int"
+    bool = "bool"
+
+
+class ValueTypesOutput(enum.Enum):
     str = "str"
     int = "int"
     bool = "bool"
     range = "range"
+
+
+class ValueTypesMapping(enum.Enum):
+    str = "str"
+    int = "int"
+    bool = "bool"
+    range = "int"

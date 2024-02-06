@@ -1,19 +1,19 @@
 from pydantic import BaseModel, validator
 from typing import List, Optional
 from pydantic import Json
-from schemas.shared import ValueTypes
+from schemas.shared import ValueTypesInput, ValueTypesOutput
 
 
 class AnalyzerOutputBase(BaseModel):
     key_name: str
-    value_type: ValueTypes
+    value_type: ValueTypesOutput
     display_name: Optional[str] = None
     extended_metadata: Optional[Json] = None
 
 
 class AnalyzerInputBase(BaseModel):
     key_name: str
-    value_type: str
+    value_type: ValueTypesInput
 
 
 class AnalyzerOutputCreate(AnalyzerOutputBase):
