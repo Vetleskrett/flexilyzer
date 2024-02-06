@@ -2,7 +2,8 @@
 
 import { BatchReponse } from "@/extensions/data-contracts";
 import { calcTimeDifference } from "@/utils/timeUtils";
-import { Card } from "@nextui-org/react";
+import { Card, Tooltip } from "@nextui-org/react";
+import { format, formatDistance } from "date-fns";
 import Dot from "../DotComponent";
 
 const STATUS_COLOR_MAPPING = {
@@ -14,18 +15,31 @@ const STATUS_COLOR_MAPPING = {
 export default function AnalyzerBatchInfo({ batch }: { batch: BatchReponse }) {
   return (
     <>
-      <Card className="h-[50px] flex items-center justify-center">
-          <p className="flex items-center justify-center gap-2 text-sm">
-            Batch: {batch.id} Run: {calcTimeDifference(batch.timestamp)} |
-            {batch.status ? (
-              <>
-                <Dot color={STATUS_COLOR_MAPPING[batch.status]} size={10} />
-                {batch.status}
-              </>
-            ) : (
-              "Unknown status"
-            )}
-          </p>
+      <Card className="h-[50px] flex flex-row justify-between items-center px-3 mx-2 shadow-sm text-sm">
+        <div>ID: {batch.id}</div>
+        <Tooltip
+          delay={0}
+          closeDelay={0}
+          content={format(new Date(batch.timestamp), "PPPP HH:mm:ss")}
+        >
+          <div>
+            <>
+              {formatDistance(new Date(batch.timestamp), new Date(), {
+                addSuffix: true,
+              })}
+            </>
+          </div>
+        </Tooltip>
+        <div className="flex flex-row items-center">
+          {batch.status ? (
+            <>
+              <Dot color={STATUS_COLOR_MAPPING[batch.status]} size={10} />
+              <p className="ml-2">{batch.status}</p>
+            </>
+          ) : (
+            "Unknown status"
+          )}
+        </div>
       </Card>
     </>
   );

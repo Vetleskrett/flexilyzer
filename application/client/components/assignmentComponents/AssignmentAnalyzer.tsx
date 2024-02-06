@@ -2,7 +2,7 @@
 
 import { BatchReponse, JobCreate } from "@/extensions/data-contracts";
 import { calcTimeDifference } from "@/utils/timeUtils";
-import { Button, Card } from "@nextui-org/react";
+import { Button, Card, Skeleton } from "@nextui-org/react";
 import Dot from "../DotComponent";
 import AnalyzerBatchInfo from "../analyzerComponents/AnalyzerBatchInfo";
 import api from "@/api_utils";
@@ -37,7 +37,7 @@ export default function AssignmentAnalyzer({
   const {
     data: batches,
     error,
-    isLoading,
+    isLoading: isBatchesLoading,
   } = useQuery<BatchReponse[], Error>(
     ["batches", { assignment_id, analyzer_id }],
     fetchBatches,
@@ -46,7 +46,6 @@ export default function AssignmentAnalyzer({
     }
   );
 
-  if (isLoading) return <div>Loading...</div>;
   if (error) return <div>An error occurred: {error.message}</div>;
 
   async function runAnalyzer() {
@@ -72,7 +71,7 @@ export default function AssignmentAnalyzer({
   }
   return (
     <>
-      <Card className="h-[300px] w-[350px] p-2 bg-slate-100">
+      <Card className="h-[500px] w-[350px] p-2 bg-slate-100 shadow-sm">
         <h3
           className="h3 text-center mt-3 text-blue-500 cursor-pointer"
           onClick={() => {
@@ -98,8 +97,17 @@ export default function AssignmentAnalyzer({
             Refresh
           </Button>
         </div>
-        <div className="overflow-y-auto">
-          {batches &&
+        <div className="overflow-y-auto mt-2">
+          {isBatchesLoading ? (
+            <>
+              {Array.from({ length: 6 }, (_, index) => (
+                <Skeleton key={index} className="rounded-lg my-2 bg-white">
+                  <Card className="h-[50px] flex items-center justify-center shadow-sm"></Card>
+                </Skeleton>
+              ))}
+            </>
+          ) : (
+            batches &&
             batches
               .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
               .map((batch, i) => {
@@ -111,7 +119,8 @@ export default function AssignmentAnalyzer({
                     </div>
                   </>
                 );
-              })}
+              })
+          )}
         </div>
       </Card>
     </>
