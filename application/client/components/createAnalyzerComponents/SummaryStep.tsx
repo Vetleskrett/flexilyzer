@@ -1,14 +1,9 @@
 import {
   FormDataT,
-  InputParameter,
-  OutputParameter,
-  SummaryStepProps,
 } from "@/types/analyzerDefinitions";
-import { Button, Card, Kbd, Spinner } from "@nextui-org/react";
-import { Suspense, useState } from "react";
+import { Card, Spinner } from "@nextui-org/react";
+import { Suspense } from "react";
 import CodeTemplate from "./CodeTemplate";
-import api from "@/api_utils";
-import { AnalyzerCreate } from "@/extensions/data-contracts";
 import { renderParameter } from "../analyzerComponents/analyzerUtils";
 
 export default function SummaryStep({ formData }: { formData: FormDataT }) {

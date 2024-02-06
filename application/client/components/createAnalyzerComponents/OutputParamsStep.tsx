@@ -173,17 +173,17 @@ export default function OutputParamsStep({
                   updateOutputParameter(index, "value_type", e.target.value);
                 }}
               >
-                <SelectItem key={"string"} value={"string"}>
-                  String
+                <SelectItem key={"str"} value={"str"}>
+                  str
                 </SelectItem>
-                <SelectItem key={"number"} value={"number"}>
-                  Number
+                <SelectItem key={"int"} value={"int"}>
+                  int
                 </SelectItem>
-                <SelectItem key={"boolean"} value={"boolean"}>
-                  Boolean
+                <SelectItem key={"bool"} value={"bool"}>
+                  bool
                 </SelectItem>
                 <SelectItem key={"range"} value={"range"}>
-                  Range
+                  int (range)
                 </SelectItem>
               </Select>
               {param.extended_metadata && (

@@ -30,9 +30,9 @@ export function renderParameter(
   param: InputParameter | OutputParameter
 ): React.ReactNode {
   switch (param.value_type) {
-    case "string":
-    case "number":
-    case "boolean":
+    case "str":
+    case "int":
+    case "bool":
       return (
         <p>
           <b>{param.key_name}</b>: <Kbd>{param.value_type}</Kbd>
@@ -46,7 +46,7 @@ export function renderParameter(
             <p>
               <b>{param.key_name}</b>:{" "}
               <Kbd>
-                number, range ({param.extended_metadata.from_value} -{" "}
+                int (range: {param.extended_metadata.from_value} -{" "}
                 {param.extended_metadata.to_value})
               </Kbd>
             </p>
