@@ -8,6 +8,7 @@ import AnalyzerBatchInfo from "../analyzerComponents/AnalyzerBatchInfo";
 import api from "@/api_utils";
 import { useRouter } from "next/navigation";
 import { useQuery } from "react-query";
+import { useSnackbar } from "@/context/snackbarContext";
 
 interface AssignmentAnalyzerProps {
   analyzer_id: number;
@@ -20,6 +21,7 @@ export default async function AssignmentAnalyzer({
   assignment_id,
 }: AssignmentAnalyzerProps) {
   const router = useRouter();
+  const { openSnackbar } = useSnackbar();
 
   const fetchBatches = async () => {
     const resp = await api.getAssignmentAnalyzersBatches(
@@ -44,6 +46,20 @@ export default async function AssignmentAnalyzer({
     const payload: JobCreate = { assignment_id: assignment_id };
     const resp = await api.runJob(analyzer_id, payload);
     console.log(resp);
+    if (resp.ok) {
+      openSnackbar({
+        message: "Analyzer job started successfully!",
+        severity: "success",
+      });
+      setTimeout(() => {
+        router.refresh();
+      }, 2000);
+    } else {
+      openSnackbar({
+        message: `Something wrong while starting Analyzer job: ${resp.error}`,
+        severity: "warning",
+      });
+    }
   }
   return (
     <>

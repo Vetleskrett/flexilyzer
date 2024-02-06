@@ -5,13 +5,15 @@ export function calcTimeDifference(due_date: string) {
   const dueTime = new Date(due_date).getTime();
   const diff = dueTime - now;
 
+  
   // Calculate days, hours, and minutes remaining
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
   const minutes = Math.floor((diff / (1000 * 60)) % 60);
-
+  
+  console.log(dueTime)
+  console.log(days, hours, minutes);
   let timeRemaining;
-
 
   // Check if due_date is in the past or future and format accordingly
   if (diff > 0) {
