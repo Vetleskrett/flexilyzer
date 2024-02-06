@@ -12,7 +12,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 from db.database import Base
-from schemas.shared import BatchEnum
+from schemas.shared import BatchEnum, ValueTypesInput, ValueTypesOutput
 
 # Association table for the many-to-many relationship between Assignment and Analyzer
 assignment_analyzer_association = Table(
@@ -128,7 +128,7 @@ class AnalyzerInput(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     key_name = Column(String, index=True)
-    value_type = Column(String, index=True)
+    value_type = Column(Enum(ValueTypesInput), index=True)
 
     analyzer_id = Column(Integer, ForeignKey("analyzers.id", ondelete="CASCADE"))
     analyzer = relationship("Analyzer", back_populates="analyzer_inputs")
@@ -139,7 +139,7 @@ class AnalyzerOutput(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     key_name = Column(String, index=True)
-    value_type = Column(String, index=True)
+    value_type = Column(Enum(ValueTypesOutput), index=True)
     display_name = Column(String, index=True, nullable=True)
     extended_metadata = Column(JSON, nullable=True)
 

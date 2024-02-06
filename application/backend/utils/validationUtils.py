@@ -1,5 +1,6 @@
 from fastapi import HTTPException
 from pydantic import ValidationError
+from schemas.shared import ValueTypesOutput
 
 
 def validatePydanticToHTTPError(schema, to_validate):
@@ -33,7 +34,7 @@ def validate_type(key, value, expected_type, extended_metadata=None):
             print(f"Error decoding extended_metadata for key {key}")
             return False, "Error decoding extended_metadata"
 
-    if expected_type == "range":
+    if expected_type == ValueTypesOutput.range:
         if not isinstance(value, (int, float)):
             return False, f"{base_error_msg}, got {type(value).__name__}"
 
@@ -48,16 +49,18 @@ def validate_type(key, value, expected_type, extended_metadata=None):
                 )
         # If the value is within the range or no range is specified, consider it valid
         return True, ""
-    elif expected_type == "int":
+    elif expected_type == ValueTypesOutput.int:
         return (
             isinstance(value, (int, float)),
             f"{base_error_msg}, got {type(value).__name__}",
         )
-    elif expected_type == "bool":
+    elif expected_type == ValueTypesOutput.bool:
         return isinstance(value, bool), f"{base_error_msg}, got {type(value).__name__}"
-    elif expected_type == "str":
+    elif expected_type == ValueTypesOutput.str:
         return isinstance(value, str), f"{base_error_msg}, got {type(value).__name__}"
     else:
+        print(type(key))
+        print(type(expected_type))
         return False, f"Unknown or unsupported type, {key} - {value}"
 
 

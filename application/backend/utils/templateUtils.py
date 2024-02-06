@@ -1,6 +1,6 @@
 from typing import List
 from schemas.analyzer_schema import AnalyzerInputCreate, AnalyzerOutputCreate
-from schemas.shared import ValueTypes, ValueTypesMapping
+from schemas.shared import ValueTypesMapping
 
 
 def generate_template(
@@ -23,7 +23,7 @@ def generate_template(
     env_vars = "\n    ".join(
         [
             (
-                f"{input.key_name} = {ValueTypesMapping[input.value_type].value}(os.getenv('{input.key_name.upper()}'))"
+                f"{input.key_name} = {ValueTypesMapping[input.value_type.value].value}(os.getenv('{input.key_name.upper()}'))"
             )
             for input in inputs
         ]
