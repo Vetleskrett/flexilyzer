@@ -48,14 +48,14 @@ def validate_type(key, value, expected_type, extended_metadata=None):
                 )
         # If the value is within the range or no range is specified, consider it valid
         return True, ""
-    elif expected_type == "number":
+    elif expected_type == "int":
         return (
             isinstance(value, (int, float)),
             f"{base_error_msg}, got {type(value).__name__}",
         )
     elif expected_type == "bool":
         return isinstance(value, bool), f"{base_error_msg}, got {type(value).__name__}"
-    elif expected_type == "string":
+    elif expected_type == "str":
         return isinstance(value, str), f"{base_error_msg}, got {type(value).__name__}"
     else:
         return False, f"Unknown or unsupported type, {key} - {value}"
