@@ -1,22 +1,20 @@
-from utils.fileUtils import store_file, script_exists
-from utils.validationUtils import validatePydanticToHTTPError
-from schemas.analyzer_schema import RequirementsSchema
 from services.analyzers_service import AnalyzerService
 from services.assignments_service import AssignmentService
 from services.projects_service import ProjectsService
 from db.crud.batches_crud import BatchesRepository
+from db.crud.projects_crud import ProjectRepository
 from schemas.batch_schema import BatchCreate
 from schemas.shared import BatchEnum
 
-from celery_app.tasks import create_venv_from_requirements, run_analyzer
+from celery_app.tasks import run_analyzer
 
-from fastapi import HTTPException, UploadFile
+from fastapi import HTTPException
 
 
 class JobsService:
     @staticmethod
     def run_job(db, analyzer_id, assignment_id, project_ids):
-        AnalyzerService.get_analyzer(db, analyzer_id=analyzer_id)
+        analyzer = AnalyzerService.get_analyzer(db, analyzer_id=analyzer_id)
         AssignmentService.get_assignment(db, assignment_id=assignment_id)
 
         if project_ids:
@@ -33,37 +31,29 @@ class JobsService:
                     detail=f"Project(s) with id {' '.join(str(e) for e in errors)} not found",
                 )
 
+        if not analyzer.has_requirements or not analyzer.has_script:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Analyzer with id {analyzer_id} is missing one or more of the following: 'requirements', 'script'",
+            )
+
+        if project_ids is None:
+            project_ids = ProjectRepository.get_project_ids_by_assignment_id(
+                db=db, assignment_id=assignment_id
+            )
+            if not project_ids:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Assignment with id {assignment_id} dont have any projects related to itself",
+                )
+
+        project_ids = [id for id, in project_ids]
+
         batch = BatchesRepository.create_batch(
             db=db,
             batch=BatchCreate(assignment_id=assignment_id, analyzer_id=analyzer_id),
         )
 
-        batch = BatchesRepository.update_batch_status(
-            db, batch_id=batch.id, status=BatchEnum.STARTED
-        )
-
-        if project_ids is None:
-            # get project ids for assingment
-
-            project_ids = [1]
-
         run_analyzer.delay(project_ids, batch.id)
 
-        return {"status": "Job started successfully", "code": 0}
-
-    @staticmethod
-    async def upload_requirements(db, analyzer_id, file: UploadFile):
-        validatePydanticToHTTPError(RequirementsSchema, {"file_name": file.filename})
-        analyzer = AnalyzerService.get_analyzer(db=db, analyzer_id=analyzer_id)
-
-        if script_exists(analyzer_id, requirements=True):
-            raise HTTPException(
-                status_code=409,
-                detail=f"Requirements.txt for analyzer with id {analyzer_id} is already uploaded",
-            )
-
-        await store_file(analyzer_id=analyzer.id, file=file, requirements=True)
-
-        create_venv_from_requirements.delay(analyzer_id)
-
-        return 1
+        return "Job started successfully"

@@ -51,3 +51,7 @@ class ProjectRepository:
             .filter(ProjectMetadata.project_id == project_id)
             .all()
         )
+
+    @staticmethod
+    def get_project_ids_by_assignment_id(db: Session, assignment_id: int):
+        return db.query(Project.id).filter(Project.assignment_id == assignment_id).all()

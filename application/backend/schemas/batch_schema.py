@@ -16,7 +16,7 @@ class BatchCreate(BatchBase):
 
 class BatchReponse(BatchBase):
     id: int
-    status: Optional[BatchEnum] = None
+    status: BatchEnum
     timestamp: datetime
 
     class Config:

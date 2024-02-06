@@ -1,7 +1,7 @@
 from typing import List
-from fastapi import APIRouter, Depends, UploadFile, File
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from schemas import analyzer_schema, job_schema
+from schemas import job_schema
 
 from services.jobs_service import (
     JobsService,
@@ -17,5 +17,5 @@ async def run_job(
     data: job_schema.JobCreate,
     analyzer: int,
     db: Session = Depends(get_db),
-):
+) -> str:
     return JobsService.run_job(db, analyzer, data.assignment_id, data.project_ids)

@@ -108,7 +108,7 @@ async def upload_analyzer_requirements(
     analyzer_id: int,
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-) -> int:
-    return await JobsService.upload_requirements(
+) -> str:
+    return await AnalyzerService.upload_requirements(
         db=db, analyzer_id=analyzer_id, file=file
     )

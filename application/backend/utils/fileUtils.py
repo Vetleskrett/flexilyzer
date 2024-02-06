@@ -42,9 +42,9 @@ def script_exists(analyzer_id: int, requirements: bool = False):
     return file_path.is_file()
 
 
-def venv_exists(analyzer_id: int):
-    venv_path = Path(settings.BASE_DIR) / str(analyzer_id) / settings.DEFAULT_VENV_NAME
-    return venv_path.is_dir()
+# def venv_exists(analyzer_id: int):
+#     venv_path = Path(settings.BASE_DIR) / str(analyzer_id) / settings.DEFAULT_VENV_NAME
+#     return venv_path.is_dir()
 
 
 def read_file(analyzer_id: int, requirements: bool = False):
@@ -67,10 +67,16 @@ def read_file(analyzer_id: int, requirements: bool = False):
     return content
 
 
-def delete_file(analyzer_id: int):
+def delete_file(analyzer_id: int, requirements: bool = False):
     try:
         file_path = (
-            Path(settings.BASE_DIR) / str(analyzer_id) / settings.DEFAULT_SCRIPT_NAME
+            Path(settings.BASE_DIR)
+            / str(analyzer_id)
+            / (
+                settings.DEFAULT_SCRIPT_NAME
+                if not requirements
+                else settings.DEFAULT_REQUIREMENTS_NAME
+            )
         )
         file_path.unlink(missing_ok=True)
     except OSError as e:
