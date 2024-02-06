@@ -21,6 +21,7 @@
     "react": "^18",
     "react-day-picker": "^8.10.0",
     "react-dom": "^18",
+    "react-query": "^3.39.3",
     "react-syntax-highlighter": "^15.5.0",
     "swagger-typescript-api": "^13.0.3",
     "uuid": "^9.0.1"
