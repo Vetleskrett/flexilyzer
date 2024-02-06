@@ -14,8 +14,8 @@ export default async function CourseTeamsPage({ params }: Props) {
   const course_teams = await api.getCourseTeams(Number(params.course_id));
 
   return (
-    <div className="mt-10 ml-10">
-      <h2 className="h2 flex justify-center">
+    <div className='mt-10 ml-10'>
+      <h2 className='h2 flex justify-center'>
         Teams for Course {course_details.data.tag} - {course_details.data.name}
       </h2>
       {/* <CourseDetails id={course_details.data.id} /> */}
@@ -28,9 +28,9 @@ export default async function CourseTeamsPage({ params }: Props) {
           />
         );
       })}
-      <div className="flex justify-center">
+      <div className='flex justify-center'>
         <CreateButton
-          route={`/courses/${params.course_id}/teams/new`}
+          pushRoute={`/courses/${params.course_id}/teams/new`}
           text={"Add Team"}
         />
       </div>

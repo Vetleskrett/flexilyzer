@@ -72,40 +72,40 @@ export default function AssignmentAnalyzer({
   }
   return (
     <>
-      <Card className="h-[300px] w-[350px] p-2 bg-slate-100">
+      <Card className='h-[300px] w-[350px] p-2 bg-slate-100'>
         <h3
-          className="h3 text-center mt-3 text-blue-500 cursor-pointer"
+          className='h3 text-center mt-3 text-blue-500 cursor-pointer'
           onClick={() => {
             router.push(`/analyzers/${analyzer_id}`);
           }}
         >
           {analyzer_name}
         </h3>
-        <div className="flex flex-row justify-center gap-2 ml-5 mr-5 h-[50px]">
-          <Button color="primary" onClick={runAnalyzer} className="w-[100px]">
+        <div className='flex flex-row justify-center gap-2 ml-5 mr-5 h-[50px]'>
+          <Button color='primary' onClick={runAnalyzer} className='w-[100px]'>
             Run analyzer
           </Button>
           <Button
-            color="secondary"
+            color='secondary'
             onClick={() => {
               queryClient.invalidateQueries([
                 "batches",
                 { assignment_id, analyzer_id },
               ]);
             }}
-            className="w-[100px]"
+            className='w-[100px]'
           >
             Refresh
           </Button>
         </div>
-        <div className="overflow-y-auto">
+        <div className='overflow-y-auto'>
           {batches &&
             batches
               .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
               .map((batch, i) => {
                 return (
                   <>
-                    <div key={i} className="my-2">
+                    <div key={i} className='my-2'>
                       {" "}
                       <AnalyzerBatchInfo batch={batch} />
                     </div>

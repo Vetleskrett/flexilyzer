@@ -20,14 +20,14 @@ export default async function CourseHomePage({ params }: Props) {
   const course_teams = await api.getCourseTeams(Number(params.course_id));
 
   return (
-    <div className="mt-10 ml-10">
-      <h2 className="h2 flex justify-center">
+    <div className='mt-10 ml-10'>
+      <h2 className='h2 flex justify-center'>
         Course {course_details.data.tag} - {course_details.data.name}
       </h2>
       {/* <CourseDetails id={course_details.data.id} /> */}
-      <div className="flex justify-between p-4 pt-1 w-full">
-        <div className="flex-grow max-w-50p p-4 text-center">
-          <h2 className="h2">Assignments</h2>
+      <div className='flex justify-between p-4 pt-1 w-full'>
+        <div className='flex-grow max-w-50p p-4 text-center'>
+          <h2 className='h2'>Assignments</h2>
           {course_assignments.data.map((assignment) => {
             return (
               <AssignmentOverview
@@ -39,12 +39,12 @@ export default async function CourseHomePage({ params }: Props) {
             );
           })}
           <CreateButton
-            route={`/courses/${params.course_id}/assignments/new`}
+            pushRoute={`/courses/${params.course_id}/assignments/new`}
             text={"Create Assignment"}
           />
         </div>
-        <div className="flex-grow max-w-50p p-4 text-center">
-          <h2 className="h2">Teams</h2>
+        <div className='flex-grow max-w-50p p-4 text-center'>
+          <h2 className='h2'>Teams</h2>
           {course_teams.data.map((team) => {
             return (
               <TeamOverview
@@ -53,7 +53,7 @@ export default async function CourseHomePage({ params }: Props) {
               />
             );
           })}
-          <CreateButton route={"/courses/teams/new"} text={"Add Team"} />
+          <CreateButton pushRoute={"/courses/teams/new"} text={"Add Team"} />
         </div>
       </div>
       <br />

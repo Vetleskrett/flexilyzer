@@ -20,7 +20,7 @@ import {
 const ConnectAsssignmentAnalyzer = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const [selectedKey, setSelectedKey] = useState<any>("test");
+  const [selectedKey, setSelectedKey] = useState<any>("");
 
   return (
     <>

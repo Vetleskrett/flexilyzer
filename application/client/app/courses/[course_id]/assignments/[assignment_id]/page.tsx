@@ -39,8 +39,7 @@ export default async function AssignmentDetails({ params }: Props) {
       </div>
       <div className='h2 my-8 flex justify-center'>
         <h2>
-          Connected analyzers:{" "}
-          <ConnectAsssignmentAnalyzer></ConnectAsssignmentAnalyzer>
+          Connected analyzers: <ConnectAsssignmentAnalyzer />
         </h2>
       </div>
       <div className='flex overflow-x-auto  space-x-4'>
@@ -54,7 +53,6 @@ export default async function AssignmentDetails({ params }: Props) {
                   assignment_id={Number(params.assignment_id)}
                 />
               </Suspense>
-              
             </>
           );
         })}

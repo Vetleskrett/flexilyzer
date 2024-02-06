@@ -9,7 +9,7 @@ export default async function Courses() {
 
   return (
     <div>
-      <h2 className="h2">All courses:</h2>
+      <h2 className='h2'>All courses:</h2>
       {courses.data.map((course: CourseResponse) => {
         return (
           <>
@@ -17,8 +17,8 @@ export default async function Courses() {
           </>
         );
       })}
-      <div className="flex flex-col items-center mt-30">
-        <CreateButton route={"/courses/new"} text={"Create Course"} />
+      <div className='flex flex-col items-center mt-30'>
+        <CreateButton pushRoute={"/courses/new"} text={"Create Course"} />
       </div>
     </div>
   );
