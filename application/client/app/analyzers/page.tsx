@@ -13,7 +13,7 @@ export default async function Analyzers() {
         return <AnalyzerOverview analyzer={analyzer} />;
       })}
       <div className="flex flex-col items-center mt-30">
-        <CreateButton route={"/analyzers/new"} text={"New Analyzer"} />
+        <CreateButton pushRoute={"/analyzers/new"} text={"New Analyzer"} />
       </div>
     </div>
   );

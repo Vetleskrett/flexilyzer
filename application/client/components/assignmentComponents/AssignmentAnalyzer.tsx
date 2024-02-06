@@ -46,8 +46,6 @@ export default function AssignmentAnalyzer({
     }
   );
 
-  if (error) return <div>An error occurred: {error.message}</div>;
-
   async function runAnalyzer() {
     const payload: JobCreate = { assignment_id: assignment_id };
     const resp = await api.runJob(analyzer_id, payload);
@@ -69,6 +67,7 @@ export default function AssignmentAnalyzer({
       });
     }
   }
+
   return (
     <>
       <Card className="h-[500px] w-[350px] p-2 bg-slate-100 shadow-sm">
@@ -98,7 +97,9 @@ export default function AssignmentAnalyzer({
           </Button>
         </div>
         <div className="overflow-y-auto mt-2">
-          {isBatchesLoading ? (
+          {error ? (
+            <div>An error occurred: {error.message}</div>
+          ) : isBatchesLoading ? (
             <>
               {Array.from({ length: 6 }, (_, index) => (
                 <Skeleton key={index} className="rounded-lg my-2 bg-white">

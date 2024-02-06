@@ -30,7 +30,7 @@ export default async function CourseTeamsPage({ params }: Props) {
       })}
       <div className="flex justify-center">
         <CreateButton
-          route={`/courses/${params.course_id}/teams/new`}
+          pushRoute={`/courses/${params.course_id}/teams/new`}
           text={"Add Team"}
         />
       </div>
