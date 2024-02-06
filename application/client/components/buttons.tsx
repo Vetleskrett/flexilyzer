@@ -6,17 +6,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export function CreateButton({ route, text }: { route: string; text: string }) {
+export function CreateButton({
+  pushRoute,
+  text,
+  onClickFunction,
+}: {
+  pushRoute?: string;
+  text: string;
+  onClickFunction?: () => void;
+}) {
   const { push } = useRouter();
 
-  return (
-    <Button
-      color="secondary"
-      onClick={() => {
-        push(route);
-      }}
-    >
-      {text}
-    </Button>
-  );
+  const handleClick = () => {
+    if (onClickFunction) {
+      onClickFunction();
+    } else if (pushRoute) {
+      push(pushRoute);
+    }
+  };
+
+  return <Button onClick={handleClick}>{text}</Button>;
 }
