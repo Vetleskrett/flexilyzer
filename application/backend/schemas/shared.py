@@ -13,3 +13,10 @@ class ValueTypes(enum.Enum):
     int = "int"
     bool = "bool"
     range = "range"
+
+
+class ValueTypesMapping(enum.Enum):
+    str = "str"
+    int = "int"
+    bool = "bool"
+    range = "int"
