@@ -71,9 +71,9 @@ export default function AssignmentAnalyzer({
 
   return (
     <>
-      <Card className="h-[500px] w-[350px] p-2 bg-slate-100 shadow-sm">
+      <Card className='h-[500px] w-[350px] p-2 bg-slate-100 shadow-sm'>
         <h3
-          className="h3 text-center mt-3 text-blue-500 cursor-pointer"
+          className='h3 text-center mt-3 text-blue-500 cursor-pointer'
           onClick={() => {
             router.push(`/analyzers/${analyzer_id}`);
           }}
@@ -91,7 +91,7 @@ export default function AssignmentAnalyzer({
                 { assignment_id, analyzer_id },
               ]);
             }}
-            className="w-[100px]"
+            className='w-[100px]'
           >
             Refresh
           </Button>
@@ -105,14 +105,14 @@ export default function AssignmentAnalyzer({
             Reports
           </Button>
         </div>
-        <div className="overflow-y-auto mt-2">
+        <div className='overflow-y-auto mt-2'>
           {error ? (
             <div>An error occurred: {error.message}</div>
           ) : isBatchesLoading ? (
             <>
               {Array.from({ length: 6 }, (_, index) => (
-                <Skeleton key={index} className="rounded-lg my-2 bg-white">
-                  <Card className="h-[50px] flex items-center justify-center shadow-sm"></Card>
+                <Skeleton key={index} className='rounded-lg my-2 bg-white'>
+                  <Card className='h-[50px] flex items-center justify-center shadow-sm'></Card>
                 </Skeleton>
               ))}
             </>
@@ -123,7 +123,7 @@ export default function AssignmentAnalyzer({
               .map((batch, i) => {
                 return (
                   <>
-                    <div key={i} className="my-2">
+                    <div key={i} className='my-2'>
                       {" "}
                       <AnalyzerBatchInfo batch={batch} />
                     </div>

@@ -8,11 +8,11 @@ export default async function Analyzers() {
 
   return (
     <div>
-      <h2 className="h2">All Analyzers:</h2>
+      <h2 className='h2'>All Analyzers:</h2>
       {analyzers.data.map((analyzer) => {
         return <AnalyzerOverview analyzer={analyzer} />;
       })}
-      <div className="flex flex-col items-center mt-30">
+      <div className='flex flex-col items-center mt-30'>
         <CreateButton pushRoute={"/analyzers/new"} text={"New Analyzer"} />
       </div>
     </div>

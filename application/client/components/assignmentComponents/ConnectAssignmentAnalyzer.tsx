@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { CreateButton } from "../buttons";
 
 import {
@@ -11,53 +11,124 @@ import {
   ModalFooter,
   useDisclosure,
   Button,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
+  Select,
+  SelectItem,
 } from "@nextui-org/react";
 
-const ConnectAsssignmentAnalyzer = () => {
+import api from "@/api_utils";
+import { AnalyzerSimplifiedResponse } from "@/extensions/data-contracts";
+import { useQuery } from "react-query";
+import { useSnackbar } from "@/context/snackbarContext";
+
+const ConnectAsssignmentAnalyzer = ({
+  assigment_id,
+  connected_analyzers,
+}: {
+  assigment_id: string;
+  connected_analyzers: AnalyzerSimplifiedResponse[];
+}) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const [selectedKey, setSelectedKey] = useState<any>("test");
+  const { openSnackbar } = useSnackbar();
+
+  const fetchAnalyzers = async () => {
+    const resp = await api.getAllAnalyzers();
+    if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
+    return resp.data;
+  };
+
+  const {
+    data: analyzers = [],
+    error,
+    isLoading: isAnlyzersLoading,
+  } = useQuery<AnalyzerSimplifiedResponse[], Error>(
+    ["analyzers"],
+    fetchAnalyzers,
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const notConnectedAnalyzers = analyzers.filter(
+    (analyzer) =>
+      !connected_analyzers.find(
+        (connected_analyzer) => connected_analyzer.id == analyzer.id
+      )
+  );
+
+  const [selectedAnalyzer, setSelecedAnalyzer] = useState<
+    AnalyzerSimplifiedResponse | undefined
+  >();
+
+  const updateSelection = (e: any) => {
+    const selectedAnalyzer = notConnectedAnalyzers.find(
+      (analyzer) => analyzer.id === Number(e)
+    );
+    setSelecedAnalyzer(selectedAnalyzer);
+  };
+
+  const createConnection = async (onClose: () => void) => {
+    if (selectedAnalyzer) {
+      const res = await api.connectAssignmentAnalyzers(
+        Number(assigment_id),
+        selectedAnalyzer.id
+      );
+      if (res.ok) {
+        openSnackbar({ message: "Anlyzer connected", severity: "success" });
+      } else {
+        openSnackbar({ message: "Something went wrong", severity: "error" });
+        console.log(res.error);
+      }
+    }
+    onClose();
+  };
+
+  if (error) return <>Error</>;
+
+  if (isAnlyzersLoading) return <>Loading...</>;
 
   return (
     <>
       <CreateButton text='+' onClickFunction={onOpen} />
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={() => {
+          setSelecedAnalyzer(undefined);
+          onOpenChange();
+        }}
+      >
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader> Connect analyzer to assignment</ModalHeader>
               <ModalBody>
-                <Dropdown>
-                  <DropdownTrigger>
-                    <Button variant='bordered' className='capitalize'>
-                      {selectedKey}
-                    </Button>
-                  </DropdownTrigger>
-                  <DropdownMenu
-                    aria-label='Single selection example'
-                    variant='flat'
-                    disallowEmptySelection
-                    selectionMode='single'
-                    selectedKeys={selectedKey}
-                    onSelectionChange={(e) => setSelectedKey(e)}
+                {notConnectedAnalyzers.length < 0 ? (
+                  <Select
+                    label='Select analyzer'
+                    className='max-w-xs'
+                    onChange={(e) => {
+                      updateSelection(e.target.value);
+                    }}
                   >
-                    <DropdownItem key='text'>Text</DropdownItem>
-                    <DropdownItem key='number'>Number</DropdownItem>
-                    <DropdownItem key='date'>Date</DropdownItem>
-                    <DropdownItem key='single_date'>Single Date</DropdownItem>
-                    <DropdownItem key='iteration'>Iteration</DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
+                    {notConnectedAnalyzers.map((analyzer) => (
+                      <SelectItem key={analyzer.id} value={analyzer.name}>
+                        {analyzer.name}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                ) : (
+                  <span>No available analyzers</span>
+                )}
               </ModalBody>
               <ModalFooter>
                 <Button color='danger' variant='light' onPress={onClose}>
                   Close
                 </Button>
-                <Button color='primary' onPress={onClose}>
+                <Button
+                  isDisabled={!selectedAnalyzer}
+                  color='primary'
+                  onPress={() => createConnection(onClose)}
+                >
                   Connect
                 </Button>
               </ModalFooter>
