@@ -40,7 +40,7 @@ export default async function AssignmentDetails({ params }: Props) {
         className='my-8 flex justify-center items-center text-center'
         style={{ position: "relative" }}
       >
-        <h2>Connected analyzers:</h2>
+        <h2 className="h2">Connected analyzers:</h2>
         <div
           style={{
             position: "absolute",
