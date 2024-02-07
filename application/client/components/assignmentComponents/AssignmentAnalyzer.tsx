@@ -7,7 +7,7 @@ import Dot from "../DotComponent";
 import AnalyzerBatchInfo from "../analyzerComponents/AnalyzerBatchInfo";
 import api from "@/api_utils";
 import { usePathname, useRouter } from "next/navigation";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient, useMutation } from "react-query";
 import { useSnackbar } from "@/context/snackbarContext";
 
 interface AssignmentAnalyzerProps {
@@ -47,30 +47,32 @@ export default function AssignmentAnalyzer({
     }
   );
 
-  async function runAnalyzer() {
-    const payload: JobCreate = { assignment_id: assignment_id };
-
-    const resp = await api.runJob(analyzer_id, payload);
-    console.log(resp);
-    if (resp.ok) {
-      console.log("ASDasdasdadAD");
-      openSnackbar({
-        message: "Analyzer job started successfully!",
-        severity: "success",
-      });
-      queryClient.invalidateQueries([
-        "batches",
-        { assignment_id, analyzer_id },
-      ]);
-      // re-fetch here to get the newly created batch data
-    } else {
-      console.log("ASDAD");
-      openSnackbar({
-        message: `Something wrong while starting Analyzer job: ${resp.error}`,
-        severity: "warning",
-      });
+  const runAnalyzerMutation = useMutation(
+    async () => {
+      const payload: JobCreate = { assignment_id: assignment_id };
+      return await api.runJob(analyzer_id, payload);
+    },
+    {
+      onSuccess: () => {
+        openSnackbar({
+          message: "Analyzer job started successfully!",
+          severity: "success",
+        });
+        queryClient.invalidateQueries([
+          "batches",
+          { assignment_id, analyzer_id },
+        ]);
+        // Optionally, refetch queries here if needed
+      },
+      onError: (error: any) => {
+        openSnackbar({
+          message: "Something wrong while starting Analyzer job",
+          severity: "error",
+        });
+        console.error(error);
+      },
     }
-  }
+  );
 
   return (
     <>
@@ -84,7 +86,11 @@ export default function AssignmentAnalyzer({
           {analyzer_name}
         </h3>
         <div className='flex flex-row justify-center gap-2 ml-5 mr-5 h-[50px]'>
-          <Button color='secondary' onClick={runAnalyzer} className='w-[100px]'>
+          <Button
+            color='secondary'
+            onClick={() => runAnalyzerMutation.mutate()}
+            className='w-[100px]'
+          >
             Run analyzer
           </Button>
           <Button
