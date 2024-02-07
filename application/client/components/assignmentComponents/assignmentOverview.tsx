@@ -29,7 +29,7 @@ export default function AssignmentOverview({
               onClick={() => {
                 router.push(`/courses/${course_id}/assignments/${id}`);
               }}
-              variant="faded"
+              color="primary"
             >
               Go to Assignment
             </Button>

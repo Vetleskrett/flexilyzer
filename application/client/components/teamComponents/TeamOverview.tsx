@@ -25,7 +25,7 @@ export default function TeamOverview({
               onClick={() => {
                 router.push(`/courses/${course_id}/teams/${team_id}`);
               }}
-              variant="faded"
+              color="primary"
             >
               Go to Team
             </Button>
