@@ -53,7 +53,7 @@ export default async function CourseHomePage({ params }: Props) {
               />
             );
           })}
-          <CreateButton pushRoute={"/courses/teams/new"} text={"Add Team"} />
+          <CreateButton pushRoute={`/courses/${params.course_id}/teams/new`} text={"Add Team"} />
         </div>
       </div>
       <br />

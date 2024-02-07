@@ -1,6 +1,6 @@
 "use client";
 
-import { BatchReponse } from "@/extensions/data-contracts";
+import { BatchResponse } from "@/extensions/data-contracts";
 import { calcTimeDifference } from "@/utils/timeUtils";
 import { Card, Tooltip } from "@nextui-org/react";
 import { format, formatDistance } from "date-fns";
@@ -12,7 +12,7 @@ const STATUS_COLOR_MAPPING = {
   FAILED: "#FD5A13",
   FINISHED: "#069224",
 };
-export default function AnalyzerBatchInfo({ batch }: { batch: BatchReponse }) {
+export default function AnalyzerBatchInfo({ batch }: { batch: BatchResponse }) {
   return (
     <>
       <Card className="h-[50px] flex flex-row justify-between items-center px-3 mx-2 shadow-sm text-sm">

@@ -24,14 +24,21 @@ export default function AssignmentOverview({
             <b>Due Date: </b>
             {due_date ? new Date(due_date).toLocaleDateString("no-NO") : ""}
           </div>
-          <div className="flex-initial my-auto mr-15">
+          <div className="flex flex-row my-auto mr-15 gap-4">
+            <Button
+              onClick={() => {
+                router.push(`/courses/${course_id}/assignments/${id}/reports`);
+              }}
+              color="primary"
+            >
+              Team reports
+            </Button>
             <Button
               onClick={() => {
                 router.push(`/courses/${course_id}/assignments/${id}`);
               }}
-              color="primary"
             >
-              Go to Assignment
+              Details
             </Button>
           </div>
         </div>
