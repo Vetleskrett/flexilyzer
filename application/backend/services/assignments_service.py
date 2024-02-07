@@ -4,6 +4,7 @@ from db.crud.assignments_crud import AssignmentRepository
 from schemas import assingment_schema
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from services.analyzers_service import AnalyzerService
 
 from services.courses_service import CourseService
 from services.teams_service import TeamService
@@ -59,4 +60,13 @@ class AssignmentService:
     ) -> List[assingment_schema.AssignmentMetadataResponse]:
         return AssignmentRepository.get_assignment_metadata_for_assignment(
             db, assignemnt_id
+        )
+
+    @staticmethod
+    def connect_assignmnet_analyzer(db, assignemnt_id, analyzer_id):
+        AssignmentService.get_assignment(db, assignemnt_id)
+        AnalyzerService.get_analyzer(db, analyzer_id)
+
+        return AssignmentRepository.connect_assignment_analyzer(
+            db, assignemnt_id, analyzer_id
         )

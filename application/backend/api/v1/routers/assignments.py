@@ -72,6 +72,18 @@ def get_assignment_analyzers(
     )
 
 
+@router.post(
+    "/{assignment_id}/analyzers/{analyzer_id}/connect",
+    operation_id="connect-assignment-analyzers",
+)
+def connect_assignmnet_analyzer(
+    assignment_id: int, analyzer_id: int, db=Depends(get_db)
+):
+    return AssignmentService.connect_assignmnet_analyzer(
+        db=db, assignemnt_id=assignment_id, analyzer_id=analyzer_id
+    )
+
+
 # def restructure_metric_definitions(metric_definitions_data):
 #     structured_data = defaultdict(list)
 

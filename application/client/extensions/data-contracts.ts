@@ -129,8 +129,8 @@ export enum BatchEnum {
   FINISHED = "FINISHED",
 }
 
-/** BatchReponse */
-export interface BatchReponse {
+/** BatchResponse */
+export interface BatchResponse {
   /** Assignment Id */
   assignment_id: number;
   /** Analyzer Id */

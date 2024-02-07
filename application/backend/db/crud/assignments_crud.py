@@ -1,6 +1,13 @@
 from sqlalchemy.orm import Session, aliased
 from sqlalchemy import and_
-from db.models import Assignment, AssignmentMetadata, Project, Report, Team
+from db.models import (
+    Assignment,
+    AssignmentMetadata,
+    Project,
+    Report,
+    Team,
+    assignment_analyzer_association,
+)
 from schemas import assingment_schema
 
 
@@ -94,12 +101,44 @@ class AssignmentRepository:
             .all()
         )
 
+    @staticmethod
     def get_assignment_metadata_for_assignment(db: Session, assignemnt_id):
         return (
             db.query(AssignmentMetadata)
             .filter(AssignmentMetadata.assignment_id == assignemnt_id)
             .all()
         )
+
+    @staticmethod
+    def connect_assignment_analyzer(db: Session, assignment_id: int, analyzer_id: int):
+        """
+        Connects an assignment to an analyzer by updating the association table.
+
+        Parameters:
+        - db (Session): The database session.
+        - assignment_id (int): The ID of the assignment to be connected.
+        - analyzer_id (int): The ID of the analyzer to be connected.
+
+        Returns:
+        None. The function updates the database directly.
+        """
+
+        # Check if the connection already exists to avoid duplicates
+        existing_connection = (
+            db.query(assignment_analyzer_association)
+            .filter_by(assignment_id=assignment_id, analyzer_id=analyzer_id)
+            .first()
+        )
+
+        if existing_connection:
+            # fix for later
+            return
+
+        new_connection = assignment_analyzer_association.insert().values(
+            assignment_id=assignment_id, analyzer_id=analyzer_id
+        )
+        db.execute(new_connection)
+        db.commit()
 
     # def get_assignment_analyzers(db: Session, assignment_id: int):
     #     """

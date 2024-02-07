@@ -17,7 +17,7 @@ import {
   AnalyzerSimplifiedResponse,
   AssignmentCreate,
   AssignmentResponse,
-  BatchReponse,
+  BatchResponse,
   BodyUploadAnalyzerRequirements,
   BodyUploadAnalyzerScript,
   CourseCreate,
@@ -284,9 +284,24 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request GET:/api/v1/assignments/{assignment_id}/analyzers/{analyzer_id}/batches
    */
   getAssignmentAnalyzersBatches = (assignmentId: number, analyzerId: number, params: RequestParams = {}) =>
-    this.request<BatchReponse[], HTTPValidationError>({
+    this.request<BatchResponse[], HTTPValidationError>({
       path: `/api/v1/assignments/${assignmentId}/analyzers/${analyzerId}/batches`,
       method: "GET",
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags assignments
+   * @name ConnectAssignmentAnalyzers
+   * @summary Connect Assignmnet Analyzer
+   * @request POST:/api/v1/assignments/{assignment_id}/analyzers/{analyzer_id}/connect
+   */
+  connectAssignmentAnalyzers = (assignmentId: number, analyzerId: number, params: RequestParams = {}) =>
+    this.request<any, HTTPValidationError>({
+      path: `/api/v1/assignments/${assignmentId}/analyzers/${analyzerId}/connect`,
+      method: "POST",
       format: "json",
       ...params,
     });
@@ -591,7 +606,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @request POST:/api/v1/jobs/{analyzer}
    */
   runJob = (analyzer: number, data: JobCreate, params: RequestParams = {}) =>
-    this.request<string, HTTPValidationError>({
+    this.request<BatchResponse, HTTPValidationError>({
       path: `/api/v1/jobs/${analyzer}`,
       method: "POST",
       body: data,
