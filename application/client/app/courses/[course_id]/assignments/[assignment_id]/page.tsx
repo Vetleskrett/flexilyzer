@@ -36,19 +36,9 @@ export default async function AssignmentDetails({ params }: Props) {
           }
         />
       </div>
-      <div
-        className='my-8 flex justify-center items-center text-center'
-        style={{ position: "relative" }}
-      >
+      <div className='my-8 flex justify-center items-center relative text-center'>
         <h2>Connected analyzers:</h2>
-        <div
-          style={{
-            position: "absolute",
-            right: 0,
-            top: "50%",
-            transform: "translateY(-50%)",
-          }}
-        >
+        <div className='absolute right-0 top-1/2 transform -translate-y-1/2'>
           <ConnectAsssignmentAnalyzer
             assigment_id={params.assignment_id}
             connected_analyzers={analyzers.data}
