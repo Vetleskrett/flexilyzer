@@ -6,7 +6,7 @@ import { Button, Card, Skeleton } from "@nextui-org/react";
 import Dot from "../DotComponent";
 import AnalyzerBatchInfo from "../analyzerComponents/AnalyzerBatchInfo";
 import api from "@/api_utils";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "react-query";
 import { useSnackbar } from "@/context/snackbarContext";
 
@@ -23,6 +23,7 @@ export default function AssignmentAnalyzer({
   const router = useRouter();
   const { openSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
+  const pathName = usePathname();
 
   const fetchBatches = async () => {
     const resp = await api.getAssignmentAnalyzersBatches(
@@ -80,11 +81,10 @@ export default function AssignmentAnalyzer({
           {analyzer_name}
         </h3>
         <div className="flex flex-row justify-center gap-2 ml-5 mr-5 h-[50px]">
-          <Button color="primary" onClick={runAnalyzer} className="w-[100px]">
+          <Button color="secondary" onClick={runAnalyzer} className="w-[100px]">
             Run analyzer
           </Button>
           <Button
-            color="secondary"
             onClick={() => {
               queryClient.invalidateQueries([
                 "batches",
@@ -94,6 +94,15 @@ export default function AssignmentAnalyzer({
             className="w-[100px]"
           >
             Refresh
+          </Button>
+          <Button
+            color="primary"
+            onClick={() => {
+              router.push(pathName + `/reports?analyzer=${analyzer_id}`);
+            }}
+            className="w-[100px]"
+          >
+            Reports
           </Button>
         </div>
         <div className="overflow-y-auto mt-2">

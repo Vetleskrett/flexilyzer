@@ -9,7 +9,7 @@ export default async function AssignmentTeams({ params }: Props) {
   return (
     <>
       Implementere en funksjon som finner alle teams som har registrert noe for
-      dette assigmentet?
+      dette assignmentet?
     </>
   );
 }
