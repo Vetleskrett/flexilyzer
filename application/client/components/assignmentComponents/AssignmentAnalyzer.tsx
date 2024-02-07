@@ -91,7 +91,7 @@ export default function AssignmentAnalyzer({
             onClick={() => runAnalyzerMutation.mutate()}
             className='w-[100px]'
           >
-            Run analyzer
+            Run
           </Button>
           <Button
             onClick={() => {

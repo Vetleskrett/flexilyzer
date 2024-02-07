@@ -21,7 +21,7 @@ export default function AssignmentOverview({
         <div className="flex">
           <div className="flex-auto">
             <h3 className="h3">{name}</h3>
-            <b>Due Date: </b>
+            <b>Due: </b>
             {due_date ? new Date(due_date).toLocaleDateString("no-NO") : ""}
           </div>
           <div className="flex flex-row my-auto mr-15 gap-4">

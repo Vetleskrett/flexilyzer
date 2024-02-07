@@ -72,16 +72,18 @@ def run_seed():
         session.flush()
 
         assignment_metadata = AssignmentMetadata(
-            assignment_id=assignment.id, key_name="a", value_type="str"
+            assignment_id=assignment.id, key_name="url", value_type="str"
         )
         session.add(assignment_metadata)
         session.flush()
 
-        print("Creating team ...")
+        print("Creating teams for course 1 ...")
         team = Team(course=course)
+        team2 = Team(course=course)
         session.add(team)
+        session.add(team2)
 
-        print("Creating projects ...")
+        print("Creating projects 1...")
         project = Project(
             team=team,
             assignment=assignment,
@@ -90,9 +92,47 @@ def run_seed():
 
         print("Creating project metadata ...")
         project_metadata = ProjectMetadata(
-            value="Ligma Balls",
+            value="www.someurl.com",
             project=project,
             assignment_metadata_id=assignment_metadata.id,
+        )
+        session.add(project_metadata)
+
+        print("Creating course 2 ...")
+        course2 = Course(tag="IT4334", name="Store, distribuerte datamengder")
+        session.add(course)
+
+        print("Creating assignment 2...")
+        assignment2 = Assignment(
+            name="SQL øving", due_date=datetime(2024, 3, 25, 23, 59), course=course2
+        )
+        session.add(assignment2)
+        session.flush()
+
+        assignment_metadata2 = AssignmentMetadata(
+            assignment_id=assignment2.id, key_name="databaseurl", value_type="str"
+        )
+        session.add(assignment_metadata2)
+        session.flush()
+
+        print("Creating teams for course 2 ...")
+        team3 = Team(course=course2)
+        team4 = Team(course=course2)
+        session.add(team3)
+        session.add(team4)
+
+        print("Creating projects 2...")
+        project2 = Project(
+            team=team,
+            assignment=assignment2,
+        )
+        session.add(project2)
+
+        print("Creating project metadata  2 ...")
+        project_metadata = ProjectMetadata(
+            value="http://129.125.32.12:postgres8001",
+            project=project,
+            assignment_metadata_id=assignment_metadata2.id,
         )
         session.add(project_metadata)
 
@@ -111,21 +151,32 @@ def run_seed():
         print("Creating analyzer 2 ...")
         analyzer2 = Analyzer(
             name="Test analyzer 2",
-            description="Generic description",
+            description="Generic description number 2",
             creator="Enthe Nu",
         )
         session.add(analyzer2)
 
-        print("creating batch")
+        print("Creating batch")
         batch = Batch(assignment_id=assignment.id, analyzer_id=analyzer.id)
         session.add(batch)
         session.flush()
 
+        print("Creating batch 2")
+        batch2 = Batch(assignment_id=assignment2.id, analyzer_id=analyzer2.id)
+        session.add(batch2)
+        session.flush()
+
         print("Creating analyzer inputs ...")
         analyzer_inputs = [
-            AnalyzerInput(key_name="a", value_type="str", analyzer=analyzer)
+            AnalyzerInput(key_name="url", value_type="str", analyzer=analyzer)
         ]
         session.add_all(analyzer_inputs)
+
+        print("Creating analyzer inputs 2 ...")
+        analyzer_inputs2 = [
+            AnalyzerInput(key_name="databaseurl", value_type="str", analyzer=analyzer2)
+        ]
+        session.add_all(analyzer_inputs2)
 
         print("Creating analyzer outputs ...")
         analyzer_outputs = [
@@ -156,6 +207,17 @@ def run_seed():
             ),
         ]
         session.add_all(analyzer_outputs)
+
+        print("Creating analyzer outputs 2 ...")
+        analyzer_outputs2 = [
+            AnalyzerOutput(
+                key_name="https",
+                display_name="Hashttps",
+                value_type="bool",
+                analyzer=analyzer2,
+            ),
+        ]
+        session.add_all(analyzer_outputs2)
 
         print("Creating report 1 ...")
         report1_data = {

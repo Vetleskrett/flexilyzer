@@ -37,7 +37,7 @@ export default function AssignmentMetadata({
 
           <div className="w-1/4 text-right">
             <p>
-              <b>Due date: </b>
+              <b>Due: </b>
               {due_date
                 ? new Date(due_date).toLocaleDateString("no-NO")
                 : "N/A"}
