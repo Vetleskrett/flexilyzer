@@ -1,7 +1,8 @@
 "use client";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { AnalyzerSimplifiedResponse } from "@/extensions/data-contracts";
 import { Tab, Tabs } from "@nextui-org/react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback } from "react";
 
 export default function AnalyzerTabs({
   assignment_analyzers,
@@ -10,31 +11,43 @@ export default function AnalyzerTabs({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pathName = usePathname();
+  const pathname = usePathname();
 
-  const currentAnalyzerId = searchParams.get("analyzer");
-  const currentAnalyzerIndex = assignment_analyzers.findIndex(
-    (analyzer) => `${analyzer.id}` === currentAnalyzerId
-  );
+  // Directly determine the selected analyzer ID from the search parameters
+  const currentAnalyzerId =
+    searchParams.get("analyzer") || assignment_analyzers[0]?.id.toString(); // Default to first analyzer if none specified
 
-  const handleTabChange = (index: number) => {
-    const selectedAnalyzerId = assignment_analyzers[index].id;
-    // Create a new URLSearchParams object to update the search parameters
-    const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set("analyzer", selectedAnalyzerId.toString());
-    // Use router.push to update the URL with the new search parameters
-    router.push(`${pathName}?${newSearchParams.toString()}`);
+    const createQueryString = useCallback(
+        (name: string, value: string) => {
+          const params = new URLSearchParams(searchParams.toString());
+          params.set(name, value);
+    
+          return params.toString();
+        },
+        [searchParams]
+      );
+      
+  const handleSelectionChange = (key: React.Key) => {
+
+
+    // Update the URL with the new search parameters
+    router.push(pathname + "?" + createQueryString("analyzer", key.toString()));
   };
 
-  return "hei";
-  // <Tabs
-  //   key={"analyzer-tabs"}
-  //   variant={"underlined"}
-  //   aria-label="Analyzer Tabs"
-  //   value={currentAnalyzerIndex !== null ? currentAnalyzerIndex : 0} // Default to the first tab if no matching analyzer is found
-  // >
-  //   {assignment_analyzers.map((analyzer) => (
-  //     <Tab key={analyzer.id} title={analyzer.name} />
-  //   ))}
-  // </Tabs>
+  return (
+    <Tabs
+      aria-label="Analyzer Tabs"
+      selectedKey={currentAnalyzerId}
+      onSelectionChange={handleSelectionChange}
+      variant="underlined"
+    >
+      {assignment_analyzers.map((analyzer) => (
+        <Tab
+          key={analyzer.id.toString()}
+          title={analyzer.name}
+          value={analyzer.id.toString()}
+        />
+      ))}
+    </Tabs>
+  );
 }
