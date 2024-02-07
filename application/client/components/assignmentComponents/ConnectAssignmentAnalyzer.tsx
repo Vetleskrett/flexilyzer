@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CreateButton } from "../buttons";
 
 import {
@@ -19,6 +19,7 @@ import api from "@/api_utils";
 import { AnalyzerSimplifiedResponse } from "@/extensions/data-contracts";
 import { useQuery } from "react-query";
 import { useSnackbar } from "@/context/snackbarContext";
+import { useRouter } from "next/navigation";
 
 const ConnectAsssignmentAnalyzer = ({
   assigment_id,
@@ -28,6 +29,8 @@ const ConnectAsssignmentAnalyzer = ({
   connected_analyzers: AnalyzerSimplifiedResponse[];
 }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const router = useRouter();
 
   const { openSnackbar } = useSnackbar();
 
@@ -80,6 +83,7 @@ const ConnectAsssignmentAnalyzer = ({
         console.log(res.error);
       }
     }
+    router.refresh();
     onClose();
   };
 
@@ -102,7 +106,7 @@ const ConnectAsssignmentAnalyzer = ({
             <>
               <ModalHeader> Connect analyzer to assignment</ModalHeader>
               <ModalBody>
-                {notConnectedAnalyzers.length < 0 ? (
+                {notConnectedAnalyzers.length > 0 ? (
                   <Select
                     label='Select analyzer'
                     className='max-w-xs'

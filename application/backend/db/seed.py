@@ -108,6 +108,14 @@ def run_seed():
         assignment.analyzers.append(analyzer)
         session.flush()
 
+        print("Creating analyzer 2 ...")
+        analyzer2 = Analyzer(
+            name="Test analyzer 2",
+            description="Generic description",
+            creator="Enthe Nu",
+        )
+        session.add(analyzer2)
+
         print("creating batch")
         batch = Batch(assignment_id=assignment.id, analyzer_id=analyzer.id)
         session.add(batch)
