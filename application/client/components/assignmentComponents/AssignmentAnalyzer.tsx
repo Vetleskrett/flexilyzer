@@ -1,6 +1,6 @@
 "use client";
 
-import { BatchReponse, JobCreate } from "@/extensions/data-contracts";
+import { BatchResponse, JobCreate } from "@/extensions/data-contracts";
 import { calcTimeDifference } from "@/utils/timeUtils";
 import { Button, Card, Skeleton } from "@nextui-org/react";
 import Dot from "../DotComponent";
@@ -39,7 +39,7 @@ export default function AssignmentAnalyzer({
     data: batches,
     error,
     isLoading: isBatchesLoading,
-  } = useQuery<BatchReponse[], Error>(
+  } = useQuery<BatchResponse[], Error>(
     ["batches", { assignment_id, analyzer_id }],
     fetchBatches,
     {
