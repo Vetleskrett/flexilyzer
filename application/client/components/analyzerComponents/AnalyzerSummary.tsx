@@ -44,7 +44,7 @@ export default function AnalyzerSummary({
               id: param.id.toString(),
               key_name: param.key_name,
               value_type: param.value_type,
-              display_name: param.display_name ? param.display_name : undefined,
+              display_name: param.display_name ? param.display_name : "",
               extended_metadata: param.extended_metadata
                 ? param.extended_metadata
                 : undefined,

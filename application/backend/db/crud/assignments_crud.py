@@ -3,6 +3,7 @@ from sqlalchemy import and_
 from db.models import (
     Assignment,
     AssignmentMetadata,
+    Batch,
     Project,
     Report,
     Team,
@@ -72,7 +73,7 @@ class AssignmentRepository:
         return db_assignment
 
     @staticmethod
-    def get_assignment_team_repos_reports(
+    def get_assignment_team_projects_reports(
         db: Session, assignment_id: int, team_id: int
     ):
         """
@@ -99,6 +100,45 @@ class AssignmentRepository:
             .outerjoin(assignment, project.assignment_id == assignment.id)
             .filter(and_(team.id == team_id, assignment.id == assignment_id))
             .all()
+        )
+
+    @staticmethod
+    def get_assignment_team_projects_reports_batch(
+        db: Session, assignment_id: int, team_id: int, batch_id: int
+    ):
+        """
+        Retrieves report ID and report content for a specific assignment, team and batch.
+
+        Parameters:
+        - db (Session): The database session.
+        - assignment_id (int): The ID of the assignment.
+        - team_id (int): The ID of the team.
+        - batch_id (int): The ID of the desired report.
+
+        Returns:
+        A query object containing report ID and report content for the specified assignment, team and batch.
+        """
+
+        report = aliased(Report)
+        project = aliased(Project)
+        team = aliased(Team)
+        assignment = aliased(Assignment)
+        batch = aliased(Batch)
+
+        return (
+            db.query(report)
+            .outerjoin(project, report.project_id == project.id)
+            .outerjoin(team, project.team_id == team.id)
+            .outerjoin(assignment, project.assignment_id == assignment.id)
+            .outerjoin(batch, report.batch_id == batch.id)
+            .filter(
+                and_(
+                    team.id == team_id,
+                    assignment.id == assignment_id,
+                    batch.id == batch_id,
+                )
+            )
+            .first()
         )
 
     @staticmethod

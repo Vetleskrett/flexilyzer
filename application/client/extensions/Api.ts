@@ -245,17 +245,33 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags assignments
-   * @name GetAssignmentTeamReposReportsApiV1AssignmentsAssignmentIdTeamsTeamIdProjectsReportsGet
-   * @summary Get Assignment Team Repos Reports
+   * @name GetAssignmentProjectsReports
+   * @summary Get Assignment Team Projects Reports
    * @request GET:/api/v1/assignments/{assignment_id}/teams/{team_id}/projects/reports
    */
-  getAssignmentTeamReposReportsApiV1AssignmentsAssignmentIdTeamsTeamIdProjectsReportsGet = (
-    assignmentId: number,
-    teamId: number,
-    params: RequestParams = {},
-  ) =>
+  getAssignmentProjectsReports = (assignmentId: number, teamId: number, params: RequestParams = {}) =>
     this.request<ReportResponse[], HTTPValidationError>({
       path: `/api/v1/assignments/${assignmentId}/teams/${teamId}/projects/reports`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags assignments
+   * @name GetAssignmentProjectsReportsBatch
+   * @summary Get Assignment Team Projects Report Batch
+   * @request GET:/api/v1/assignments/{assignment_id}/teams/{team_id}/projects/reports/batch/{batch_id}
+   */
+  getAssignmentProjectsReportsBatch = (
+    assignmentId: number,
+    teamId: number,
+    batchId: number,
+    params: RequestParams = {},
+  ) =>
+    this.request<ReportResponse, HTTPValidationError>({
+      path: `/api/v1/assignments/${assignmentId}/teams/${teamId}/projects/reports/batch/${batchId}`,
       method: "GET",
       format: "json",
       ...params,
@@ -280,7 +296,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags assignments
    * @name GetAssignmentAnalyzersBatches
-   * @summary Get Assignment Analyzers
+   * @summary Get Assignment Analyzer Batches
    * @request GET:/api/v1/assignments/{assignment_id}/analyzers/{analyzer_id}/batches
    */
   getAssignmentAnalyzersBatches = (assignmentId: number, analyzerId: number, params: RequestParams = {}) =>

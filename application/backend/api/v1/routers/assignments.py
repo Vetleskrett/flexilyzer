@@ -1,7 +1,8 @@
 from typing import List, Optional
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from schemas.shared import BatchEnum
 from schemas import batch_schema
 from services.batch_service import BatchService
 from schemas import reports_schema, project_schema, analyzer_schema
@@ -42,12 +43,34 @@ def create_assignment(
     return AssignmentService.create_assignment(db, assignment)
 
 
-@router.get("/{assignment_id}/teams/{team_id}/projects/reports")
-def get_assignment_team_repos_reports(
+@router.get(
+    "/{assignment_id}/teams/{team_id}/projects/reports",
+    operation_id="get-assignment-projects-reports",
+)
+def get_assignment_team_projects_reports(
     assignment_id: int, team_id: int, db=Depends(get_db)
 ) -> List[reports_schema.ReportResponse]:
-    return AssignmentService.get_assignment_team_repos_reports(
+    return AssignmentService.get_assignment_team_projects_reports(
         db=db, assignment_id=assignment_id, team_id=team_id
+    )
+
+
+@router.get(
+    "/{assignment_id}/teams/{team_id}/projects/reports/batch/{batch_id}",
+    operation_id="get-assignment-projects-reports-batch",
+)
+def get_assignment_team_projects_report_batch(
+    assignment_id: int, team_id: int, batch_id: int, db=Depends(get_db)
+) -> reports_schema.ReportResponse:
+
+    batch = BatchService.get_batch(db, batch_id)
+    if batch.status is not BatchEnum.FINISHED:
+        raise HTTPException(
+            status_code=404,
+            detail=f"The batch you are trying to fetch report from is not successfully finished. Batch status: {BatchEnum(batch.status).value}",
+        )
+    return AssignmentService.get_assignment_team_projects_reports_batch(
+        db=db, assignment_id=assignment_id, team_id=team_id, batch_id=batch_id
     )
 
 
@@ -64,7 +87,7 @@ def get_assignment_analyzers(
     "/{assignment_id}/analyzers/{analyzer_id}/batches",
     operation_id="get-assignment-analyzers-batches",
 )
-def get_assignment_analyzers(
+def get_assignment_analyzer_batches(
     assignment_id: int, analyzer_id: int, db=Depends(get_db)
 ) -> List[batch_schema.BatchResponse]:
     return BatchService.get_assignment_analyzers_batches(

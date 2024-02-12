@@ -35,7 +35,11 @@ export default async function AssignmentLayout({
           />
           <div className="flex flex-row justify-center">
             <div className="mt-2">
-              <AnalyzerTabs assignment_analyzers={assignment_analyzers.data} />
+              <AnalyzerTabs
+                assignment_analyzers={assignment_analyzers.data}
+                course_id={params.course_id}
+                assignment_id={params.assignment_id}
+              />
             </div>
           </div>
           {children}
