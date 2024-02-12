@@ -39,7 +39,7 @@ export function renderParameter(
         </p>
       );
     case "range":
-      // Here, check if the parameter is an OutputParameter and has extended_metadata
+      // Here, check if the parameter has extended_metadata
       if ("extended_metadata" in param && param.extended_metadata) {
         return (
           <div>

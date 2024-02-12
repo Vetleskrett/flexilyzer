@@ -11,15 +11,14 @@ const config = {
     extend: {
       fontFamily: {
         sans: ["var(--font-inter)"],
-        oswald: ["var(--font-oswald)"],
-        cabin: ["var(--font-cabin)"],
+        mono: ["var(--font-roboto-mono)"],
       },
       maxHeight: {
         "screen-minus-navbar": "calc(100vh - 250px)", // Replace 60px with your navbar's height
       },
       minHeight: {
         "screen-minus-navbar": "calc(100vh - 130px)",
-      }
+      },
     },
   },
   darkMode: "class",

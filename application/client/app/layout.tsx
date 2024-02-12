@@ -2,7 +2,11 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 import Providers from "./providers";
 import NavBar from "@/components/NavBar";
@@ -18,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className={`${inter.variable}`}>
+      <body>
         <Providers>
           <div className="mx-auto w-full max-w-screen-xl p-4">
             <NavBar />

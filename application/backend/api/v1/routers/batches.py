@@ -14,5 +14,5 @@ async def get_batches(db=Depends(get_db)) -> List[BatchResponse]:
 
 
 @router.get("/{batch_id}", operation_id="get-batch")
-async def get_batches(batch_id: int, db=Depends(get_db)) -> BatchResponse:
+async def get_batch(batch_id: int, db=Depends(get_db)) -> BatchResponse:
     pass
