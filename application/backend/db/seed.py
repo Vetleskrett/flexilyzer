@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy.orm import sessionmaker
 import sqlalchemy as sa
 import json
+from schemas.shared import BatchEnum
 from db.models import (
     Batch,
     Course,
@@ -18,10 +19,25 @@ from db.models import (
     assignment_analyzer_association,  # Make sure to import this
 )
 
+from sqlalchemy import text
+
+
 from db.database import engine, Base
 
 # Create the engine and session
 SessionLocal = sessionmaker(bind=engine)
+
+
+def reset_sequences(engine, session):
+    # Acquire a connection from the engine
+    with engine.connect() as connection:
+        # Fetch all sequence names
+        sequences = connection.execute(
+            text("SELECT c.relname FROM pg_class c WHERE c.relkind = 'S';")
+        ).fetchall()
+        for seq in sequences:
+            # Reset each sequence
+            session.execute(text(f"ALTER SEQUENCE {seq[0]} RESTART WITH 1;"))
 
 
 def run_seed():
@@ -29,31 +45,28 @@ def run_seed():
     try:
         print("Cleaning DB ...")
         # Delete all existing data from tables
-        # Check if table exists before deleting
+        # Note: Assumes you have a list of all table models or can otherwise obtain them.
+        tables = [
+            Batch,
+            Course,
+            Assignment,
+            ProjectMetadata,
+            Team,
+            Project,
+            Analyzer,
+            AnalyzerInput,
+            AnalyzerOutput,
+            Report,
+            AssignmentMetadata,
+        ]
+        for table in tables:
+            if sa.inspect(engine).has_table(table.__tablename__):
+                session.query(table).delete()
 
-        if sa.inspect(engine).has_table("course"):
-            session.query(Course).delete()
+        # Reset all sequences
+        reset_sequences(engine, session)
 
-        if sa.inspect(engine).has_table("assignment"):
-            session.query(Assignment).delete()
-
-        if sa.inspect(engine).has_table("team"):
-            session.query(Team).delete()
-
-        if sa.inspect(engine).has_table("project"):
-            session.query(Project).delete()
-
-        if sa.inspect(engine).has_table("analyzer"):
-            session.query(Analyzer).delete()
-
-        if sa.inspect(engine).has_table("analyzerOutput"):
-            session.query().delete()
-
-        if sa.inspect(engine).has_table("report"):
-            session.query(Report).delete()
-
-        if sa.inspect(engine).has_table("batch"):
-            session.query(Batch).delete()
+        session.commit()
         print("Cleanup done...")
 
         print("Creating tables...")
@@ -140,7 +153,7 @@ def run_seed():
         analyzer = Analyzer(
             name="Test Analyzer",
             description="Generic description",
-            creator="Enthe Nu",
+            creator="Wilhelm Bjo",
         )
         session.add(analyzer)
 
@@ -155,6 +168,8 @@ def run_seed():
             creator="Enthe Nu",
         )
         session.add(analyzer2)
+        assignment.analyzers.append(analyzer2)
+        session.flush()
 
         print("Creating batch")
         batch = Batch(assignment_id=assignment.id, analyzer_id=analyzer.id)
@@ -162,7 +177,11 @@ def run_seed():
         session.flush()
 
         print("Creating batch 2")
-        batch2 = Batch(assignment_id=assignment2.id, analyzer_id=analyzer2.id)
+        batch2 = Batch(
+            assignment_id=assignment.id,
+            analyzer_id=analyzer2.id,
+            status=BatchEnum.FINISHED,
+        )
         session.add(batch2)
         session.flush()
 
@@ -211,9 +230,28 @@ def run_seed():
         print("Creating analyzer outputs 2 ...")
         analyzer_outputs2 = [
             AnalyzerOutput(
-                key_name="https",
+                key_name="hasHTTPS",
                 display_name="Hashttps",
                 value_type="bool",
+                analyzer=analyzer2,
+            ),
+            AnalyzerOutput(
+                key_name="hasViewport",
+                display_name="Viewport",
+                value_type="bool",
+                analyzer=analyzer2,
+            ),
+            AnalyzerOutput(
+                key_name="performance",
+                display_name="Performance",
+                value_type="int",
+                extended_metadata=json.dumps({"fromRange": 1, "toRange": 100}),
+                analyzer=analyzer2,
+            ),
+            AnalyzerOutput(
+                key_name="js_workload",
+                display_name="JS Main thread work",
+                value_type="str",
                 analyzer=analyzer2,
             ),
         ]
@@ -227,7 +265,7 @@ def run_seed():
             "js_workload": "JS main thread workload is high, consider optimizing JS code.",
         }
         report1 = Report(
-            report=json.dumps(report1_data), project=project, batch_id=batch.id
+            report=json.dumps(report1_data), project=project, batch_id=batch2.id
         )
         session.add(report1)
 
@@ -239,7 +277,7 @@ def run_seed():
             "js_workload": "JS main thread workload is high, consider optimizing JS code.",
         }
         report2 = Report(
-            report=json.dumps(report2_data), project=project, batch_id=batch.id
+            report=json.dumps(report2_data), project=project, batch_id=batch2.id
         )
         session.add(report2)
 

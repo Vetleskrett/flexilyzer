@@ -51,7 +51,7 @@ class Assignment(Base):
     name = Column(String, index=True)
     due_date = Column(DateTime, index=True, nullable=True)
 
-    course_id = Column(Integer, ForeignKey("courses.id"))
+    course_id = Column(Integer, ForeignKey("courses.id", ondelete="CASCADE"))
     course = relationship("Course", back_populates="assignments")
 
     projects = relationship("Project", back_populates="assignment")
@@ -68,7 +68,7 @@ class Team(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
 
-    course_id = Column(Integer, ForeignKey("courses.id"))
+    course_id = Column(Integer, ForeignKey("courses.id", ondelete="CASCADE"))
     course = relationship("Course", back_populates="teams")
 
     projects = relationship("Project", back_populates="team")
@@ -79,10 +79,10 @@ class Project(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
 
-    assignment_id = Column(Integer, ForeignKey("assignments.id"))
+    assignment_id = Column(Integer, ForeignKey("assignments.id", ondelete="CASCADE"))
     assignment = relationship("Assignment", back_populates="projects")
 
-    team_id = Column(Integer, ForeignKey("teams.id"))
+    team_id = Column(Integer, ForeignKey("teams.id", ondelete="CASCADE"))
     team = relationship("Team", back_populates="projects")
 
     reports = relationship("Report", back_populates="project")
@@ -96,9 +96,11 @@ class ProjectMetadata(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     value = Column(JSON, nullable=True)
 
-    project_id = Column(Integer, ForeignKey("projects.id"))
+    project_id = Column(Integer, ForeignKey("projects.id", ondelete="CASCADE"))
     project = relationship("Project", back_populates="project_metadata")
-    assignment_metadata_id = Column(Integer, ForeignKey("assignment_metadata.id"))
+    assignment_metadata_id = Column(
+        Integer, ForeignKey("assignment_metadata.id", ondelete="CASCADE")
+    )
 
 
 class Analyzer(Base):
@@ -153,10 +155,10 @@ class Report(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     report = Column(JSON, nullable=True)
 
-    project_id = Column(Integer, ForeignKey("projects.id"))
+    project_id = Column(Integer, ForeignKey("projects.id", ondelete="CASCADE"))
     project = relationship("Project", back_populates="reports")
 
-    batch_id = Column(Integer, ForeignKey("batches.id"))
+    batch_id = Column(Integer, ForeignKey("batches.id", ondelete="CASCADE"))
 
 
 class Batch(Base):
@@ -164,9 +166,9 @@ class Batch(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     timestamp = Column(DateTime, default=datetime.now, index=True)
-    assignment_id = Column(Integer, ForeignKey("assignments.id"))
+    assignment_id = Column(Integer, ForeignKey("assignments.id", ondelete="CASCADE"))
     status = Column(Enum(BatchEnum), index=True, default=BatchEnum.STARTED)
-    analyzer_id = Column(Integer, ForeignKey("analyzers.id"))
+    analyzer_id = Column(Integer, ForeignKey("analyzers.id", ondelete="CASCADE"))
     analyzer = relationship("Analyzer", back_populates="batches")
 
 
@@ -174,6 +176,8 @@ class AssignmentMetadata(Base):
     __tablename__ = "assignment_metadata"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    assignment_id = Column(Integer, ForeignKey("assignments.id"), nullable=False)
+    assignment_id = Column(
+        Integer, ForeignKey("assignments.id", ondelete="CASCADE"), nullable=False
+    )
     key_name = Column(String, nullable=False)
     value_type = Column(String, nullable=False)
