@@ -2,6 +2,7 @@
 import api from "@/api_utils";
 import AnalyzerTabs from "@/components/reportPageComponents/AnalyzerTabs";
 import { ReportResponse } from "@/extensions/data-contracts";
+import { renderMetrics } from "@/utils/renderReportMetrics";
 import { useSearchParams } from "next/navigation";
 import { cache } from "react";
 import { useQuery } from "react-query";
@@ -44,7 +45,6 @@ export default function TeamReportsPage({ params }: Props) {
     }
   );
 
-
   if (!team_id || !batch_id) {
     return (
       <div>
@@ -62,7 +62,7 @@ export default function TeamReportsPage({ params }: Props) {
     return <div>An error occurred while trying to fetch report.</div>;
   }
 
-  return <>{report?.id}</>;
+  return <>{report ? renderMetrics(report) : ""}</>;
 }
 
 // Fetch all batches for assignment and specific analyzer

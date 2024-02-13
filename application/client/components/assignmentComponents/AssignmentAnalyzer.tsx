@@ -1,6 +1,10 @@
 "use client";
 
-import { BatchResponse, JobCreate } from "@/extensions/data-contracts";
+import {
+  BatchEnum,
+  BatchResponse,
+  JobCreate,
+} from "@/extensions/data-contracts";
 import { calcTimeDifference } from "@/utils/timeUtils";
 import { Button, Card, Skeleton } from "@nextui-org/react";
 import Dot from "../DotComponent";
@@ -74,54 +78,70 @@ export default function AssignmentAnalyzer({
     }
   );
 
+  function latestFinishedReportParam() {
+    if (!batches) return "";
+    const highestFinishedBatchId = batches
+      .filter((batch) => batch.status === BatchEnum.FINISHED)
+      .reduce((maxId, batch) => (batch.id > maxId ? batch.id : maxId), 0);
+
+    return `&batch=${highestFinishedBatchId}`;
+  }
+
   return (
     <>
-      <Card className='h-[500px] w-[350px] p-2 bg-slate-100 shadow-sm'>
+      <Card className="h-[500px] w-[350px] p-2 bg-slate-100 shadow-sm">
         <h3
-          className='h3 text-center mt-3 text-blue-500 cursor-pointer'
+          className="h3 text-center mt-3 text-blue-500 cursor-pointer"
           onClick={() => {
             router.push(`/analyzers/${analyzer_id}`);
           }}
         >
           {analyzer_name}
         </h3>
-        <div className='flex flex-row justify-center gap-2 ml-5 mr-5 h-[50px]'>
+        <div className="flex flex-row justify-center gap-5 ml-5 mr-5 h-[30px]">
           <Button
-            color='secondary'
+            size="sm"
+            color="secondary"
             onClick={() => runAnalyzerMutation.mutate()}
-            className='w-[100px]'
+            className="w-[80px]"
           >
             Run
           </Button>
           <Button
+            size="sm"
             onClick={() => {
               queryClient.invalidateQueries([
                 "batches",
                 { assignment_id, analyzer_id },
               ]);
             }}
-            className='w-[100px]'
+            className="w-[80px]"
           >
             Refresh
           </Button>
           <Button
-            color='primary'
+            size="sm"
+            color="primary"
             onClick={() => {
-              router.push(pathName + `/reports?analyzer=${analyzer_id}`);
+              router.push(
+                pathName +
+                  `/reports?analyzer=${analyzer_id}` +
+                  latestFinishedReportParam()
+              );
             }}
-            className='w-[100px]'
+            className="w-[80px]"
           >
             Reports
           </Button>
         </div>
-        <div className='overflow-y-auto mt-2'>
+        <div className="overflow-y-auto mt-2">
           {error ? (
             <div>An error occurred: {error.message}</div>
           ) : isBatchesLoading ? (
             <>
               {Array.from({ length: 6 }, (_, index) => (
-                <Skeleton key={index} className='rounded-lg my-2 bg-white'>
-                  <Card className='h-[50px] flex items-center justify-center shadow-sm'></Card>
+                <Skeleton key={index} className="rounded-lg my-2 bg-white">
+                  <Card className="h-[50px] flex items-center justify-center shadow-sm"></Card>
                 </Skeleton>
               ))}
             </>
@@ -132,7 +152,7 @@ export default function AssignmentAnalyzer({
               .map((batch, i) => {
                 return (
                   <>
-                    <div key={i} className='my-2'>
+                    <div key={i} className="my-2">
                       {" "}
                       <AnalyzerBatchInfo batch={batch} />
                     </div>

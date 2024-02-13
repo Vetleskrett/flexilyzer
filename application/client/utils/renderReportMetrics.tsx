@@ -1,13 +1,20 @@
+"use client";
 import BoolComponent from "@/components/reportComponents/boolComponent";
 import RangeComponent from "@/components/reportComponents/rangeComponent";
 import TextComponent from "@/components/reportComponents/textComponent";
 import { ReportResponse } from "@/extensions/data-contracts";
 
-const renderMetrics = (report: ReportResponse, metric_metadata: any) => {
+export const renderMetrics = (report: ReportResponse) => {
   if (!report.report) {
     return <>Report object contains no actual report</>;
   }
-  const json_report = JSON.parse(report.report);
+  const json_report = JSON.stringify(report.report);
+
+  console.log(report.report.performance);
+
+  // Fetch analyzer outputs here:
+
+  // useQuery ...
 
   // Old code, needs to be modified to work with new types:
 

@@ -15,12 +15,20 @@ const STATUS_COLOR_MAPPING = {
 export default function AnalyzerBatchInfo({ batch }: { batch: BatchResponse }) {
   return (
     <>
-      <Card className="h-[50px] flex flex-row justify-between items-center px-3 mx-2 shadow-sm text-sm">
-        <div>ID: {batch.id}</div>
+      <Card className="h-[30px] flex flex-row justify-between items-center px-3 mx-2 shadow-sm text-sm">
         <Tooltip
+          placement={"right"}
           delay={0}
           closeDelay={0}
-          content={format(new Date(batch.timestamp), "PPPP HH:mm:ss")}
+          content={"Universal Batch ID"}
+        >
+          <div>{batch.id}</div>
+        </Tooltip>
+        <Tooltip
+          placement="right"
+          delay={0}
+          closeDelay={0}
+          content={format(new Date(batch.timestamp), "PP HH:mm:ss")}
         >
           <div>
             <>
@@ -33,8 +41,17 @@ export default function AnalyzerBatchInfo({ batch }: { batch: BatchResponse }) {
         <div className="flex flex-row items-center">
           {batch.status ? (
             <>
-              <Dot color={STATUS_COLOR_MAPPING[batch.status]} size={10} />
-              <p className="ml-2">{batch.status}</p>
+              <Tooltip
+                placement={"right"}
+                delay={0}
+                closeDelay={0}
+                content={batch.status}
+              >
+                <div>
+                  <Dot color={STATUS_COLOR_MAPPING[batch.status]} size={10} />
+                  {/* <p className="ml-2">{batch.status}</p> */}
+                </div>
+              </Tooltip>
             </>
           ) : (
             "Unknown status"
