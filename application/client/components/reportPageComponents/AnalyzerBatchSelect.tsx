@@ -85,19 +85,21 @@ export default function AnalyzerBatchSelect({
               }}
               aria-label="batch-select"
             >
-              {batches.map((batch) => (
-                <SelectItem
-                  key={batch.id}
-                  value={batch.id}
-                  textValue={`${batch.id} (
+              {batches
+                .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+                .map((batch) => (
+                  <SelectItem
+                    key={batch.id}
+                    value={batch.id}
+                    textValue={`${batch.id} (
                     ${format(new Date(batch.timestamp), "PP HH:mm:ss")})`}
-                >
-                  <>
-                    {batch.id} (
-                    {format(new Date(batch.timestamp), "PP HH:mm:ss")})
-                  </>
-                </SelectItem>
-              ))}
+                  >
+                    <>
+                      {batch.id} (
+                      {format(new Date(batch.timestamp), "PP HH:mm:ss")})
+                    </>
+                  </SelectItem>
+                ))}
             </Select>
           </>
         )

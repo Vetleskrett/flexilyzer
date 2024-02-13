@@ -6,7 +6,7 @@ import api from "@/api_utils";
 import { useQuery, useQueryClient } from "react-query";
 import { TeamResponse } from "@/extensions/data-contracts";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 interface SideBarProps {
   course_id: number;
@@ -50,6 +50,14 @@ export default function AssignmentSideBar({
     },
     [searchParams]
   );
+
+  useEffect(() => {
+    if (teams) {
+      router.push(
+        pathname + "?" + createQueryString("team_id", `${teams[0].id}`)
+      );
+    }
+  }, [teams]);
 
   return (
     <div className="flex flex-col p-4 border-r sticky top-16 h-[calc(100vh-80px)] overflow-y-auto">

@@ -54,6 +54,7 @@ class AssignmentService:
     ):
         AssignmentService.get_assignment(db, assignment_id)
         TeamService.get_team(db, team_id)
+        
 
         report = AssignmentRepository.get_assignment_team_projects_reports_batch(
             db, assignment_id=assignment_id, team_id=team_id, batch_id=batch_id

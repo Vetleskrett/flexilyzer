@@ -1,7 +1,10 @@
 "use client";
 import api from "@/api_utils";
 import AnalyzerTabs from "@/components/reportPageComponents/AnalyzerTabs";
-import { ReportResponse } from "@/extensions/data-contracts";
+import {
+  AnalyzerOutputResponse,
+  ReportResponse,
+} from "@/extensions/data-contracts";
 import { renderMetrics } from "@/utils/renderReportMetrics";
 import { useSearchParams } from "next/navigation";
 import { cache } from "react";
@@ -16,6 +19,7 @@ export default function TeamReportsPage({ params }: Props) {
 
   const team_id = searchParams.get("team_id");
   const batch_id = searchParams.get("batch");
+  const analyzer_id = searchParams.get("analyzer");
 
   // Define the fetch function
   const fetchTeamBatches = async () => {
@@ -29,14 +33,38 @@ export default function TeamReportsPage({ params }: Props) {
     return resp.data;
   };
 
+  // Define the fetch function
+  const fetchAnalyzerOutputs = async () => {
+    const resp = await api.getAnalyzerOutputs(Number(analyzer_id), {
+      cache: "no-cache",
+    });
+    if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
+    return resp.data;
+  };
+
   // Use useQuery hook to fetch data
   const {
     data: report,
-    isLoading,
-    error,
+    isLoading: isLoadingReport,
+    error: errorReport,
   } = useQuery<ReportResponse, Error>(
     ["teamBatches", { team_id, batch_id }],
     fetchTeamBatches,
+    {
+      refetchOnWindowFocus: false,
+      // Only proceed with the query if team_id is not null
+      enabled: !!team_id && !!batch_id,
+      retry: false,
+    }
+  );
+
+  const {
+    data: analyzerOutputs,
+    isLoading: isLoadingAnalyzer,
+    error: errorAnalyzer,
+  } = useQuery<AnalyzerOutputResponse[], Error>(
+    ["analyzerOutputs", { analyzer_id }],
+    fetchAnalyzerOutputs,
     {
       refetchOnWindowFocus: false,
       // Only proceed with the query if team_id is not null
@@ -54,15 +82,17 @@ export default function TeamReportsPage({ params }: Props) {
     );
   }
 
-  if (isLoading) {
+  if (isLoadingReport || isLoadingAnalyzer) {
     <div>Report is loading ...</div>;
   }
 
-  if (error) {
+  if (errorReport || errorAnalyzer) {
     return <div>An error occurred while trying to fetch report.</div>;
   }
 
-  return <>{report ? renderMetrics(report) : ""}</>;
+  return (
+    <>{report && analyzerOutputs ? renderMetrics(report, analyzerOutputs) : ""}</>
+  );
 }
 
 // Fetch all batches for assignment and specific analyzer

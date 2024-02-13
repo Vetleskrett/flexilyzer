@@ -172,7 +172,11 @@ def run_seed():
         session.flush()
 
         print("Creating batch")
-        batch = Batch(assignment_id=assignment.id, analyzer_id=analyzer.id)
+        batch = Batch(
+            assignment_id=assignment.id,
+            analyzer_id=analyzer2.id,
+            status=BatchEnum.FINISHED,
+        )
         session.add(batch)
         session.flush()
 
@@ -244,7 +248,7 @@ def run_seed():
             AnalyzerOutput(
                 key_name="performance",
                 display_name="Performance",
-                value_type="int",
+                value_type="range",
                 extended_metadata=json.dumps({"fromRange": 1, "toRange": 100}),
                 analyzer=analyzer2,
             ),
@@ -265,7 +269,7 @@ def run_seed():
             "js_workload": "JS main thread workload is high, consider optimizing JS code.",
         }
         report1 = Report(
-            report=json.dumps(report1_data), project=project, batch_id=batch2.id
+            report=json.dumps(report1_data), project=project, batch_id=batch.id
         )
         session.add(report1)
 

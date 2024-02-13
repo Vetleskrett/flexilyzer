@@ -6,9 +6,9 @@ import { Chip } from "@nextui-org/react";
 
 export default function BoolComponent({ keyName, value }: boolComponent) {
   return (
-    <Card>
+    <Card className="max-w-[200px]">
       <CardBody>
-        <div className='flex flex-row'>
+        <div className='flex flex-row justify-between'>
           <div>{keyName}</div>
           <div>
             <Chip variant='bordered' color={value ? "success" : "danger"}>
