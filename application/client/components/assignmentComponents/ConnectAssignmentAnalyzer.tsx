@@ -35,7 +35,7 @@ const ConnectAsssignmentAnalyzer = ({
   const { openSnackbar } = useSnackbar();
 
   const fetchAnalyzers = async () => {
-    const resp = await api.getAllAnalyzers();
+    const resp = await api.getAllAnalyzers({ cache: "no-cache" });
     if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
     return resp.data;
   };
@@ -52,12 +52,19 @@ const ConnectAsssignmentAnalyzer = ({
     }
   );
 
-  const notConnectedAnalyzers = analyzers.filter(
-    (analyzer) =>
-      !connected_analyzers.find(
-        (connected_analyzer) => connected_analyzer.id == analyzer.id
-      )
-  );
+  const [notConnectedAnalyzers, setNotConnectedAnalyzers] = useState<
+    AnalyzerSimplifiedResponse[]
+  >([]);
+
+  useEffect(() => {
+    const newNotConnectedAnalyzers = analyzers.filter(
+      (analyzer) =>
+        !connected_analyzers.find(
+          (connected_analyzer) => connected_analyzer.id == analyzer.id
+        )
+    );
+    setNotConnectedAnalyzers(newNotConnectedAnalyzers);
+  }, [analyzers, connected_analyzers]);
 
   const [selectedAnalyzer, setSelecedAnalyzer] = useState<
     AnalyzerSimplifiedResponse | undefined
@@ -78,12 +85,12 @@ const ConnectAsssignmentAnalyzer = ({
       );
       if (res.ok) {
         openSnackbar({ message: "Anlyzer connected", severity: "success" });
+        router.refresh();
       } else {
         openSnackbar({ message: "Something went wrong", severity: "error" });
         console.log(res.error);
       }
     }
-    router.refresh();
     onClose();
   };
 
@@ -97,8 +104,8 @@ const ConnectAsssignmentAnalyzer = ({
       <Modal
         isOpen={isOpen}
         onOpenChange={() => {
-          setSelecedAnalyzer(undefined);
           onOpenChange();
+          setSelecedAnalyzer(undefined);
         }}
       >
         <ModalContent>

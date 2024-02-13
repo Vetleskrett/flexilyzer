@@ -2,7 +2,6 @@ import api from "@/api_utils";
 import AssignmentAnalyzer from "@/components/assignmentComponents/AssignmentAnalyzer";
 import AssignmentDueDate from "@/components/assignmentComponents/AssignmentDueDate";
 import ConnectAsssignmentAnalyzer from "@/components/assignmentComponents/ConnectAssignmentAnalyzer";
-import { CreateButton } from "@/components/buttons";
 import { Suspense } from "react";
 
 interface Props {
@@ -24,11 +23,11 @@ export default async function AssignmentDetails({ params }: Props) {
 
   return (
     <>
-      <h2 className="h2 flex justify-center">
+      <h2 className='h2 flex justify-center'>
         {assignment.data.name} ({course.data.tag}{" "}
         {course.data.name ? <>- {course.data.name}</> : ""})
       </h2>
-      <div className="flex justify-center">
+      <div className='flex justify-center'>
         <AssignmentDueDate
           assignment_id={assignment.data.id}
           due_date={
@@ -36,16 +35,16 @@ export default async function AssignmentDetails({ params }: Props) {
           }
         />
       </div>
-      <div className="my-8 flex justify-center items-center relative text-center">
-        <h2 className="h2">Connected analyzers:</h2>
-        <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+      <div className='my-8 flex justify-center items-center relative text-center'>
+        <h2 className='h2'>Connected analyzers:</h2>
+        <div className='absolute right-0 top-1/2 transform -translate-y-1/2'>
           <ConnectAsssignmentAnalyzer
             assigment_id={params.assignment_id}
             connected_analyzers={analyzers.data}
           />
         </div>
       </div>
-      <div className="flex overflow-x-auto p-2 space-x-4">
+      <div className='flex overflow-x-auto p-2 space-x-4'>
         {analyzers.data.map((analyzer) => {
           return (
             <>
