@@ -91,7 +91,9 @@ export default function TeamReportsPage({ params }: Props) {
   }
 
   return (
-    <>{report && analyzerOutputs ? renderMetrics(report, analyzerOutputs) : ""}</>
+    <div className='m-8 flex flex-row flex-wrap gap-6'>
+      {report && analyzerOutputs && renderMetrics(report, analyzerOutputs)}
+    </div>
   );
 }
 

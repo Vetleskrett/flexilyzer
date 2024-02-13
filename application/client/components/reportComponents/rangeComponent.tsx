@@ -14,18 +14,18 @@ export default function RangeComponent({
 }: rangeComponent) {
   return (
     <>
-      <Card className="max-w-[500px]">
-        <CardBody>
+      <Card className='max-w-[500px] min-w-[400px] px-4'>
+        <CardBody className=''>
           <Progress
             label={keyName}
             aria-label={keyName}
-            size="md"
+            size='md'
             value={value}
             minValue={fromValue}
             maxValue={toValue}
             color={value / toValue > 0.65 ? "success" : "warning"}
             showValueLabel={true}
-            className="max-w-md"
+            className='max-w-md'
             valueLabel={
               <>
                 {value} / {toValue}
