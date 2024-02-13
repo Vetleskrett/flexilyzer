@@ -54,13 +54,18 @@ export const renderMetrics = (
           return (
             <TextComponent
               key={keyName}
-              keyName={keyName}
+              keyName={
+                metricMetadata.display_name
+                  ? metricMetadata.display_name
+                  : keyName
+              }
               value={value as string}
             />
           );
         case ValueTypesOutput.Bool:
           return (
             <BoolComponent
+              key={keyName}
               keyName={
                 metricMetadata.display_name
                   ? metricMetadata.display_name
