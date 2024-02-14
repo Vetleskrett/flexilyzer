@@ -12,9 +12,9 @@ def fetchIOHelper(db, analyzer_id):
     required_outputs = {
         output_obj.key_name: {
             "value_type": output_obj.value_type,
-            "extended_metadata": output_obj.extended_metadata
-            if output_obj.extended_metadata
-            else None,
+            "extended_metadata": (
+                output_obj.extended_metadata if output_obj.extended_metadata else None
+            ),
         }
         for output_obj in required_output_objects
     }

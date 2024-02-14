@@ -7,7 +7,7 @@ class Return(BaseModel):
     commits: int
     total_code_lines: int
     language: str
-    is_locked: bool
+    is_public: bool
     url: str
     test_coverage: int
 
@@ -21,7 +21,7 @@ def main(url: str) -> Return:
         "commits": 57,
         "total_code_lines": 1248,
         "language": "TypeScript",
-        "is_locked": False,
+        "is_public": False,
         "url": url,
         "test_coverage": 76,
     }

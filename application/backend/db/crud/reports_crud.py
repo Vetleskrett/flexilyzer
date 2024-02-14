@@ -1,3 +1,4 @@
+import json
 from sqlalchemy.orm import Session
 from db.models import (
     Report,
@@ -43,7 +44,11 @@ class ReportRepository:
         Returns:
         The created report.
         """
-        db_report = Report(**report.model_dump())
+        db_report = Report(
+            report=json.dumps(report.report),
+            project_id=report.project_id,
+            batch_id=report.batch_id,
+        )
         db.add(db_report)
         db.commit()
         db.refresh(db_report)

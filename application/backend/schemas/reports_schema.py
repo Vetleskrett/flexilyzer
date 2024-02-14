@@ -5,7 +5,7 @@ from pydantic import Json
 
 
 class ReportBase(BaseModel):
-    report: Optional[Json] = None
+    report: Json
     project_id: int
     batch_id: int
 

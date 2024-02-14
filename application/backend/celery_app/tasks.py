@@ -44,7 +44,6 @@ def run_analyzer(project_ids: list[int], batch_id: int):
             buildargs={"ANALYZER_ID": str(analyzer_id)},
             tag=f"analyzer-app:{analyzer_id}",
         )
-
         container: Container = client.containers.create(
             f"analyzer-app:{analyzer_id}",
             "tail -f /dev/null",
@@ -63,7 +62,6 @@ def run_analyzer(project_ids: list[int], batch_id: int):
         projects_with_metadata: Dict[int, Dict] = fetchProjectsAndMetadataHelper(
             db, project_ids, required_inputs, assignment_id
         )
-
         errors = False
 
         for project_id, metadata in projects_with_metadata.items():

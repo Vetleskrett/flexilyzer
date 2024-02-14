@@ -15,7 +15,8 @@ export default async function AssignmentLayout({
 }) {
   const assignment_details = await api.getAssignment(params.assignment_id);
   const assignment_analyzers = await api.getAssignmentAnalyzers(
-    params.assignment_id
+    params.assignment_id,
+    { cache: "no-cache" }
   );
 
   return (
