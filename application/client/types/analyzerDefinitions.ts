@@ -7,8 +7,8 @@ export type InputParameter = {
 };
 
 export type RangeMetadata = {
-  from_value: number | undefined;
-  to_value: number | undefined;
+  fromRange: number | undefined;
+  toRange: number | undefined;
 };
 
 export type OutputParameter = {

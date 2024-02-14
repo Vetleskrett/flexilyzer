@@ -15,3 +15,7 @@ export type textComponent = {
   value: string;
 };
 
+export type intComponent = {
+  keyName: string;
+  value: number;
+};

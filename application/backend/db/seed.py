@@ -102,6 +102,12 @@ def run_seed():
             assignment=assignment,
         )
         session.add(project)
+        print("Creating projects 2...")
+        project2 = Project(
+            team=team2,
+            assignment=assignment,
+        )
+        session.add(project)
 
         print("Creating project metadata ...")
         project_metadata = ProjectMetadata(
@@ -110,6 +116,14 @@ def run_seed():
             assignment_metadata_id=assignment_metadata.id,
         )
         session.add(project_metadata)
+
+        print("Creating project metadata 2...")
+        project_metadata2 = ProjectMetadata(
+            value="www.someotherurl.com",
+            project=project2,
+            assignment_metadata_id=assignment_metadata.id,
+        )
+        session.add(project_metadata2)
 
         print("Creating course 2 ...")
         course2 = Course(tag="IT4334", name="Store, distribuerte datamengder")
@@ -134,20 +148,34 @@ def run_seed():
         session.add(team3)
         session.add(team4)
 
-        print("Creating projects 2...")
-        project2 = Project(
-            team=team,
+        print("Creating projects 3...")
+        project3 = Project(
+            team=team3,
             assignment=assignment2,
         )
-        session.add(project2)
+        session.add(project3)
+        print("Creating projects 4...")
+        project4 = Project(
+            team=team4,
+            assignment=assignment2,
+        )
+        session.add(project4)
 
-        print("Creating project metadata  2 ...")
-        project_metadata = ProjectMetadata(
+        print("Creating project metadata  3 ...")
+        project_metadata3 = ProjectMetadata(
             value="http://129.125.32.12:postgres8001",
-            project=project,
+            project=project3,
             assignment_metadata_id=assignment_metadata2.id,
         )
-        session.add(project_metadata)
+        session.add(project_metadata3)
+
+        print("Creating project metadata  4 ...")
+        project_metadata4 = ProjectMetadata(
+            value="http://129.125.32.12:postgres8001",
+            project=project4,
+            assignment_metadata_id=assignment_metadata2.id,
+        )
+        session.add(project_metadata4)
 
         print("Creating analyzer ...")
         analyzer = Analyzer(
@@ -163,8 +191,8 @@ def run_seed():
 
         print("Creating analyzer 2 ...")
         analyzer2 = Analyzer(
-            name="Test analyzer 2",
-            description="Generic description number 2",
+            name="Lighthouse Analyzer",
+            description="Analyzer to measuse stats of webpage with Google's Lighthouse tool",
             creator="Enthe Nu",
         )
         session.add(analyzer2)

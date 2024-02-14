@@ -1,4 +1,5 @@
 import BoolComponent from "@/components/reportComponents/boolComponent";
+import IntComponent from "@/components/reportComponents/intComponent";
 import RangeComponent from "@/components/reportComponents/rangeComponent";
 import TextComponent from "@/components/reportComponents/textComponent";
 import {
@@ -44,7 +45,11 @@ export const renderMetrics = (
           return (
             <RangeComponent
               key={keyName}
-              keyName={keyName}
+              keyName={
+                metricMetadata.display_name
+                  ? metricMetadata.display_name
+                  : keyName
+              }
               value={value as number}
               fromValue={extendedMetadata.fromRange}
               toValue={extendedMetadata.toRange}
@@ -75,7 +80,17 @@ export const renderMetrics = (
             />
           );
         case ValueTypesOutput.Int:
-          return <>{keyName}</>;
+          return (
+            <IntComponent
+              key={keyName}
+              keyName={
+                metricMetadata.display_name
+                  ? metricMetadata.display_name
+                  : keyName
+              }
+              value={value}
+            />
+          );
         default:
           return null; // If the value_type is not recognized, don't render a component.
       }

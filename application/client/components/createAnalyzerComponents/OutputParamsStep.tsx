@@ -200,14 +200,14 @@ export default function OutputParamsStep({
                       label="Min"
                       placeholder="Enter from value"
                       value={
-                        param.extended_metadata.from_value === undefined
+                        param.extended_metadata.fromRange === undefined
                           ? ""
-                          : param.extended_metadata.from_value.toString()
+                          : param.extended_metadata.fromRange.toString()
                       }
                       onChange={(e) =>
                         updateExtendedMetadata(
                           index,
-                          "from_value",
+                          "fromRange",
                           e.target.value
                         )
                       }
@@ -217,16 +217,12 @@ export default function OutputParamsStep({
                       label="Max"
                       placeholder="Enter to value"
                       value={
-                        param.extended_metadata.to_value === undefined
+                        param.extended_metadata.toRange === undefined
                           ? ""
-                          : param.extended_metadata.to_value.toString()
+                          : param.extended_metadata.toRange.toString()
                       }
                       onChange={(e) =>
-                        updateExtendedMetadata(
-                          index,
-                          "to_value",
-                          e.target.value
-                        )
+                        updateExtendedMetadata(index, "toRange", e.target.value)
                       }
                     />
                   </div>

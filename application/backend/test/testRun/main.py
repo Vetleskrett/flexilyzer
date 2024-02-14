@@ -13,8 +13,6 @@ class Return(BaseModel):
 
 
 def main(url: str) -> Return:
-    print(f"input is {url}")
-
     # mocked git data
 
     response_obj = {
