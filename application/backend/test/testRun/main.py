@@ -4,17 +4,33 @@ from pydantic import BaseModel
 
 
 class Return(BaseModel):
-    b: str
+    commits: int
+    total_code_lines: int
+    language: str
+    is_locked: bool
+    url: str
+    test_coverage: int
 
 
-def main(a: str) -> Return:
-    string = f"input is {a}, this is my output"
+def main(url: str) -> Return:
+    print(f"input is {url}")
 
-    response = Return(**{"b": string})
+    # mocked git data
+
+    response_obj = {
+        "commits": 57,
+        "total_code_lines": 1248,
+        "language": "TypeScript",
+        "is_locked": False,
+        "url": url,
+        "test_coverage": 76,
+    }
+
+    response = Return(**response_obj)
 
     return response
 
 
 if __name__ == "__main__":
-    a = os.getenv("A")
-    print(json.dumps(main(a)))
+    url = os.getenv("URL")
+    print(json.dumps(main(url).model_dump()))
