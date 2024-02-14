@@ -28,8 +28,8 @@ export default function OutputParamsStep({
               ...param,
               [key]: value,
               extended_metadata: {
-                from_value: 0,
-                to_value: 100,
+                fromRange: 0,
+                toRange: 100,
               },
             };
           } else {
@@ -111,17 +111,17 @@ export default function OutputParamsStep({
 
   return (
     <>
-      <div className="pb-16">
-        <h2 className="h2">
+      <div className='pb-16'>
+        <h2 className='h2'>
           Output Parameters{" "}
-          <Popover placement="right" className="pb-3">
+          <Popover placement='right' className='pb-3'>
             <PopoverTrigger>
               <HelpIcon />
             </PopoverTrigger>
             <PopoverContent>
-              <div className="px-1 py-2 w-full max-w-sm">
-                <div className="text-small font-bold">Output Parameters</div>
-                <div className="text-tiny">
+              <div className='px-1 py-2 w-full max-w-sm'>
+                <div className='text-small font-bold'>Output Parameters</div>
+                <div className='text-tiny'>
                   In this step, you define the different parameters your
                   analyzer script is expected to return, i.e., what the report
                   will consist of. <br />
@@ -146,11 +146,11 @@ export default function OutputParamsStep({
 
         {formData.outputs.map((param, index) => (
           <>
-            <div key={param.id} className="flex items-center space-x-2 mb-4">
+            <div key={param.id} className='flex items-center space-x-2 mb-4'>
               <Input
                 isRequired
-                label="Key Name"
-                placeholder="Enter key name"
+                label='Key Name'
+                placeholder='Enter key name'
                 value={param.key_name}
                 onChange={(e) => {
                   // Regular expression: starts with a lowercase letter, followed by any mix of lowercase, uppercase letters, or underscores
@@ -162,8 +162,8 @@ export default function OutputParamsStep({
               />
 
               <Input
-                label="Display Name"
-                placeholder="Enter display name"
+                label='Display Name'
+                placeholder='Enter display name'
                 value={param.display_name}
                 onChange={(e) =>
                   updateOutputParameter(index, "display_name", e.target.value)
@@ -171,8 +171,8 @@ export default function OutputParamsStep({
               />
               <Select
                 isRequired
-                label="Value type"
-                className="max-w-xs"
+                label='Value type'
+                className='max-w-xs'
                 value={param.value_type}
                 defaultSelectedKeys={[param.value_type]}
                 onChange={(e) => {
@@ -194,11 +194,11 @@ export default function OutputParamsStep({
               </Select>
               {param.extended_metadata && (
                 <>
-                  <div className="flex items-center space-x-2">
+                  <div className='flex items-center space-x-2'>
                     <Input
                       isRequired
-                      label="Min"
-                      placeholder="Enter from value"
+                      label='Min'
+                      placeholder='Enter from value'
                       value={
                         param.extended_metadata.fromRange === undefined
                           ? ""
@@ -214,8 +214,8 @@ export default function OutputParamsStep({
                     />
                     <Input
                       isRequired
-                      label="Max"
-                      placeholder="Enter to value"
+                      label='Max'
+                      placeholder='Enter to value'
                       value={
                         param.extended_metadata.toRange === undefined
                           ? ""
@@ -229,7 +229,7 @@ export default function OutputParamsStep({
                 </>
               )}
               <Button
-                color="danger"
+                color='danger'
                 onClick={() => removeOutputParameter(index)}
               >
                 Remove
@@ -237,8 +237,8 @@ export default function OutputParamsStep({
             </div>
           </>
         ))}
-        <div className="flex justify-center w-full">
-          <Button color="secondary" onClick={addOutputParameter}>
+        <div className='flex justify-center w-full'>
+          <Button color='secondary' onClick={addOutputParameter}>
             Add Parameter
           </Button>
         </div>
