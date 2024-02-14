@@ -19,10 +19,17 @@ class BatchService:
         return batch
 
     @staticmethod
-    def get_assignment_analyzers_batches(db, analyzer_id, assignemnt_id):
+    def get_assignment_analyzers_batches(db, analyzer_id, assignment_id):
         AnalyzerService.get_analyzer(db=db, analyzer_id=analyzer_id)
-        AssignmentService.get_assignment(db=db, assignment_id=assignemnt_id)
+        AssignmentService.get_assignment(db=db, assignment_id=assignment_id)
 
         return BatchesRepository.get_batch_by_assignment_and_analyzer(
-            db, assignemnt_id=assignemnt_id, analyzer_id=analyzer_id
+            db, assignment_id=assignment_id, analyzer_id=analyzer_id
+        )
+
+    @staticmethod
+    def get_batch_stats(db, batch_id):
+
+        return BatchesRepository.get_batch_by_assignment_and_analyzer(
+            db, assignment_id=assignment_id, analyzer_id=analyzer_id
         )

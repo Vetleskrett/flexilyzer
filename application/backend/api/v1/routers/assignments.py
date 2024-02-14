@@ -86,7 +86,7 @@ def get_assignment_analyzers(
     assignment_id: int, db=Depends(get_db)
 ) -> List[analyzer_schema.AnalyzerSimplifiedResponse]:
     return AssignmentService.get_assignment_analyzers(
-        db=db, assignemnt_id=assignment_id
+        db=db, assignment_id=assignment_id
     )
 
 
@@ -98,7 +98,7 @@ def get_assignment_analyzer_batches(
     assignment_id: int, analyzer_id: int, db=Depends(get_db)
 ) -> List[batch_schema.BatchResponse]:
     return BatchService.get_assignment_analyzers_batches(
-        db=db, assignemnt_id=assignment_id, analyzer_id=analyzer_id
+        db=db, assignment_id=assignment_id, analyzer_id=analyzer_id
     )
 
 
@@ -110,7 +110,7 @@ def connect_assignmnet_analyzer(
     assignment_id: int, analyzer_id: int, db=Depends(get_db)
 ):
     return AssignmentService.connect_assignmnet_analyzer(
-        db=db, assignemnt_id=assignment_id, analyzer_id=analyzer_id
+        db=db, assignment_id=assignment_id, analyzer_id=analyzer_id
     )
 
 

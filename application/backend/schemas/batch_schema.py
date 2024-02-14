@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import List, Optional
+from typing import Dict, List, Optional
 from schemas.shared import BatchEnum
 
 
@@ -21,3 +21,17 @@ class BatchResponse(BatchBase):
 
     class Config:
         from_attributes = True
+
+
+class BatchStatsResponse(BaseModel):
+    id: int
+    stats: Dict[str, Dict]
+
+
+# {
+#     "id": 1,
+#     "stats": {
+#         "total_code_lines": {"avg": 33},
+#         "is_public": {"distribution": {"true": 59, "false": 41}},
+#     },
+# }
