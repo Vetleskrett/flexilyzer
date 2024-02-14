@@ -17,12 +17,12 @@ def main(url: str) -> Return:
     # mocked git data
 
     response_obj = {
-        "commits": random.randint(8, 20),
-        "total_code_lines": random.randint(1000, 5000),
-        "language": random.choice(["Typescript", "Pyhton"]),
+        "commits": random.randint(8, 40),
+        "total_code_lines": random.randint(500, 5000),
+        "language": random.choice(["Typescript", "Pyhton", "Java", "JavaScript"]),
         "is_public": random.choice([True, False]),
         "url": url,
-        "test_coverage": random.randint(0, 10),
+        "test_coverage": random.randint(0, 100),
     }
 
     response = Return(**response_obj)
