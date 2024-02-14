@@ -21,6 +21,4 @@ async def get_batch(batch_id: int, db=Depends(get_db)) -> BatchResponse:
 
 @router.get("/{batch_id}/stats", operation_id="get-batch-stats")
 async def get_batch_stats(batch_id: int, db=Depends(get_db)) -> BatchStatsResponse:
-    BatchService.get_batch(db=db, batch_id=batch_id)
-    
     return BatchService.get_batch_stats(db=db, batch_id=batch_id)
