@@ -1,5 +1,5 @@
 import api from "@/api_utils";
-import AssignmentMetadata from "@/components/assignmentComponents/AssignmentMetadata";
+import AssignmentInfo from "@/components/assignmentComponents/AssignmentInfo";
 import AssignmentSideBar from "@/components/assignmentComponents/SideBar";
 import AnalyzerTabs from "@/components/reportPageComponents/AnalyzerTabs";
 
@@ -27,11 +27,12 @@ export default async function AssignmentLayout({
           assignment_id={params.assignment_id}
         />
         <div className="flex-grow">
-          <AssignmentMetadata
-            name={assignment_details.data.name}
+          <AssignmentInfo
+            left_text={assignment_details.data.name}
             due_date={assignment_details.data.due_date}
             assignment_id={assignment_details.data.id}
             course_id={params.course_id}
+            middle_text={"Reports"}
           />
           <div className="flex flex-row justify-center">
             <div className="mt-2">

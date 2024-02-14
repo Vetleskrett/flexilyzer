@@ -21,11 +21,11 @@ import { useQuery } from "react-query";
 import { useSnackbar } from "@/context/snackbarContext";
 import { useRouter } from "next/navigation";
 
-const ConnectAsssignmentAnalyzer = ({
-  assigment_id,
+const ConnectAssignmentAnalyzer = ({
+  assignment_id,
   connected_analyzers,
 }: {
-  assigment_id: string;
+  assignment_id: number;
   connected_analyzers: AnalyzerSimplifiedResponse[];
 }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -80,7 +80,7 @@ const ConnectAsssignmentAnalyzer = ({
   const createConnection = async (onClose: () => void) => {
     if (selectedAnalyzer) {
       const res = await api.connectAssignmentAnalyzers(
-        Number(assigment_id),
+        assignment_id,
         selectedAnalyzer.id
       );
       if (res.ok) {
@@ -151,4 +151,4 @@ const ConnectAsssignmentAnalyzer = ({
   );
 };
 
-export default ConnectAsssignmentAnalyzer;
+export default ConnectAssignmentAnalyzer;

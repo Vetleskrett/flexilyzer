@@ -16,6 +16,7 @@ import {
   AnalyzerResponse,
   AnalyzerSimplifiedResponse,
   AssignmentCreate,
+  AssignmentMetadataResponse,
   AssignmentResponse,
   BatchResponse,
   BodyUploadAnalyzerRequirements,
@@ -237,6 +238,21 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   getAssignmentProjects = (assignmentId: number, params: RequestParams = {}) =>
     this.request<ProjectResponse[], HTTPValidationError>({
       path: `/api/v1/assignments/${assignmentId}/projects`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags assignments
+   * @name GetAssignmentMetadata
+   * @summary Get Assignment Metadata
+   * @request GET:/api/v1/assignments/{assignment_id}/metadata
+   */
+  getAssignmentMetadata = (assignmentId: number, params: RequestParams = {}) =>
+    this.request<AssignmentMetadataResponse[], HTTPValidationError>({
+      path: `/api/v1/assignments/${assignmentId}/metadata`,
       method: "GET",
       format: "json",
       ...params,

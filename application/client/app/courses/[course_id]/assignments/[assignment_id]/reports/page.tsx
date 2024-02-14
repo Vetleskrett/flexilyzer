@@ -22,7 +22,7 @@ export default function TeamReportsPage({ params }: Props) {
   const analyzer_id = searchParams.get("analyzer");
 
   // Define the fetch function
-  const fetchTeamBatches = async () => {
+  const fetchTeamBatch = async () => {
     const resp = await api.getAssignmentProjectsReportsBatch(
       params.assignment_id,
       Number(team_id),
@@ -49,7 +49,7 @@ export default function TeamReportsPage({ params }: Props) {
     error: errorReport,
   } = useQuery<ReportResponse, Error>(
     ["teamBatches", { team_id, batch_id }],
-    fetchTeamBatches,
+    fetchTeamBatch,
     {
       refetchOnWindowFocus: false,
       // Only proceed with the query if team_id is not null

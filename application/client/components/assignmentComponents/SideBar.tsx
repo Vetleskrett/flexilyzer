@@ -60,8 +60,8 @@ export default function AssignmentSideBar({
   }, [teams]);
 
   return (
-    <div className="flex flex-col p-4 border-r sticky top-16 h-[calc(100vh-80px)] overflow-y-auto">
-      <b className="mb-3">Teams:</b>
+    <div className="flex flex-col p-4 border-r sticky min-w-[100px] top-16 h-[calc(100vh-80px)] overflow-y-auto">
+      <p className="mb-3">Teams:</p>
       <DividerComponent />
       {error ? (
         <div>An error occured: {error.message}</div>

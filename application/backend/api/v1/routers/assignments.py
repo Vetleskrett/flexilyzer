@@ -36,6 +36,13 @@ async def get_assignment_projects(
     return AssignmentService.get_assignment_projects(db, assignment_id)
 
 
+@router.get("/{assignment_id}/metadata", operation_id="get-assignment-metadata")
+async def get_assignment_metadata(
+    assignment_id: int, db=Depends(get_db)
+) -> List[assingment_schema.AssignmentMetadataResponse]:
+    return AssignmentService.get_assignment_metadata(db, assignment_id)
+
+
 @router.post("/")
 def create_assignment(
     assignment: assingment_schema.AssignmentCreate, db: Session = Depends(get_db)

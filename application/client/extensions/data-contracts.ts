@@ -109,6 +109,18 @@ export interface AssignmentCreate {
   course_id: number;
 }
 
+/** AssignmentMetadataResponse */
+export interface AssignmentMetadataResponse {
+  /** Assignment Id */
+  assignment_id: number;
+  /** Key Name */
+  key_name: string;
+  /** Value Type */
+  value_type: string;
+  /** Id */
+  id: number;
+}
+
 /** AssignmentResponse */
 export interface AssignmentResponse {
   /** Name */

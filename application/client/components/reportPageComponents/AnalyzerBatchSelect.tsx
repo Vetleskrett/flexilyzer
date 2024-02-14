@@ -68,41 +68,43 @@ export default function AnalyzerBatchSelect({
         <>
           <Spinner />
         </>
-      ) : (
-        batches && (
-          <>
-            <Select
-              disallowEmptySelection={true}
-              size="sm"
-              label="Selected batch"
-              placeholder="Select a batch"
-              selectedKeys={current_batch_id ? [current_batch_id] : undefined}
-              onChange={(e) => {
-                console.log(e.target.value);
-                if (e.target.value !== "") {
-                  handleSelectionChange(e.target.value);
-                }
-              }}
-              aria-label="batch-select"
-            >
-              {batches
-                .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
-                .map((batch) => (
-                  <SelectItem
-                    key={batch.id}
-                    value={batch.id}
-                    textValue={`${batch.id} (
+      ) : batches && batches.length > 0 ? (
+        <>
+          <Select
+            disallowEmptySelection={true}
+            size="sm"
+            label="Selected batch"
+            placeholder="Select a batch"
+            selectedKeys={current_batch_id ? [current_batch_id] : undefined}
+            onChange={(e) => {
+              console.log(e.target.value);
+              if (e.target.value !== "") {
+                handleSelectionChange(e.target.value);
+              }
+            }}
+            aria-label="batch-select"
+          >
+            {batches
+              .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+              .map((batch) => (
+                <SelectItem
+                  key={batch.id}
+                  value={batch.id}
+                  textValue={`${batch.id} (
                     ${format(new Date(batch.timestamp), "PP HH:mm:ss")})`}
-                  >
-                    <>
-                      {batch.id} (
-                      {format(new Date(batch.timestamp), "PP HH:mm:ss")})
-                    </>
-                  </SelectItem>
-                ))}
-            </Select>
-          </>
-        )
+                >
+                  <>
+                    {batch.id} (
+                    {format(new Date(batch.timestamp), "PP HH:mm:ss")})
+                  </>
+                </SelectItem>
+              ))}
+          </Select>
+        </>
+      ) : (
+        <div className="text-center">
+          There are no available batches for this analyzer.
+        </div>
       )}
     </>
   );
