@@ -9,6 +9,7 @@ class Return(BaseModel):
     language: str
     is_locked: bool
     url: str
+    test_coverage: int
 
 
 def main(url: str) -> Return:
@@ -22,6 +23,7 @@ def main(url: str) -> Return:
         "language": "TypeScript",
         "is_locked": False,
         "url": url,
+        "test_coverage": 76,
     }
 
     response = Return(**response_obj)
