@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy.orm import sessionmaker
 import sqlalchemy as sa
 import json
+from utils.templateUtils import generate_random_website
 from schemas.shared import BatchEnum
 from db.models import (
     Batch,
@@ -89,41 +90,26 @@ def run_seed():
         )
         session.add(assignment_metadata)
         session.flush()
-
-        print("Creating teams for course 1 ...")
-        team = Team(course=course)
-        team2 = Team(course=course)
-        session.add(team)
-        session.add(team2)
-
-        print("Creating projects 1...")
-        project = Project(
+        
+        print("Creating teams in loop ...")
+        for i in range(9):
+            print(f"Team {i}...")
+            team = Team(course=course)
+            session.add(team)
+            project = Project(
             team=team,
             assignment=assignment,
         )
-        session.add(project)
-        print("Creating projects 2...")
-        project2 = Project(
-            team=team2,
-            assignment=assignment,
-        )
-        session.add(project)
+            session.add(project)
 
-        print("Creating project metadata ...")
-        project_metadata = ProjectMetadata(
-            value="www.someurl.com",
-            project=project,
-            assignment_metadata_id=assignment_metadata.id,
-        )
-        session.add(project_metadata)
+            print("Creating project metadata ...")
+            project_metadata = ProjectMetadata(
+                value=generate_random_website(),
+                project=project,
+                assignment_metadata_id=assignment_metadata.id,
+            )
+            session.add(project_metadata)
 
-        print("Creating project metadata 2...")
-        project_metadata2 = ProjectMetadata(
-            value="www.someotherurl.com",
-            project=project2,
-            assignment_metadata_id=assignment_metadata.id,
-        )
-        session.add(project_metadata2)
 
         print("Creating course 2 ...")
         course2 = Course(tag="IT4334", name="Store, distribuerte datamengder")
