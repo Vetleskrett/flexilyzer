@@ -1,6 +1,7 @@
 import json
 import os
 from pydantic import BaseModel
+import random
 
 
 class Return(BaseModel):
@@ -16,12 +17,12 @@ def main(url: str) -> Return:
     # mocked git data
 
     response_obj = {
-        "commits": 57,
-        "total_code_lines": 1248,
-        "language": "TypeScript",
-        "is_public": False,
+        "commits": random.randint(8, 40),
+        "total_code_lines": random.randint(500, 5000),
+        "language": random.choice(["Typescript", "Pyhton", "Java", "JavaScript"]),
+        "is_public": random.choice([True, False]),
         "url": url,
-        "test_coverage": 76,
+        "test_coverage": random.randint(0, 100),
     }
 
     response = Return(**response_obj)
