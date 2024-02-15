@@ -4,14 +4,17 @@ import RangeComponent from "@/components/reportComponents/rangeComponent";
 import TextComponent from "@/components/reportComponents/textComponent";
 import {
   AnalyzerOutputResponse,
+  BatchStatsResponse,
   ReportResponse,
   ValueTypesOutput,
 } from "@/extensions/data-contracts";
+import { AvgMetric, DistributionMetric } from "@/types/componentDefinitions";
 import React from "react";
 
 export const renderMetrics = (
   report: ReportResponse,
-  outputs: AnalyzerOutputResponse[]
+  outputs: AnalyzerOutputResponse[],
+  batchStats: BatchStatsResponse | undefined
 ) => {
   if (!report.report) {
     return null; // If the report does not have any metrics, don't render anything.
@@ -29,6 +32,8 @@ export const renderMetrics = (
         return null; // If there's no metadata for a metric, don't render a component.
       }
 
+      const batchMetric = batchStats?.stats[keyName];
+
       switch (metricMetadata.value_type) {
         case ValueTypesOutput.Range:
           interface RangeMetadata {
@@ -39,9 +44,7 @@ export const renderMetrics = (
           const extendedMetadata =
             metricMetadata.extended_metadata as unknown as RangeMetadata;
 
-          // const extendedMetadata = JSON.parse(
-          //   metricMetadata.extended_metadata || "{}"
-          // );
+          const avgMetric = batchMetric as AvgMetric;
           return (
             <RangeComponent
               key={keyName}
@@ -53,6 +56,7 @@ export const renderMetrics = (
               value={value as number}
               fromValue={extendedMetadata.fromRange}
               toValue={extendedMetadata.toRange}
+              avg={avgMetric}
             />
           );
         case ValueTypesOutput.Str:
@@ -68,6 +72,7 @@ export const renderMetrics = (
             />
           );
         case ValueTypesOutput.Bool:
+          const boolMetric = batchMetric as DistributionMetric;
           return (
             <BoolComponent
               key={keyName}
@@ -77,9 +82,11 @@ export const renderMetrics = (
                   : keyName
               }
               value={value as boolean}
+              distribution={boolMetric?.distribution}
             />
           );
         case ValueTypesOutput.Int:
+          const intAvgMetric = batchMetric as AvgMetric;
           return (
             <IntComponent
               key={keyName}
@@ -89,6 +96,7 @@ export const renderMetrics = (
                   : keyName
               }
               value={value}
+              avg={intAvgMetric}
             />
           );
         default:

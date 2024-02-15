@@ -5,13 +5,19 @@ import { Progress } from "@nextui-org/react";
 import { Card, CardBody } from "@nextui-org/react";
 
 import { Button } from "@nextui-org/button";
+import { useSearchParams } from "next/navigation";
 
 export default function RangeComponent({
+  avg,
   keyName,
   value,
   fromValue,
   toValue,
 }: rangeComponent) {
+  const searchParams = useSearchParams();
+
+  const isCompareMode = searchParams.get("compare") === "true";
+
   return (
     <>
       <Card className="max-w-[500px] min-w-[400px] px-4">
@@ -29,6 +35,7 @@ export default function RangeComponent({
             valueLabel={
               <>
                 {value} / {toValue}
+                {isCompareMode && avg && <> (Avg: {avg.avg})</>}
               </>
             }
           />

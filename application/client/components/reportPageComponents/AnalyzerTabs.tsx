@@ -4,6 +4,7 @@ import { AnalyzerSimplifiedResponse } from "@/extensions/data-contracts";
 import { Tab, Tabs } from "@nextui-org/react";
 import { useCallback } from "react";
 import AnalyzerBatchSelect from "./AnalyzerBatchSelect";
+import CompareModeSwitch from "./CompareModeSwitch";
 
 export default function AnalyzerTabs({
   assignment_analyzers,
@@ -68,15 +69,24 @@ export default function AnalyzerTabs({
           </Tabs>
         </div>
         {selectedAnalyzer && (
-          <>
-            <div className="flex flex-row justify-center items-center w-[300px]">
+        <>
+          <div className="flex flex-row justify-center items-center w-full">
+            <div className="flex-1 flex justify-center items-center">
+              <CompareModeSwitch />
+            </div>
+            
+            <div className="flex-1 flex justify-center items-center max-w-[500px] w-full md:w-[500px]">
               <AnalyzerBatchSelect
                 course_id={course_id}
                 assignment_id={assignment_id}
               />
             </div>
-          </>
-        )}
+            
+            <div className="flex-1 flex justify-center items-center">
+            </div>
+          </div>
+        </>
+      )}
         
       </div>
     </>

@@ -19,6 +19,7 @@ import {
   AssignmentMetadataResponse,
   AssignmentResponse,
   BatchResponse,
+  BatchStatsResponse,
   BodyUploadAnalyzerRequirements,
   BodyUploadAnalyzerScript,
   CourseCreate,
@@ -643,6 +644,51 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       method: "POST",
       body: data,
       type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags batches
+   * @name GetAllBatches
+   * @summary Get Batches
+   * @request GET:/api/v1/batches/
+   */
+  getAllBatches = (params: RequestParams = {}) =>
+    this.request<BatchResponse[], any>({
+      path: `/api/v1/batches/`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags batches
+   * @name GetBatch
+   * @summary Get Batch
+   * @request GET:/api/v1/batches/{batch_id}
+   */
+  getBatch = (batchId: number, params: RequestParams = {}) =>
+    this.request<BatchResponse, HTTPValidationError>({
+      path: `/api/v1/batches/${batchId}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags batches
+   * @name GetBatchStats
+   * @summary Get Batch Stats
+   * @request GET:/api/v1/batches/{batch_id}/stats
+   */
+  getBatchStats = (batchId: number, params: RequestParams = {}) =>
+    this.request<BatchStatsResponse, HTTPValidationError>({
+      path: `/api/v1/batches/${batchId}/stats`,
+      method: "GET",
       format: "json",
       ...params,
     });

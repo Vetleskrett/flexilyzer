@@ -157,6 +157,14 @@ export interface BatchResponse {
   timestamp: string;
 }
 
+/** BatchStatsResponse */
+export interface BatchStatsResponse {
+  /** Id */
+  id: number;
+  /** Stats */
+  stats: Record<string, object>;
+}
+
 /** Body_upload-analyzer-requirements */
 export interface BodyUploadAnalyzerRequirements {
   /**
@@ -237,7 +245,7 @@ export interface ProjectResponse {
 /** ReportResponse */
 export interface ReportResponse {
   /** Report */
-  report?: null;
+  report: any;
   /** Project Id */
   project_id: number;
   /** Batch Id */
