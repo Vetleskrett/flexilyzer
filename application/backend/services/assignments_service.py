@@ -17,12 +17,12 @@ class AssignmentService:
 
     @staticmethod
     def get_assignment(db, assignment_id):
-        assignemnt = AssignmentRepository.get_assignment(db, assignment_id)
-        if assignemnt is None:
+        assignment = AssignmentRepository.get_assignment(db, assignment_id)
+        if assignment is None:
             raise HTTPException(
                 status_code=404, detail=f"Assignment with id {assignment_id} not found"
             )
-        return assignemnt
+        return assignment
 
     @staticmethod
     def get_assignment_projects(db, assignment_id):
@@ -54,7 +54,6 @@ class AssignmentService:
     ):
         AssignmentService.get_assignment(db, assignment_id)
         TeamService.get_team(db, team_id)
-        
 
         report = AssignmentRepository.get_assignment_team_projects_reports_batch(
             db, assignment_id=assignment_id, team_id=team_id, batch_id=batch_id
@@ -67,24 +66,24 @@ class AssignmentService:
         return report
 
     @staticmethod
-    def get_assignment_analyzers(db: Session, assignemnt_id: int):
-        AssignmentService.get_assignment(db, assignemnt_id)
+    def get_assignment_analyzers(db: Session, assignment_id: int):
+        AssignmentService.get_assignment(db, assignment_id)
 
-        return AnalyzerRepository.get_analyzers_by_assignment_id(db, assignemnt_id)
+        return AnalyzerRepository.get_analyzers_by_assignment_id(db, assignment_id)
 
     @staticmethod
     def get_assignment_metadata(
-        db: Session, assignemnt_id: int
+        db: Session, assignment_id: int
     ) -> List[assingment_schema.AssignmentMetadataResponse]:
         return AssignmentRepository.get_assignment_metadata_for_assignment(
-            db, assignemnt_id
+            db, assignment_id
         )
 
     @staticmethod
-    def connect_assignmnet_analyzer(db, assignemnt_id, analyzer_id):
-        AssignmentService.get_assignment(db, assignemnt_id)
+    def connect_assignmnet_analyzer(db, assignment_id, analyzer_id):
+        AssignmentService.get_assignment(db, assignment_id)
         AnalyzerService.get_analyzer(db, analyzer_id)
 
         return AssignmentRepository.connect_assignment_analyzer(
-            db, assignemnt_id, analyzer_id
+            db, assignment_id, analyzer_id
         )

@@ -15,3 +15,5 @@ class ReportService:
                 status_code=404, detail=f"Report with id {report_id} not found"
             )
         return report
+
+

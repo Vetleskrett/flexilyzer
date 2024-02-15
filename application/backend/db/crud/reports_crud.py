@@ -7,6 +7,7 @@ from schemas.reports_schema import ReportCreate
 
 
 class ReportRepository:
+    @staticmethod
     def get_reports(db: Session):
         """
         Retrieves all reports
@@ -19,6 +20,7 @@ class ReportRepository:
         """
         return db.query(Report).all()
 
+    @staticmethod
     def get_report(db: Session, report_id: int):
         """
         Retrieves a specific report
@@ -31,6 +33,20 @@ class ReportRepository:
         The requested report if found, otherwise None
         """
         return db.query(Report).filter(Report.id == report_id).first()
+
+    @staticmethod
+    def get_batch_reports(db: Session, batch_id: int):
+        """
+        Retrieves all reports from a batch
+
+        Parameters:
+        - db (Session)
+        - batch_id: int
+
+        Returns:
+        A list of all matching reports
+        """
+        return db.query(Report).filter(Report.batch_id == batch_id).all()
 
     @staticmethod
     def create_report(db: Session, report: ReportCreate):

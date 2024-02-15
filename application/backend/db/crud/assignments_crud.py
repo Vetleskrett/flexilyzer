@@ -142,10 +142,10 @@ class AssignmentRepository:
         )
 
     @staticmethod
-    def get_assignment_metadata_for_assignment(db: Session, assignemnt_id):
+    def get_assignment_metadata_for_assignment(db: Session, assignment_id):
         return (
             db.query(AssignmentMetadata)
-            .filter(AssignmentMetadata.assignment_id == assignemnt_id)
+            .filter(AssignmentMetadata.assignment_id == assignment_id)
             .all()
         )
 

@@ -10,6 +10,7 @@ from api.v1.routers import (
     projects,
     analyzers,
     jobs,
+    batches,
 )
 from db.database import engine
 from db import models
@@ -38,6 +39,7 @@ app.include_router(projects.router, tags=["projects"])
 app.include_router(reports.router, tags=["reports"])
 app.include_router(analyzers.router, tags=["analyzers"])
 app.include_router(jobs.router, tags=["jobs"])
+app.include_router(batches.router, tags=["batches"])
 
 
 if __name__ == "__main__":
