@@ -39,7 +39,6 @@ class BatchService:
         analyzer_outputs = AnalyzerService.get_analyzer_outputs(
             db=db, analyzer_id=batch.analyzer_id
         )
-        [print(output.__dict__) for output in analyzer_outputs]
 
         stats = dict()
 
@@ -109,7 +108,6 @@ class BatchService:
                 stats[key]["distribution"]["false"] = (
                     100 - stats[key]["distribution"]["true"]
                 )
-        print(stats)
 
         return {"id": batch_id, "stats": stats}
 

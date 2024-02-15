@@ -1,3 +1,5 @@
+import random
+import string
 from typing import List
 from schemas.analyzer_schema import AnalyzerInputCreate, AnalyzerOutputCreate
 from schemas.shared import ValueTypesMapping
@@ -48,3 +50,16 @@ if __name__ == "__main__":
 """
 
     return template
+
+
+def generate_random_website():
+    # Generate a random string of lowercase letters with a length between 5 and 10
+    length = random.randint(5, 10)
+    random_string = "".join(
+        random.choice(string.ascii_lowercase) for _ in range(length)
+    )
+
+    # Construct the website URL
+    website = f"www.{random_string}.com"
+
+    return website
