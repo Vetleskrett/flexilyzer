@@ -1,7 +1,7 @@
 "use client";
 import { boolComponent } from "@/types/componentDefinitions";
 
-import { Card, CardBody, CardHeader } from "@nextui-org/react";
+import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
 import { Chip } from "@nextui-org/react";
 import { useSearchParams } from "next/navigation";
 
@@ -16,21 +16,22 @@ export default function BoolComponent({
 
   return (
     <Card className="w-[200px] px-4">
-      <CardHeader className="flex flex-row justify-center font-semibold">
+      <CardHeader className="flex flex-row justify-center font-semibold pb-1">
         {keyName}
       </CardHeader>
-      <CardBody className="flex flex-col justify-center gap-4 items-center pt-0">
-        <Chip size="sm" variant="bordered" color={value ? "success" : "danger"}>
+      <Divider />
+      <CardBody className="flex flex-col justify-center gap-2 items-center pt-2">
+        <Chip size="sm" variant="solid" color={value ? "success" : "danger"} className="text-white">
           {value ? "Yes" : "No"}
         </Chip>
         {isCompareMode && distribution && (
           <>
             <div className="flex flex-row gap-2">
               <Chip size="sm" variant="bordered" color={"success"}>
-                {distribution.true} %
+                {distribution.true.toPrecision(2)} %
               </Chip>
               <Chip size="sm" variant="bordered" color={"danger"}>
-                {distribution.false} %
+                {distribution.false.toPrecision(2)} %
               </Chip>
             </div>
           </>

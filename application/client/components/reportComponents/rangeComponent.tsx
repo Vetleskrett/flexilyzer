@@ -35,7 +35,7 @@ export default function RangeComponent({
             valueLabel={
               <>
                 {value} / {toValue}
-                {isCompareMode && avg && <> (Avg: {avg.avg})</>}
+                {isCompareMode && avg && <text className="text-gray-500"> (Avg: {avg.avg?.toFixed(0)})</text>}
               </>
             }
           />

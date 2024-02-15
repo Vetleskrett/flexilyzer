@@ -112,7 +112,7 @@ export default function TeamReportsPage({ params }: Props) {
   }
 
   if (errorReport || errorAnalyzer || errorStats) {
-    return <div>An error occurred while trying to fetch report.</div>;
+    return <div className="text-center mt-14">An error occurred while trying to fetch report.</div>;
   }
 
   return (

@@ -3,7 +3,7 @@ import React from "react";
 
 export default function InfoCardContent() {
   return (
-    <div>
+    <div className="text-sm">
       <h2 className="h2">Create an analyzer</h2>
       <p>
         By following the steps in this page, you will define and register your
