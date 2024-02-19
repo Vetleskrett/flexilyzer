@@ -32,27 +32,19 @@ export default async function AssignmentDetails({ params }: Props) {
 
   return (
     <>
-      <div className="flex-grow">
-        <AssignmentInfo
-          assignment_id={assignment.data.id}
-          course_id={course.data.id}
-          due_date={assignment.data.due_date}
-          left_text={`${assignment.data.name} (${course.data.tag}
-          ${course.data.name && `- ${course.data.name}`})`}
-          middle_text={"Assignment overview"}
-        />
+      <div className='flex-grow'>
         <AssignmentMetadata metadata={assignment_metadata.data} />
       </div>
-      <div className="my-8 flex justify-center items-center relative text-center">
-        <h3 className="h3">Connected analyzers:</h3>
-        <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+      <div className='my-8 flex justify-center items-center relative text-center'>
+        <h3 className='h3'>Connected analyzers:</h3>
+        <div className='absolute right-0 top-1/2 transform -translate-y-1/2'>
           <ConnectAssignmentAnalyzer
             assignment_id={params.assignment_id}
             connected_analyzers={analyzers.data}
           />
         </div>
       </div>
-      <div className="flex overflow-x-auto p-2 space-x-4">
+      <div className='flex overflow-x-auto p-2 space-x-4'>
         {analyzers.data.map((analyzer) => {
           return (
             <>

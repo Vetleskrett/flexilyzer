@@ -3,7 +3,7 @@ import AssignmentInfo from "@/components/assignmentComponents/AssignmentInfo";
 import AssignmentSideBar from "@/components/assignmentComponents/SideBar";
 import AnalyzerTabs from "@/components/reportPageComponents/AnalyzerTabs";
 
-export default async function AssignmentLayout({
+export default async function AssignmentOverviewLayout({
   children,
   params,
 }: {
@@ -22,21 +22,14 @@ export default async function AssignmentLayout({
   return (
     <>
       <div className='flex flex-row'>
-        {/* Sidebar */}
-        <AssignmentSideBar
-          course_id={params.course_id}
-          assignment_id={params.assignment_id}
-        />
         <div className='flex-grow'>
-          <div className='flex flex-row justify-center'>
-            <div className='mt-2'>
-              <AnalyzerTabs
-                assignment_analyzers={assignment_analyzers.data}
-                course_id={params.course_id}
-                assignment_id={params.assignment_id}
-              />
-            </div>
-          </div>
+          <AssignmentInfo
+            left_text={assignment_details.data.name}
+            due_date={assignment_details.data.due_date}
+            assignment_id={assignment_details.data.id}
+            course_id={params.course_id}
+            middle_text={"Team overview"}
+          />
           {children}
         </div>
       </div>

@@ -18,18 +18,20 @@ export default async function AssignmentOverviewLayout({
     params.assignment_id,
     { cache: "no-cache" }
   );
+  const course = await api.getCourse(params.course_id, {
+    cache: "no-cache",
+  });
 
   return (
     <>
-      <div className="flex flex-row">
-        
-        <div className="flex-grow">
+      <div className='flex flex-row'>
+        <div className='flex-grow'>
           <AssignmentInfo
-            left_text={assignment_details.data.name}
+            left_text={`${assignment_details.data.name} (${course.data.tag}
+    ${course.data.name && `- ${course.data.name}`})`}
             due_date={assignment_details.data.due_date}
             assignment_id={assignment_details.data.id}
             course_id={params.course_id}
-            middle_text={"Team overview"}
           />
           {children}
         </div>
