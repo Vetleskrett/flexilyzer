@@ -1,0 +1,20 @@
+{
+  "1": {
+    "name": "lighthouse",
+    "outputs": [
+      {
+        "key_name": "hashttps",
+        "value_type": "bool",
+        "display_name": "has https",
+        "id": 1
+      },
+      {
+        "key_name": "hashttps",
+        "value_type": "bool",
+        "display_name": "has https",
+        "id": 1
+      }
+    ]
+  }
+}
+
