@@ -58,10 +58,10 @@ export default async function AnalyzerScriptDisplay({
   // If the response is successful, proceed to render the component
   return (
     <>
-      <div className="flex w-full flex-col items-center">
+      <div className='flex w-full flex-col items-center'>
         <Tabs>
-          <Tab key="script" title="Analyzer script">
-            <div className="mt-6">
+          <Tab key='script' title='Script'>
+            <div className='mt-6'>
               {script ? (
                 <CodeDisplay code_string={script} />
               ) : (
@@ -70,13 +70,13 @@ export default async function AnalyzerScriptDisplay({
             </div>
           </Tab>
           <Tab
-            key="requirements"
+            key='requirements'
             title={
-              has_requirements ? "requirements.txt" : "Upload requirements.txt"
+              has_requirements ? "Requirements" : "Upload requirements.txt"
             }
           >
             {has_requirements ? (
-              <div className="mt-6">
+              <div className='mt-6'>
                 {requirements ? (
                   <CodeDisplay code_string={requirements} />
                 ) : (
@@ -84,20 +84,20 @@ export default async function AnalyzerScriptDisplay({
                 )}
               </div>
             ) : (
-              <div className="mt-6">
+              <div className='mt-6'>
                 <form
-                  className="flex flex-col items-center justify-center mt-8"
+                  className='flex flex-col items-center justify-center mt-8'
                   onSubmit={handleSubmit}
                 >
                   <input
-                    id="fileInput"
-                    type="file"
-                    accept=".txt"
+                    id='fileInput'
+                    type='file'
+                    accept='.txt'
                     onChange={handleFileChange}
                   />
 
                   <br />
-                  <Card className="p-3 text-xs bg-slate-100 mb-8">
+                  <Card className='p-3 text-xs bg-slate-100 mb-8'>
                     <p>
                       PS: The file must be named exactly "
                       <i>requirements.txt</i>".
@@ -105,8 +105,8 @@ export default async function AnalyzerScriptDisplay({
                   </Card>
                   <Button
                     isDisabled={selectedFile !== null ? false : true}
-                    color="primary"
-                    type="submit"
+                    color='primary'
+                    type='submit'
                   >
                     Upload Requirements file
                   </Button>
