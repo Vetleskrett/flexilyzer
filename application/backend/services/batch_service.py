@@ -32,6 +32,28 @@ class BatchService:
         )
 
     @staticmethod
+    def get_latest_batch(db, assignment_id, analyzer_id):
+
+        batch = BatchesRepository.get_latest_batch(
+            db, assignment_id=assignment_id, analyzer_id=analyzer_id
+        )
+        if not batch:
+            raise HTTPException(status_code=204, detail=f"No batches found")
+        return batch
+
+    @staticmethod
+    def get_assignment_analyzers_batches_latest_reports(db, analyzer_id, assignment_id):
+
+        AnalyzerService.get_analyzer(db=db, analyzer_id=analyzer_id)
+        AssignmentService.get_assignment(db=db, assignment_id=assignment_id)
+
+        batch = BatchService.get_latest_batch(
+            db, assignment_id=assignment_id, analyzer_id=analyzer_id
+        )
+
+        return ReportRepository.get_batch_reports_w_team(db, batch.id)
+
+    @staticmethod
     def get_batch_stats(db, batch_id):
 
         batch = BatchService.get_batch(db=db, batch_id=batch_id)

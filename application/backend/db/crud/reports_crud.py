@@ -1,8 +1,6 @@
 import json
 from sqlalchemy.orm import Session
-from db.models import (
-    Report,
-)
+from db.models import Report, Project, Batch
 from schemas.reports_schema import ReportCreate
 
 
@@ -47,6 +45,34 @@ class ReportRepository:
         A list of all matching reports
         """
         return db.query(Report).filter(Report.batch_id == batch_id).all()
+
+    @staticmethod
+    def get_batch_reports_w_team(db: Session, batch_id: int):
+        """
+        Retrieves all reports from a batch with team id
+
+        Parameters:
+        - db (Session)
+        - batch_id: int
+
+        Returns:
+        A list of all matching reports with teamid
+        """
+        return (
+            db.query(Report)
+            .outerjoin(Project, Report.project_id == Project.id)
+            .outerjoin(Batch, Report.batch_id == Batch.id)
+            .with_entities(
+                Report.batch_id,
+                Report.id,
+                Report.report,
+                Report.project_id,
+                Project.team_id,
+                Batch.analyzer_id,
+            )
+            .filter(Report.batch_id == batch_id)
+            .all()
+        )
 
     @staticmethod
     def create_report(db: Session, report: ReportCreate):

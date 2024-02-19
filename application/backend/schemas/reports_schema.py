@@ -19,3 +19,12 @@ class ReportResponse(ReportBase):
 
     class config:
         from_attributes = True
+
+
+class ReportTeamResponse(ReportBase):
+    id: int
+    team_id: int
+    analyzer_id: int
+
+    class config:
+        from_attributes = True

@@ -1,4 +1,4 @@
-import { ValueTypesInput, ValueTypesOutput } from "@/extensions/data-contracts";
+import { AnalyzerOutputResponse, ReportTeamResponse, ValueTypesInput, ValueTypesOutput } from "@/extensions/data-contracts";
 
 export type InputParameter = {
   id: string;
@@ -30,3 +30,15 @@ export interface SummaryStepProps {
   formData: FormDataT;
   setFormData: React.Dispatch<React.SetStateAction<FormDataT>>;
 }
+
+export type AnalyzerWithOutputs = {
+  id: number;
+  analyzer_name: string;
+  outputs: AnalyzerOutputResponse[];
+};
+
+export type TeamReports = {
+  [team_id: number]: {
+    reports: ReportTeamResponse[];
+  };
+};

@@ -29,6 +29,7 @@ import {
   JobCreate,
   ProjectResponse,
   ReportResponse,
+  ReportTeamResponse,
   TeamResponse,
   TestE,
 } from "./data-contracts";
@@ -319,6 +320,21 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   getAssignmentAnalyzersBatches = (assignmentId: number, analyzerId: number, params: RequestParams = {}) =>
     this.request<BatchResponse[], HTTPValidationError>({
       path: `/api/v1/assignments/${assignmentId}/analyzers/${analyzerId}/batches`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags assignments
+   * @name GetAssignmentAnalyzersBatchesLatestReports
+   * @summary Get Assignment Analyzer Batches Latest Reports
+   * @request GET:/api/v1/assignments/{assignment_id}/analyzers/{analyzer_id}/batches/latest/reports
+   */
+  getAssignmentAnalyzersBatchesLatestReports = (assignmentId: number, analyzerId: number, params: RequestParams = {}) =>
+    this.request<ReportTeamResponse[], HTTPValidationError>({
+      path: `/api/v1/assignments/${assignmentId}/analyzers/${analyzerId}/batches/latest/reports`,
       method: "GET",
       format: "json",
       ...params,

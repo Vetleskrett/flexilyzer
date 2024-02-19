@@ -254,6 +254,22 @@ export interface ReportResponse {
   id: number;
 }
 
+/** ReportTeamResponse */
+export interface ReportTeamResponse {
+  /** Report */
+  report: any;
+  /** Project Id */
+  project_id: number;
+  /** Batch Id */
+  batch_id: number;
+  /** Id */
+  id: number;
+  /** Team Id */
+  team_id: number;
+  /** Analyzer Id */
+  analyzer_id: number;
+}
+
 /** TeamResponse */
 export interface TeamResponse {
   /** Course Id */

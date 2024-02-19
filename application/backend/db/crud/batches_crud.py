@@ -79,3 +79,14 @@ class BatchesRepository:
             )
             .all()
         )
+
+    @staticmethod
+    def get_latest_batch(db: Session, assignment_id, analyzer_id):
+        return (
+            db.query(Batch)
+            .filter(
+                Batch.analyzer_id == analyzer_id, Batch.assignment_id == assignment_id
+            )
+            .order_by(Batch.timestamp.desc())
+            .first()
+        )

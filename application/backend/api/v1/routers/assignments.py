@@ -102,6 +102,18 @@ def get_assignment_analyzer_batches(
     )
 
 
+@router.get(
+    "/{assignment_id}/analyzers/{analyzer_id}/batches/latest/reports",
+    operation_id="get-assignment-analyzers-batches-latest-reports",
+)
+def get_assignment_analyzer_batches_latest_reports(
+    assignment_id: int, analyzer_id: int, db=Depends(get_db)
+) -> List[reports_schema.ReportTeamResponse]:
+    return BatchService.get_assignment_analyzers_batches_latest_reports(
+        db=db, assignment_id=assignment_id, analyzer_id=analyzer_id
+    )
+
+
 @router.post(
     "/{assignment_id}/analyzers/{analyzer_id}/connect",
     operation_id="connect-assignment-analyzers",
