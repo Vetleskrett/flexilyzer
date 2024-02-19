@@ -35,7 +35,15 @@ export default function AssignmentOverview({
             </Button>
             <Button
               onClick={() => {
-                router.push(`/courses/${course_id}/assignments/${id}`);
+                router.push(`/courses/${course_id}/assignments/${id}/overview`);
+              }}
+              color="primary"
+            >
+              Overview
+            </Button>
+            <Button
+              onClick={() => {
+                router.push(`/courses/${course_id}/assignments/${id}/details`);
               }}
             >
               Details

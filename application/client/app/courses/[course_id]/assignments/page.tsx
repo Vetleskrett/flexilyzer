@@ -7,8 +7,6 @@ interface Props {
 }
 
 export default async function CourseAssignments({ params }: Props) {
- 
-
   const course_details = await api.getCourse(Number(params.course_id));
 
   const course_assignments = await api.getCourseAssignments(
@@ -25,6 +23,7 @@ export default async function CourseAssignments({ params }: Props) {
       {course_assignments.data.map((assignment) => {
         return (
           <AssignmentOverview
+            key={assignment.id}
             course_id={course_details.data.id}
             id={assignment.id}
             name={assignment.name}
