@@ -20,8 +20,11 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Button,
+  Selection,
   DropdownSection,
   SortDescriptor,
+  Select,
+  SelectItem,
 } from "@nextui-org/react";
 import { Key, useMemo, useState } from "react";
 
@@ -52,31 +55,15 @@ export default function OverviewTable({
   );
 
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>();
+  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
+
+  const [selectedOutputFilterIds, setSelectedOutputFilterIds] =
+    useState<Selection>(new Set([]));
 
   const allReportsList: ReportTeamResponse[][] = Object.values(allReports).map(
     (r) => r.reports
   );
 
-  // const sortedItems = useMemo(() => {
-  //   return [...allReportsList].sort(
-  //     (a: ReportTeamResponse[], b: ReportTeamResponse[]) => {
-  //       console.log(a);
-  //       const first = a.find(
-  //         (report) =>
-  //           report.report.hasOwnProperty[sortDescriptor.column as string]
-  //       );
-
-  //       const second = b.find(
-  //         (report) => report.report[sortDescriptor.column as string] as number
-  //       );
-  //       console.log(first?.report, second);
-  //       // const cmp = first < second ? -1 : first > second ? 1 : 0;
-
-  //       // return sortDescriptor.direction === "descending" ? -cmp : cmp;
-  //       return -1;
-  //     }
-  //   );
-  // }, [sortDescriptor, allReportsList]);
   const sortedItems = useMemo(() => {
     if (sortDescriptor == undefined) return allReportsList;
 
@@ -160,36 +147,99 @@ export default function OverviewTable({
 
   const allColumnOutputs = initalColumn.concat(flatMappedOutputs);
 
-  const columnSelectionDropdown = (
-    <div className='flex flex-row justify-center'>
-      <Dropdown>
-        <DropdownTrigger>
-          <Button size='md' variant='light'>
-            Columns
-          </Button>
-        </DropdownTrigger>
-        <DropdownMenu
-          closeOnSelect={false}
-          aria-label='Choose Columns'
-          onAction={toggleColumnVisibility}
-        >
-          {analyzersWithOutputs.map((analyzer) => (
-            <DropdownSection key={analyzer.id} title={analyzer.analyzer_name}>
-              {analyzer.outputs.map((output) => (
-                <DropdownItem key={output.id} textValue={output.id.toString()}>
-                  <Checkbox
-                    isSelected={visibleColumns.has(output.id.toString())}
+  // const handleFilterChange = (outputId: string) => {
+  //   if (outputId === "") {
+  //     setSelectedOutputFilterIds(undefined);
+  //   } else {
+  //     setSelectedOutputFilterIds((prev) => {
+  //       if (prev === undefined) {
+  //         return [Number(outputId)];
+  //       } else {
+  //         return [...prev, Number(outputId)];
+  //       }
+  //     });
+  //   }
+  // };
+
+  const renderFilterParameters = () => {
+    console.log(selectedOutputFilterIds);
+    return "Hello";
+    // if (selectedOutputFilterIds !== undefined) {
+    //   const selectedOutput = flatMappedOutputs.find(
+    //     (output) => output.id === selectedOutputFilterId
+    //   );
+
+    //   switch (selectedOutput?.value_type) {
+    //     case ValueTypesOutput.Bool:
+    //       return "hello";
+    //   }
+    // }
+  };
+
+  const topContent = (
+    <div className="flex flex-col justify-center">
+      <div className="flex flex-row justify-center">
+        <Dropdown>
+          <DropdownTrigger>
+            <Button size="md" variant="solid" className="w-[130px]">
+              Select Columns
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu
+            closeOnSelect={false}
+            aria-label="Choose Columns"
+            onAction={toggleColumnVisibility}
+          >
+            {analyzersWithOutputs.map((analyzer) => (
+              <DropdownSection key={analyzer.id} title={analyzer.analyzer_name}>
+                {analyzer.outputs.map((output) => (
+                  <DropdownItem
+                    key={output.id}
+                    textValue={output.id.toString()}
                   >
-                    {output.display_name
-                      ? output.display_name
-                      : output.key_name}
-                  </Checkbox>
-                </DropdownItem>
-              ))}
-            </DropdownSection>
-          ))}
-        </DropdownMenu>
-      </Dropdown>
+                    <Checkbox
+                      isSelected={visibleColumns.has(output.id.toString())}
+                    >
+                      {output.display_name
+                        ? output.display_name
+                        : output.key_name}
+                    </Checkbox>
+                  </DropdownItem>
+                ))}
+              </DropdownSection>
+            ))}
+          </DropdownMenu>
+        </Dropdown>
+      </div>
+      <div className="flex flex-col justify-center">
+        <Select
+          className="max-w-xs"
+          selectionMode="multiple"
+          label="Select columns to filter on"
+          selectedKeys={selectedOutputFilterIds}
+          onSelectionChange={setSelectedOutputFilterIds}
+        >
+          {flatMappedOutputs
+            .filter((output) =>
+              [
+                ValueTypesOutput.Int,
+                ValueTypesOutput.Range,
+                ValueTypesOutput.Bool,
+              ].includes(output.value_type)
+            )
+            .map((output) => (
+              <SelectItem key={output.id} value={output.id}>
+                {output.display_name ? output.display_name : output.key_name}
+              </SelectItem>
+            ))}
+        </Select>
+        <div>{renderFilterParameters()}</div>
+      </div>
+      <div>
+        <span className="text-default-400 text-small">
+          Total {allReportsList.length} teams
+        </span>
+      </div>
     </div>
   );
 
@@ -230,7 +280,7 @@ export default function OverviewTable({
             >
               <Progress
                 aria-label={output.key_name}
-                size='md'
+                size="md"
                 value={value}
                 minValue={extendedMetadata.fromRange}
                 maxValue={extendedMetadata.toRange}
@@ -239,7 +289,7 @@ export default function OverviewTable({
                     ? "success"
                     : "warning"
                 }
-                className='max-w-md'
+                className="max-w-md"
               />
             </Tooltip>
           )
@@ -250,10 +300,10 @@ export default function OverviewTable({
         return (
           value !== undefined && (
             <Chip
-              size='sm'
-              variant='solid'
+              size="sm"
+              variant="solid"
               color={(value as boolean) ? "success" : "danger"}
-              className='text-white'
+              className="text-white"
             >
               {value ? "Yes" : "No"}
             </Chip>
@@ -269,9 +319,13 @@ export default function OverviewTable({
   return (
     <>
       <Table
-        topContent={columnSelectionDropdown}
+        topContent={topContent}
         onSortChange={setSortDescriptor}
         sortDescriptor={sortDescriptor}
+        selectedKeys={selectedKeys}
+        selectionMode="multiple"
+        onSelectionChange={setSelectedKeys}
+        isHeaderSticky
       >
         <TableHeader columns={allColumnOutputs}>
           {(column) => {
