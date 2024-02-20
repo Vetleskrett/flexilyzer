@@ -41,9 +41,6 @@ export default function OverviewTable({
   allReports,
   analyzersWithOutputs,
 }: OverviewTableParams) {
-  console.log(allReports);
-  console.log(analyzersWithOutputs);
-
   const [visibleColumns, setVisibleColumns] = useState(
     new Set(
       analyzersWithOutputs.flatMap((analyzer) =>
@@ -75,39 +72,40 @@ export default function OverviewTable({
   );
 
   const columnSelectionDropdown = (
-    <Dropdown>
-      <DropdownTrigger>
-        <Button isIconOnly size="sm" variant="light">
-          Dropdown
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu
-        aria-label="Choose Columns"  
-        onAction={toggleColumnVisibility}
-      >
-        {analyzersWithOutputs.flatMap((analyzer) =>
-          analyzer.outputs.map((output) => (
-            <DropdownItem key={output.id} textValue={output.id.toString()}>
-              <Checkbox isSelected={visibleColumns.has(output.id.toString())}>
-                {output.display_name ? output.display_name : output.key_name}
-              </Checkbox>
-            </DropdownItem>
-          ))
-        )}
-      </DropdownMenu>
-    </Dropdown>
+    <div className='flex flex-row justify-center'>
+      <Dropdown>
+        <DropdownTrigger>
+          <Button size='md' variant='light'>
+            Columns
+          </Button>
+        </DropdownTrigger>
+        <DropdownMenu
+          closeOnSelect={false}
+          aria-label='Choose Columns'
+          onAction={toggleColumnVisibility}
+        >
+          {analyzersWithOutputs.flatMap((analyzer) =>
+            analyzer.outputs.map((output) => (
+              <DropdownItem key={output.id} textValue={output.id.toString()}>
+                <Checkbox isSelected={visibleColumns.has(output.id.toString())}>
+                  {output.display_name ? output.display_name : output.key_name}
+                </Checkbox>
+              </DropdownItem>
+            ))
+          )}
+        </DropdownMenu>
+      </Dropdown>
+    </div>
   );
 
   const columnHeaders = [
-    <TableColumn key="team">Team</TableColumn>,
+    <TableColumn key='team'>Team</TableColumn>,
     ...flatMappedOutputs.map((output) => (
       <TableColumn key={output.id}>
         {output.display_name ? output.display_name : output.key_name}
       </TableColumn>
     )),
   ];
-
-  console.log(columnHeaders);
 
   // Pre-define the rows
   const rows = Object.entries(allReports).map(([teamId, teamData]) => {
@@ -120,7 +118,6 @@ export default function OverviewTable({
         );
         // Attempt to find the value in the report using the key_name
         const value = report ? report.report[output.key_name] : undefined;
-        console.log(value);
         switch (output.value_type) {
           case ValueTypesOutput.Range:
             interface RangeMetadata {
@@ -145,7 +142,7 @@ export default function OverviewTable({
                   >
                     <Progress
                       aria-label={output.key_name}
-                      size="md"
+                      size='md'
                       value={value}
                       minValue={extendedMetadata.fromRange}
                       maxValue={extendedMetadata.toRange}
@@ -154,7 +151,7 @@ export default function OverviewTable({
                           ? "success"
                           : "warning"
                       }
-                      className="max-w-md"
+                      className='max-w-md'
                     />
                   </Tooltip>
                 )}
@@ -167,10 +164,10 @@ export default function OverviewTable({
               <TableCell>
                 {value !== undefined && (
                   <Chip
-                    size="sm"
-                    variant="solid"
+                    size='sm'
+                    variant='solid'
                     color={(value as boolean) ? "success" : "danger"}
-                    className="text-white"
+                    className='text-white'
                   >
                     {value ? "Yes" : "No"}
                   </Chip>
