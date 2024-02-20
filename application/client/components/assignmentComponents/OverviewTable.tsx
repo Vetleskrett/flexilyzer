@@ -20,6 +20,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Button,
+  DropdownSection,
 } from "@nextui-org/react";
 import { Key, useState } from "react";
 
@@ -84,15 +85,21 @@ export default function OverviewTable({
           aria-label='Choose Columns'
           onAction={toggleColumnVisibility}
         >
-          {analyzersWithOutputs.flatMap((analyzer) =>
-            analyzer.outputs.map((output) => (
-              <DropdownItem key={output.id} textValue={output.id.toString()}>
-                <Checkbox isSelected={visibleColumns.has(output.id.toString())}>
-                  {output.display_name ? output.display_name : output.key_name}
-                </Checkbox>
-              </DropdownItem>
-            ))
-          )}
+          {analyzersWithOutputs.map((analyzer) => (
+            <DropdownSection key={analyzer.id} title={analyzer.analyzer_name}>
+              {analyzer.outputs.map((output) => (
+                <DropdownItem key={output.id} textValue={output.id.toString()}>
+                  <Checkbox
+                    isSelected={visibleColumns.has(output.id.toString())}
+                  >
+                    {output.display_name
+                      ? output.display_name
+                      : output.key_name}
+                  </Checkbox>
+                </DropdownItem>
+              ))}
+            </DropdownSection>
+          ))}
         </DropdownMenu>
       </Dropdown>
     </div>
