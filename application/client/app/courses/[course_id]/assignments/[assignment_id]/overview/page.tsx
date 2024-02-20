@@ -51,9 +51,8 @@ export default async function AssignmentOverviewPage({ params }: Props) {
       }
     }
   }
-  console.log("all reports", allReports);
   return (
-    <div className="flex flex-row justify-center">
+    <div className='flex flex-row justify-center'>
       <OverviewTable
         analyzersWithOutputs={analyzersWithOutputs}
         allReports={allReports}
