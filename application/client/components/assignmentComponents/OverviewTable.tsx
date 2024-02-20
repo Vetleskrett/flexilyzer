@@ -93,10 +93,15 @@ export default function OverviewTable({
         secondValue = parseFloat(secondValue);
       }
 
-      if (firstValue == null) return 1;
-      if (secondValue == null) return -1;
+      // when some teams dont have values for report outputs
+      if (sortDescriptor.direction === "descending") {
+        if (firstValue == null) return 1;
+        if (secondValue == null) return -1;
+      } else {
+        if (firstValue == null) return -1;
+        if (secondValue == null) return 1;
+      }
 
-      // Comparison
       let comparison = 0;
       if (firstValue < secondValue) {
         comparison = -1;
@@ -104,14 +109,11 @@ export default function OverviewTable({
         comparison = 1;
       }
 
-      // Handle sorting direction
       return sortDescriptor.direction === "descending"
         ? -comparison
         : comparison;
     });
   }, [sortDescriptor, allReportsList]);
-
-  // console.log(allReportsList);
 
   const toggleColumnVisibility = (columnId: Key) => {
     setVisibleColumns((prevState) => {
@@ -316,43 +318,52 @@ export default function OverviewTable({
     }
   };
 
+  const ifAllowSorting = (value_type: ValueTypesOutput) => {
+    if (
+      [
+        ValueTypesOutput.Bool,
+        ValueTypesOutput.Range,
+        ValueTypesOutput.Int,
+      ].includes(value_type)
+    )
+      return true;
+    return false;
+  };
+
   return (
-    <>
-      <Table
-        topContent={topContent}
-        onSortChange={setSortDescriptor}
-        sortDescriptor={sortDescriptor}
+    <Table
+      topContent={topContent}
+      onSortChange={setSortDescriptor}
+      sortDescriptor={sortDescriptor}
         selectedKeys={selectedKeys}
         selectionMode="multiple"
         onSelectionChange={setSelectedKeys}
         isHeaderSticky
-      >
-        <TableHeader columns={allColumnOutputs}>
-          {(column) => {
-            const name = column.display_name
-              ? column.display_name
-              : column.key_name;
-            return (
-              <TableColumn
-                key={`${column.key_name}-${column.analyzerId}`}
-                allowsSorting
-              >
-                {name}
-              </TableColumn>
-            );
-          }}
-        </TableHeader>
-        <TableBody items={sortedItems}>
-          {(item: ReportTeamResponse[]) => (
-            <TableRow key={item[0].team_id}>
-              {(columnKey) => (
-                <TableCell>{getValue(item, columnKey as string)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-        {/* <TableBody emptyContent={"No rows to display."}>{[]}</TableBody> */}
-      </Table>
-    </>
+    >
+      <TableHeader columns={allColumnOutputs}>
+        {(column) => {
+          const name = column.display_name
+            ? column.display_name
+            : column.key_name;
+          return (
+            <TableColumn
+              key={`${column.key_name}-${column.analyzerId}`}
+              allowsSorting={ifAllowSorting(column.value_type)}
+            >
+              {name}
+            </TableColumn>
+          );
+        }}
+      </TableHeader>
+      <TableBody items={sortedItems}>
+        {(item: ReportTeamResponse[]) => (
+          <TableRow key={item[0].team_id}>
+            {(columnKey) => (
+              <TableCell>{getValue(item, columnKey as string)}</TableCell>
+            )}
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   );
 }
