@@ -21,8 +21,9 @@ import {
   DropdownTrigger,
   Button,
   DropdownSection,
+  SortDescriptor,
 } from "@nextui-org/react";
-import { Key, useState } from "react";
+import { Key, useMemo, useState } from "react";
 
 interface OverviewTableParams {
   analyzersWithOutputs: AnalyzerWithOutputs[];
@@ -50,6 +51,37 @@ export default function OverviewTable({
     )
   );
 
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
+    column: "commits",
+    direction: "ascending",
+  });
+
+  const allReportsList: ReportTeamResponse[][] = Object.values(allReports).map(
+    (r) => r.reports
+  );
+
+  const sortedItems = useMemo(() => {
+    return [...allReportsList].sort(
+      (a: ReportTeamResponse[], b: ReportTeamResponse[]) => {
+        console.log(a);
+        const first = a.find(
+          (report) => report.report[sortDescriptor.column as string]
+        );
+
+        const second = b.find(
+          (report) => report.report[sortDescriptor.column as string] as number
+        );
+        console.log(first?.report, second);
+        // const cmp = first < second ? -1 : first > second ? 1 : 0;
+
+        // return sortDescriptor.direction === "descending" ? -cmp : cmp;
+        return -1;
+      }
+    );
+  }, [sortDescriptor, allReportsList]);
+
+  // console.log(allReportsList);
+
   const toggleColumnVisibility = (columnId: Key) => {
     setVisibleColumns((prevState) => {
       const newState = new Set(prevState);
@@ -63,6 +95,16 @@ export default function OverviewTable({
     });
   };
 
+  const initalColumn: FlatMappedOutputs[] = [
+    {
+      analyzerId: 0,
+      key_name: "Team",
+      display_name: "Team",
+      value_type: ValueTypesOutput.Int,
+      id: 0,
+    },
+  ];
+
   const flatMappedOutputs = analyzersWithOutputs.flatMap((analyzer) =>
     analyzer.outputs
       .filter((output) => visibleColumns.has(output.id.toString()))
@@ -71,6 +113,8 @@ export default function OverviewTable({
         analyzerId: analyzer.id,
       }))
   );
+
+  const allColumnOutputs = initalColumn.concat(flatMappedOutputs);
 
   const columnSelectionDropdown = (
     <div className='flex flex-row justify-center'>
@@ -105,98 +149,111 @@ export default function OverviewTable({
     </div>
   );
 
-  const columnHeaders = [
-    <TableColumn key='team'>Team</TableColumn>,
-    ...flatMappedOutputs.map((output) => (
-      <TableColumn key={output.id}>
-        {output.display_name ? output.display_name : output.key_name}
-      </TableColumn>
-    )),
-  ];
+  const getValue = (item: ReportTeamResponse[], columnKey: string) => {
+    const [name, id] = columnKey.split("-");
 
-  // Pre-define the rows
-  const rows = Object.entries(allReports).map(([teamId, teamData]) => {
-    const cells = [
-      <TableCell key={`team-${teamId}`}>{teamId}</TableCell>,
-      ...flatMappedOutputs.map((output) => {
-        // Find the corresponding report for the current output's analyzerId
-        const report = teamData.reports.find(
-          (r: ReportTeamResponse) => r.analyzer_id === output.analyzerId
-        );
-        // Attempt to find the value in the report using the key_name
-        const value = report ? report.report[output.key_name] : undefined;
-        switch (output.value_type) {
-          case ValueTypesOutput.Range:
-            interface RangeMetadata {
-              fromRange: number;
-              toRange: number;
-            }
+    if (name === "Team") return item[0].team_id;
+    const report = item.find(
+      (r: ReportTeamResponse) => r.analyzer_id === Number(id)
+    );
+    const value = report ? report.report[name] : undefined;
 
-            const extendedMetadata =
-              output.extended_metadata as unknown as RangeMetadata;
+    const output = flatMappedOutputs.find(
+      (output) => output.analyzerId === Number(id) && output.key_name === name
+    );
+    if (!output) return value;
 
-            return (
-              <TableCell>
-                {value && (
-                  <Tooltip
-                    delay={0}
-                    closeDelay={0}
-                    content={
-                      <>
-                        {value} / {extendedMetadata.toRange}
-                      </>
-                    }
-                  >
-                    <Progress
-                      aria-label={output.key_name}
-                      size='md'
-                      value={value}
-                      minValue={extendedMetadata.fromRange}
-                      maxValue={extendedMetadata.toRange}
-                      color={
-                        value / extendedMetadata.toRange > 0.65
-                          ? "success"
-                          : "warning"
-                      }
-                      className='max-w-md'
-                    />
-                  </Tooltip>
-                )}
-              </TableCell>
-            );
-          case ValueTypesOutput.Str:
-            return <TableCell>{value}</TableCell>;
-          case ValueTypesOutput.Bool:
-            return (
-              <TableCell>
-                {value !== undefined && (
-                  <Chip
-                    size='sm'
-                    variant='solid'
-                    color={(value as boolean) ? "success" : "danger"}
-                    className='text-white'
-                  >
-                    {value ? "Yes" : "No"}
-                  </Chip>
-                )}
-              </TableCell>
-            );
-          case ValueTypesOutput.Int:
-            return <TableCell>{value}</TableCell>;
-          default:
-            return <TableCell>N/A</TableCell>;
+    switch (output.value_type) {
+      case ValueTypesOutput.Range:
+        interface RangeMetadata {
+          fromRange: number;
+          toRange: number;
         }
-      }),
-    ];
 
-    return <TableRow key={teamId}>{cells}</TableRow>;
-  });
+        const extendedMetadata =
+          output.extended_metadata as unknown as RangeMetadata;
+
+        return (
+          value && (
+            <Tooltip
+              delay={0}
+              closeDelay={0}
+              content={
+                <>
+                  {value} / {extendedMetadata.toRange}
+                </>
+              }
+            >
+              <Progress
+                aria-label={output.key_name}
+                size='md'
+                value={value}
+                minValue={extendedMetadata.fromRange}
+                maxValue={extendedMetadata.toRange}
+                color={
+                  value / extendedMetadata.toRange > 0.65
+                    ? "success"
+                    : "warning"
+                }
+                className='max-w-md'
+              />
+            </Tooltip>
+          )
+        );
+      case ValueTypesOutput.Str:
+        return value;
+      case ValueTypesOutput.Bool:
+        return (
+          value !== undefined && (
+            <Chip
+              size='sm'
+              variant='solid'
+              color={(value as boolean) ? "success" : "danger"}
+              className='text-white'
+            >
+              {value ? "Yes" : "No"}
+            </Chip>
+          )
+        );
+      case ValueTypesOutput.Int:
+        return value;
+      default:
+        return "N/A";
+    }
+  };
 
   return (
     <>
-      <Table topContent={columnSelectionDropdown}>
-        <TableHeader>{columnHeaders}</TableHeader>
-        <TableBody>{rows}</TableBody>
+      <Table
+        topContent={columnSelectionDropdown}
+        onSortChange={setSortDescriptor}
+        sortDescriptor={sortDescriptor}
+      >
+        <TableHeader columns={allColumnOutputs}>
+          {(column) => {
+            const name = column.display_name
+              ? column.display_name
+              : column.key_name;
+            return (
+              <TableColumn
+                key={`${column.key_name}-${column.analyzerId}`}
+                allowsSorting
+              >
+                {name}
+              </TableColumn>
+            );
+          }}
+        </TableHeader>
+        <TableBody items={sortedItems}>
+          {(item: ReportTeamResponse[]) => (
+            <TableRow key={item[0].team_id}>
+              {(columnKey) => (
+                <TableCell>{getValue(item, columnKey as string)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+        {/* <TableBody emptyContent={"No rows to display."}>{[]}</TableBody> */}
       </Table>
     </>
   );
