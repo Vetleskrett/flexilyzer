@@ -51,33 +51,77 @@ export default function OverviewTable({
     )
   );
 
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: "commits",
-    direction: "ascending",
-  });
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>();
 
   const allReportsList: ReportTeamResponse[][] = Object.values(allReports).map(
     (r) => r.reports
   );
 
+  // const sortedItems = useMemo(() => {
+  //   return [...allReportsList].sort(
+  //     (a: ReportTeamResponse[], b: ReportTeamResponse[]) => {
+  //       console.log(a);
+  //       const first = a.find(
+  //         (report) =>
+  //           report.report.hasOwnProperty[sortDescriptor.column as string]
+  //       );
+
+  //       const second = b.find(
+  //         (report) => report.report[sortDescriptor.column as string] as number
+  //       );
+  //       console.log(first?.report, second);
+  //       // const cmp = first < second ? -1 : first > second ? 1 : 0;
+
+  //       // return sortDescriptor.direction === "descending" ? -cmp : cmp;
+  //       return -1;
+  //     }
+  //   );
+  // }, [sortDescriptor, allReportsList]);
   const sortedItems = useMemo(() => {
-    return [...allReportsList].sort(
-      (a: ReportTeamResponse[], b: ReportTeamResponse[]) => {
-        console.log(a);
-        const first = a.find(
-          (report) => report.report[sortDescriptor.column as string]
-        );
+    if (sortDescriptor == undefined) return allReportsList;
 
-        const second = b.find(
-          (report) => report.report[sortDescriptor.column as string] as number
-        );
-        console.log(first?.report, second);
-        // const cmp = first < second ? -1 : first > second ? 1 : 0;
+    const col = sortDescriptor.column as string;
+    const [descriptor, id] = col.split("-");
 
-        // return sortDescriptor.direction === "descending" ? -cmp : cmp;
-        return -1;
+    if ("Team" === descriptor)
+      return sortDescriptor.direction == "ascending"
+        ? allReportsList.reverse()
+        : allReportsList;
+
+    return [...allReportsList].sort((a, b) => {
+      const firstReport = a.find((report) =>
+        report.report.hasOwnProperty(descriptor)
+      );
+      const secondReport = b.find((report) =>
+        report.report.hasOwnProperty(descriptor)
+      );
+
+      let firstValue = firstReport ? firstReport.report[descriptor] : null;
+      let secondValue = secondReport ? secondReport.report[descriptor] : null;
+
+      if (typeof firstValue === "string") {
+        firstValue = parseFloat(firstValue);
       }
-    );
+      if (typeof secondValue === "string") {
+        secondValue = parseFloat(secondValue);
+      }
+
+      if (firstValue == null) return 1;
+      if (secondValue == null) return -1;
+
+      // Comparison
+      let comparison = 0;
+      if (firstValue < secondValue) {
+        comparison = -1;
+      } else if (firstValue > secondValue) {
+        comparison = 1;
+      }
+
+      // Handle sorting direction
+      return sortDescriptor.direction === "descending"
+        ? -comparison
+        : comparison;
+    });
   }, [sortDescriptor, allReportsList]);
 
   // console.log(allReportsList);
