@@ -14,7 +14,14 @@ import {
   Chip,
   Progress,
   Tooltip,
+  Dropdown,
+  Checkbox,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Button,
 } from "@nextui-org/react";
+import { Key, useState } from "react";
 
 interface OverviewTableParams {
   analyzersWithOutputs: AnalyzerWithOutputs[];
@@ -37,19 +44,58 @@ export default function OverviewTable({
   console.log(allReports);
   console.log(analyzersWithOutputs);
 
-  // Creating a new array with flatMapped outputs from all analyzers
-  let flatMappedOutputs: FlatMappedOutputs[] = analyzersWithOutputs.flatMap(
-    (analyzer) =>
-      analyzer.outputs.map((output) => {
-        return {
-          ...output,
-          analyzerId: analyzer.id,
-        };
-      })
+  const [visibleColumns, setVisibleColumns] = useState(
+    new Set(
+      analyzersWithOutputs.flatMap((analyzer) =>
+        analyzer.outputs.map((output) => output.id.toString())
+      )
+    )
   );
 
-  flatMappedOutputs = flatMappedOutputs.filter(
-    (output) => output.key_name !== "test_coverage"
+  const toggleColumnVisibility = (columnId: Key) => {
+    setVisibleColumns((prevState) => {
+      const newState = new Set(prevState);
+      const columnIdStr = columnId.toString();
+      if (newState.has(columnIdStr)) {
+        newState.delete(columnIdStr);
+      } else {
+        newState.add(columnIdStr);
+      }
+      return newState;
+    });
+  };
+
+  const flatMappedOutputs = analyzersWithOutputs.flatMap((analyzer) =>
+    analyzer.outputs
+      .filter((output) => visibleColumns.has(output.id.toString()))
+      .map((output) => ({
+        ...output,
+        analyzerId: analyzer.id,
+      }))
+  );
+
+  const columnSelectionDropdown = (
+    <Dropdown>
+      <DropdownTrigger>
+        <Button isIconOnly size="sm" variant="light">
+          Dropdown
+        </Button>
+      </DropdownTrigger>
+      <DropdownMenu
+        aria-label="Choose Columns"  
+        onAction={toggleColumnVisibility}
+      >
+        {analyzersWithOutputs.flatMap((analyzer) =>
+          analyzer.outputs.map((output) => (
+            <DropdownItem key={output.id} textValue={output.id.toString()}>
+              <Checkbox isSelected={visibleColumns.has(output.id.toString())}>
+                {output.display_name ? output.display_name : output.key_name}
+              </Checkbox>
+            </DropdownItem>
+          ))
+        )}
+      </DropdownMenu>
+    </Dropdown>
   );
 
   const columnHeaders = [
@@ -135,11 +181,6 @@ export default function OverviewTable({
             return <TableCell>{value}</TableCell>;
           default:
             return <TableCell>N/A</TableCell>;
-          // return (
-          //   <TableCell key={`${teamId}-${output.analyzerId}-${output.key_name}`}>
-          //     {value || ""}
-          //   </TableCell>
-          // );
         }
       }),
     ];
@@ -149,7 +190,7 @@ export default function OverviewTable({
 
   return (
     <>
-      <Table>
+      <Table topContent={columnSelectionDropdown}>
         <TableHeader>{columnHeaders}</TableHeader>
         <TableBody>{rows}</TableBody>
       </Table>
