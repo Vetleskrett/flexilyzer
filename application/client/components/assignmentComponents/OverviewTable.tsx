@@ -28,12 +28,15 @@ import {
   RadioGroup,
   Radio,
   Input,
+  Tabs,
+  Tab,
 } from "@nextui-org/react";
 import { Key, useCallback, useEffect, useMemo, useState } from "react";
 
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import RuleIcon from "@mui/icons-material/Rule";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface OverviewTableParams {
   analyzersWithOutputs: AnalyzerWithOutputs[];
@@ -301,47 +304,53 @@ export default function OverviewTable({
           case ValueTypesOutput.Bool:
             // Implementation for Bool filter
             return (
-              <div
-                key={output.id}
-                className="border border-gray-200 rounded-lg justify-center gap-1 p-2 m-2"
-              >
-                <div>
+              <div key={output.id} className="justify-center gap-1 p-2 m-2">
+                <div className="flex flex-row justify-between items-center">
                   <span className="text-default-400 text-small">
                     {output.display_name
                       ? output.display_name
                       : output.key_name}
                   </span>
+                  <CloseIcon
+                    className="h-[18px] text-default-400 cursor-pointer"
+                    onClick={() => {
+                      toggleColumnFilters(output.id);
+                    }}
+                  />
                 </div>
-                <RadioGroup
-                  orientation="horizontal"
-                  size="sm"
-                  onValueChange={(e) => {
-                    handleFilterBoolChange(output.id, e);
+
+                <Tabs
+                  key={output.id}
+                  variant="bordered"
+                  onSelectionChange={(e) => {
+                    handleFilterBoolChange(output.id, e.toString());
                   }}
                 >
-                  <Radio value={"true"}>True</Radio>
-                  <Radio value={"false"}>False</Radio>
-                </RadioGroup>
+                  <Tab key="true" title="True"></Tab>
+                  <Tab key="false" title="False"></Tab>
+                </Tabs>
               </div>
             );
           case ValueTypesOutput.Int:
           case ValueTypesOutput.Range:
             return (
-              <div
-                key={output.id}
-                className="border border-gray-200 rounded-lg flex flex-col gap-1 p-2 m-2"
-              >
-                <div>
+              <div key={output.id} className="flex flex-col p-2 m-2">
+                <div className="flex flex-row justify-between items-center">
                   <span className="text-default-400 text-small">
                     {output.display_name
                       ? output.display_name
                       : output.key_name}
                   </span>
+                  <CloseIcon
+                    className="h-[18px] text-default-400 cursor-pointer"
+                    onClick={() => {
+                      toggleColumnFilters(output.id);
+                    }}
+                  />
                 </div>
-                <div className="flex flex-row">
+                <div className="flex flex-row gap-1">
                   <Input
-                    size="sm"
-                    label="Min"
+                    placeholder="Min"
                     className="w-[80px]"
                     type="number"
                     onChange={(e) =>
@@ -353,9 +362,8 @@ export default function OverviewTable({
                     }
                   />
                   <Input
-                    size="sm"
                     className="w-[80px]"
-                    label="Max"
+                    placeholder="Max"
                     type="number"
                     onChange={(e) =>
                       handleFilterNumberChange(
@@ -480,7 +488,7 @@ export default function OverviewTable({
             Reset
           </Button>
         </div>
-        <div className="flex flex-col justify-center items-center mt-4">
+        <div className="flex flex-col justify-center items-center">
           <div className="flex">{renderFilterParameters()}</div>
         </div>
         <div>
@@ -562,7 +570,7 @@ export default function OverviewTable({
                 color={(value as boolean) ? "success" : "danger"}
                 className="text-white"
               >
-                {value ? "Yes" : "No"}
+                {value ? "True" : "False"}
               </Chip>
             )
           );
@@ -600,44 +608,43 @@ export default function OverviewTable({
   };
 
   return (
-    
-      <div className="max-w-full px-2 pb-2 overflow-auto mt-8">
-        <Table
-          bottomContent={bottomContent}
-          topContent={topContent}
-          topContentPlacement="outside"
-          onSortChange={setSortDescriptor}
-          sortDescriptor={sortDescriptor}
-          selectedKeys={selectedKeys}
-          selectionMode="multiple"
-          onSelectionChange={setSelectedKeys}
-          isHeaderSticky
-        >
-          <TableHeader columns={allColumnOutputs}>
-            {(column) => {
-              const name = column.display_name
-                ? column.display_name
-                : column.key_name;
-              return (
-                <TableColumn
-                  key={`${column.key_name}-${column.analyzerId}`}
-                  allowsSorting={ifAllowSorting(column.value_type)}
-                >
-                  {name}
-                </TableColumn>
-              );
-            }}
-          </TableHeader>
-          <TableBody items={sortedItems}>
-            {(item: ReportTeamResponse[]) => (
-              <TableRow key={item[0].team_id}>
-                {(columnKey) => (
-                  <TableCell>{getValue(item, columnKey as string)}</TableCell>
-                )}
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+    <div className="max-w-full px-2 pb-2 overflow-auto mt-8">
+      <Table
+        bottomContent={bottomContent}
+        topContent={topContent}
+        topContentPlacement="outside"
+        onSortChange={setSortDescriptor}
+        sortDescriptor={sortDescriptor}
+        selectedKeys={selectedKeys}
+        selectionMode="multiple"
+        onSelectionChange={setSelectedKeys}
+        isHeaderSticky
+      >
+        <TableHeader columns={allColumnOutputs}>
+          {(column) => {
+            const name = column.display_name
+              ? column.display_name
+              : column.key_name;
+            return (
+              <TableColumn
+                key={`${column.key_name}-${column.analyzerId}`}
+                allowsSorting={ifAllowSorting(column.value_type)}
+              >
+                {name}
+              </TableColumn>
+            );
+          }}
+        </TableHeader>
+        <TableBody items={sortedItems}>
+          {(item: ReportTeamResponse[]) => (
+            <TableRow key={item[0].team_id}>
+              {(columnKey) => (
+                <TableCell>{getValue(item, columnKey as string)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
   );
 }
