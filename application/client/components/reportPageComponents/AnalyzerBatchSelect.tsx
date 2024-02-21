@@ -25,7 +25,7 @@ export default function AnalyzerBatchSelect({
     const resp = await api.getAssignmentAnalyzersBatches(
       assignment_id,
       Number(current_analyzer_id),
-      { cache: "no-cache" },
+      { cache: "no-cache" }
     );
     if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
     return resp.data;
@@ -40,7 +40,7 @@ export default function AnalyzerBatchSelect({
     fetchBatches,
     {
       refetchOnWindowFocus: false,
-    },
+    }
   );
 
   const handleSelectionChange = (key: string) => {
@@ -55,7 +55,7 @@ export default function AnalyzerBatchSelect({
 
       return params.toString();
     },
-    [searchParams],
+    [searchParams]
   );
 
   return (
@@ -70,17 +70,16 @@ export default function AnalyzerBatchSelect({
         <>
           <Select
             disallowEmptySelection={true}
-            size="sm"
-            label="Selected batch"
-            placeholder="Select a batch"
+            size='sm'
+            label='Selected batch'
+            placeholder='Select a batch'
             selectedKeys={current_batch_id ? [current_batch_id] : undefined}
             onChange={(e) => {
-              console.log(e.target.value);
               if (e.target.value !== "") {
                 handleSelectionChange(e.target.value);
               }
             }}
-            aria-label="batch-select"
+            aria-label='batch-select'
           >
             {batches
               .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
@@ -96,7 +95,7 @@ export default function AnalyzerBatchSelect({
           </Select>
         </>
       ) : (
-        <div className="text-center">
+        <div className='text-center'>
           There are no available batches for this analyzer.
         </div>
       )}

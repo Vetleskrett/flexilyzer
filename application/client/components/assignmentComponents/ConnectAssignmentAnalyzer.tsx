@@ -49,7 +49,7 @@ const ConnectAssignmentAnalyzer = ({
     fetchAnalyzers,
     {
       refetchOnWindowFocus: false,
-    },
+    }
   );
 
   const [notConnectedAnalyzers, setNotConnectedAnalyzers] = useState<
@@ -60,8 +60,8 @@ const ConnectAssignmentAnalyzer = ({
     const newNotConnectedAnalyzers = analyzers.filter(
       (analyzer) =>
         !connected_analyzers.find(
-          (connected_analyzer) => connected_analyzer.id == analyzer.id,
-        ),
+          (connected_analyzer) => connected_analyzer.id == analyzer.id
+        )
     );
     setNotConnectedAnalyzers(newNotConnectedAnalyzers);
   }, [analyzers, connected_analyzers]);
@@ -72,7 +72,7 @@ const ConnectAssignmentAnalyzer = ({
 
   const updateSelection = (e: string) => {
     const selectedAnalyzer = notConnectedAnalyzers.find(
-      (analyzer) => analyzer.id === Number(e),
+      (analyzer) => analyzer.id === Number(e)
     );
     setSelecedAnalyzer(selectedAnalyzer);
   };
@@ -81,14 +81,14 @@ const ConnectAssignmentAnalyzer = ({
     if (selectedAnalyzer) {
       const res = await api.connectAssignmentAnalyzers(
         assignment_id,
-        selectedAnalyzer.id,
+        selectedAnalyzer.id
       );
       if (res.ok) {
         openSnackbar({ message: "Anlyzer connected", severity: "success" });
         router.refresh();
       } else {
         openSnackbar({ message: "Something went wrong", severity: "error" });
-        console.log(res.error);
+        console.error(res.error);
       }
     }
     onClose();
@@ -100,7 +100,7 @@ const ConnectAssignmentAnalyzer = ({
 
   return (
     <>
-      <CreateButton text="+" onClickFunction={onOpen} />
+      <CreateButton text='+' onClickFunction={onOpen} />
       <Modal
         isOpen={isOpen}
         onOpenChange={() => {
@@ -115,8 +115,8 @@ const ConnectAssignmentAnalyzer = ({
               <ModalBody>
                 {notConnectedAnalyzers.length > 0 ? (
                   <Select
-                    label="Select analyzer"
-                    className="max-w-xs"
+                    label='Select analyzer'
+                    className='max-w-xs'
                     onChange={(e) => {
                       updateSelection(e.target.value);
                     }}
@@ -132,12 +132,12 @@ const ConnectAssignmentAnalyzer = ({
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button color='danger' variant='light' onPress={onClose}>
                   Close
                 </Button>
                 <Button
                   isDisabled={!selectedAnalyzer}
-                  color="primary"
+                  color='primary'
                   onPress={() => createConnection(onClose)}
                 >
                   Connect

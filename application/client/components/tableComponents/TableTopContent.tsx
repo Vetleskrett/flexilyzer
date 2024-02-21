@@ -37,7 +37,6 @@ const TopContent = ({
   setVisibleColumns,
   toggleColumnFilters,
 }: TopContentProps) => {
-  console.log("TopContent run");
   const toggleColumnVisibility = (columnId: Key) => {
     setVisibleColumns((prevState) => {
       const newState = new Set(prevState);
@@ -52,14 +51,14 @@ const TopContent = ({
   };
 
   return (
-    <div className="flex flex-col justify-center">
-      <div className="flex flex-row justify-end gap-2">
+    <div className='flex flex-col justify-center'>
+      <div className='flex flex-row justify-end gap-2'>
         <Dropdown>
           <DropdownTrigger>
             <Button
-              size="md"
-              variant="bordered"
-              color="secondary"
+              size='md'
+              variant='bordered'
+              color='secondary'
               startContent={<RuleIcon />}
             >
               Select Columns
@@ -67,7 +66,7 @@ const TopContent = ({
           </DropdownTrigger>
           <DropdownMenu
             closeOnSelect={false}
-            aria-label="Choose Columns"
+            aria-label='Choose Columns'
             onAction={toggleColumnVisibility}
           >
             {analyzersWithOutputs.map((analyzer) => (
@@ -93,9 +92,9 @@ const TopContent = ({
         <Dropdown>
           <DropdownTrigger>
             <Button
-              size="md"
-              variant="bordered"
-              color="secondary"
+              size='md'
+              variant='bordered'
+              color='secondary'
               startContent={<FilterAltIcon />}
             >
               Filter
@@ -103,7 +102,7 @@ const TopContent = ({
           </DropdownTrigger>
           <DropdownMenu
             closeOnSelect={false}
-            aria-label="Choose Filter Columns"
+            aria-label='Choose Filter Columns'
             onAction={toggleColumnFilters}
           >
             {analyzersWithOutputs.map((analyzer) => (
@@ -140,18 +139,18 @@ const TopContent = ({
           onClick={() => {
             resetView();
           }}
-          color="warning"
-          className="text-white"
+          color='warning'
+          className='text-white'
           startContent={<RestartAltIcon />}
         >
           Reset
         </Button>
       </div>
-      <div className="flex flex-col items-center justify-center">
-        <div className="flex">{renderFilterParameters()}</div>
+      <div className='flex flex-col items-center justify-center'>
+        <div className='flex'>{renderFilterParameters()}</div>
       </div>
       <div>
-        <span className="text-small text-default-400">
+        <span className='text-small text-default-400'>
           Total {tableLength} teams
         </span>
       </div>

@@ -63,7 +63,7 @@ const sortReports = (
 
   if ("Team" === descriptor)
     return sortDescriptor.direction == "ascending"
-      ? filteredReports.reverse()
+      ? filteredReports.slice().reverse()
       : filteredReports;
 
   return [...filteredReports].sort((a, b) => {

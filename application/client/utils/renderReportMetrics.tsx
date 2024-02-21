@@ -22,8 +22,6 @@ export const renderMetrics = (
 
   const metrics = report.report as JSON; // Assuming this is a JSON object with key-value pairs.
 
-  console.log(outputs);
-  console.log(metrics);
   return Object.entries(metrics)
     .map(([keyName, value]) => {
       const metricMetadata = outputs.find((o) => o.key_name === keyName);
