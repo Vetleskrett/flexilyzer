@@ -1,5 +1,5 @@
 import api from "@/api_utils";
-import OverviewTable from "@/components/assignmentComponents/OverviewTable";
+import OverviewTable from "@/components/tableComponents/Table";
 import {
   AnalyzerOutputResponse,
   ReportResponse,
@@ -53,7 +53,7 @@ export default async function AssignmentOverviewPage({ params }: Props) {
   }
   return (
     <div>
-      <OverviewTable
+      <Table
         analyzersWithOutputs={analyzersWithOutputs}
         allReports={allReports}
       />
