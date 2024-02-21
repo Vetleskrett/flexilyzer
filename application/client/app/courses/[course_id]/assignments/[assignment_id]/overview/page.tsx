@@ -1,10 +1,5 @@
 import api from "@/api_utils";
-import OverviewTable from "@/components/tableComponents/Table";
-import {
-  AnalyzerOutputResponse,
-  ReportResponse,
-  ReportTeamResponse,
-} from "@/extensions/data-contracts";
+import OverViewTable from "@/components/tableComponents/Table";
 import { AnalyzerWithOutputs, TeamReports } from "@/types/analyzerDefinitions";
 
 interface Props {
@@ -19,7 +14,7 @@ export default async function AssignmentOverviewPage({ params }: Props) {
     params.assignment_id,
     {
       cache: "no-cache",
-    }
+    },
   );
 
   if (analyzersResponse.ok) {
@@ -36,7 +31,7 @@ export default async function AssignmentOverviewPage({ params }: Props) {
       const reportsResponse =
         await api.getAssignmentAnalyzersBatchesLatestReports(
           params.assignment_id,
-          analyzer.id
+          analyzer.id,
         );
       if (reportsResponse.status === 200) {
         for (const report of reportsResponse.data) {
@@ -53,7 +48,7 @@ export default async function AssignmentOverviewPage({ params }: Props) {
   }
   return (
     <div>
-      <Table
+      <OverViewTable
         analyzersWithOutputs={analyzersWithOutputs}
         allReports={allReports}
       />

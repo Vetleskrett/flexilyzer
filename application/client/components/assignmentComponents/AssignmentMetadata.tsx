@@ -5,7 +5,6 @@ import {
   ValueTypesInput,
 } from "@/extensions/data-contracts";
 import { renderParameter } from "../analyzerComponents/analyzerUtils";
-import { Card } from "@nextui-org/react";
 
 export default function AssignmentMetadata({
   metadata,
@@ -13,7 +12,7 @@ export default function AssignmentMetadata({
   metadata: AssignmentMetadataResponse[];
 }) {
   return (
-    <div className="flex flex-col justify-center items-center mt-3">
+    <div className="mt-3 flex flex-col items-center justify-center">
       <h3 className="h3">Metadata</h3>
       {metadata.map((data) => {
         return (

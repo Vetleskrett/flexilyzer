@@ -1,6 +1,5 @@
 import api from "@/api_utils";
 import AssignmentOverview from "@/components/assignmentComponents/assignmentOverview";
-import { Api } from "@/extensions/Api";
 
 interface Props {
   params: { course_id: string };
@@ -10,7 +9,7 @@ export default async function CourseAssignments({ params }: Props) {
   const course_details = await api.getCourse(Number(params.course_id));
 
   const course_assignments = await api.getCourseAssignments(
-    Number(params.course_id)
+    Number(params.course_id),
   );
 
   return (

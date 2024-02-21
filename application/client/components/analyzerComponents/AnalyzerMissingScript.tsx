@@ -1,18 +1,16 @@
 "use client";
 import api from "@/api_utils";
 import { useSnackbar } from "@/context/snackbarContext";
-import { Button, Input, Spinner, code } from "@nextui-org/react";
+import { Button, Spinner } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import React, { Suspense, useEffect, useState } from "react";
 import { Tabs, Tab } from "@nextui-org/react";
 import CodeDisplay from "./CodeDisplay";
-import CodeTemplate from "../createAnalyzerComponents/CodeTemplate";
 import {
   AnalyzerInputResponse,
   AnalyzerOutputResponse,
   AnalyzerSimplifiedResponse,
 } from "@/extensions/data-contracts";
-import { FormDataT } from "@/types/analyzerDefinitions";
 import { formatAnalyzerData } from "./analyzerUtils";
 
 export default function AnalyzerMissingScript({
@@ -29,41 +27,34 @@ export default function AnalyzerMissingScript({
   const { openSnackbar } = useSnackbar();
   const [codeTemplate, setCodeTemplate] = useState<string | undefined>();
 
-  async function fetchCodeTemplate() {
-    const resp = await api.getAnalyzerTemplate(
-      formatAnalyzerData({
-        id: analyzer.id,
-        name: analyzer.name,
-        description: analyzer.description,
-        inputs: inputs,
-        outputs: outputs,
-      })
-    );
-    // const resp = await api.getAnalyzerTemplate({
-    //   name: analyzer.name,
-    //   description: analyzer.description,
-    //   inputs: inputs,
-    //   outputs: outputs,
-    // });
-
-    if (resp.ok) {
-      setCodeTemplate(resp.data);
-    } else {
-      console.error(resp.error);
-    }
-  }
-
   useEffect(() => {
+    async function fetchCodeTemplate() {
+      const resp = await api.getAnalyzerTemplate(
+        formatAnalyzerData({
+          id: analyzer.id,
+          name: analyzer.name,
+          description: analyzer.description,
+          inputs: inputs,
+          outputs: outputs,
+        }),
+      );
+
+      if (resp.ok) {
+        setCodeTemplate(resp.data);
+      } else {
+        console.error(resp.error);
+      }
+    }
     fetchCodeTemplate();
-  }, []);
+  }, [analyzer, inputs, outputs]);
 
   const [selectedScriptFile, setSelectedScriptFile] = useState<File | null>(
-    null
+    null,
   );
   const [selectedReqFile, setSelectedReqFile] = useState<File | null>(null);
 
   const handleScriptFileChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     if (event.target.files) {
       setSelectedScriptFile(event.target.files[0]);
@@ -77,7 +68,7 @@ export default function AnalyzerMissingScript({
   };
 
   const handleScriptSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
+    event: React.FormEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
     if (!selectedScriptFile) {

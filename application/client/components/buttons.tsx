@@ -1,9 +1,6 @@
 "use client";
 
 import { Button } from "@nextui-org/react";
-// import { useSession, signIn, signOut } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export function CreateButton({
@@ -26,7 +23,7 @@ export function CreateButton({
   };
 
   return (
-    <Button color='secondary' onClick={handleClick}>
+    <Button color="secondary" onClick={handleClick}>
       {text}
     </Button>
   );

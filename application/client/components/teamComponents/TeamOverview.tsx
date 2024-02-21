@@ -1,5 +1,4 @@
 "use client";
-import { CourseResponse } from "@/extensions/data-contracts";
 import { Button, Card, CardBody } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
@@ -20,7 +19,7 @@ export default function TeamOverview({
             <h3 className="h3">Team {team_id}</h3>
             More info here ? ...
           </div>
-          <div className="flex-initial my-auto mr-15">
+          <div className="my-auto flex-initial">
             <Button
               onClick={() => {
                 router.push(`/courses/${course_id}/teams/${team_id}`);

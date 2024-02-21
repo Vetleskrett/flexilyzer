@@ -17,7 +17,7 @@ export default function CourseOverview({ course }: { course: CourseResponse }) {
             </h3>
             Some more information about the course here ...
           </div>
-          <div className="flex-initial my-auto mr-15">
+          <div className="my-auto flex-initial">
             <Button
               color="primary"
               onClick={() => {

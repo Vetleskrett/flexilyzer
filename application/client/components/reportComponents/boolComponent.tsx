@@ -16,12 +16,17 @@ export default function BoolComponent({
 
   return (
     <Card className="w-[200px] px-4">
-      <CardHeader className="flex flex-row justify-center font-semibold pb-1">
+      <CardHeader className="flex flex-row justify-center pb-1 font-semibold">
         {keyName}
       </CardHeader>
       <Divider />
-      <CardBody className="flex flex-col justify-center gap-2 items-center pt-2">
-        <Chip size="sm" variant="solid" color={value ? "success" : "danger"} className="text-white">
+      <CardBody className="flex flex-col items-center justify-center gap-2 pt-2">
+        <Chip
+          size="sm"
+          variant="solid"
+          color={value ? "success" : "danger"}
+          className="text-white"
+        >
           {value ? "Yes" : "No"}
         </Chip>
         {isCompareMode && distribution && (

@@ -27,7 +27,7 @@ export function formatAnalyzerData(formData: FormDataT | AnalyzerResponse) {
 }
 
 export function renderParameter(
-  param: InputParameter | OutputParameter
+  param: InputParameter | OutputParameter,
 ): React.ReactNode {
   switch (param.value_type) {
     case "str":

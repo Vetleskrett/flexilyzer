@@ -113,7 +113,7 @@ const TopContent = ({
                       ValueTypesOutput.Int,
                       ValueTypesOutput.Range,
                       ValueTypesOutput.Bool,
-                    ].includes(output.value_type)
+                    ].includes(output.value_type),
                   )
                   .map((output) => (
                     <DropdownItem
@@ -122,7 +122,7 @@ const TopContent = ({
                     >
                       <Checkbox
                         isSelected={selectedOutputFilterIds.has(
-                          output.id.toString()
+                          output.id.toString(),
                         )}
                       >
                         {output.display_name
@@ -146,11 +146,11 @@ const TopContent = ({
           Reset
         </Button>
       </div>
-      <div className="flex flex-col justify-center items-center">
+      <div className="flex flex-col items-center justify-center">
         <div className="flex">{renderFilterParameters()}</div>
       </div>
       <div>
-        <span className="text-default-400 text-small">
+        <span className="text-small text-default-400">
           Total {tableLength} teams
         </span>
       </div>

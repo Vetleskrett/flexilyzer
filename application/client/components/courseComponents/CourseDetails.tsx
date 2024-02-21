@@ -1,5 +1,5 @@
 "use client";
-import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
+import { Button, Card, CardBody } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
 export default function CourseDetails({ id }: { id: number }) {
@@ -31,8 +31,8 @@ export default function CourseDetails({ id }: { id: number }) {
     <>
       <div className="flex flex-wrap">
         {cards.map((card, index) => (
-          <Card key={index} className="mb-5 w-64 m-5">
-            <CardBody className="flex flex-col justify-center items-center">
+          <Card key={index} className="m-5 w-64">
+            <CardBody className="flex flex-col items-center justify-center">
               <div>
                 <Button onClick={card.onClick}>{card.buttonText}</Button>
               </div>

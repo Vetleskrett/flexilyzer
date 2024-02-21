@@ -1,8 +1,5 @@
 "use client";
-import {
-  AnalyzerResponse,
-  AnalyzerSimplifiedResponse,
-} from "@/extensions/data-contracts";
+import { AnalyzerSimplifiedResponse } from "@/extensions/data-contracts";
 import { Button, Card, CardBody } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
@@ -21,7 +18,7 @@ export default function AnalyzerOverview({
             <h3 className="h3">{analyzer.name}</h3>
             {analyzer.description}
           </div>
-          <div className="flex-initial my-auto mr-15">
+          <div className="my-auto flex-initial">
             <Button
               color="primary"
               onClick={() => {

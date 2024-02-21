@@ -1,7 +1,6 @@
 "use client";
 
 import { BatchResponse } from "@/extensions/data-contracts";
-import { calcTimeDifference } from "@/utils/timeUtils";
 import { Card, Tooltip } from "@nextui-org/react";
 import { format, formatDistance } from "date-fns";
 import Dot from "../DotComponent";
@@ -15,7 +14,7 @@ const STATUS_COLOR_MAPPING = {
 export default function AnalyzerBatchInfo({ batch }: { batch: BatchResponse }) {
   return (
     <>
-      <Card className="h-[30px] flex flex-row justify-between items-center px-3 mx-2 shadow-sm text-sm">
+      <Card className="mx-2 flex h-[30px] flex-row items-center justify-between px-3 text-sm shadow-sm">
         <Tooltip
           placement={"right"}
           delay={0}

@@ -9,15 +9,18 @@ export default function IntComponent({ avg, keyName, value }: intComponent) {
 
   const isCompareMode = searchParams.get("compare") === "true";
   return (
-    <Card className="max-w-[600px] min-w-[200px] px-4">
-      <CardHeader className="flex flex-row justify-center font-semibold pb-2">
+    <Card className="min-w-[200px] max-w-[600px] px-4">
+      <CardHeader className="flex flex-row justify-center pb-2 font-semibold">
         {keyName}
       </CardHeader>
       <Divider />
-      <CardBody className="text-small text-center pt-2">
-        <div>{value}{isCompareMode && avg && <div className="text-gray-500"> (Avg: {avg.avg?.toFixed(0)})</div>}</div>
-
-        
+      <CardBody className="pt-2 text-center text-small">
+        <div>
+          {value}
+          {isCompareMode && avg && (
+            <div className="text-gray-500"> (Avg: {avg.avg?.toFixed(0)})</div>
+          )}
+        </div>
       </CardBody>
     </Card>
   );

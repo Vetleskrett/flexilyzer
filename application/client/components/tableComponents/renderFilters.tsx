@@ -9,12 +9,12 @@ const renderFilters = (
   allFlatMappedOutputs: FlatMappedOutputs[],
   selectedOutputFilterIds: Set<string>,
   toggleColumnFilters: (outputId: Key) => void,
-  setFilterState: (value: SetStateAction<FilterState>) => void
+  setFilterState: (value: SetStateAction<FilterState>) => void,
 ) => {
   const handleFilterNumberChange = (
     id: number,
     type: "min" | "max",
-    value: number
+    value: number,
   ) => {
     setFilterState((prev) => ({
       ...prev,
@@ -41,7 +41,7 @@ const renderFilters = (
   if (selectedOutputFilterIds.size > 0) {
     return Array.from(selectedOutputFilterIds).map((outputId) => {
       const output = allFlatMappedOutputs.find(
-        (output) => output.id === Number(outputId)
+        (output) => output.id === Number(outputId),
       );
       if (!output) return null; // Handle case where output is not found
 
@@ -49,13 +49,13 @@ const renderFilters = (
         case ValueTypesOutput.Bool:
           // Implementation for Bool filter
           return (
-            <div key={output.id} className="justify-center gap-1 p-2 m-2">
-              <div className="flex flex-row justify-between items-center">
-                <span className="text-default-400 text-small">
+            <div key={output.id} className="m-2 justify-center gap-1 p-2">
+              <div className="flex flex-row items-center justify-between">
+                <span className="text-small text-default-400">
                   {output.display_name ? output.display_name : output.key_name}
                 </span>
                 <CloseIcon
-                  className="h-[18px] text-default-400 cursor-pointer"
+                  className="h-[18px] cursor-pointer text-default-400"
                   onClick={() => {
                     toggleColumnFilters(output.id);
                   }}
@@ -77,13 +77,13 @@ const renderFilters = (
         case ValueTypesOutput.Int:
         case ValueTypesOutput.Range:
           return (
-            <div key={output.id} className="flex flex-col p-2 m-2">
-              <div className="flex flex-row justify-between items-center">
-                <span className="text-default-400 text-small">
+            <div key={output.id} className="m-2 flex flex-col p-2">
+              <div className="flex flex-row items-center justify-between">
+                <span className="text-small text-default-400">
                   {output.display_name ? output.display_name : output.key_name}
                 </span>
                 <CloseIcon
-                  className="h-[18px] text-default-400 cursor-pointer"
+                  className="h-[18px] cursor-pointer text-default-400"
                   onClick={() => {
                     toggleColumnFilters(output.id);
                   }}
@@ -98,7 +98,7 @@ const renderFilters = (
                     handleFilterNumberChange(
                       output.id,
                       "min",
-                      parseInt(e.target.value)
+                      parseInt(e.target.value),
                     )
                   }
                 />
@@ -110,7 +110,7 @@ const renderFilters = (
                     handleFilterNumberChange(
                       output.id,
                       "max",
-                      parseInt(e.target.value)
+                      parseInt(e.target.value),
                     )
                   }
                 />

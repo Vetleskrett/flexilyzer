@@ -6,13 +6,11 @@ import { Select, SelectItem, Spinner } from "@nextui-org/react";
 import { format } from "date-fns";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
-import { useQueryClient, useQuery } from "react-query";
+import { useQuery } from "react-query";
 
 export default function AnalyzerBatchSelect({
-  course_id,
   assignment_id,
 }: {
-  course_id: number;
   assignment_id: number;
 }) {
   const pathname = usePathname();
@@ -27,7 +25,7 @@ export default function AnalyzerBatchSelect({
     const resp = await api.getAssignmentAnalyzersBatches(
       assignment_id,
       Number(current_analyzer_id),
-      { cache: "no-cache" }
+      { cache: "no-cache" },
     );
     if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
     return resp.data;
@@ -42,7 +40,7 @@ export default function AnalyzerBatchSelect({
     fetchBatches,
     {
       refetchOnWindowFocus: false,
-    }
+    },
   );
 
   const handleSelectionChange = (key: string) => {
@@ -57,7 +55,7 @@ export default function AnalyzerBatchSelect({
 
       return params.toString();
     },
-    [searchParams]
+    [searchParams],
   );
 
   return (

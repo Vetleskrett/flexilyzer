@@ -1,4 +1,4 @@
-import { Kbd, ScrollShadow } from "@nextui-org/react";
+import { Kbd } from "@nextui-org/react";
 import React from "react";
 
 export default function InfoCardContent() {
@@ -10,10 +10,11 @@ export default function InfoCardContent() {
         own analyzer.
       </p>
       <h3 className="h3 mt-4">What is an analyzer?</h3>
+      {`
       An analyzer is essentially a Python script that is executed on this
       application's server, ad-hoc or scheduled, which will generate a specific
       report about a student project. The reports may then be viewed on a the
-      belonging student group's page.
+      belonging student group's page.`}
       <h3 className="h3 mt-4">What can an analyzer do?</h3>
       There is few limitations to what can be done by an analyzer. It might
       fetch a Git API and generate some statistics, fetch an external web page,

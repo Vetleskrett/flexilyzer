@@ -8,7 +8,7 @@ import CompareModeSwitch from "./CompareModeSwitch";
 
 export default function AnalyzerTabs({
   assignment_analyzers,
-  course_id,
+  course_id: _course_id,
   assignment_id,
 }: {
   assignment_analyzers: AnalyzerSimplifiedResponse[];
@@ -20,7 +20,6 @@ export default function AnalyzerTabs({
   const pathname = usePathname();
 
   const selectedAnalyzer = searchParams.get("analyzer");
-  const selectedBatchId = searchParams.get("batch");
 
   // Directly determine the selected analyzer ID from the search parameters
   const currentAnalyzerId =
@@ -33,7 +32,7 @@ export default function AnalyzerTabs({
 
       return params.toString();
     },
-    [searchParams]
+    [searchParams],
   );
 
   const handleSelectionChange = (key: React.Key) => {
@@ -45,14 +44,14 @@ export default function AnalyzerTabs({
     router.push(
       pathname +
         "?" +
-        createQueryString("analyzer", assignment_analyzers[0]?.id.toString())
+        createQueryString("analyzer", assignment_analyzers[0]?.id.toString()),
     );
   }
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center">
-        <div className="flex flex-row mb-4">
+      <div className="flex flex-col items-center justify-center">
+        <div className="mb-4 flex flex-row">
           <Tabs
             aria-label="Analyzer Tabs"
             selectedKey={currentAnalyzerId}
@@ -69,25 +68,20 @@ export default function AnalyzerTabs({
           </Tabs>
         </div>
         {selectedAnalyzer && (
-        <>
-          <div className="flex flex-row justify-center items-center w-full">
-            <div className="flex-1 flex justify-center items-center">
-              <CompareModeSwitch />
+          <>
+            <div className="flex w-full flex-row items-center justify-center">
+              <div className="flex flex-1 items-center justify-center">
+                <CompareModeSwitch />
+              </div>
+
+              <div className="flex w-full max-w-[500px] flex-1 items-center justify-center md:w-[500px]">
+                <AnalyzerBatchSelect assignment_id={assignment_id} />
+              </div>
+
+              <div className="flex flex-1 items-center justify-center"></div>
             </div>
-            
-            <div className="flex-1 flex justify-center items-center max-w-[500px] w-full md:w-[500px]">
-              <AnalyzerBatchSelect
-                course_id={course_id}
-                assignment_id={assignment_id}
-              />
-            </div>
-            
-            <div className="flex-1 flex justify-center items-center">
-            </div>
-          </div>
-        </>
-      )}
-        
+          </>
+        )}
       </div>
     </>
   );

@@ -5,9 +5,7 @@ import {
   BatchResponse,
   JobCreate,
 } from "@/extensions/data-contracts";
-import { calcTimeDifference } from "@/utils/timeUtils";
 import { Button, Card, Skeleton } from "@nextui-org/react";
-import Dot from "../DotComponent";
 import AnalyzerBatchInfo from "../analyzerComponents/AnalyzerBatchInfo";
 import api from "@/api_utils";
 import { usePathname, useRouter } from "next/navigation";
@@ -33,7 +31,7 @@ export default function AssignmentAnalyzer({
     const resp = await api.getAssignmentAnalyzersBatches(
       assignment_id,
       analyzer_id,
-      { cache: "no-cache" }
+      { cache: "no-cache" },
     );
     if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
     return resp.data;
@@ -48,7 +46,7 @@ export default function AssignmentAnalyzer({
     fetchBatches,
     {
       refetchOnWindowFocus: false,
-    }
+    },
   );
 
   const runAnalyzerMutation = useMutation(
@@ -66,16 +64,15 @@ export default function AssignmentAnalyzer({
           "batches",
           { assignment_id, analyzer_id },
         ]);
-        // Optionally, refetch queries here if needed
       },
-      onError: (error: any) => {
+      onError: (error: Error) => {
         openSnackbar({
           message: "Something wrong while starting Analyzer job",
           severity: "error",
         });
-        console.error(error);
+        console.error(error.message);
       },
-    }
+    },
   );
 
   function latestFinishedReportParam() {
@@ -89,16 +86,16 @@ export default function AssignmentAnalyzer({
 
   return (
     <>
-      <Card className="h-[500px] w-[350px] p-2 bg-slate-100 shadow-sm">
+      <Card className="h-[500px] w-[350px] bg-slate-100 p-2 shadow-sm">
         <h3
-          className="h3 text-center mt-3 text-blue-500 cursor-pointer"
+          className="h3 mt-3 cursor-pointer text-center text-blue-500"
           onClick={() => {
             router.push(`/analyzers/${analyzer_id}`);
           }}
         >
           {analyzer_name}
         </h3>
-        <div className="flex flex-row justify-center gap-5 ml-5 mr-5 h-[30px]">
+        <div className="mx-5 flex h-[30px] flex-row justify-center gap-5">
           <Button
             size="sm"
             color="secondary"
@@ -126,7 +123,7 @@ export default function AssignmentAnalyzer({
               router.push(
                 pathName +
                   `/reports?analyzer=${analyzer_id}` +
-                  latestFinishedReportParam()
+                  latestFinishedReportParam(),
               );
             }}
             className="w-[80px]"
@@ -134,14 +131,14 @@ export default function AssignmentAnalyzer({
             Reports
           </Button>
         </div>
-        <div className="overflow-y-auto mt-2">
+        <div className="mt-2 overflow-y-auto">
           {error ? (
             <div>An error occurred: {error.message}</div>
           ) : isBatchesLoading ? (
             <>
               {Array.from({ length: 6 }, (_, index) => (
-                <Skeleton key={index} className="rounded-lg my-2 bg-white">
-                  <Card className="h-[50px] flex items-center justify-center shadow-sm"></Card>
+                <Skeleton key={index} className="my-2 rounded-lg bg-white">
+                  <Card className="flex h-[50px] items-center justify-center shadow-sm"></Card>
                 </Skeleton>
               ))}
             </>

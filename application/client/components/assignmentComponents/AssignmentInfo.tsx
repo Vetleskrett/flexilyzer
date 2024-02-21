@@ -1,5 +1,4 @@
 "use client";
-import { AssignmentResponse } from "@/extensions/data-contracts";
 import { Card, CardBody } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useSelectedLayoutSegment } from "next/navigation";
@@ -20,11 +19,11 @@ export default function AssignmentInfo({
   const segment = useSelectedLayoutSegment();
 
   return (
-    <Card className='mx-2 mt-2 p-0'>
+    <Card className="mx-2 mt-2 p-0">
       <CardBody>
-        <div className='flex flex-row justify-between items-center text-center'>
+        <div className="flex flex-row items-center justify-between text-center">
           <div
-            className='w-1/4 text-left cursor-pointer'
+            className="w-1/4 cursor-pointer text-left"
             onClick={() => {
               router.push(`/courses/${course_id}/assignments/${assignment_id}`);
             }}
@@ -34,8 +33,8 @@ export default function AssignmentInfo({
             </p>
           </div>
 
-          <div className='w-1/2'>
-            <p className='text-lg'>
+          <div className="w-1/2">
+            <p className="text-lg">
               {segment ? (
                 <>Assignment {segment[0].toUpperCase() + segment.slice(1)}</>
               ) : (
@@ -44,7 +43,7 @@ export default function AssignmentInfo({
             </p>
           </div>
 
-          <div className='w-1/4 text-right'>
+          <div className="w-1/4 text-right">
             <p>
               <b>Due: </b>
               {due_date

@@ -13,7 +13,7 @@ interface AnalyzerScriptDisplayProps {
   requirements: string | null;
 }
 // Define the function as async but ensure it catches errors internally
-export default async function AnalyzerScriptDisplay({
+export default function AnalyzerScriptDisplay({
   analyzer_id,
   script,
   has_requirements,
@@ -58,10 +58,10 @@ export default async function AnalyzerScriptDisplay({
   // If the response is successful, proceed to render the component
   return (
     <>
-      <div className='flex w-full flex-col items-center'>
+      <div className="flex w-full flex-col items-center">
         <Tabs>
-          <Tab key='script' title='Script'>
-            <div className='mt-6'>
+          <Tab key="script" title="Script">
+            <div className="mt-6">
               {script ? (
                 <CodeDisplay code_string={script} />
               ) : (
@@ -70,13 +70,13 @@ export default async function AnalyzerScriptDisplay({
             </div>
           </Tab>
           <Tab
-            key='requirements'
+            key="requirements"
             title={
               has_requirements ? "Requirements" : "Upload requirements.txt"
             }
           >
             {has_requirements ? (
-              <div className='mt-6'>
+              <div className="mt-6">
                 {requirements ? (
                   <CodeDisplay code_string={requirements} />
                 ) : (
@@ -84,29 +84,30 @@ export default async function AnalyzerScriptDisplay({
                 )}
               </div>
             ) : (
-              <div className='mt-6'>
+              <div className="mt-6">
                 <form
-                  className='flex flex-col items-center justify-center mt-8'
+                  className="mt-8 flex flex-col items-center justify-center"
                   onSubmit={handleSubmit}
                 >
                   <input
-                    id='fileInput'
-                    type='file'
-                    accept='.txt'
+                    id="fileInput"
+                    type="file"
+                    accept=".txt"
                     onChange={handleFileChange}
                   />
 
                   <br />
-                  <Card className='p-3 text-xs bg-slate-100 mb-8'>
+                  <Card className="mb-8 bg-slate-100 p-3 text-xs">
                     <p>
-                      PS: The file must be named exactly "
-                      <i>requirements.txt</i>".
+                      {` PS: The file must be named exactly "`}
+                      <i>requirements.txt</i>
+                      {`".`}
                     </p>
                   </Card>
                   <Button
                     isDisabled={selectedFile !== null ? false : true}
-                    color='primary'
-                    type='submit'
+                    color="primary"
+                    type="submit"
                   >
                     Upload Requirements file
                   </Button>

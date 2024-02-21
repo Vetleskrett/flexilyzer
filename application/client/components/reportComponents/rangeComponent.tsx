@@ -4,7 +4,6 @@ import { Progress } from "@nextui-org/react";
 
 import { Card, CardBody } from "@nextui-org/react";
 
-import { Button } from "@nextui-org/button";
 import { useSearchParams } from "next/navigation";
 
 export default function RangeComponent({
@@ -20,7 +19,7 @@ export default function RangeComponent({
 
   return (
     <>
-      <Card className="max-w-[500px] min-w-[400px] px-4">
+      <Card className="min-w-[400px] max-w-[500px] px-4">
         <CardBody className="">
           <Progress
             label={<p className="font-semibold">{keyName}</p>}
@@ -35,7 +34,12 @@ export default function RangeComponent({
             valueLabel={
               <>
                 {value} / {toValue}
-                {isCompareMode && avg && <text className="text-gray-500"> (Avg: {avg.avg?.toFixed(0)})</text>}
+                {isCompareMode && avg && (
+                  <text className="text-gray-500">
+                    {" "}
+                    (Avg: {avg.avg?.toFixed(0)})
+                  </text>
+                )}
               </>
             }
           />

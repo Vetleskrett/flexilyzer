@@ -1,9 +1,8 @@
 "use client";
-import Link from "next/link";
 import DividerComponent from "../DividerComponent";
 
 import api from "@/api_utils";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import { TeamResponse } from "@/extensions/data-contracts";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
@@ -38,7 +37,7 @@ export default function AssignmentSideBar({
     fetchTeams,
     {
       refetchOnWindowFocus: false,
-    }
+    },
   );
 
   const createQueryString = useCallback(
@@ -48,19 +47,19 @@ export default function AssignmentSideBar({
 
       return params.toString();
     },
-    [searchParams]
+    [searchParams],
   );
 
   useEffect(() => {
     if (teams) {
       router.push(
-        pathname + "?" + createQueryString("team_id", `${teams[0].id}`)
+        pathname + "?" + createQueryString("team_id", `${teams[0].id}`),
       );
     }
-  }, [teams]);
+  }, [teams, createQueryString, pathname, router]);
 
   return (
-    <div className="flex flex-col p-4 border-r sticky min-w-[100px] top-16 h-[calc(100vh-80px)] overflow-y-auto">
+    <div className="sticky top-16 flex h-[calc(100vh-80px)] min-w-[100px] flex-col overflow-y-auto border-r p-4">
       <p className="mb-3">Teams:</p>
       <DividerComponent />
       {error ? (
@@ -75,7 +74,7 @@ export default function AssignmentSideBar({
             className="mb-2 cursor-pointer"
             onClick={() => {
               router.push(
-                pathname + "?" + createQueryString("team_id", `${team.id}`)
+                pathname + "?" + createQueryString("team_id", `${team.id}`),
               );
             }}
           >

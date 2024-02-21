@@ -24,7 +24,7 @@ export default function AssignmentOverview({
             <b>Due: </b>
             {due_date ? new Date(due_date).toLocaleDateString("no-NO") : ""}
           </div>
-          <div className="flex flex-row my-auto mr-15 gap-4">
+          <div className="my-auto flex flex-row gap-4">
             <Button
               onClick={() => {
                 router.push(`/courses/${course_id}/assignments/${id}/reports`);

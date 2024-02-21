@@ -1,7 +1,5 @@
 import api from "@/api_utils";
 import AssignmentInfo from "@/components/assignmentComponents/AssignmentInfo";
-import AssignmentSideBar from "@/components/assignmentComponents/SideBar";
-import AnalyzerTabs from "@/components/reportPageComponents/AnalyzerTabs";
 
 export default async function AssignmentOverviewLayout({
   children,
@@ -14,18 +12,15 @@ export default async function AssignmentOverviewLayout({
   };
 }) {
   const assignment_details = await api.getAssignment(params.assignment_id);
-  const assignment_analyzers = await api.getAssignmentAnalyzers(
-    params.assignment_id,
-    { cache: "no-cache" }
-  );
+
   const course = await api.getCourse(params.course_id, {
     cache: "no-cache",
   });
 
   return (
     <>
-      <div className='flex flex-row'>
-        <div className='flex-grow'>
+      <div className="flex flex-row">
+        <div className="grow">
           <AssignmentInfo
             left_text={`${assignment_details.data.name} (${course.data.tag}
     ${course.data.name && `- ${course.data.name}`})`}

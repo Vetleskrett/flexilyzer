@@ -3,7 +3,6 @@ import {
   ReportTeamResponse,
   ValueTypesOutput,
 } from "@/extensions/data-contracts";
-import { AnalyzerWithOutputs, TeamReports } from "@/types/analyzerDefinitions";
 import {
   Table,
   TableHeader,
@@ -11,25 +10,8 @@ import {
   TableColumn,
   TableRow,
   TableCell,
-  Chip,
-  Progress,
-  Tooltip,
-  Dropdown,
-  Checkbox,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Button,
   Selection,
-  DropdownSection,
   SortDescriptor,
-  Select,
-  SelectItem,
-  RadioGroup,
-  Radio,
-  Input,
-  Tabs,
-  Tab,
 } from "@nextui-org/react";
 import { Key, useCallback, useEffect, useMemo, useState } from "react";
 
@@ -38,8 +20,11 @@ import { BottomContent } from "./TableBottomContent";
 import { TopContent } from "./TableTopContent";
 import { renderFilters } from "./renderFilters";
 import { filterReports, sortReports } from "@/utils/tableUtils";
-import { FlatMappedOutputs, OverviewTableParams, FilterState } from "@/types/tableDefinitions";
-
+import {
+  FlatMappedOutputs,
+  OverviewTableParams,
+  FilterState,
+} from "@/types/tableDefinitions";
 
 const initalColumn: FlatMappedOutputs[] = [
   {
@@ -58,9 +43,9 @@ export default function OverviewTable({
   const [visibleColumns, setVisibleColumns] = useState<Set<string>>(
     new Set(
       analyzersWithOutputs.flatMap((analyzer) =>
-        analyzer.outputs.map((output) => output.id.toString())
-      )
-    )
+        analyzer.outputs.map((output) => output.id.toString()),
+      ),
+    ),
   );
 
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>();
@@ -72,7 +57,7 @@ export default function OverviewTable({
   const [filterState, setFilterState] = useState<FilterState>({});
 
   const allReportsList: ReportTeamResponse[][] = Object.values(allReports).map(
-    (r) => r.reports
+    (r) => r.reports,
   );
 
   const flatMappedOutputs = analyzersWithOutputs.flatMap((analyzer) =>
@@ -81,13 +66,13 @@ export default function OverviewTable({
       .map((output) => ({
         ...output,
         analyzerId: analyzer.id,
-      }))
+      })),
   );
   const allFlatMappedOutputs = analyzersWithOutputs.flatMap((analyzer) =>
     analyzer.outputs.map((output) => ({
       ...output,
       analyzerId: analyzer.id,
-    }))
+    })),
   );
 
   const allColumnOutputs = initalColumn.concat(flatMappedOutputs);
@@ -132,9 +117,9 @@ export default function OverviewTable({
     setVisibleColumns(
       new Set(
         analyzersWithOutputs.flatMap((analyzer) =>
-          analyzer.outputs.map((output) => output.id.toString())
-        )
-      )
+          analyzer.outputs.map((output) => output.id.toString()),
+        ),
+      ),
     );
     setSortDescriptor(undefined);
   }, [analyzersWithOutputs]);
@@ -144,7 +129,7 @@ export default function OverviewTable({
       allFlatMappedOutputs,
       selectedOutputFilterIds,
       toggleColumnFilters,
-      setFilterState
+      setFilterState,
     );
   }, [allFlatMappedOutputs, selectedOutputFilterIds]);
 
@@ -174,7 +159,7 @@ export default function OverviewTable({
     (item: ReportTeamResponse[], columnKey: string) => {
       return renderCell(item, columnKey, flatMappedOutputs);
     },
-    [flatMappedOutputs]
+    [flatMappedOutputs],
   );
 
   const bottomContent = useMemo(() => {
@@ -199,7 +184,7 @@ export default function OverviewTable({
   };
 
   return (
-    <div className="max-w-full px-2 pb-2 overflow-auto mt-8">
+    <div className="mt-8 max-w-full overflow-auto px-2 pb-2">
       <Table
         bottomContent={bottomContent}
         topContent={topContent}

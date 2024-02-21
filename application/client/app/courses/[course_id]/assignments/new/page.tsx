@@ -2,7 +2,7 @@ interface Props {
   params: { course_id: string };
 }
 
-export default function NewAssignment({ params }: Props) {
+export default function NewAssignment({ params: _params }: Props) {
   return (
     <>
       <h2 className="h2">New Assignment</h2>

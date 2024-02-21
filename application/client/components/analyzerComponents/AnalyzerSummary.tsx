@@ -25,7 +25,7 @@ export default function AnalyzerSummary({
 
       <Card className="mb-5 p-3">
         <h3 className="h3">Input Parameters</h3>
-        {inputs.map((param, index) => (
+        {inputs.map((param) => (
           <>
             {renderParameter({
               id: param.id.toString(),
@@ -38,7 +38,7 @@ export default function AnalyzerSummary({
 
       <Card className="p-3">
         <h3 className="h3">Output Parameters</h3>
-        {outputs.map((param, index) => (
+        {outputs.map((param) => (
           <>
             {renderParameter({
               id: param.id.toString(),

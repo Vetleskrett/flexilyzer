@@ -5,12 +5,12 @@ import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
 
 export default function TextComponent({ keyName, value }: textComponent) {
   return (
-    <Card className="max-w-[600px] min-w-[200px] px-4">
-      <CardHeader className="flex flex-row justify-center font-semibold pb-2">
+    <Card className="min-w-[200px] max-w-[600px] px-4">
+      <CardHeader className="flex flex-row justify-center pb-2 font-semibold">
         {keyName}
       </CardHeader>
       <Divider />
-      <CardBody className="text-small text-center pt-2">{value}</CardBody>
+      <CardBody className="pt-2 text-center text-small">{value}</CardBody>
     </Card>
   );
 }

@@ -1,7 +1,6 @@
 import { ValueTypesInput } from "@/extensions/data-contracts";
 import { SummaryStepProps } from "@/types/analyzerDefinitions";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
-import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
@@ -43,7 +42,7 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
       <div className="pb-16">
         <h2 className="h2">Input Parameters</h2>
         {formData.inputs.map((param, index) => (
-          <div key={param.id} className="flex items-center space-x-2 mb-4">
+          <div key={param.id} className="mb-4 flex items-center space-x-2">
             <Input
               isRequired
               label="Key Name"
@@ -84,7 +83,7 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
             </Button>
           </div>
         ))}
-        <div className="flex justify-center w-full">
+        <div className="flex w-full justify-center">
           <Button color="secondary" onClick={addInputParameter}>
             Add Parameter
           </Button>

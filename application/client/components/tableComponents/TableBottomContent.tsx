@@ -6,7 +6,7 @@ interface BottomContentProps {
 }
 const BottomContent = ({ tableLength, selectedKeys }: BottomContentProps) => {
   return (
-    <div className="py-2 px-2 flex justify-between items-center">
+    <div className="flex items-center justify-between p-2">
       <span className="w-[30%] text-small text-default-400">
         {selectedKeys === "all"
           ? "All items selected"

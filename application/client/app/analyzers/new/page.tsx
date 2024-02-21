@@ -1,18 +1,12 @@
 "use client";
 import { useState } from "react";
-import { Button, Progress, Tooltip } from "@nextui-org/react"; // Assuming Next UI components
+import { Button, Progress, Tooltip } from "@nextui-org/react";
 import { FormDataT } from "@/types/analyzerDefinitions";
-import { v4 as uuidv4 } from "uuid";
 import SummaryStep from "@/components/createAnalyzerComponents/SummaryStep";
 import BasicInfoStep from "@/components/createAnalyzerComponents/BasicInfoStep";
 import OutputParamsStep from "@/components/createAnalyzerComponents/OutputParamsStep";
 import InputParameters from "@/components/createAnalyzerComponents/InputParamsStep";
-import {
-  AnalyzerCreate,
-  AnalyzerResponse,
-  ValueTypesInput,
-  ValueTypesOutput,
-} from "@/extensions/data-contracts";
+
 import api from "@/api_utils";
 import { formatAnalyzerData } from "@/components/analyzerComponents/analyzerUtils";
 import { useSnackbar } from "@/context/snackbarContext";
@@ -76,7 +70,7 @@ export default function NewAnalyzerPage() {
     }
   }
 
-  function isCurrentStepValid(step: number) {
+  function isCurrentStepValid() {
     switch (currentStep) {
       case 1:
         if (formData.name === "") {
@@ -85,14 +79,14 @@ export default function NewAnalyzerPage() {
       case 2:
         const allInputFieldsValid = formData.inputs.every(
           (input) =>
-            input.key_name.trim() !== "" && input.value_type.trim() !== ""
+            input.key_name.trim() !== "" && input.value_type.trim() !== "",
         );
 
         const allInputNamesUnique = formData.inputs.every(
           (input, index, self) =>
             self.findIndex(
-              (i) => i.key_name.toLowerCase() === input.key_name.toLowerCase()
-            ) === index
+              (i) => i.key_name.toLowerCase() === input.key_name.toLowerCase(),
+            ) === index,
         );
 
         return allInputFieldsValid && allInputNamesUnique;
@@ -100,14 +94,14 @@ export default function NewAnalyzerPage() {
       case 3:
         const allOutputFieldsValid = formData.outputs.every(
           (output) =>
-            output.key_name.trim() !== "" && output.value_type.trim() !== ""
+            output.key_name.trim() !== "" && output.value_type.trim() !== "",
         );
 
         const allOutputNamesUnique = formData.outputs.every(
           (output, index, self) =>
             self.findIndex(
-              (i) => i.key_name.toLowerCase() === output.key_name.toLowerCase()
-            ) === index
+              (i) => i.key_name.toLowerCase() === output.key_name.toLowerCase(),
+            ) === index,
         );
 
         return allOutputFieldsValid && allOutputNamesUnique;
@@ -116,12 +110,9 @@ export default function NewAnalyzerPage() {
 
   return (
     <div className="relative min-h-screen-minus-navbar">
-      <Progress
-        value={(currentStep / TOTAL_STEPS) * 100}
-        className="mb-8 mt-8"
-      />
+      <Progress value={(currentStep / TOTAL_STEPS) * 100} className="my-8" />
       {renderStep()}
-      <div className="absolute bottom-5 inset-x-0 px-4">
+      <div className="absolute inset-x-0 bottom-5 px-4">
         <div className="flex justify-between">
           {/* Back button on the left */}
           {currentStep > 1 ? (
@@ -135,7 +126,7 @@ export default function NewAnalyzerPage() {
           {/* Next/Finish button on the right */}
           {currentStep < TOTAL_STEPS ? (
             <Tooltip
-              isDisabled={isCurrentStepValid(currentStep)}
+              isDisabled={isCurrentStepValid()}
               content={
                 currentStep === 1
                   ? "Analyzer must have a name"
@@ -145,7 +136,7 @@ export default function NewAnalyzerPage() {
               <span className="inline-block" style={{ cursor: "not-allowed" }}>
                 <Button
                   color="primary"
-                  isDisabled={!isCurrentStepValid(currentStep)}
+                  isDisabled={!isCurrentStepValid()}
                   onClick={nextStep}
                 >
                   Next
