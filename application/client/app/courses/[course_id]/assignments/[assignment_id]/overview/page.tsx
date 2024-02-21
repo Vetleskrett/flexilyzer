@@ -52,7 +52,7 @@ export default async function AssignmentOverviewPage({ params }: Props) {
     }
   }
   return (
-    <div className='flex flex-row justify-center'>
+    <div>
       <OverviewTable
         analyzersWithOutputs={analyzersWithOutputs}
         allReports={allReports}

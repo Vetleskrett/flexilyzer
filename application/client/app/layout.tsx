@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable}`}>
       <body>
         <Providers>
-          <div className="mx-auto w-full max-w-screen-xl p-4">
+          <div className="mx-auto w-full max-w-screen-2xl p-4">
             <NavBar />
             {children}
           </div>

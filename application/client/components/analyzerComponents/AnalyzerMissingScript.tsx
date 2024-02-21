@@ -15,7 +15,7 @@ import {
 import { FormDataT } from "@/types/analyzerDefinitions";
 import { formatAnalyzerData } from "./analyzerUtils";
 
-export default async function AnalyzerMissingScript({
+export default function AnalyzerMissingScript({
   analyzer,
   inputs,
   outputs,
