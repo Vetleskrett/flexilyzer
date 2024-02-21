@@ -10,8 +10,9 @@ const filterReports = (
   filterState: FilterState,
   allFlatMappedOutputs: FlatMappedOutputs[]
 ) => {
-  return allReportsList.map((teamReports) => {
-    return teamReports.filter((report) => {
+  console.log(allReportsList);
+  return allReportsList.filter((teamReports) => {
+    return teamReports.every((report) => {
       let passesFilters = true;
 
       Object.entries(filterState).forEach(([key, filter]) => {
