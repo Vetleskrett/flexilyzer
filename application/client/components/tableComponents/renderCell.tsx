@@ -8,18 +8,19 @@ import { Tooltip, Progress, Chip } from "@nextui-org/react";
 const renderCell = (
   item: ReportTeamResponse[],
   columnKey: string,
-  flatMappedOutputs: FlatMappedOutputs[],
+  flatMappedOutputs: FlatMappedOutputs[]
 ) => {
+  console.log("renderCell run");
   const [name, id] = columnKey.split("-");
 
   if (name === "Team") return item[0].team_id;
   const report = item.find(
-    (r: ReportTeamResponse) => r.analyzer_id === Number(id),
+    (r: ReportTeamResponse) => r.analyzer_id === Number(id)
   );
   const value = report ? report.report[name] : undefined;
 
   const output = flatMappedOutputs.find(
-    (output) => output.analyzerId === Number(id) && output.key_name === name,
+    (output) => output.analyzerId === Number(id) && output.key_name === name
   );
   if (!output) return value;
 

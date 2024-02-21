@@ -43,9 +43,9 @@ export default function OverviewTable({
   const [visibleColumns, setVisibleColumns] = useState<Set<string>>(
     new Set(
       analyzersWithOutputs.flatMap((analyzer) =>
-        analyzer.outputs.map((output) => output.id.toString()),
-      ),
-    ),
+        analyzer.outputs.map((output) => output.id.toString())
+      )
+    )
   );
 
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>();
@@ -56,24 +56,29 @@ export default function OverviewTable({
   >(new Set([]));
   const [filterState, setFilterState] = useState<FilterState>({});
 
-  const allReportsList: ReportTeamResponse[][] = Object.values(allReports).map(
-    (r) => r.reports,
-  );
+  const allReportsList = useMemo(() => {
+    return Object.values(allReports).map((r) => r.reports);
+  }, [allReports]);
 
-  const flatMappedOutputs = analyzersWithOutputs.flatMap((analyzer) =>
-    analyzer.outputs
-      .filter((output) => visibleColumns.has(output.id.toString()))
-      .map((output) => ({
+  const flatMappedOutputs = useMemo(() => {
+    return analyzersWithOutputs.flatMap((analyzer) =>
+      analyzer.outputs
+        .filter((output) => visibleColumns.has(output.id.toString()))
+        .map((output) => ({
+          ...output,
+          analyzerId: analyzer.id,
+        }))
+    );
+  }, [analyzersWithOutputs, visibleColumns]);
+
+  const allFlatMappedOutputs = useMemo(() => {
+    return analyzersWithOutputs.flatMap((analyzer) =>
+      analyzer.outputs.map((output) => ({
         ...output,
         analyzerId: analyzer.id,
-      })),
-  );
-  const allFlatMappedOutputs = analyzersWithOutputs.flatMap((analyzer) =>
-    analyzer.outputs.map((output) => ({
-      ...output,
-      analyzerId: analyzer.id,
-    })),
-  );
+      }))
+    );
+  }, [analyzersWithOutputs]);
 
   const allColumnOutputs = initalColumn.concat(flatMappedOutputs);
 
@@ -117,9 +122,9 @@ export default function OverviewTable({
     setVisibleColumns(
       new Set(
         analyzersWithOutputs.flatMap((analyzer) =>
-          analyzer.outputs.map((output) => output.id.toString()),
-        ),
-      ),
+          analyzer.outputs.map((output) => output.id.toString())
+        )
+      )
     );
     setSortDescriptor(undefined);
   }, [analyzersWithOutputs]);
@@ -129,7 +134,7 @@ export default function OverviewTable({
       allFlatMappedOutputs,
       selectedOutputFilterIds,
       toggleColumnFilters,
-      setFilterState,
+      setFilterState
     );
   }, [allFlatMappedOutputs, selectedOutputFilterIds]);
 
@@ -159,7 +164,7 @@ export default function OverviewTable({
     (item: ReportTeamResponse[], columnKey: string) => {
       return renderCell(item, columnKey, flatMappedOutputs);
     },
-    [flatMappedOutputs],
+    [flatMappedOutputs]
   );
 
   const bottomContent = useMemo(() => {

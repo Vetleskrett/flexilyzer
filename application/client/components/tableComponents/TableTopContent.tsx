@@ -37,6 +37,7 @@ const TopContent = ({
   setVisibleColumns,
   toggleColumnFilters,
 }: TopContentProps) => {
+  console.log("TopContent run");
   const toggleColumnVisibility = (columnId: Key) => {
     setVisibleColumns((prevState) => {
       const newState = new Set(prevState);
@@ -113,7 +114,7 @@ const TopContent = ({
                       ValueTypesOutput.Int,
                       ValueTypesOutput.Range,
                       ValueTypesOutput.Bool,
-                    ].includes(output.value_type),
+                    ].includes(output.value_type)
                   )
                   .map((output) => (
                     <DropdownItem
@@ -122,7 +123,7 @@ const TopContent = ({
                     >
                       <Checkbox
                         isSelected={selectedOutputFilterIds.has(
-                          output.id.toString(),
+                          output.id.toString()
                         )}
                       >
                         {output.display_name
