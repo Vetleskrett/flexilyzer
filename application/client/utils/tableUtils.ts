@@ -10,7 +10,6 @@ const filterReports = (
   filterState: FilterState,
   allFlatMappedOutputs: FlatMappedOutputs[]
 ) => {
-  console.log(allReportsList);
   return allReportsList.filter((teamReports) => {
     return teamReports.every((report) => {
       let passesFilters = true;
