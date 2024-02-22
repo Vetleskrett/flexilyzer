@@ -86,6 +86,28 @@ export default function OverviewTable({
     return filterReports(allReportsList, filterState, allFlatMappedOutputs);
   }, [allFlatMappedOutputs, allReportsList, filterState]);
 
+  useEffect(() => {
+    if (selectedKeys === "all") {
+      setSelectedKeys(
+        new Set(
+          filteredReports.map((teamReports) =>
+            teamReports[0].team_id.toString()
+          )
+        )
+      );
+    } else if (selectedKeys.size > 0) {
+      setSelectedKeys(
+        new Set(
+          filteredReports
+            .filter((teamReports) =>
+              selectedKeys.has(teamReports[0].team_id.toString())
+            )
+            .map((teamReports) => teamReports[0].team_id.toString())
+        )
+      );
+    }
+  }, [filteredReports]);
+
   const toggleColumnFilters = (outputId: Key) => {
     setSelectedOutputFilterIds((prevState) => {
       const newState = new Set(prevState);
@@ -141,7 +163,7 @@ export default function OverviewTable({
   const topContent = useMemo(() => {
     return (
       <TopContent
-        tableLength={allReportsList.length}
+        tableLength={sortedReports.length}
         analyzersWithOutputs={analyzersWithOutputs}
         renderFilterParameters={renderFilterParameters}
         resetView={resetView}
@@ -152,7 +174,7 @@ export default function OverviewTable({
       />
     );
   }, [
-    allReportsList.length,
+    sortedReports.length,
     analyzersWithOutputs,
     renderFilterParameters,
     resetView,
@@ -170,11 +192,11 @@ export default function OverviewTable({
   const bottomContent = useMemo(() => {
     return (
       <BottomContent
-        tableLength={allReportsList.length}
+        tableLength={sortedReports.length}
         selectedKeys={selectedKeys}
       />
     );
-  }, [allReportsList.length, selectedKeys]);
+  }, [sortedReports.length, selectedKeys]);
 
   const ifAllowSorting = (value_type: ValueTypesOutput) => {
     if (
@@ -207,6 +229,8 @@ export default function OverviewTable({
               ? column.display_name
               : column.key_name;
             return (
+              // Column key needs to be a combination of key_name and analyzer, since
+              // key_name alone is not unique for the whole system, only within its own analyzer
               <TableColumn
                 key={`${column.key_name}-${column.analyzerId}`}
                 allowsSorting={ifAllowSorting(column.value_type)}
