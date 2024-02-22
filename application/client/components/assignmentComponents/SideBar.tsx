@@ -20,7 +20,7 @@ export default function AssignmentSideBar({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const current_team_id = searchParams.get("team_id");
+  const currentTeamId = searchParams.get("team_id");
 
   const fetchTeams = async () => {
     const resp = await api.getCourseTeams(Number(course_id));
@@ -37,7 +37,7 @@ export default function AssignmentSideBar({
     fetchTeams,
     {
       refetchOnWindowFocus: false,
-    },
+    }
   );
 
   const createQueryString = useCallback(
@@ -47,13 +47,14 @@ export default function AssignmentSideBar({
 
       return params.toString();
     },
-    [searchParams],
+    [searchParams]
   );
 
   useEffect(() => {
-    if (teams) {
+    console.log("in sidebar useeffect");
+    if (teams && !currentTeamId) {
       router.push(
-        pathname + "?" + createQueryString("team_id", `${teams[0].id}`),
+        pathname + "?" + createQueryString("team_id", `${teams[0].id}`)
       );
     }
   }, [teams, createQueryString, pathname, router]);
@@ -74,11 +75,11 @@ export default function AssignmentSideBar({
             className="mb-2 cursor-pointer"
             onClick={() => {
               router.push(
-                pathname + "?" + createQueryString("team_id", `${team.id}`),
+                pathname + "?" + createQueryString("team_id", `${team.id}`)
               );
             }}
           >
-            {Number(current_team_id) === team.id ? (
+            {Number(currentTeamId) === team.id ? (
               <b>Team {team.id}</b>
             ) : (
               <>Team {team.id}</>
