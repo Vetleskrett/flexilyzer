@@ -36,7 +36,7 @@ export default function NavBar() {
           className='sm:hidden'
         />
         <NavbarBrand
-          className='cursor-pointer'
+          className='cursor-pointer w-[50px]'
           onClick={() => {
             router.push("/");
           }}
