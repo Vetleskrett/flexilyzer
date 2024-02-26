@@ -19,17 +19,15 @@ export default async function CourseAssignments({ params }: Props) {
       </h2>
 
       <br />
-      {course_assignments.data.map((assignment) => {
-        return (
-          <AssignmentOverview
-            key={assignment.id}
-            course_id={course_details.data.id}
-            id={assignment.id}
-            name={assignment.name}
-            due_date={assignment.due_date}
-          />
-        );
-      })}
+      {course_assignments.data.map((assignment) => (
+        <AssignmentOverview
+          key={assignment.id}
+          course_id={course_details.data.id}
+          id={assignment.id}
+          name={assignment.name}
+          due_date={assignment.due_date}
+        />
+      ))}
     </div>
   );
 }
