@@ -25,7 +25,6 @@ export default function NavBar() {
     { display: "Courses", href: "/courses" },
     { display: "Analyzers", href: "/analyzers" },
     { display: "Guides", href: "/guides" },
-    { display: "Search", href: "/search" },
     { display: "About", href: "/about" },
   ];
 
