@@ -9,15 +9,15 @@ export default async function Courses() {
 
   return (
     <div>
-      <h2 className="h2">All courses:</h2>
+      <h2 className='h2'>All courses:</h2>
       {courses.data.map((course: CourseResponse) => {
         return (
-          <>
-            <CourseOverview key={course.id} course={course} />
-          </>
+          <div key={course.id}>
+            <CourseOverview course={course} />
+          </div>
         );
       })}
-      <div className="flex flex-col items-center">
+      <div className='flex flex-col items-center'>
         <CreateButton pushRoute={"/courses/new"} text={"Create Course"} />
       </div>
     </div>
