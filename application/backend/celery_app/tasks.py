@@ -121,8 +121,9 @@ def run_analyzer(project_ids: list[int], batch_id: int):
         )
 
     finally:
-        container.stop()
-        container.remove()
+        pass
+        # container.stop()
+        # container.remove()
 
 
 # from utils.fileUtils import create_if_not_exists, script_exists, venv_exists

@@ -1,10 +1,15 @@
 "use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { AnalyzerSimplifiedResponse } from "@/extensions/data-contracts";
+import {
+  AnalyzerSimplifiedResponse,
+  BatchResponse,
+} from "@/extensions/data-contracts";
 import { Tab, Tabs } from "@nextui-org/react";
 import { useCallback, useEffect } from "react";
 import AnalyzerBatchSelect from "../reportPageComponents/AnalyzerBatchSelect";
 import CompareModeSwitch from "../reportPageComponents/CompareModeSwitch";
+import api from "@/utils/apiUtils";
+import { useQuery } from "react-query";
 
 export default function AnalyzerTabs({
   assignment_analyzers,
@@ -57,6 +62,28 @@ export default function AnalyzerTabs({
     router,
   ]);
 
+  const fetchBatches = async () => {
+    const resp = await api.getAssignmentAnalyzersBatches(
+      assignment_id,
+      Number(currentAnalyzerId),
+      { cache: "no-cache" }
+    );
+    if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
+    return resp.data;
+  };
+
+  const {
+    data: batches,
+    error,
+    isLoading: isBatchesLoading,
+  } = useQuery<BatchResponse[], Error>(
+    ["batches", { assignment_id, currentAnalyzerId }],
+    fetchBatches,
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+
   return (
     <>
       <div className="flex flex-col items-center justify-center">
@@ -76,20 +103,24 @@ export default function AnalyzerTabs({
             ))}
           </Tabs>
         </div>
-        {selectedAnalyzer && (
-          <>
-            <div className="flex w-full flex-row items-center justify-center">
-              <div className="flex flex-1 items-center justify-center">
-                <CompareModeSwitch />
-              </div>
-
-              <div className="flex w-full max-w-[500px] flex-1 items-center justify-center md:w-[500px]">
-                <AnalyzerBatchSelect assignment_id={assignment_id} />
-              </div>
-
-              <div className="flex flex-1 items-center justify-center"></div>
+        {error ? (
+          "Something wrong when fetching batches"
+        ) : isBatchesLoading ? (
+          "Loading ..."
+        ) : batches && batches.length > 0 ? (
+          <div className="flex w-full flex-row items-center justify-center">
+            <div className="flex flex-1 items-center justify-center">
+              <CompareModeSwitch />
             </div>
-          </>
+
+            <div className="flex w-full max-w-[500px] flex-1 items-center justify-center md:w-[500px]">
+              <AnalyzerBatchSelect batches={batches} />
+            </div>
+
+            <div className="flex flex-1 items-center justify-center"></div>
+          </div>
+        ) : (
+          "No batches available for selected analyzer"
         )}
       </div>
     </>

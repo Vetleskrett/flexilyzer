@@ -96,11 +96,10 @@ export default function TeamReportsPage({ params }: Props) {
     }
   );
 
-  if (!team_id || !batch_id) {
+  if (!team_id) {
     return (
       <div className="mt-14 text-center">
-        Missing one or more of the following parameters: team ID, batch. Please
-        specify both to show report data.
+        Select a team to show report data.
       </div>
     );
   }
@@ -111,14 +110,14 @@ export default function TeamReportsPage({ params }: Props) {
 
   if (errorReport || errorAnalyzer || errorStats) {
     return (
-      <div className='mt-14 text-center'>
+      <div className="mt-14 text-center">
         An error occurred while trying to fetch report.
       </div>
     );
   }
 
   return (
-    <div className='m-8 flex flex-row flex-wrap gap-6'>
+    <div className="m-8 flex flex-row flex-wrap gap-6">
       {report &&
         analyzerOutputs &&
         renderMetrics(report, analyzerOutputs, batchStats)}

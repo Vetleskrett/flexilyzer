@@ -9,9 +9,9 @@ import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
 export default function AnalyzerBatchSelect({
-  assignment_id,
+  batches,
 }: {
-  assignment_id: number;
+  batches: BatchResponse[];
 }) {
   const pathname = usePathname();
   const [selectedBatch, setSelectedBatch] = useState<string | undefined>(
@@ -23,28 +23,6 @@ export default function AnalyzerBatchSelect({
 
   const currentAnalyzerId = searchParams.get("analyzer");
   const currentBatchId = searchParams.get("batch");
-
-  const fetchBatches = async () => {
-    const resp = await api.getAssignmentAnalyzersBatches(
-      assignment_id,
-      Number(currentAnalyzerId),
-      { cache: "no-cache" }
-    );
-    if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
-    return resp.data;
-  };
-
-  const {
-    data: batches,
-    error,
-    isLoading: isBatchesLoading,
-  } = useQuery<BatchResponse[], Error>(
-    ["batches", { assignment_id, currentAnalyzerId }],
-    fetchBatches,
-    {
-      refetchOnWindowFocus: false,
-    }
-  );
 
   useEffect(() => {
     if (currentBatchId) {
@@ -69,48 +47,31 @@ export default function AnalyzerBatchSelect({
     [searchParams]
   );
 
-
   return (
-    <>
-      {error ? (
-        <div>An error occurred: {error.message}</div>
-      ) : isBatchesLoading ? (
-        <>
-          <Spinner />
-        </>
-      ) : batches && batches.length > 0 ? (
-        <>
-          <Select
-            disallowEmptySelection={true}
-            size="sm"
-            label="Selected batch"
-            placeholder="Select a batch"
-            selectedKeys={selectedBatch ? [selectedBatch] : selectedBatch}
-            onChange={(e) => {
-              if (e.target.value !== "") {
-                handleSelectionChange(e.target.value);
-              }
-            }}
-            aria-label="batch-select"
-          >
-            {batches
-              .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
-              .map((batch) => (
-                <SelectItem
-                  key={batch.id}
-                  value={batch.id}
-                  textValue={format(new Date(batch.timestamp), "PP HH:mm:ss")}
-                >
-                  <>{format(new Date(batch.timestamp), "PP HH:mm:ss")}</>
-                </SelectItem>
-              ))}
-          </Select>
-        </>
-      ) : (
-        <div className="text-center">
-          There are no available batches for this analyzer.
-        </div>
-      )}
-    </>
+      <Select
+        disallowEmptySelection={true}
+        size="sm"
+        label="Selected batch"
+        placeholder="Select a batch"
+        selectedKeys={selectedBatch ? [selectedBatch] : selectedBatch}
+        onChange={(e) => {
+          if (e.target.value !== "") {
+            handleSelectionChange(e.target.value);
+          }
+        }}
+        aria-label="batch-select"
+      >
+        {batches
+          .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+          .map((batch) => (
+            <SelectItem
+              key={batch.id}
+              value={batch.id}
+              textValue={format(new Date(batch.timestamp), "PP HH:mm:ss")}
+            >
+              <>{format(new Date(batch.timestamp), "PP HH:mm:ss")}</>
+            </SelectItem>
+          ))}
+      </Select>
   );
 }

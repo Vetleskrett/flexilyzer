@@ -1,5 +1,5 @@
 # Use an official Python base image
-FROM python:3.11
+FROM nikolaik/python-nodejs:latest
 
 # Set the working directory in the container
 WORKDIR /app
@@ -15,8 +15,14 @@ RUN python -m venv /app/venv && \
     /app/venv/bin/pip install --upgrade pip && \
     /app/venv/bin/pip install -r /app/requirements.txt
 
+RUN npm install lighthouse
+
+RUN apt-get update && apt-get install -y chromium
+
 # Ensure commands and scripts run within the virtual environment
 ENV PATH="/app/venv/bin:$PATH"
+
+ENV CHROME_PATH=/usr/bin/chromium
 
 # # Copy the rest of your application code to the container (as needed)
 # COPY ./${ANALYZER_ID}/main.py /app
