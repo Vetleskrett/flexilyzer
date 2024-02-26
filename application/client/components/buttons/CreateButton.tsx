@@ -3,15 +3,17 @@
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
-export function CreateButton({
-  pushRoute,
-  text,
-  onClickFunction,
-}: {
+type CreateButtonProps = {
   pushRoute?: string;
   text: string;
   onClickFunction?: () => void;
-}) {
+};
+
+const CreateButton = ({
+  pushRoute,
+  text,
+  onClickFunction,
+}: CreateButtonProps) => {
   const { push } = useRouter();
 
   const handleClick = () => {
@@ -27,4 +29,6 @@ export function CreateButton({
       {text}
     </Button>
   );
-}
+};
+
+export default CreateButton;

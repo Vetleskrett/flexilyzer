@@ -2,6 +2,7 @@
 import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useSelectedLayoutSegment } from "next/navigation";
+import BackButton from "@/components/buttons/BackButton";
 
 interface AssignmentDetails {
   left_text: string;
@@ -22,6 +23,7 @@ export default function AssignmentInfo({
     <Card className="mx-2 mt-2 p-0">
       <CardBody>
         <div className="flex flex-row items-center justify-between text-center">
+          <BackButton targetURL={`/courses/${course_id}`}/>
           <div
             className="w-1/4 cursor-pointer text-left"
             onClick={() => {
@@ -34,13 +36,6 @@ export default function AssignmentInfo({
           </div>
 
           <div className="w-1/2">
-            {/* <p className="text-lg">
-              {segment ? (
-                <>Assignment {segment[0].toUpperCase() + segment.slice(1)}</>
-              ) : (
-                "Assignment page"
-              )}
-            </p> */}
             <Tabs
               variant="underlined"
               selectedKey={segment}

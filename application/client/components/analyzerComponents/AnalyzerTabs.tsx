@@ -2,9 +2,9 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { AnalyzerSimplifiedResponse } from "@/extensions/data-contracts";
 import { Tab, Tabs } from "@nextui-org/react";
-import { useCallback } from "react";
-import AnalyzerBatchSelect from "./AnalyzerBatchSelect";
-import CompareModeSwitch from "./CompareModeSwitch";
+import { useCallback, useEffect } from "react";
+import AnalyzerBatchSelect from "../reportPageComponents/AnalyzerBatchSelect";
+import CompareModeSwitch from "../reportPageComponents/CompareModeSwitch";
 
 export default function AnalyzerTabs({
   assignment_analyzers,
@@ -41,13 +41,21 @@ export default function AnalyzerTabs({
     router.push(pathname + "?" + createQueryString("analyzer", key.toString()));
   };
 
-  if (!selectedAnalyzer) {
-    router.push(
-      pathname +
-        "?" +
-        createQueryString("analyzer", assignment_analyzers[0]?.id.toString())
-    );
-  }
+  useEffect(() => {
+    if (!selectedAnalyzer) {
+      router.push(
+        pathname +
+          "?" +
+          createQueryString("analyzer", assignment_analyzers[0]?.id.toString())
+      );
+    }
+  }, [
+    selectedAnalyzer,
+    assignment_analyzers,
+    pathname,
+    createQueryString,
+    router,
+  ]);
 
   return (
     <>

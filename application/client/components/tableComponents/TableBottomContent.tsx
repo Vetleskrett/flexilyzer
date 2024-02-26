@@ -16,7 +16,6 @@ interface BottomContentProps {
   selectedKeys: Selection;
 }
 const BottomContent = ({ tableLength, selectedKeys }: BottomContentProps) => {
-  console.log(selectedKeys);
   return (
     <div className="flex flex-col">
       <div className="flex items-center justify-between p-2">

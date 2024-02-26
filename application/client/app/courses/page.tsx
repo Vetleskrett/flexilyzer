@@ -1,15 +1,16 @@
 import api from "@/utils/apiUtils";
-import { CreateButton } from "@/components/buttons";
+import CreateButton from "@/components/buttons/CreateButton";
 import CourseOverview from "@/components/courseComponents/CourseOverview";
 
 import { CourseResponse } from "@/extensions/data-contracts";
+import BackButton from "@/components/buttons/BackButton";
 
 export default async function Courses() {
   const courses = await api.getAllCourses({ cache: "no-cache" });
 
   return (
     <div>
-      <h2 className='h2'>All courses:</h2>
+      <h2 className="h2">All courses:</h2>
       {courses.data.map((course: CourseResponse) => {
         return (
           <div key={course.id}>
@@ -17,7 +18,7 @@ export default async function Courses() {
           </div>
         );
       })}
-      <div className='flex flex-col items-center'>
+      <div className="flex flex-col items-center">
         <CreateButton pushRoute={"/courses/new"} text={"Create Course"} />
       </div>
     </div>

@@ -51,7 +51,6 @@ export default function AssignmentSideBar({
   );
 
   useEffect(() => {
-    console.log("in sidebar useeffect");
     if (teams && !currentTeamId) {
       router.push(
         pathname + "?" + createQueryString("team_id", `${teams[0].id}`)

@@ -69,7 +69,6 @@ export default function AnalyzerBatchSelect({
     [searchParams]
   );
 
-  console.log(selectedBatch);
 
   return (
     <>

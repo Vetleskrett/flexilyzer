@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CreateButton } from "../buttons";
+import CreateButton from "@/components/buttons/CreateButton";
 
 import {
   Modal,
@@ -100,7 +100,7 @@ const ConnectAssignmentAnalyzer = ({
 
   return (
     <>
-      <CreateButton text='+' onClickFunction={onOpen} />
+      <CreateButton text="+" onClickFunction={onOpen} />
       <Modal
         isOpen={isOpen}
         onOpenChange={() => {
@@ -115,8 +115,8 @@ const ConnectAssignmentAnalyzer = ({
               <ModalBody>
                 {notConnectedAnalyzers.length > 0 ? (
                   <Select
-                    label='Select analyzer'
-                    className='max-w-xs'
+                    label="Select analyzer"
+                    className="max-w-xs"
                     onChange={(e) => {
                       updateSelection(e.target.value);
                     }}
@@ -132,12 +132,12 @@ const ConnectAssignmentAnalyzer = ({
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button color='danger' variant='light' onPress={onClose}>
+                <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
                 <Button
                   isDisabled={!selectedAnalyzer}
-                  color='primary'
+                  color="primary"
                   onPress={() => createConnection(onClose)}
                 >
                   Connect

@@ -27,27 +27,29 @@ export function formatAnalyzerData(formData: FormDataT | AnalyzerResponse) {
 }
 
 export function renderParameter(
-  param: InputParameter | OutputParameter,
+  param: InputParameter | OutputParameter
 ): React.ReactNode {
   switch (param.value_type) {
     case "str":
     case "int":
     case "bool":
       return (
-        <p>
-          <b>{param.key_name}</b>: <Kbd>{param.value_type}</Kbd>
-        </p>
+        <div key={param.id}>
+          <p>
+            <b>{param.key_name}</b>: <Kbd>{param.value_type}</Kbd>
+          </p>
+        </div>
       );
     case "range":
       // Here, check if the parameter has extended_metadata
       if ("extended_metadata" in param && param.extended_metadata) {
         return (
-          <div>
+          <div key={param.id}>
             <p>
               <b>{param.key_name}</b>:{" "}
               <Kbd>
-                int (range: {param.extended_metadata.from_value} -{" "}
-                {param.extended_metadata.to_value})
+                int (range: {param.extended_metadata.fromRange} -{" "}
+                {param.extended_metadata.toRange})
               </Kbd>
             </p>
           </div>
