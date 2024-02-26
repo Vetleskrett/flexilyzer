@@ -151,12 +151,10 @@ export default function AssignmentAnalyzer({
               .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
               .map((batch, i) => {
                 return (
-                  <>
                     <div key={i} className="my-2">
                       {" "}
                       <AnalyzerBatchInfo batch={batch} />
                     </div>
-                  </>
                 );
               })
           )}
