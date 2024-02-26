@@ -22,10 +22,11 @@ export default function NavBar() {
   const router = useRouter();
 
   const menuItems = [
-    { id: 0, display: "Courses", href: "/courses" },
-    { id: 1, display: "Analyzers", href: "/analyzers" },
-    { id: 2, display: "Search", href: "/search" },
-    { id: 3, display: "About", href: "/about" },
+    { display: "Courses", href: "/courses" },
+    { display: "Analyzers", href: "/analyzers" },
+    { display: "Guides", href: "/guides" },
+    { display: "Search", href: "/search" },
+    { display: "About", href: "/about" },
   ];
 
   return (
@@ -52,7 +53,10 @@ export default function NavBar() {
 
       <NavbarContent className='hidden gap-4 sm:flex' justify='center'>
         {menuItems.map((item) => (
-          <NavbarItem key={item.id} isActive={pathName.startsWith(item.href)}>
+          <NavbarItem
+            key={item.display}
+            isActive={pathName.startsWith(item.href)}
+          >
             <Link color='foreground' href={item.href}>
               {item.display}
             </Link>
