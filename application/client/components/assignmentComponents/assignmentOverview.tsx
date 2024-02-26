@@ -31,9 +31,9 @@ export default function AssignmentOverview({
               }}
               color='primary'
             >
-              Team reports
+              View
             </Button>
-            <Button
+            {/* <Button
               onClick={() => {
                 router.push(`/courses/${course_id}/assignments/${id}/overview`);
               }}
@@ -47,7 +47,7 @@ export default function AssignmentOverview({
               }}
             >
               Details
-            </Button>
+            </Button> */}
           </div>
         </div>
       </CardBody>
