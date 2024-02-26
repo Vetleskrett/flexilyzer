@@ -98,7 +98,7 @@ export default function TeamReportsPage({ params }: Props) {
 
   if (!team_id || !batch_id) {
     return (
-      <div>
+      <div className="mt-14 text-center">
         Missing one or more of the following parameters: team ID, batch. Please
         specify both to show report data.
       </div>

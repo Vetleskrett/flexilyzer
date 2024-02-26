@@ -28,11 +28,12 @@ export default function AnalyzerTabs({
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString());
+      params.delete("batch");
       params.set(name, value);
 
       return params.toString();
     },
-    [searchParams],
+    [searchParams]
   );
 
   const handleSelectionChange = (key: React.Key) => {
@@ -44,7 +45,7 @@ export default function AnalyzerTabs({
     router.push(
       pathname +
         "?" +
-        createQueryString("analyzer", assignment_analyzers[0]?.id.toString()),
+        createQueryString("analyzer", assignment_analyzers[0]?.id.toString())
     );
   }
 

@@ -7,9 +7,9 @@ import {
   Selection,
 } from "@nextui-org/react";
 
-import SendIcon from "@mui/icons-material/Send";
 import NotificationImportantIcon from "@mui/icons-material/NotificationImportant";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 interface BottomContentProps {
   tableLength: number;
@@ -35,8 +35,8 @@ const BottomContent = ({ tableLength, selectedKeys }: BottomContentProps) => {
               </Button>
             </DropdownTrigger>
             <DropdownMenu>
-              <DropdownItem startContent={<SendIcon className="h-[18px]" />}>
-                Send Report
+              <DropdownItem startContent={<PictureAsPdfIcon className="h-[18px]" />}>
+                Generate Report
               </DropdownItem>
               <DropdownItem
                 startContent={

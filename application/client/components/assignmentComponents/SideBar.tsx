@@ -60,7 +60,7 @@ export default function AssignmentSideBar({
   }, [teams, createQueryString, pathname, router]);
 
   return (
-    <div className="sticky top-16 flex h-[calc(100vh-80px)] min-w-[100px] flex-col overflow-y-auto border-r p-4">
+    <div className="sticky top-16 flex h-[calc(100vh-200px)] min-w-[100px] flex-col overflow-y-auto border-r p-4">
       <p className="mb-3">Teams:</p>
       <DividerComponent />
       {error ? (

@@ -1,5 +1,5 @@
 "use client";
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useSelectedLayoutSegment } from "next/navigation";
 
@@ -34,13 +34,26 @@ export default function AssignmentInfo({
           </div>
 
           <div className="w-1/2">
-            <p className="text-lg">
+            {/* <p className="text-lg">
               {segment ? (
                 <>Assignment {segment[0].toUpperCase() + segment.slice(1)}</>
               ) : (
                 "Assignment page"
               )}
-            </p>
+            </p> */}
+            <Tabs
+              variant="underlined"
+              selectedKey={segment}
+              onSelectionChange={(e) => {
+                router.push(
+                  `/courses/${course_id}/assignments/${assignment_id}/${e}`
+                );
+              }}
+            >
+              <Tab key="reports" title="Reports"></Tab>
+              <Tab key="overview" title="Overview"></Tab>
+              <Tab key="details" title="Details"></Tab>
+            </Tabs>
           </div>
 
           <div className="w-1/4 text-right">
