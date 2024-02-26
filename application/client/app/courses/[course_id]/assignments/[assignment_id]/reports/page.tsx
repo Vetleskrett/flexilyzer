@@ -5,7 +5,7 @@ import {
   BatchStatsResponse,
   ReportResponse,
 } from "@/extensions/data-contracts";
-import { renderMetrics } from "@/utils/renderReportMetrics";
+import { renderMetrics } from "@/components/reportComponents/renderReportMetrics";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "react-query";
 
