@@ -5,7 +5,7 @@ import {
   BatchStatsResponse,
   ReportResponse,
 } from "@/extensions/data-contracts";
-import { renderMetrics } from "@/utils/renderReportMetrics";
+import { renderMetrics } from "@/components/reportComponents/renderReportMetrics";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "react-query";
 
@@ -98,7 +98,7 @@ export default function TeamReportsPage({ params }: Props) {
 
   if (!team_id || !batch_id) {
     return (
-      <div>
+      <div className="mt-14 text-center">
         Missing one or more of the following parameters: team ID, batch. Please
         specify both to show report data.
       </div>

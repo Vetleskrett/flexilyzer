@@ -5,7 +5,7 @@ import { BatchResponse } from "@/extensions/data-contracts";
 import { Select, SelectItem, Spinner } from "@nextui-org/react";
 import { format } from "date-fns";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
 export default function AnalyzerBatchSelect({
@@ -14,17 +14,20 @@ export default function AnalyzerBatchSelect({
   assignment_id: number;
 }) {
   const pathname = usePathname();
+  const [selectedBatch, setSelectedBatch] = useState<string | undefined>(
+    undefined
+  );
 
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const current_analyzer_id = searchParams.get("analyzer");
-  const current_batch_id = searchParams.get("batch");
+  const currentAnalyzerId = searchParams.get("analyzer");
+  const currentBatchId = searchParams.get("batch");
 
   const fetchBatches = async () => {
     const resp = await api.getAssignmentAnalyzersBatches(
       assignment_id,
-      Number(current_analyzer_id),
+      Number(currentAnalyzerId),
       { cache: "no-cache" }
     );
     if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
@@ -36,12 +39,20 @@ export default function AnalyzerBatchSelect({
     error,
     isLoading: isBatchesLoading,
   } = useQuery<BatchResponse[], Error>(
-    ["batches", { assignment_id, current_analyzer_id }],
+    ["batches", { assignment_id, currentAnalyzerId }],
     fetchBatches,
     {
       refetchOnWindowFocus: false,
     }
   );
+
+  useEffect(() => {
+    if (currentBatchId) {
+      setSelectedBatch(currentBatchId);
+    } else {
+      setSelectedBatch(undefined);
+    }
+  }, [currentAnalyzerId, currentBatchId]);
 
   const handleSelectionChange = (key: string) => {
     // Update the URL with the new search parameters
@@ -58,6 +69,8 @@ export default function AnalyzerBatchSelect({
     [searchParams]
   );
 
+  console.log(selectedBatch);
+
   return (
     <>
       {error ? (
@@ -70,16 +83,16 @@ export default function AnalyzerBatchSelect({
         <>
           <Select
             disallowEmptySelection={true}
-            size='sm'
-            label='Selected batch'
-            placeholder='Select a batch'
-            selectedKeys={current_batch_id ? [current_batch_id] : undefined}
+            size="sm"
+            label="Selected batch"
+            placeholder="Select a batch"
+            selectedKeys={selectedBatch ? [selectedBatch] : selectedBatch}
             onChange={(e) => {
               if (e.target.value !== "") {
                 handleSelectionChange(e.target.value);
               }
             }}
-            aria-label='batch-select'
+            aria-label="batch-select"
           >
             {batches
               .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
@@ -95,7 +108,7 @@ export default function AnalyzerBatchSelect({
           </Select>
         </>
       ) : (
-        <div className='text-center'>
+        <div className="text-center">
           There are no available batches for this analyzer.
         </div>
       )}
