@@ -1,7 +1,7 @@
 "use client";
 import DividerComponent from "../DividerComponent";
 
-import api from "@/api_utils";
+import api from "@/utils/apiUtils";
 import { useQuery } from "react-query";
 import { TeamResponse } from "@/extensions/data-contracts";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
@@ -60,8 +60,8 @@ export default function AssignmentSideBar({
   }, [teams, createQueryString, pathname, router]);
 
   return (
-    <div className="sticky top-16 flex h-[calc(100vh-80px)] min-w-[100px] flex-col overflow-y-auto border-r p-4">
-      <p className="mb-3">Teams:</p>
+    <div className='sticky top-16 flex h-[calc(100vh-80px)] min-w-[100px] flex-col overflow-y-auto border-r p-4'>
+      <p className='mb-3'>Teams:</p>
       <DividerComponent />
       {error ? (
         <div>An error occured: {error.message}</div>
@@ -72,7 +72,7 @@ export default function AssignmentSideBar({
         teams.map((team) => (
           <div
             key={team.id}
-            className="mb-2 cursor-pointer"
+            className='mb-2 cursor-pointer'
             onClick={() => {
               router.push(
                 pathname + "?" + createQueryString("team_id", `${team.id}`)

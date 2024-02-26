@@ -1,4 +1,4 @@
-import api from "@/api_utils";
+import api from "@/utils/apiUtils";
 import { CreateButton } from "@/components/buttons";
 import CourseOverview from "@/components/courseComponents/CourseOverview";
 

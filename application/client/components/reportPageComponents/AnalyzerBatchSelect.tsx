@@ -1,6 +1,6 @@
 "use client";
 
-import api from "@/api_utils";
+import api from "@/utils/apiUtils";
 import { BatchResponse } from "@/extensions/data-contracts";
 import { Select, SelectItem, Spinner } from "@nextui-org/react";
 import { format } from "date-fns";

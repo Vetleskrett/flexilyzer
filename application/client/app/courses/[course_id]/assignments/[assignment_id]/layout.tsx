@@ -1,4 +1,4 @@
-import api from "@/api_utils";
+import api from "@/utils/apiUtils";
 import AssignmentInfo from "@/components/assignmentComponents/AssignmentInfo";
 
 export default async function AssignmentOverviewLayout({
@@ -19,8 +19,8 @@ export default async function AssignmentOverviewLayout({
 
   return (
     <>
-      <div className="flex flex-row">
-        <div className="grow">
+      <div className='flex flex-row'>
+        <div className='grow'>
           <AssignmentInfo
             left_text={`${assignment_details.data.name} (${course.data.tag}
     ${course.data.name && `- ${course.data.name}`})`}
