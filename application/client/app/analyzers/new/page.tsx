@@ -7,7 +7,7 @@ import BasicInfoStep from "@/components/createAnalyzerComponents/BasicInfoStep";
 import OutputParamsStep from "@/components/createAnalyzerComponents/OutputParamsStep";
 import InputParameters from "@/components/createAnalyzerComponents/InputParamsStep";
 
-import api from "@/api_utils";
+import api from "@/utils/apiUtils";
 import { formatAnalyzerData } from "@/components/analyzerComponents/analyzerUtils";
 import { useSnackbar } from "@/context/snackbarContext";
 import { useRouter } from "next/navigation";
@@ -79,14 +79,14 @@ export default function NewAnalyzerPage() {
       case 2:
         const allInputFieldsValid = formData.inputs.every(
           (input) =>
-            input.key_name.trim() !== "" && input.value_type.trim() !== "",
+            input.key_name.trim() !== "" && input.value_type.trim() !== ""
         );
 
         const allInputNamesUnique = formData.inputs.every(
           (input, index, self) =>
             self.findIndex(
-              (i) => i.key_name.toLowerCase() === input.key_name.toLowerCase(),
-            ) === index,
+              (i) => i.key_name.toLowerCase() === input.key_name.toLowerCase()
+            ) === index
         );
 
         return allInputFieldsValid && allInputNamesUnique;
@@ -94,14 +94,14 @@ export default function NewAnalyzerPage() {
       case 3:
         const allOutputFieldsValid = formData.outputs.every(
           (output) =>
-            output.key_name.trim() !== "" && output.value_type.trim() !== "",
+            output.key_name.trim() !== "" && output.value_type.trim() !== ""
         );
 
         const allOutputNamesUnique = formData.outputs.every(
           (output, index, self) =>
             self.findIndex(
-              (i) => i.key_name.toLowerCase() === output.key_name.toLowerCase(),
-            ) === index,
+              (i) => i.key_name.toLowerCase() === output.key_name.toLowerCase()
+            ) === index
         );
 
         return allOutputFieldsValid && allOutputNamesUnique;
@@ -109,16 +109,16 @@ export default function NewAnalyzerPage() {
   }
 
   return (
-    <div className="relative min-h-screen-minus-navbar">
-      <Progress value={(currentStep / TOTAL_STEPS) * 100} className="my-8" />
+    <div className='relative min-h-screen-minus-navbar'>
+      <Progress value={(currentStep / TOTAL_STEPS) * 100} className='my-8' />
       {renderStep()}
-      <div className="absolute inset-x-0 bottom-5 px-4">
-        <div className="flex justify-between">
+      <div className='absolute inset-x-0 bottom-5 px-4'>
+        <div className='flex justify-between'>
           {/* Back button on the left */}
           {currentStep > 1 ? (
             <Button onClick={prevStep}>Back</Button>
           ) : (
-            <div className="opacity-0">
+            <div className='opacity-0'>
               <Button disabled>Back</Button>
             </div>
           )}
@@ -133,9 +133,9 @@ export default function NewAnalyzerPage() {
                   : "All Key Names must be non-empty and unique"
               }
             >
-              <span className="inline-block" style={{ cursor: "not-allowed" }}>
+              <span className='inline-block' style={{ cursor: "not-allowed" }}>
                 <Button
-                  color="primary"
+                  color='primary'
                   isDisabled={!isCurrentStepValid()}
                   onClick={nextStep}
                 >
@@ -144,7 +144,7 @@ export default function NewAnalyzerPage() {
               </span>
             </Tooltip>
           ) : (
-            <Button color="primary" onClick={submitForm}>
+            <Button color='primary' onClick={submitForm}>
               Submit Analyzer
             </Button>
           )}

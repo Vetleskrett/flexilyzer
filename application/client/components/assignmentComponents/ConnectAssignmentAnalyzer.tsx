@@ -15,7 +15,7 @@ import {
   SelectItem,
 } from "@nextui-org/react";
 
-import api from "@/api_utils";
+import api from "@/utils/apiUtils";
 import { AnalyzerSimplifiedResponse } from "@/extensions/data-contracts";
 import { useQuery } from "react-query";
 import { useSnackbar } from "@/context/snackbarContext";

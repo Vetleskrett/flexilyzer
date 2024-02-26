@@ -1,4 +1,4 @@
-import api from "@/api_utils";
+import api from "@/utils/apiUtils";
 import { FormDataT } from "@/types/analyzerDefinitions";
 import { Button } from "@nextui-org/react";
 
@@ -48,10 +48,10 @@ export default function CodeTemplate({ formData }: { formData: FormDataT }) {
       {codeTemplate && (
         <>
           <CodeDisplay code_string={codeTemplate} />
-          <div className="mt-4 flex justify-center">
+          <div className='mt-4 flex justify-center'>
             <Button
               startContent={<ContentCopyIcon />}
-              color="secondary"
+              color='secondary'
               onClick={copyToClipboard}
             >
               Copy code

@@ -1,5 +1,5 @@
 "use client";
-import api from "@/api_utils";
+import api from "@/utils/apiUtils";
 import { useSnackbar } from "@/context/snackbarContext";
 import { Button, Spinner } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
@@ -36,7 +36,7 @@ export default function AnalyzerMissingScript({
           description: analyzer.description,
           inputs: inputs,
           outputs: outputs,
-        }),
+        })
       );
 
       if (resp.ok) {
@@ -49,12 +49,12 @@ export default function AnalyzerMissingScript({
   }, [analyzer, inputs, outputs]);
 
   const [selectedScriptFile, setSelectedScriptFile] = useState<File | null>(
-    null,
+    null
   );
   const [selectedReqFile, setSelectedReqFile] = useState<File | null>(null);
 
   const handleScriptFileChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (event.target.files) {
       setSelectedScriptFile(event.target.files[0]);
@@ -68,7 +68,7 @@ export default function AnalyzerMissingScript({
   };
 
   const handleScriptSubmit = async (
-    event: React.FormEvent<HTMLFormElement>,
+    event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
     if (!selectedScriptFile) {
@@ -118,55 +118,55 @@ export default function AnalyzerMissingScript({
 
   return (
     <>
-      <div className="flex w-full flex-col items-center">
+      <div className='flex w-full flex-col items-center'>
         <Tabs>
-          <Tab key="template" title="Script Template">
+          <Tab key='template' title='Script Template'>
             <Suspense fallback={<Spinner />}>
-              <div className="mt-6">
+              <div className='mt-6'>
                 <CodeDisplay code_string={codeTemplate ? codeTemplate : ""} />
               </div>
             </Suspense>
           </Tab>
-          <Tab key="upload_script" title="Upload script">
-            <div className="mt-6">
+          <Tab key='upload_script' title='Upload script'>
+            <div className='mt-6'>
               <form
-                className="flex flex-col items-center justify-center"
+                className='flex flex-col items-center justify-center'
                 onSubmit={handleScriptSubmit}
               >
                 <input
-                  type="file"
-                  id="fileInput"
-                  accept=".py"
+                  type='file'
+                  id='fileInput'
+                  accept='.py'
                   onChange={handleScriptFileChange}
                 />
 
                 <br />
                 <Button
                   isDisabled={selectedScriptFile == null ? true : false}
-                  color="primary"
-                  type="submit"
+                  color='primary'
+                  type='submit'
                 >
                   Upload Script
                 </Button>
               </form>
             </div>
           </Tab>
-          <Tab key="upload_req" title="Upload Requirements">
-            <div className="mt-6">
+          <Tab key='upload_req' title='Upload Requirements'>
+            <div className='mt-6'>
               <form
-                className="flex flex-col items-center justify-center"
+                className='flex flex-col items-center justify-center'
                 onSubmit={handleReqSubmit}
               >
                 <input
-                  type="file"
-                  accept=".txt"
+                  type='file'
+                  accept='.txt'
                   onChange={handleReqFileChange}
                 />
                 <br />
                 <Button
                   isDisabled={selectedReqFile == null ? true : false}
-                  color="primary"
-                  type="submit"
+                  color='primary'
+                  type='submit'
                 >
                   Upload Requirements
                 </Button>

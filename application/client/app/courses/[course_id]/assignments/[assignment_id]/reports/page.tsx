@@ -1,5 +1,5 @@
 "use client";
-import api from "@/api_utils";
+import api from "@/utils/apiUtils";
 import {
   AnalyzerOutputResponse,
   BatchStatsResponse,
@@ -27,7 +27,7 @@ export default function TeamReportsPage({ params }: Props) {
       params.assignment_id,
       Number(team_id),
       Number(batch_id),
-      { cache: "no-cache" },
+      { cache: "no-cache" }
     );
     if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
     return resp.data;
@@ -62,7 +62,7 @@ export default function TeamReportsPage({ params }: Props) {
       // Only proceed with the query if team_id is not null
       enabled: !!team_id && !!batch_id,
       retry: false,
-    },
+    }
   );
 
   const {
@@ -77,7 +77,7 @@ export default function TeamReportsPage({ params }: Props) {
       // Only proceed with the query if team_id is not null
       enabled: !!team_id && !!batch_id,
       retry: false,
-    },
+    }
   );
 
   const {
@@ -93,7 +93,7 @@ export default function TeamReportsPage({ params }: Props) {
       enabled: isCompareMode,
       retry: false,
       staleTime: Infinity,
-    },
+    }
   );
 
   if (!team_id || !batch_id) {
@@ -111,14 +111,14 @@ export default function TeamReportsPage({ params }: Props) {
 
   if (errorReport || errorAnalyzer || errorStats) {
     return (
-      <div className="mt-14 text-center">
+      <div className='mt-14 text-center'>
         An error occurred while trying to fetch report.
       </div>
     );
   }
 
   return (
-    <div className="m-8 flex flex-row flex-wrap gap-6">
+    <div className='m-8 flex flex-row flex-wrap gap-6'>
       {report &&
         analyzerOutputs &&
         renderMetrics(report, analyzerOutputs, batchStats)}

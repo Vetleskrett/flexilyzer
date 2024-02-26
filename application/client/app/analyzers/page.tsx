@@ -1,4 +1,4 @@
-import api from "@/api_utils";
+import api from "@/utils/apiUtils";
 import AnalyzerOverview from "@/components/analyzerComponents/AnalyzerOverview";
 import { CreateButton } from "@/components/buttons";
 
@@ -7,11 +7,11 @@ export default async function Analyzers() {
 
   return (
     <div>
-      <h2 className="h2">All Analyzers:</h2>
+      <h2 className='h2'>All Analyzers:</h2>
       {analyzers.data.map((analyzer) => {
         return <AnalyzerOverview key={analyzer.id} analyzer={analyzer} />;
       })}
-      <div className="flex flex-col items-center">
+      <div className='flex flex-col items-center'>
         <CreateButton pushRoute={"/analyzers/new"} text={"New Analyzer"} />
       </div>
     </div>

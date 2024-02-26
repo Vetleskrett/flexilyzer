@@ -1,7 +1,7 @@
 "use client";
 import DividerComponent from "../DividerComponent";
 
-import api from "@/api_utils";
+import api from "@/utils/apiUtils";
 import { useQuery } from "react-query";
 import { TeamResponse } from "@/extensions/data-contracts";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";

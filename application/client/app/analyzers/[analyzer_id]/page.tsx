@@ -1,4 +1,4 @@
-import api from "@/api_utils";
+import api from "@/utils/apiUtils";
 import AnalyzerScriptDisplay from "@/components/analyzerComponents/AnalyzerScriptDisplay";
 import AnalyzerSummary from "@/components/analyzerComponents/AnalyzerSummary";
 import AnalyzerMissingScript from "@/components/analyzerComponents/AnalyzerMissingScript";
@@ -29,19 +29,19 @@ export default async function Analyzer({ params }: Props) {
 
   return (
     <>
-      <div className="flex w-full justify-between p-4 pt-1">
-        <div className="max-w-50p grow p-4 text-center">
-          <h2 className="h2">Summary</h2>
+      <div className='flex w-full justify-between p-4 pt-1'>
+        <div className='max-w-50p grow p-4 text-center'>
+          <h2 className='h2'>Summary</h2>
           <AnalyzerSummary
             analyzer={analyzer}
             inputs={inputs}
             outputs={outputs}
           />
         </div>
-        <div className="max-w-50p grow p-4">
-          <h2 className="h2 text-center">Analyzer</h2>
+        <div className='max-w-50p grow p-4'>
+          <h2 className='h2 text-center'>Analyzer</h2>
           {analyzer.has_script ? (
-            <div className="mt-4 flex items-start justify-center">
+            <div className='mt-4 flex items-start justify-center'>
               <AnalyzerScriptDisplay
                 analyzer_id={analyzer.id}
                 script={script ? script?.data : null}
@@ -53,7 +53,7 @@ export default async function Analyzer({ params }: Props) {
             </div>
           ) : (
             <>
-              <div className="mt-4 flex items-start justify-center">
+              <div className='mt-4 flex items-start justify-center'>
                 <AnalyzerMissingScript
                   analyzer={analyzer}
                   inputs={inputs}
