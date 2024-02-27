@@ -17,7 +17,7 @@ def generate_template(
 
     output_class_fields = "\n    ".join(
         [
-            f"{output.key_name}: {ValueTypesMapping[output.value_type.value].value}=None"
+            f"{output.key_name}: Optional[{ValueTypesMapping[output.value_type.value].value}]"
             for output in outputs
         ]
     )
@@ -36,7 +36,9 @@ def generate_template(
 
     template = f"""import json
 import os
+from typing import Optional
 from pydantic import BaseModel
+
 
 {output_class}
 
