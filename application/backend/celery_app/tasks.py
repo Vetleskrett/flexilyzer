@@ -30,8 +30,6 @@ def run_analyzer(project_ids: list[int], batch_id: int):
     assignment_id = batch.assignment_id
 
     # construct paths
-    base_path = Path(settings.BASE_DIR) / str(analyzer_id)
-    script_path = base_path / settings.DEFAULT_SCRIPT_NAME
     container_base_path = Path("/app")
     container_script_path = container_base_path / settings.DEFAULT_SCRIPT_NAME
     dockerfile_path = Path(settings.BASE_DIR)
@@ -47,12 +45,6 @@ def run_analyzer(project_ids: list[int], batch_id: int):
         container: Container = client.containers.create(
             f"analyzer-app:{analyzer_id}",
             "tail -f /dev/null",
-            volumes={
-                str(script_path.resolve()): {
-                    "bind": str(container_script_path),
-                    "mode": "ro",
-                },
-            },
             detach=True,
         )
         container.start()
@@ -78,6 +70,7 @@ def run_analyzer(project_ids: list[int], batch_id: int):
                     try:
                         parsed_result = json.loads(result.output.decode("utf-8"))
                     except json.JSONDecodeError as e:
+                        print(result.output)
                         print(e)
                         errors = True
                     else:
@@ -121,9 +114,9 @@ def run_analyzer(project_ids: list[int], batch_id: int):
         )
 
     finally:
-        pass
-        # container.stop()
-        # container.remove()
+        # pass
+        container.stop()
+        container.remove()
 
 
 # from utils.fileUtils import create_if_not_exists, script_exists, venv_exists

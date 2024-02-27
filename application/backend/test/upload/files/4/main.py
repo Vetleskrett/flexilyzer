@@ -1,69 +1,93 @@
-import requests
-from datetime import datetime
-from typing import Dict
 import json
-
-import mq
-
-project_id = 72724
-
-
-def fetch_git(url, params):
-    git_response = requests.get(url, params=params)
-
-    return git_response
+import os
+from pydantic import BaseModel
+import subprocess
 
 
-@mq.consumer("analyzer")
-@mq.publisher("done")
-def get_total_count(project_id):
-    """Example function for analyzing gitlab repo"""
+class Return(BaseModel):
+    hasHTTPS: bool
+    first_contentful_paint: int
+    first_meaningful_paint: int
+    speed_index: int
+    no_redirects: bool
+    responsive_images: bool
+    has_console_errors: bool
 
-    project_id = project_id.decode()
-    url = f"https://gitlab.com/api/v4/projects/{project_id}/repository/commits"
-    total_count = 0
-    page = 1
-    per_page = 100
 
-    commits_per_day: Dict[str:int] = {}
-    commits_per_user: Dict[str:int] = {}
-
-    while True:
-        response = fetch_git(url, {"per_page": per_page, "page": page})
-
-        if response.status_code == 200:
-            items = response.json()
-            total_count += len(items)
-            print(total_count)
-            for commit in items:
-                author_name = commit.get("author_name")
-                authored_date = commit.get("authored_date")
-
-                # Update the commits_per_user dictionary
-                if author_name:
-                    commits_per_user[author_name] = (
-                        commits_per_user.get(author_name, 0) + 1
-                    )
-
-                # Parse the authored_date string to a datetime object and format it to keep only the date part
-                if authored_date:
-                    date_obj = datetime.strptime(
-                        authored_date, "%Y-%m-%dT%H:%M:%S.%f%z"
-                    )
-                    date_str = date_obj.strftime("%Y-%m-%d")
-
-                    # Update the commits_per_day dictionary
-
-                    commits_per_day[date_str] = commits_per_day.get(date_str, 0) + 1
-
-        # Check if more commits to fetch
-        if len(items) < per_page:
-            break
-
-        page += 1
-
-    report = json.dumps(
-        {"1": total_count, "2": commits_per_user, "commits per day": commits_per_day}
+def run_lighthouse(url: str):
+    """Function for running the lighthouse command in cmd line"""
+    output_file = (
+        f"{url.replace('http://', '').replace('https://', '').replace('/', '_')}.json"
     )
 
+    if not url.startswith("https://"):
+        url = "https://" + url
+
+    command = [
+        "npx",
+        "lighthouse",
+        url,
+        "--quiet",
+        "--output=json",
+        f"--output-path={output_file}",
+        '--chrome-flags="--headless --no-sandbox --disable-gpu --no-enable-error-reporting "',
+    ]
+    subprocess.run(command, stderr=subprocess.DEVNULL)
+    return output_file
+
+
+def read_lighthouse_report(file_path: str):
+    """Function for reading the newly generated report"""
+    with open(file_path, "r") as file:
+        report = json.load(file)
+
     return report
+
+
+def safe_int(value, multiplier=100):
+    """Safely convert a value to an int, applying a multiplier, or return None if conversion is not possible."""
+    try:
+        return int(value * multiplier)
+    except (TypeError, ValueError):
+        return 0
+
+
+def lighthouse_analyzer(url):
+    # Assuming run_lighthouse and read_lighthouse_report are defined elsewhere
+    output_file = run_lighthouse(url)  # Run lighthouse and get file name in return
+    report = read_lighthouse_report(output_file)  # Load newly generated report
+
+    # Safely extract and convert report values, defaulting to None on failure
+    cleaned_report = {
+        "hasHTTPS": report.get("audits", {}).get("is-on-https", {}).get("score") == 1,
+        "first_contentful_paint": safe_int(
+            report.get("audits", {}).get("first-contentful-paint", {}).get("score")
+        ),
+        "first_meaningful_paint": safe_int(
+            report.get("audits", {}).get("first-meaningful-paint", {}).get("score")
+        ),
+        "speed_index": safe_int(
+            report.get("audits", {}).get("speed-index", {}).get("score")
+        ),
+        "no_redirects": report.get("audits", {}).get("redirects", {}).get("score") == 1,
+        "responsive_images": report.get("audits", {})
+        .get("image-size-responsive", {})
+        .get("score")
+        == 1,
+        "has_console_errors": report.get("audits", {})
+        .get("errors-in-console", {})
+        .get("score")
+        == 1,
+    }
+
+    # Assuming Return is a constructor for a result object
+    return Return(**cleaned_report)
+
+
+def main(url: str) -> Return:
+    return lighthouse_analyzer(url)
+
+
+if __name__ == "__main__":
+    url = str(os.getenv("URL"))
+    print(json.dumps(main(url).model_dump()))

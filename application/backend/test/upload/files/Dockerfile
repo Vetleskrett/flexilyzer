@@ -24,10 +24,9 @@ ENV PATH="/app/venv/bin:$PATH"
 
 ENV CHROME_PATH=/usr/bin/chromium
 
-# # Copy the rest of your application code to the container (as needed)
-# COPY ./${ANALYZER_ID}/main.py /app
+# Copy the rest of your application code to the container (as needed)
+COPY ./${ANALYZER_ID}/main.py /app
 
 # Keep the container running for service-like behavior (adjust as needed)
 CMD ["tail", "-f", "/dev/null"]
-
 

@@ -1,11 +1,13 @@
 import json
 from fastapi import HTTPException
-from schemas.shared import ValueTypesOutput
+from schemas.shared import BatchEnum, ValueTypesOutput
 from db.crud.reports_crud import ReportRepository
 from services.reports_service import ReportService
 from services.analyzers_service import AnalyzerService
 from services.assignments_service import AssignmentService
+from services.teams_service import TeamService
 from db.crud.batches_crud import BatchesRepository
+from db.crud.assignments_crud import AssignmentRepository
 
 
 class BatchService:
@@ -138,3 +140,28 @@ class BatchService:
         BatchService.get_batch(db=db, batch_id=batch_id)
 
         return ReportRepository.get_batch_reports(db, batch_id)
+
+    @staticmethod
+    def get_assignment_team_projects_reports_batch(
+        db, assignment_id: int, team_id: int, batch_id: int
+    ):
+
+        batch = BatchService.get_batch(db, batch_id)
+
+        if batch.status in [BatchEnum.STARTED, BatchEnum.RUNNING]:
+            raise HTTPException(
+                status_code=404,
+                detail=f"The batch you are trying to fetch report from is not successfully finished. Batch status: {BatchEnum(batch.status).value}",
+            )
+        AssignmentService.get_assignment(db, assignment_id)
+        TeamService.get_team(db, team_id)
+
+        report = AssignmentRepository.get_assignment_team_projects_reports_batch(
+            db, assignment_id=assignment_id, team_id=team_id, batch_id=batch_id
+        )
+        if report is None:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Could not find report for Team with ID {team_id} in Batch with ID {batch_id}",
+            )
+        return report

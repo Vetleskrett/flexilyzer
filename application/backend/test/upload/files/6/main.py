@@ -23,7 +23,7 @@ def run_lighthouse(url: str):
     command = [
         "npx",
         "lighthouse",
-        url,
+        "https://vg.no",
         "--output=json",
         f"--output-path={output_file}",
         '--chrome-flags="--headless --no-sandbox"',
@@ -47,37 +47,29 @@ def lighthouse_analyzer(url):
     # Load newly generated report
     report: json = read_lighthouse_report(output_file)
 
-    cleaned_report = json.dumps(
-        {
-            "hasHTTPS": (
-                True if report["audits"]["is-on-https"]["score"] == 1 else False
-            ),
-            "first_contentful_paint": report["audits"]["first-contentful-paint"][
-                "score"
-            ]
-            * 100,
-            "first_meaningful_paint": report["audits"]["first-meaningful-paint"][
-                "score"
-            ]
-            * 100,
-            "speed_index": report["audits"]["speed-index"]["score"] * 100,
-            "no_redirects": (
-                True if report["audits"]["redirects"]["score"] == 1 else False
-            ),
-            "responsive_images": (
-                True
-                if report["audits"]["image-size-responsive"]["score"] == 1
-                else False
-            ),
-            "has_console_errors": (
-                True if report["audits"]["errors-in-console"]["score"] == 1 else False
-            ),
-        }
-    )
-    return cleaned_report
+    cleaned_report = {
+        "hasHTTPS": (True if report["audits"]["is-on-https"]["score"] == 1 else False),
+        "first_contentful_paint": report["audits"]["first-contentful-paint"]["score"]
+        * 100,
+        "first_meaningful_paint": report["audits"]["first-meaningful-paint"]["score"]
+        * 100,
+        "speed_index": report["audits"]["speed-index"]["score"] * 100,
+        "no_redirects": (
+            True if report["audits"]["redirects"]["score"] == 1 else False
+        ),
+        "responsive_images": (
+            True if report["audits"]["image-size-responsive"]["score"] == 1 else False
+        ),
+        "has_console_errors": (
+            True if report["audits"]["errors-in-console"]["score"] == 1 else False
+        ),
+    }
+
+    return Return(**cleaned_report)
 
 
 def main(url: str) -> Return:
+    url = "https://vg.no"
     return lighthouse_analyzer(url)
 
 
