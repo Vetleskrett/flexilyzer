@@ -86,7 +86,7 @@ export default function AssignmentAnalyzer({
 
   return (
     <>
-      <Card className='h-[500px] w-[350px] bg-slate-100 p-2 shadow-sm'>
+      <Card className='h-[500px] min-w-[300px] bg-slate-100 p-2 shadow-sm'>
         <h3
           className='h3 mt-3 cursor-pointer text-center text-blue-500'
           onClick={() => {
