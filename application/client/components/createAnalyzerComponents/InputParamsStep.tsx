@@ -39,14 +39,14 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
   };
   return (
     <>
-      <div className="pb-16">
-        <h2 className="h2">Input Parameters</h2>
+      <div className='pb-16'>
+        <h2 className='h2'>Input Parameters</h2>
         {formData.inputs.map((param, index) => (
-          <div key={param.id} className="mb-4 flex items-center space-x-2">
+          <div key={param.id} className='mb-4 flex items-center space-x-2'>
             <Input
               isRequired
-              label="Key Name"
-              placeholder="Enter key name"
+              label='Key Name'
+              placeholder='Enter key name'
               value={param.key_name}
               onChange={(e) => {
                 // Regular expression: starts with a lowercase letter, followed by any mix of lowercase, uppercase letters, or underscores
@@ -59,8 +59,9 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
 
             <Select
               isRequired
-              label="Select value type"
-              className="max-w-xs"
+              disallowEmptySelection
+              label='Select value type'
+              className='max-w-xs'
               value={param.value_type}
               defaultSelectedKeys={[param.value_type]}
               onChange={(e) => {
@@ -78,13 +79,13 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
               </SelectItem>
             </Select>
             {/* Optional: Button to remove this parameter */}
-            <Button color="danger" onClick={() => removeInputParameter(index)}>
+            <Button color='danger' onClick={() => removeInputParameter(index)}>
               Remove
             </Button>
           </div>
         ))}
-        <div className="flex w-full justify-center">
-          <Button color="secondary" onClick={addInputParameter}>
+        <div className='flex w-full justify-center'>
+          <Button color='secondary' onClick={addInputParameter}>
             Add Parameter
           </Button>
         </div>
