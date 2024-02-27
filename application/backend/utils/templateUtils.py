@@ -17,7 +17,7 @@ def generate_template(
 
     output_class_fields = "\n    ".join(
         [
-            f"{output.key_name}: {ValueTypesMapping[output.value_type.value].value}"
+            f"{output.key_name}: {ValueTypesMapping[output.value_type.value].value}=None"
             for output in outputs
         ]
     )

@@ -32,6 +32,9 @@ def validate_type(key, value, expected_type, extended_metadata=None):
             print(f"Error decoding extended_metadata for key {key}")
             return False, "Error decoding extended_metadata"
 
+    if isinstance(value, None):
+        return True, ""
+
     if expected_type == ValueTypesOutput.range:
         if not isinstance(value, (int, float)):
             return False, f"{base_error_msg}, got {type(value).__name__}"
@@ -77,6 +80,7 @@ def validate_report(report, required_outputs):
         valid, error_message = validate_type(
             key, report[key], specs["value_type"], specs.get("extended_metadata")
         )
+
         if not valid:
             errors.append(error_message)
 
