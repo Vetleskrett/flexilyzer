@@ -14,14 +14,19 @@ const filterReports = (
     return teamReports.every((report) => {
       let passesFilters = true;
 
-      Object.entries(filterState).forEach(([key, filter]) => {
+      for (const [key, filter] of Object.entries(filterState)) {
         const output = allFlatMappedOutputs.find(
           (output) => output.id === Number(key)
         );
         if (output === undefined) {
-          return;
+          continue;
         }
-        const reportValue = report.report[output?.key_name];
+
+        const reportValue = report.report[output.key_name];
+
+        if (reportValue === undefined) {
+          continue;
+        }
 
         switch (filter.value_type) {
           case ValueTypesOutput.Bool:
@@ -45,7 +50,7 @@ const filterReports = (
             }
             break;
         }
-      });
+      }
 
       return passesFilters;
     });
