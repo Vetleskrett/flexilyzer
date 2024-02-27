@@ -23,19 +23,19 @@ export default async function AssignmentDetails({ params }: Props) {
 
   return (
     <>
-      <div className='grow'>
+      <div className="grow">
         <AssignmentMetadata metadata={assignment_metadata.data} />
       </div>
-      <div className='relative my-8 flex items-center justify-center text-center'>
-        <h3 className='h3'>Connected analyzers:</h3>
-        <div className='absolute right-0 top-1/2 -translate-y-1/2'>
+      <div className="relative my-8 flex items-center justify-center text-center">
+        <h3 className="h3">Connected analyzers:</h3>
+        <div className="absolute right-0 top-1/2 -translate-y-1/2">
           <ConnectAssignmentAnalyzer
             assignment_id={params.assignment_id}
             connected_analyzers={analyzers.data}
           />
         </div>
       </div>
-      <div className='flex space-x-4 overflow-x-auto p-2'>
+      <div className="flex space-x-4 max-w-[1500px] overflow-x-auto p-2">
         {analyzers.data.map((analyzer) => {
           return (
             <>

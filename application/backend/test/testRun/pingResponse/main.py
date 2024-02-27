@@ -6,7 +6,7 @@ import requests
 
 class Return(BaseModel):
     successful_response: bool
-    status_code: int | None = None
+    status_code: int
 
 
 def check_web_server(url):
@@ -21,9 +21,8 @@ def check_web_server(url):
         resp_obj["status_code"] = response.status_code
 
     except requests.exceptions.RequestException as e:
-        resp_obj["status_code"] = None
+        resp_obj["status_code"] = 504
         resp_obj["successful_response"] = False
-
     return resp_obj
 
 

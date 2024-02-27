@@ -23,6 +23,9 @@ const renderCell = (
   );
   if (!output) return value;
 
+  if (value === null) {
+    return <p className="font-light">Null</p>;
+  }
   switch (output.value_type) {
     case ValueTypesOutput.Range:
       interface RangeMetadata {
@@ -46,14 +49,14 @@ const renderCell = (
           >
             <Progress
               aria-label={output.key_name}
-              size='md'
+              size="md"
               value={value}
               minValue={extendedMetadata.fromRange}
               maxValue={extendedMetadata.toRange}
               color={
                 value / extendedMetadata.toRange > 0.65 ? "success" : "warning"
               }
-              className='max-w-md'
+              className="max-w-md"
             />
           </Tooltip>
         )
@@ -64,10 +67,10 @@ const renderCell = (
       return (
         value !== undefined && (
           <Chip
-            size='sm'
-            variant='solid'
+            size="sm"
+            variant="solid"
             color={(value as boolean) ? "success" : "danger"}
-            className='text-white'
+            className="text-white"
           >
             {value ? "True" : "False"}
           </Chip>

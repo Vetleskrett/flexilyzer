@@ -32,7 +32,7 @@ def validate_type(key, value, expected_type, extended_metadata=None):
             print(f"Error decoding extended_metadata for key {key}")
             return False, "Error decoding extended_metadata"
 
-    if isinstance(value, None):
+    if isinstance(value, type(None)):
         return True, ""
 
     if expected_type == ValueTypesOutput.range:
