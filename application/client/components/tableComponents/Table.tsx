@@ -211,7 +211,7 @@ export default function OverviewTable({
   };
 
   return (
-    <div className="mt-8 max-w-screen-2xl overflow-auto px-2 pb-2">
+    <div className="mt-8 max-w-[1500px] overflow-auto px-2 pb-2">
       <Table
         aria-label="overview table"
         bottomContent={bottomContent}
