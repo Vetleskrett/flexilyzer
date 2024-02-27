@@ -1,69 +1,96 @@
-import requests
-from datetime import datetime
-from typing import Dict
 import json
-
-import mq
-
-project_id = 72724
-
-
-def fetch_git(url, params):
-    git_response = requests.get(url, params=params)
-
-    return git_response
+import os
+from pydantic import BaseModel
+import requests
+import re
 
 
-@mq.consumer("analyzer")
-@mq.publisher("done")
-def get_total_count(project_id):
-    """Example function for analyzing gitlab repo"""
+class Return(BaseModel):
+    name: str
+    owner: str
+    description: str
+    stars: int
+    forks: int
+    open_issues: int
+    total_commits: int
+    total_pull_requests: int
+    pushed_at: str
+    private: bool
+    language: str
+    license: str
+    size: int
 
-    project_id = project_id.decode()
-    url = f"https://gitlab.com/api/v4/projects/{project_id}/repository/commits"
-    total_count = 0
-    page = 1
-    per_page = 100
 
-    commits_per_day: Dict[str:int] = {}
-    commits_per_user: Dict[str:int] = {}
+def get_last_page_number(link_header):
+    """
+    Extract the last page number from the 'Link' header
+    """
+    if link_header:
+        links = link_header.split(", ")
+        last_link = [link for link in links if 'rel="last"' in link]
+        if last_link:
+            match = re.search(r'page=(\d+)>; rel="last"', last_link[0])
+            if match:
+                return int(match.group(1))
+    return 1
 
-    while True:
-        response = fetch_git(url, {"per_page": per_page, "page": page})
 
-        if response.status_code == 200:
-            items = response.json()
-            total_count += len(items)
-            print(total_count)
-            for commit in items:
-                author_name = commit.get("author_name")
-                authored_date = commit.get("authored_date")
+def main(url: str) -> Return:
+    # code goes here
 
-                # Update the commits_per_user dictionary
-                if author_name:
-                    commits_per_user[author_name] = (
-                        commits_per_user.get(author_name, 0) + 1
-                    )
+    # Extract the owner and repo name from the URL
+    parts = url.split("/")
+    owner, repo_name = parts[-2], parts[-1]
 
-                # Parse the authored_date string to a datetime object and format it to keep only the date part
-                if authored_date:
-                    date_obj = datetime.strptime(
-                        authored_date, "%Y-%m-%dT%H:%M:%S.%f%z"
-                    )
-                    date_str = date_obj.strftime("%Y-%m-%d")
+    # Construct the API URLs
+    repo_api_url = f"https://api.github.com/repos/{owner}/{repo_name}"
+    commits_api_url = f"https://api.github.com/repos/{owner}/{repo_name}/commits"
+    pulls_api_url = f"https://api.github.com/repos/{owner}/{repo_name}/pulls?state=all"
 
-                    # Update the commits_per_day dictionary
+    # Make a request to the GitHub API for repository info
+    repo_response = requests.get(repo_api_url)
+    if repo_response.status_code != 200:
+        return {
+            "Error": f"GitHub API responded with status code {repo_response.status_code} for repo info"
+        }
 
-                    commits_per_day[date_str] = commits_per_day.get(date_str, 0) + 1
+    repo_data = repo_response.json()
 
-        # Check if more commits to fetch
-        if len(items) < per_page:
-            break
+    # Make a request to get the total number of commits
+    commits_response = requests.get(commits_api_url, params={"per_page": 1})
+    if commits_response.status_code != 200:
+        total_commits = "Error retrieving commits"
+    else:
+        total_commits = get_last_page_number(commits_response.headers.get("Link"))
 
-        page += 1
+    # Make a request to get the total number of pull requests
+    pulls_response = requests.get(pulls_api_url, params={"per_page": 1})
+    if pulls_response.status_code != 200:
+        total_pull_requests = "Error retrieving pull requests"
+    else:
+        total_pull_requests = get_last_page_number(pulls_response.headers.get("Link"))
 
-    report = json.dumps(
-        {"1": total_count, "2": commits_per_user, "commits per day": commits_per_day}
-    )
+    my_obj = {
+        "name": repo_data["name"],
+        "owner": repo_data["owner"]["login"],
+        "description": repo_data["description"],
+        "stars": repo_data["stargazers_count"],
+        "forks": repo_data["forks_count"],
+        "open_issues": repo_data["open_issues_count"],
+        "total_commits": total_commits,
+        "total_pull_requests": total_pull_requests,
+        "pushed_at": repo_data["pushed_at"],
+        "private": repo_data["private"],
+        "language": repo_data["language"],
+        "license": repo_data["license"]["name"],
+        "size": repo_data["size"],
+    }
 
-    return report
+    resp = Return(**my_obj)
+
+    return resp
+
+
+if __name__ == "__main__":
+    url = str(os.getenv("URL"))
+    print(json.dumps(main(url).model_dump()))
