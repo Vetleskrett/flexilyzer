@@ -148,7 +148,7 @@ def run_seed():
 
         print("Creating project metadata  3 ...")
         project_metadata3 = ProjectMetadata(
-            value="http://129.125.32.12:postgres8001",
+            value="https://github.com/freeCodeCamp/freeCodeCamp",
             project=project3,
             assignment_metadata_id=assignment_metadata2.id,
         )
@@ -156,7 +156,7 @@ def run_seed():
 
         print("Creating project metadata  4 ...")
         project_metadata4 = ProjectMetadata(
-            value="http://129.125.32.12:postgres8001",
+            value="https://github.com/TheAlgorithms/Python",
             project=project4,
             assignment_metadata_id=assignment_metadata2.id,
         )
