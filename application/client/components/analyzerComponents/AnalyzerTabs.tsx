@@ -86,19 +86,15 @@ export default function AnalyzerTabs({
     }
   );
 
-  if ((!batches || batches.length < 1) && !isBatchesLoading) {
-    return <NoReportData />;
-  }
-
   return (
     <>
-      <div className="flex flex-col items-center justify-center">
-        <div className="mb-4 flex flex-row">
+      <div className='flex flex-col items-center justify-center mt-2'>
+        <div className='mb-4 flex flex-row'>
           <Tabs
-            aria-label="Analyzer Tabs"
+            aria-label='Analyzer Tabs'
             selectedKey={currentAnalyzerId}
             onSelectionChange={handleSelectionChange}
-            variant="underlined"
+            variant='underlined'
           >
             {assignment_analyzers.map((analyzer) => (
               <Tab
@@ -112,21 +108,21 @@ export default function AnalyzerTabs({
         {error ? (
           "Something wrong when fetching batches"
         ) : isBatchesLoading ? (
-          "Loading ..."
+          ""
         ) : batches && batches.length > 0 ? (
-          <div className="flex w-full flex-row items-center justify-center">
-            <div className="flex flex-1 items-center justify-center">
+          <div className='flex w-full flex-row items-center justify-center'>
+            <div className='flex flex-1 items-center justify-center'>
               <CompareModeSwitch />
             </div>
 
-            <div className="flex w-full max-w-[500px] flex-1 items-center justify-center md:w-[500px]">
+            <div className='flex w-full max-w-[500px] flex-1 items-center justify-center md:w-[500px]'>
               <AnalyzerBatchSelect batches={batches} />
             </div>
 
-            <div className="flex flex-1 items-center justify-center"></div>
+            <div className='flex flex-1 items-center justify-center'></div>
           </div>
         ) : (
-          "No batches available for selected analyzer"
+          <NoReportData />
         )}
       </div>
     </>

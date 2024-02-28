@@ -96,28 +96,20 @@ export default function TeamReportsPage({ params }: Props) {
     }
   );
 
-  if (!team_id) {
-    return (
-      <div className="mt-14 text-center">
-        Select a team to show report data.
-      </div>
-    );
-  }
-
   if (isLoadingReport || isLoadingAnalyzer || isLoadingStats) {
     <div>Report is loading ...</div>;
   }
-
-  if (errorReport || errorAnalyzer || errorStats) {
+  //add stat here
+  if (errorReport || errorAnalyzer) {
     return (
-      <div className="mt-14 text-center">
+      <div className='mt-14 text-center'>
         An error occurred while trying to fetch report.
       </div>
     );
   }
 
   return (
-    <div className="m-8 flex flex-row flex-wrap gap-6">
+    <div className='m-8 flex flex-row flex-wrap gap-6'>
       {report &&
         analyzerOutputs &&
         renderMetrics(report, analyzerOutputs, batchStats)}

@@ -5,13 +5,16 @@ import requests
 
 
 class Return(BaseModel):
-    successsful_response: Optional[bool]
+    successful_response: Optional[bool]
     status_code: Optional[int]
 
 
 def check_web_server(url):
     resp_obj = {}
     try:
+        if not url.startswith("https://"):
+            url = "https://" + url
+
         response = requests.get(url)
         if response.status_code >= 200 and response.status_code < 300:
             resp_obj["successful_response"] = True
