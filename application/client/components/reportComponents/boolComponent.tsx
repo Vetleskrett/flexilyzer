@@ -1,15 +1,15 @@
 "use client";
-import { boolComponent } from "@/types/componentDefinitions";
+import { BoolComponentT } from "@/types/componentDefinitions";
 
 import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
 import { Chip } from "@nextui-org/react";
 import { useSearchParams } from "next/navigation";
 
-export default function BoolComponent({
+export const BoolComponent = ({
   keyName,
   value,
   distribution,
-}: boolComponent) {
+}: BoolComponentT) => {
   const searchParams = useSearchParams();
 
   const isCompareMode = searchParams.get("compare") === "true";
@@ -44,4 +44,4 @@ export default function BoolComponent({
       </CardBody>
     </Card>
   );
-}
+};

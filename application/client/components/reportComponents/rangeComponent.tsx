@@ -1,18 +1,18 @@
 "use client";
-import { rangeComponent } from "@/types/componentDefinitions";
+import { RangeComponentT } from "@/types/componentDefinitions";
 import { Progress } from "@nextui-org/react";
 
 import { Card, CardBody } from "@nextui-org/react";
 
 import { useSearchParams } from "next/navigation";
 
-export default function RangeComponent({
+export const RangeComponent = ({
   avg,
   keyName,
   value,
   fromValue,
   toValue,
-}: rangeComponent) {
+}: RangeComponentT) => {
   const searchParams = useSearchParams();
 
   const isCompareMode = searchParams.get("compare") === "true";
@@ -47,4 +47,4 @@ export default function RangeComponent({
       </Card>
     </>
   );
-}
+};

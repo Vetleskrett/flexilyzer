@@ -1,4 +1,4 @@
-export type rangeComponent = {
+export type RangeComponentT = {
   keyName: string;
   value: number;
   fromValue: number;
@@ -6,21 +6,26 @@ export type rangeComponent = {
   avg: AvgMetric | undefined;
 };
 
-export type boolComponent = {
+export type BoolComponentT = {
   keyName: string;
   value: boolean;
   distribution: TrueFalseDistribution | undefined;
 };
 
-export type textComponent = {
+export type TextComponentT = {
   keyName: string;
   value: string;
 };
 
-export type intComponent = {
+export type IntComponentT = {
   keyName: string;
   value: number;
   avg: AvgMetric | undefined;
+};
+
+export type DateComponentT = {
+  keyName: string;
+  value: string;
 };
 
 export type AvgMetric = {

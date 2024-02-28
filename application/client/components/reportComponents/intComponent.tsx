@@ -1,10 +1,10 @@
 "use client";
-import { intComponent } from "@/types/componentDefinitions";
+import { IntComponentT } from "@/types/componentDefinitions";
 
 import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
 import { useSearchParams } from "next/navigation";
 
-export default function IntComponent({ avg, keyName, value }: intComponent) {
+export const IntComponent = ({ avg, keyName, value }: IntComponentT) => {
   const searchParams = useSearchParams();
 
   const isCompareMode = searchParams.get("compare") === "true";

@@ -1,7 +1,9 @@
-import BoolComponent from "@/components/reportComponents/boolComponent";
-import IntComponent from "@/components/reportComponents/intComponent";
-import RangeComponent from "@/components/reportComponents/rangeComponent";
-import TextComponent from "@/components/reportComponents/textComponent";
+import { BoolComponent } from "@/components/reportComponents/BoolComponent";
+import { IntComponent } from "@/components/reportComponents/IntComponent";
+import { RangeComponent } from "@/components/reportComponents/RangeComponent";
+import { TextComponent } from "@/components/reportComponents/TextComponent";
+import { DateComponent } from "@/components/reportComponents/DateComponent";
+
 import {
   AnalyzerOutputResponse,
   BatchStatsResponse,
@@ -95,6 +97,18 @@ export const renderMetrics = (
               }
               value={value}
               avg={intAvgMetric}
+            />
+          );
+        case ValueTypesOutput.Date:
+          return (
+            <DateComponent
+              key={keyName}
+              keyName={
+                metricMetadata.display_name
+                  ? metricMetadata.display_name
+                  : keyName
+              }
+              value={value}
             />
           );
         default:
