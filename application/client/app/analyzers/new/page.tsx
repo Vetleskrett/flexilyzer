@@ -34,6 +34,8 @@ export default function NewAnalyzerPage() {
 
   // Submit form
   async function submitForm() {
+    console.log(formatAnalyzerData(formData));
+    console.log(formData);
     const resp = await api.postAnalyzer(formatAnalyzerData(formData));
     if (resp.ok) {
       openSnackbar({
@@ -109,16 +111,16 @@ export default function NewAnalyzerPage() {
   }
 
   return (
-    <div className='relative min-h-screen-minus-navbar'>
-      <Progress value={(currentStep / TOTAL_STEPS) * 100} className='my-8' />
+    <div className="relative min-h-screen-minus-navbar">
+      <Progress value={(currentStep / TOTAL_STEPS) * 100} className="my-8" />
       {renderStep()}
-      <div className='absolute inset-x-0 bottom-5 px-4'>
-        <div className='flex justify-between'>
+      <div className="absolute inset-x-0 bottom-5 px-4">
+        <div className="flex justify-between">
           {/* Back button on the left */}
           {currentStep > 1 ? (
             <Button onClick={prevStep}>Back</Button>
           ) : (
-            <div className='opacity-0'>
+            <div className="opacity-0">
               <Button disabled>Back</Button>
             </div>
           )}
@@ -133,9 +135,9 @@ export default function NewAnalyzerPage() {
                   : "All Key Names must be non-empty and unique"
               }
             >
-              <span className='inline-block' style={{ cursor: "not-allowed" }}>
+              <span className="inline-block" style={{ cursor: "not-allowed" }}>
                 <Button
-                  color='primary'
+                  color="primary"
                   isDisabled={!isCurrentStepValid()}
                   onClick={nextStep}
                 >
@@ -144,7 +146,7 @@ export default function NewAnalyzerPage() {
               </span>
             </Tooltip>
           ) : (
-            <Button color='primary' onClick={submitForm}>
+            <Button color="primary" onClick={submitForm}>
               Submit Analyzer
             </Button>
           )}

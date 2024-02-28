@@ -30,4 +30,4 @@ def main(url: str):
 
 if __name__ == "__main__":
     url = str(os.getenv("URL"))
-    print(main(url).model_dump_json())
+    print(json.dumps(main(url).model_dump()))

@@ -301,6 +301,7 @@ export enum ValueTypesOutput {
   Int = "int",
   Bool = "bool",
   Range = "range",
+  Date = "date",
 }
 
 /** testE */

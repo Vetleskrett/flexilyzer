@@ -19,6 +19,7 @@ class ValueTypesOutput(enum.Enum):
     int = "int"
     bool = "bool"
     range = "range"
+    date = "date"
 
 
 class ValueTypesMapping(enum.Enum):
@@ -26,3 +27,4 @@ class ValueTypesMapping(enum.Enum):
     int = "int"
     bool = "bool"
     range = "int"
+    date = "datetime"

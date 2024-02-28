@@ -204,6 +204,7 @@ export default function OverviewTable({
         ValueTypesOutput.Bool,
         ValueTypesOutput.Range,
         ValueTypesOutput.Int,
+        ValueTypesOutput.Date,
       ].includes(value_type)
     )
       return true;

@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 import os
 from pydantic import BaseModel
@@ -12,7 +13,7 @@ class Return(BaseModel):
     speed_index: int
     no_redirects: bool
     responsive_images: bool
-    has_console_errors: bool
+    has_console_errors: datetime
 
 
 def run_lighthouse(url: str):

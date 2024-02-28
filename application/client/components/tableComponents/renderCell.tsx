@@ -3,7 +3,10 @@ import {
   ValueTypesOutput,
 } from "@/extensions/data-contracts";
 import { FlatMappedOutputs } from "@/types/tableDefinitions";
+import { standardTimeFormatter } from "@/utils/timeUtils";
 import { Tooltip, Progress, Chip } from "@nextui-org/react";
+import { format } from "date-fns";
+import { enGB } from "date-fns/locale";
 
 const renderCell = (
   item: ReportTeamResponse[],
@@ -63,6 +66,8 @@ const renderCell = (
       );
     case ValueTypesOutput.Str:
       return value;
+    case ValueTypesOutput.Date:
+      return standardTimeFormatter(value);
     case ValueTypesOutput.Bool:
       return (
         value !== undefined && (

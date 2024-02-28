@@ -1,4 +1,8 @@
 "use client";
+
+import { format } from "date-fns";
+import { enGB } from "date-fns/locale";
+
 export function calcTimeDifference(due_date: string) {
   // Calculate the difference between now and the due date
   const now = new Date().getTime();
@@ -40,4 +44,12 @@ export function calcTimeDifference(due_date: string) {
   }
 
   return timeRemaining;
+}
+
+export function standardTimeFormatter(timestamp: Date) {
+  const defaultDateFormat = "EE dd. MMM yyyy' 'HH:mm";
+
+  return format(new Date(timestamp), defaultDateFormat, {
+    locale: enGB,
+  });
 }
