@@ -10,7 +10,10 @@ export default async function Courses() {
 
   return (
     <div>
-      <h2 className="h2">All courses:</h2>
+      <div className='flex flex-row justify-between mx-4 mb-4'>
+        <h2 className='h2'>All courses:</h2>
+        <CreateButton pushRoute={"/courses/new"} text={"Create Course"} />
+      </div>
       {courses.data.map((course: CourseResponse) => {
         return (
           <div key={course.id}>
@@ -18,9 +21,6 @@ export default async function Courses() {
           </div>
         );
       })}
-      <div className="flex flex-col items-center">
-        <CreateButton pushRoute={"/courses/new"} text={"Create Course"} />
-      </div>
     </div>
   );
 }

@@ -25,7 +25,7 @@ const CreateButton = ({
   };
 
   return (
-    <Button color="secondary" onClick={handleClick}>
+    <Button color='secondary' onClick={handleClick} variant='bordered'>
       {text}
     </Button>
   );

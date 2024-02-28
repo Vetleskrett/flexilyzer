@@ -28,8 +28,14 @@ export default async function CourseHomePage({ params }: Props) {
         </h2>
       </div>
       <div className='flex w-full justify-between p-4 pt-1'>
-        <div className='max-w-50p grow p-4 text-center'>
-          <h2 className='h2'>Assignments</h2>
+        <div className='max-w-50p grow p-4'>
+          <div className='flex flex-row justify-between mx-2 mb-2'>
+            <h2 className='h2'>Assignments</h2>
+            <CreateButton
+              pushRoute={`/courses/${params.course_id}/assignments/new`}
+              text={"Create Assignment"}
+            />
+          </div>
           {course_assignments.data.map((assignment) => (
             <AssignmentOverview
               key={assignment.id}
@@ -39,13 +45,15 @@ export default async function CourseHomePage({ params }: Props) {
               due_date={assignment.due_date}
             />
           ))}
-          <CreateButton
-            pushRoute={`/courses/${params.course_id}/assignments/new`}
-            text={"Create Assignment"}
-          />
         </div>
-        <div className='max-w-50p grow p-4 text-center'>
-          <h2 className='h2'>Teams</h2>
+        <div className='max-w-50p grow p-4'>
+          <div className='flex flex-row justify-between mx-2 mb-2'>
+            <h2 className='h2'>Teams</h2>
+            <CreateButton
+              pushRoute={`/courses/${params.course_id}/teams/new`}
+              text={"Add Team"}
+            />
+          </div>
           {course_teams.data.map((team) => (
             <TeamOverview
               key={team.id}
@@ -53,10 +61,6 @@ export default async function CourseHomePage({ params }: Props) {
               course_id={Number(params.course_id)}
             />
           ))}
-          <CreateButton
-            pushRoute={`/courses/${params.course_id}/teams/new`}
-            text={"Add Team"}
-          />
         </div>
       </div>
       <br />

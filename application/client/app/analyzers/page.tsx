@@ -7,13 +7,14 @@ export default async function Analyzers() {
 
   return (
     <div>
-      <h2 className="h2">All Analyzers:</h2>
+      <div className='flex flex-row justify-between mx-4 mb-4'>
+        <h2 className='h2'>All Analyzers:</h2>
+        <CreateButton pushRoute={"/analyzers/new"} text={"Create Analyzer"} />
+      </div>
       {analyzers.data.map((analyzer) => {
         return <AnalyzerOverview key={analyzer.id} analyzer={analyzer} />;
       })}
-      <div className="flex flex-col items-center">
-        <CreateButton pushRoute={"/analyzers/new"} text={"New Analyzer"} />
-      </div>
+      <div className='flex flex-col items-center'></div>
     </div>
   );
 }

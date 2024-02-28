@@ -68,6 +68,7 @@ const TopContent = ({
             closeOnSelect={false}
             aria-label='Choose Columns'
             onAction={toggleColumnVisibility}
+            className='max-h-[70vh] overflow-auto'
           >
             {analyzersWithOutputs.map((analyzer) => (
               <DropdownSection key={analyzer.id} title={analyzer.analyzer_name}>
@@ -104,6 +105,7 @@ const TopContent = ({
             closeOnSelect={false}
             aria-label='Choose Filter Columns'
             onAction={toggleColumnFilters}
+            className='max-h-[70vh] overflow-auto'
           >
             {analyzersWithOutputs.map((analyzer) => (
               <DropdownSection key={analyzer.id} title={analyzer.analyzer_name}>
