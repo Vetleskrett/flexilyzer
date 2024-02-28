@@ -29,11 +29,12 @@ def run_lighthouse(url: str):
         "npx",
         "lighthouse",
         url,
+        "--quiet",
         "--output=json",
         f"--output-path={output_file}",
         '--chrome-flags="--headless --no-sandbox"',
     ]
-    subprocess.run(command)
+    subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
     return output_file
 
 
