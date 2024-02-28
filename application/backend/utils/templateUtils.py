@@ -1,5 +1,3 @@
-import random
-import string
 from typing import List
 from schemas.analyzer_schema import AnalyzerInputCreate, AnalyzerOutputCreate
 from schemas.shared import ValueTypesMapping, ValueTypesOutput
@@ -34,8 +32,7 @@ def generate_template(
         ]
     )
 
-    template = f"""import json
-import os
+    template = f"""import os
 from typing import Optional
 from pydantic import BaseModel
 {'from datetime import datetime' if ValueTypesOutput.date.value in [output.value_type.value for output in outputs] else ""}
@@ -49,7 +46,7 @@ def main({input_params}) -> {'Return' if outputs else 'None'}:
 
 if __name__ == "__main__":
     {env_vars}
-    print(main({', '.join([input.key_name for input in inputs])}).model_dump_json()))
+    print(main({', '.join([input.key_name for input in inputs])}).model_dump_json())
 """
 
     return template

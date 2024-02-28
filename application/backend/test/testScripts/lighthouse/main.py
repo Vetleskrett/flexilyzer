@@ -1,19 +1,19 @@
-from datetime import datetime
 import json
 import os
+from typing import Optional
 from pydantic import BaseModel
 import subprocess
 import pathlib
 
 
 class Return(BaseModel):
-    hasHTTPS: bool
-    first_contentful_paint: int
-    first_meaningful_paint: int
-    speed_index: int
-    no_redirects: bool
-    responsive_images: bool
-    has_console_errors: datetime
+    hasHTTPS: Optional[bool]
+    first_contentful_paint: Optional[int]
+    first_meaningful_paint: Optional[int]
+    speed_index: Optional[int]
+    no_redirects: Optional[bool]
+    responsive_images: Optional[bool]
+    has_console_errors: Optional[bool]
 
 
 def run_lighthouse(url: str):
@@ -93,4 +93,4 @@ def main(url: str) -> Return:
 
 if __name__ == "__main__":
     url = str(os.getenv("URL"))
-    print(json.dumps(main(url).model_dump()))
+    print(main(url).model_dump_json())

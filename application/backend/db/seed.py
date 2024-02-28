@@ -176,7 +176,7 @@ def run_seed():
 
         print("Creating analyzer 2 ...")
         analyzer2 = Analyzer(
-            name="Lighthouse Analyzer",
+            name="Test Analyzer 2",
             description="Analyzer to measuse stats of webpage with Google's Lighthouse tool",
             creator="Enthe Nu",
         )

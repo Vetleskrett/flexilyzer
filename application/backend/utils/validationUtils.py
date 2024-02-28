@@ -3,7 +3,6 @@ from fastapi import HTTPException
 from pydantic import ValidationError
 import json
 from schemas.shared import ValueTypesOutput
-import datetime
 
 
 def validatePydanticToHTTPError(schema, to_validate):

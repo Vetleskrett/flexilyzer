@@ -3,22 +3,24 @@ import os
 from pydantic import BaseModel
 import requests
 import re
+from typing import Optional
+from datetime import datetime
 
 
 class Return(BaseModel):
-    name: str
-    owner: str
-    description: str
-    stars: int
-    forks: int
-    open_issues: int
-    total_commits: int
-    total_pull_requests: int
-    pushed_at: str
-    private: bool
-    language: str
-    license: str
-    size: int
+    name: Optional[str]
+    owner: Optional[str]
+    description: Optional[str]
+    stars: Optional[int]
+    forks: Optional[int]
+    open_issues: Optional[int]
+    total_commits: Optional[int]
+    total_pull_requests: Optional[int]
+    pushed_at: Optional[datetime]
+    private: Optional[bool]
+    language: Optional[str]
+    license: Optional[str]
+    size: Optional[int]
 
 
 def get_last_page_number(link_header):
@@ -59,14 +61,14 @@ def main(url: str) -> Return:
     # Make a request to get the total number of commits
     commits_response = requests.get(commits_api_url, params={"per_page": 1})
     if commits_response.status_code != 200:
-        total_commits = "Error retrieving commits"
+        total_commits = None
     else:
         total_commits = get_last_page_number(commits_response.headers.get("Link"))
 
     # Make a request to get the total number of pull requests
     pulls_response = requests.get(pulls_api_url, params={"per_page": 1})
     if pulls_response.status_code != 200:
-        total_pull_requests = "Error retrieving pull requests"
+        total_pull_requests = None
     else:
         total_pull_requests = get_last_page_number(pulls_response.headers.get("Link"))
 
@@ -93,4 +95,4 @@ def main(url: str) -> Return:
 
 if __name__ == "__main__":
     url = str(os.getenv("URL"))
-    print(json.dumps(main(url).model_dump()))
+    print(main(url).model_dump_json())

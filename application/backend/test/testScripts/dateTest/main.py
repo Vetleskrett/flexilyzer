@@ -1,4 +1,3 @@
-import json
 import os
 from typing import Optional
 from pydantic import BaseModel
@@ -30,4 +29,4 @@ def main(url: str):
 
 if __name__ == "__main__":
     url = str(os.getenv("URL"))
-    print(json.dumps(main(url).model_dump()))
+    print(main(url).model_dump_json())
