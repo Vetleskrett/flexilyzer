@@ -10,6 +10,7 @@ import AnalyzerBatchSelect from "../reportPageComponents/AnalyzerBatchSelect";
 import CompareModeSwitch from "../reportPageComponents/CompareModeSwitch";
 import api from "@/utils/apiUtils";
 import { useQuery } from "react-query";
+import { NoReportData } from "@/components/NoReportData";
 
 export default function AnalyzerTabs({
   assignment_analyzers,
@@ -47,7 +48,7 @@ export default function AnalyzerTabs({
   };
 
   useEffect(() => {
-    if (!selectedAnalyzer) {
+    if (!selectedAnalyzer && assignment_analyzers.length > 0) {
       router.push(
         pathname +
           "?" +
@@ -81,8 +82,13 @@ export default function AnalyzerTabs({
     fetchBatches,
     {
       refetchOnWindowFocus: false,
+      enabled: !!currentAnalyzerId,
     }
   );
+
+  if (!batches) {
+    return <NoReportData />;
+  }
 
   return (
     <>

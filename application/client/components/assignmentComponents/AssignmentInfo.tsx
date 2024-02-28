@@ -23,13 +23,13 @@ export default function AssignmentInfo({
     <Card className="mx-2 mt-2 p-0">
       <CardBody>
         <div className="flex flex-row items-center justify-between text-center">
-          <BackButton targetURL={`/courses/${course_id}`}/>
           <div
-            className="w-1/4 cursor-pointer text-left"
+            className="flex flex-row w-1/4 cursor-pointer text-left items-center"
             onClick={() => {
               router.push(`/courses/${course_id}/assignments/${assignment_id}`);
             }}
           >
+            <BackButton targetURL={`/courses/${course_id}`} />
             <p>
               <b>{left_text}</b>
             </p>
@@ -45,9 +45,9 @@ export default function AssignmentInfo({
                 );
               }}
             >
-              <Tab key="reports" title="Reports"></Tab>
-              <Tab key="overview" title="Overview"></Tab>
-              <Tab key="details" title="Details"></Tab>
+              <Tab className="w-[75px]" key="reports" title="Reports"></Tab>
+              <Tab className="w-[75px]" key="overview" title="Overview"></Tab>
+              <Tab className="w-[75px]" key="details" title="Details"></Tab>
             </Tabs>
           </div>
 
