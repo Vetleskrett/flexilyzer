@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy.orm import sessionmaker
 import sqlalchemy as sa
 import json
-from utils.templateUtils import generate_random_website
+from utils.dbUtils import generate_random_website, get_real_webpage
 from schemas.shared import BatchEnum
 from db.models import (
     Batch,
@@ -90,26 +90,25 @@ def run_seed():
         )
         session.add(assignment_metadata)
         session.flush()
-        
+
         print("Creating teams in loop ...")
         for i in range(9):
             print(f"Team {i}...")
             team = Team(course=course)
             session.add(team)
             project = Project(
-            team=team,
-            assignment=assignment,
-        )
+                team=team,
+                assignment=assignment,
+            )
             session.add(project)
 
             print("Creating project metadata ...")
             project_metadata = ProjectMetadata(
-                value=generate_random_website(),
+                value=get_real_webpage(i),
                 project=project,
                 assignment_metadata_id=assignment_metadata.id,
             )
             session.add(project_metadata)
-
 
         print("Creating course 2 ...")
         course2 = Course(tag="IT4334", name="Store, distribuerte datamengder")
@@ -172,7 +171,7 @@ def run_seed():
         session.add(analyzer)
 
         # Associate the analyzer with the assignment
-        assignment.analyzers.append(analyzer)
+        # assignment.analyzers.append(analyzer)
         session.flush()
 
         print("Creating analyzer 2 ...")
@@ -182,7 +181,7 @@ def run_seed():
             creator="Enthe Nu",
         )
         session.add(analyzer2)
-        assignment.analyzers.append(analyzer2)
+        # assignment.analyzers.append(analyzer2)
         session.flush()
 
         print("Creating batch")
@@ -275,29 +274,29 @@ def run_seed():
         ]
         session.add_all(analyzer_outputs2)
 
-        print("Creating report 1 ...")
-        report1_data = {
-            "performance": 65,
-            "hasViewport": False,
-            "hasHTTPS": False,
-            "js_workload": "JS main thread workload is high, consider optimizing JS code.",
-        }
-        report1 = Report(
-            report=json.dumps(report1_data), project=project, batch_id=batch.id
-        )
-        session.add(report1)
+        # print("Creating report 1 ...")
+        # report1_data = {
+        #     "performance": 65,
+        #     "hasViewport": False,
+        #     "hasHTTPS": False,
+        #     "js_workload": "JS main thread workload is high, consider optimizing JS code.",
+        # }
+        # report1 = Report(
+        #     report=json.dumps(report1_data), project=project, batch_id=batch.id
+        # )
+        # session.add(report1)
 
-        print("Creating report 2 ...")
-        report2_data = {
-            "performance": 88,
-            "hasViewport": True,
-            "hasHTTPS": False,
-            "js_workload": "JS main thread workload is high, consider optimizing JS code.",
-        }
-        report2 = Report(
-            report=json.dumps(report2_data), project=project, batch_id=batch2.id
-        )
-        session.add(report2)
+        # print("Creating report 2 ...")
+        # report2_data = {
+        #     "performance": 88,
+        #     "hasViewport": True,
+        #     "hasHTTPS": False,
+        #     "js_workload": "JS main thread workload is high, consider optimizing JS code.",
+        # }
+        # report2 = Report(
+        #     report=json.dumps(report2_data), project=project, batch_id=batch2.id
+        # )
+        # session.add(report2)
 
         session.commit()
         print("Finished!")
