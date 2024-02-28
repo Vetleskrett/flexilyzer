@@ -86,7 +86,7 @@ export default function AnalyzerTabs({
     }
   );
 
-  if (!batches) {
+  if (!isBatchesLoading && !batches) {
     return <NoReportData />;
   }
 
