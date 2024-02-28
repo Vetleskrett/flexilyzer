@@ -1,6 +1,7 @@
 import api from "@/utils/apiUtils";
 import OverViewTable from "@/components/tableComponents/Table";
 import { AnalyzerWithOutputs, TeamReports } from "@/types/analyzerDefinitions";
+import { NoReportData } from "@/components/NoReportData";
 
 interface Props {
   params: { course_id: number; assignment_id: number };
@@ -48,10 +49,14 @@ export default async function AssignmentOverviewPage({ params }: Props) {
   }
   return (
     <div>
-      <OverViewTable
-        analyzersWithOutputs={analyzersWithOutputs}
-        allReports={allReports}
-      />
+      {Object.entries(allReports).length > 0 ? (
+        <OverViewTable
+          analyzersWithOutputs={analyzersWithOutputs}
+          allReports={allReports}
+        />
+      ) : (
+        <NoReportData />
+      )}
     </div>
   );
 }
