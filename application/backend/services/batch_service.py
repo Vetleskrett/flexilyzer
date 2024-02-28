@@ -8,6 +8,7 @@ from services.assignments_service import AssignmentService
 from services.teams_service import TeamService
 from db.crud.batches_crud import BatchesRepository
 from db.crud.assignments_crud import AssignmentRepository
+from datetime import datetime, timedelta
 
 
 class BatchService:
@@ -75,6 +76,8 @@ class BatchService:
                 stats[output.key_name] = {"avg": None}
             elif output.value_type == ValueTypesOutput.range:
                 stats[output.key_name] = {"avg": None}
+            elif output.value_type == ValueTypesOutput.date:
+                stats[output.key_name] = {"avg": None}
             else:
                 continue
 
@@ -104,7 +107,11 @@ class BatchService:
                     continue
 
                 # Handle integer and range values: Calculate average
-                if output.value_type in [ValueTypesOutput.int, ValueTypesOutput.range]:
+                if output.value_type in [
+                    ValueTypesOutput.int,
+                    ValueTypesOutput.range,
+                    ValueTypesOutput.date,
+                ]:
                     if "values" not in stats[key]:
                         stats[key]["values"] = []
                     stats[key]["values"].append(value)
@@ -123,6 +130,26 @@ class BatchService:
                 )
                 stats[key]["avg"] = stats[key].pop("values")
                 stats[key]["avg"] = avg_value
+
+            elif output.value_type == ValueTypesOutput.date:
+                if value["values"]:
+                    datetime_objects = [
+                        datetime.strptime(date_string, "%Y-%m-%dT%H:%M:%S")
+                        for date_string in value["values"]
+                    ]
+                    # Convert each datetime object to a timestamp and calculate the average
+                    avg_timestamp = sum(
+                        dt.timestamp() for dt in datetime_objects
+                    ) / len(value["values"])
+                    # Convert the average timestamp back to a datetime object
+                    avg_date = datetime.fromtimestamp(avg_timestamp)
+                    avg_value = str(avg_date)
+                else:
+                    avg_value = None
+
+                stats[key]["avg"] = stats[key].pop("values")
+                stats[key]["avg"] = avg_value
+
             elif output.value_type == ValueTypesOutput.bool:
                 true_count = stats[key]["distribution"]["true"]
                 false_count = stats[key]["distribution"]["false"]

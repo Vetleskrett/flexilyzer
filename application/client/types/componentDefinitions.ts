@@ -26,10 +26,15 @@ export type IntComponentT = {
 export type DateComponentT = {
   keyName: string;
   value: string;
+  avg: DateAvgMetric | undefined;
 };
 
 export type AvgMetric = {
   avg?: number;
+};
+
+export type DateAvgMetric = {
+  avg?: string;
 };
 
 export type DistributionMetric = {

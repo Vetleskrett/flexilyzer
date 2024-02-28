@@ -10,7 +10,7 @@ import {
   ReportResponse,
   ValueTypesOutput,
 } from "@/extensions/data-contracts";
-import { AvgMetric, DistributionMetric } from "@/types/componentDefinitions";
+import { AvgMetric, DateAvgMetric, DistributionMetric } from "@/types/componentDefinitions";
 import React from "react";
 
 export const renderMetrics = (
@@ -100,6 +100,7 @@ export const renderMetrics = (
             />
           );
         case ValueTypesOutput.Date:
+          const dateAvgMetric = batchMetric as DateAvgMetric;
           return (
             <DateComponent
               key={keyName}
@@ -109,6 +110,7 @@ export const renderMetrics = (
                   : keyName
               }
               value={value}
+              avg={dateAvgMetric}
             />
           );
         default:
