@@ -11,16 +11,16 @@ export default function AnalyzerOverview({
   const router = useRouter();
 
   return (
-    <Card className="mb-5">
+    <Card className='mb-5'>
       <CardBody>
-        <div className="flex">
-          <div className="flex-auto">
-            <h3 className="h3">{analyzer.name}</h3>
+        <div className='flex'>
+          <div className='flex-auto'>
+            <h3 className='h3'>{analyzer.name}</h3>
             {analyzer.description}
           </div>
-          <div className="my-auto flex-initial">
+          <div className='my-auto flex-initial'>
             <Button
-              color="primary"
+              color='primary'
               onClick={() => {
                 router.push(`/analyzers/${analyzer.id}`);
               }}
