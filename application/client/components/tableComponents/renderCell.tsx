@@ -63,9 +63,11 @@ const renderCell = (
         )
       );
     case ValueTypesOutput.Str:
-      return value;
+      return <div className='text-xs'>{value}</div>;
     case ValueTypesOutput.Date:
-      return value && standardTimeFormatter(value);
+      return (
+        value && <div className='text-xs'>{standardTimeFormatter(value)}</div>
+      );
     case ValueTypesOutput.Bool:
       return (
         value !== undefined && (
@@ -80,7 +82,7 @@ const renderCell = (
         )
       );
     case ValueTypesOutput.Int:
-      return value;
+      return <div className='text-xs'>{value}</div>;
     default:
       return "N/A";
   }
