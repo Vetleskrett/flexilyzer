@@ -1,4 +1,4 @@
-export const formatter = new Intl.NumberFormat("en-GB", {
+export const formatter = new Intl.NumberFormat("no-NO", {
   style: "decimal",
   useGrouping: true,
 });

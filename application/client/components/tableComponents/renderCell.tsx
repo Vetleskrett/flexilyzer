@@ -3,6 +3,7 @@ import {
   ValueTypesOutput,
 } from "@/extensions/data-contracts";
 import { FlatMappedOutputs } from "@/types/tableDefinitions";
+import { formatter } from "@/utils/formatUtils";
 import { standardTimeFormatter } from "@/utils/timeUtils";
 import { Tooltip, Progress, Chip } from "@nextui-org/react";
 import { SmallBool } from "@/components/tableComponents/SmallBoolChip";
@@ -64,9 +65,11 @@ const renderCell = (
         )
       );
     case ValueTypesOutput.Str:
-      return value;
+      return <div className='text-xs'>{value}</div>;
     case ValueTypesOutput.Date:
-      return value && standardTimeFormatter(value);
+      return (
+        value && <div className='text-xs'>{standardTimeFormatter(value)}</div>
+      );
     case ValueTypesOutput.Bool:
       return (
         value !== undefined && (
@@ -74,7 +77,7 @@ const renderCell = (
         )
       );
     case ValueTypesOutput.Int:
-      return value;
+      return <div className='text-xs'>{formatter.format(value)}</div>;
     default:
       return "N/A";
   }
