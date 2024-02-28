@@ -3,6 +3,7 @@ import {
   ValueTypesOutput,
 } from "@/extensions/data-contracts";
 import { FlatMappedOutputs } from "@/types/tableDefinitions";
+import { formatter } from "@/utils/formatUtils";
 import { standardTimeFormatter } from "@/utils/timeUtils";
 import { Tooltip, Progress, Chip } from "@nextui-org/react";
 
@@ -82,7 +83,7 @@ const renderCell = (
         )
       );
     case ValueTypesOutput.Int:
-      return <div className='text-xs'>{value}</div>;
+      return <div className='text-xs'>{formatter.format(value)}</div>;
     default:
       return "N/A";
   }
