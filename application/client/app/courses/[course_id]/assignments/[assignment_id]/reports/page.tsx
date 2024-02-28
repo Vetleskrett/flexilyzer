@@ -99,8 +99,8 @@ export default function TeamReportsPage({ params }: Props) {
   if (isLoadingReport || isLoadingAnalyzer || isLoadingStats) {
     <div>Report is loading ...</div>;
   }
-
-  if (errorReport || errorAnalyzer || errorStats) {
+  //add stat here
+  if (errorReport || errorAnalyzer) {
     return (
       <div className='mt-14 text-center'>
         An error occurred while trying to fetch report.

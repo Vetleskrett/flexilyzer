@@ -122,7 +122,7 @@ def run_seed():
         session.flush()
 
         assignment_metadata2 = AssignmentMetadata(
-            assignment_id=assignment2.id, key_name="databaseurl", value_type="str"
+            assignment_id=assignment2.id, key_name="url", value_type="str"
         )
         session.add(assignment_metadata2)
         session.flush()
