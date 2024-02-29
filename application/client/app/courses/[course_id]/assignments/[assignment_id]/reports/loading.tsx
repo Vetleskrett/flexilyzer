@@ -3,5 +3,5 @@
 import { LoadingComponent } from "@/components/LoadingComponent";
 
 export default function Loading() {
-  return <LoadingComponent text={"Loading analyzer ..."} />;
+  return <LoadingComponent text={"Loading assignment reports ..."} />;
 }

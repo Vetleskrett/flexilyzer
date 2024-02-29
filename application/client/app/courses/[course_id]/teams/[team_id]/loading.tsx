@@ -1,3 +1,7 @@
+"use client";
+
+import { LoadingComponent } from "@/components/LoadingComponent";
+
 export default function Loading() {
-  return <>Loading team data...</>;
+  return <LoadingComponent text={"Loading team data ..."} />;
 }
