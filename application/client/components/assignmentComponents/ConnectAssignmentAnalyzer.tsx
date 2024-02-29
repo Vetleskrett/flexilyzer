@@ -20,6 +20,7 @@ import { AnalyzerSimplifiedResponse } from "@/extensions/data-contracts";
 import { useQuery } from "react-query";
 import { useSnackbar } from "@/context/snackbarContext";
 import { useRouter } from "next/navigation";
+import { LoadingComponent } from "../LoadingComponent";
 
 const ConnectAssignmentAnalyzer = ({
   assignment_id,
@@ -94,9 +95,9 @@ const ConnectAssignmentAnalyzer = ({
     onClose();
   };
 
-  if (error) return <>Error</>;
+  if (error) return <>Something went wrong while trying to fetch analyzers.</>;
 
-  if (isAnlyzersLoading) return <>Loading...</>;
+  if (isAnlyzersLoading) return <LoadingComponent />;
 
   return (
     <>

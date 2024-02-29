@@ -1,6 +1,6 @@
 "use client";
-import { Spinner } from "@nextui-org/react";
+import { LoadingComponent } from "@/components/LoadingComponent";
 
 export default function AnalyzerLoading() {
-  return <Spinner />;
+  return <LoadingComponent />;
 }

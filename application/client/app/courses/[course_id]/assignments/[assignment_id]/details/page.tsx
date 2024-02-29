@@ -39,13 +39,11 @@ export default async function AssignmentDetails({ params }: Props) {
         {analyzers.data.map((analyzer) => {
           return (
             <>
-              <Suspense fallback={"Loading ..."}>
                 <AssignmentAnalyzer
                   analyzer_id={analyzer.id}
                   analyzer_name={analyzer.name}
                   assignment_id={Number(params.assignment_id)}
                 />
-              </Suspense>
             </>
           );
         })}

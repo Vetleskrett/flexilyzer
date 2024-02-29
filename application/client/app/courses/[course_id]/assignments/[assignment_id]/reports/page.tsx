@@ -8,6 +8,7 @@ import {
 import { renderMetrics } from "@/components/reportComponents/renderReportMetrics";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "react-query";
+import { LoadingComponent } from "@/components/LoadingComponent";
 
 interface Props {
   params: { course_id: number; assignment_id: number };
@@ -97,19 +98,19 @@ export default function TeamReportsPage({ params }: Props) {
   );
 
   if (isLoadingReport || isLoadingAnalyzer || isLoadingStats) {
-    <div>Report is loading ...</div>;
+    <LoadingComponent text={"Report is loading ..."} />;
   }
   //add stat here
   if (errorReport || errorAnalyzer) {
     return (
-      <div className='mt-14 text-center'>
+      <div className="mt-14 text-center">
         An error occurred while trying to fetch report.
       </div>
     );
   }
 
   return (
-    <div className='m-8 flex flex-row flex-wrap gap-6'>
+    <div className="m-8 flex flex-row flex-wrap gap-6">
       {report &&
         analyzerOutputs &&
         renderMetrics(report, analyzerOutputs, batchStats)}
