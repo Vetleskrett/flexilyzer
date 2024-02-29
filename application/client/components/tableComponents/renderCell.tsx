@@ -27,7 +27,7 @@ const renderCell = (
   if (!output) return value;
 
   if (value === undefined) {
-    return <p className="font-light">-</p>;
+    return <p className='font-light'>-</p>;
   }
   switch (output.value_type) {
     case ValueTypesOutput.Range:
@@ -40,7 +40,7 @@ const renderCell = (
         output.extended_metadata as unknown as RangeMetadata;
 
       return (
-        value && (
+        (value || value === 0) && (
           <Tooltip
             delay={0}
             closeDelay={0}
@@ -52,14 +52,14 @@ const renderCell = (
           >
             <Progress
               aria-label={output.key_name}
-              size="md"
+              size='md'
               value={value}
               minValue={extendedMetadata.fromRange}
               maxValue={extendedMetadata.toRange}
               color={
                 value / extendedMetadata.toRange > 0.65 ? "success" : "warning"
               }
-              className="max-w-md"
+              className='max-w-md'
             />
           </Tooltip>
         )
@@ -77,7 +77,7 @@ const renderCell = (
         )
       );
     case ValueTypesOutput.Int:
-      return <div className='text-xs'>{formatter.format(value)}</div>;
+      return value && <div className='text-xs'>{formatter.format(value)}</div>;
     default:
       return "N/A";
   }

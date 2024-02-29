@@ -10,8 +10,8 @@ export const SmallBool = ({ text, isGreen }: SmallBoolProps) => {
         isGreen === undefined
           ? "bg-gray-100"
           : isGreen
-          ? "bg-green-500"
-          : "bg-red-500"
+          ? "bg-green-600"
+          : "bg-red-600"
       }`}
     >
       {text}
