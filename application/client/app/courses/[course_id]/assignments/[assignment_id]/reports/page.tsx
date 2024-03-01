@@ -28,7 +28,7 @@ export default function TeamReportsPage({ params }: Props) {
       params.assignment_id,
       Number(team_id),
       Number(batch_id),
-      { cache: "no-cache" }
+      { cache: "no-cache" },
     );
     if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
     return resp.data;
@@ -63,7 +63,7 @@ export default function TeamReportsPage({ params }: Props) {
       // Only proceed with the query if team_id is not null
       enabled: !!team_id && !!batch_id,
       retry: false,
-    }
+    },
   );
 
   const {
@@ -78,24 +78,19 @@ export default function TeamReportsPage({ params }: Props) {
       // Only proceed with the query if team_id is not null
       enabled: !!team_id && !!batch_id,
       retry: false,
-    }
+    },
   );
 
-  const {
-    data: batchStats,
-    isLoading: isLoadingStats,
-    error: errorStats,
-  } = useQuery<BatchStatsResponse, Error>(
-    ["batchStats", { batch_id }],
-    fetchBatchStats,
-    {
-      refetchOnWindowFocus: false,
-      // Only proceed with the query if team_id is not null
-      enabled: isCompareMode,
-      retry: false,
-      staleTime: Infinity,
-    }
-  );
+  const { data: batchStats, isLoading: isLoadingStats } = useQuery<
+    BatchStatsResponse,
+    Error
+  >(["batchStats", { batch_id }], fetchBatchStats, {
+    refetchOnWindowFocus: false,
+    // Only proceed with the query if team_id is not null
+    enabled: isCompareMode,
+    retry: false,
+    staleTime: Infinity,
+  });
 
   if (isLoadingReport || isLoadingAnalyzer || isLoadingStats) {
     <LoadingComponent text={"Report is loading ..."} />;

@@ -2,7 +2,6 @@ import api from "@/utils/apiUtils";
 import AssignmentAnalyzer from "@/components/assignmentComponents/AssignmentAnalyzer";
 import AssignmentMetadata from "@/components/assignmentComponents/AssignmentMetadata";
 import ConnectAssignmentAnalyzer from "@/components/assignmentComponents/ConnectAssignmentAnalyzer";
-import { Suspense } from "react";
 
 interface Props {
   params: { course_id: number; assignment_id: number };
@@ -14,7 +13,7 @@ export default async function AssignmentDetails({ params }: Props) {
   });
 
   const assignment_metadata = await api.getAssignmentMetadata(
-    params.assignment_id
+    params.assignment_id,
   );
 
   if (!assignment_metadata.ok) {
@@ -35,15 +34,15 @@ export default async function AssignmentDetails({ params }: Props) {
           />
         </div>
       </div>
-      <div className="flex space-x-4 max-w-[1500px] overflow-x-auto p-2">
+      <div className="flex max-w-[1500px] space-x-4 overflow-x-auto p-2">
         {analyzers.data.map((analyzer) => {
           return (
             <>
-                <AssignmentAnalyzer
-                  analyzer_id={analyzer.id}
-                  analyzer_name={analyzer.name}
-                  assignment_id={Number(params.assignment_id)}
-                />
+              <AssignmentAnalyzer
+                analyzer_id={analyzer.id}
+                analyzer_name={analyzer.name}
+                assignment_id={Number(params.assignment_id)}
+              />
             </>
           );
         })}

@@ -24,7 +24,7 @@ export default function AssignmentInfo({
       <CardBody>
         <div className="flex flex-row items-center justify-between text-center">
           <div
-            className="flex flex-row w-1/4 cursor-pointer text-left items-center"
+            className="flex w-1/4 cursor-pointer flex-row items-center text-left"
             onClick={() => {
               router.push(`/courses/${course_id}/assignments/${assignment_id}`);
             }}
@@ -41,7 +41,7 @@ export default function AssignmentInfo({
               selectedKey={segment}
               onSelectionChange={(e) => {
                 router.push(
-                  `/courses/${course_id}/assignments/${assignment_id}/${e}`
+                  `/courses/${course_id}/assignments/${assignment_id}/${e}`,
                 );
               }}
             >

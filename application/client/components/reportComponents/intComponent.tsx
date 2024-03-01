@@ -24,4 +24,4 @@ export const IntComponent = ({ avg, keyName, value }: IntComponentT) => {
       </CardBody>
     </Card>
   );
-}
+};

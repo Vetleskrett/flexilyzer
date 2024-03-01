@@ -15,7 +15,7 @@ export default async function AssignmentOverviewPage({ params }: Props) {
     params.assignment_id,
     {
       cache: "no-cache",
-    }
+    },
   );
 
   if (analyzersResponse.ok) {
@@ -32,7 +32,7 @@ export default async function AssignmentOverviewPage({ params }: Props) {
       const reportsResponse =
         await api.getAssignmentAnalyzersBatchesLatestReports(
           params.assignment_id,
-          analyzer.id
+          analyzer.id,
         );
       if (reportsResponse.status === 200) {
         for (const report of reportsResponse.data) {

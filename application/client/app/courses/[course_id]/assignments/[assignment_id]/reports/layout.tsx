@@ -14,20 +14,20 @@ export default async function AssignmentLayout({
 }) {
   const assignment_analyzers = await api.getAssignmentAnalyzers(
     params.assignment_id,
-    { cache: "no-cache" }
+    { cache: "no-cache" },
   );
 
   return (
     <>
-      <div className='flex flex-row'>
+      <div className="flex flex-row">
         {/* Sidebar */}
         <AssignmentSideBar
           course_id={params.course_id}
           assignment_id={params.assignment_id}
         />
-        <div className='grow'>
-          <div className='flex flex-row justify-center'>
-            <div className=''>
+        <div className="grow">
+          <div className="flex flex-row justify-center">
+            <div className="">
               <AnalyzerTabs
                 assignment_analyzers={assignment_analyzers.data}
                 course_id={params.course_id}

@@ -51,14 +51,14 @@ const TopContent = ({
   };
 
   return (
-    <div className='flex flex-col justify-center'>
-      <div className='flex flex-row justify-end gap-2'>
+    <div className="flex flex-col justify-center">
+      <div className="flex flex-row justify-end gap-2">
         <Dropdown>
           <DropdownTrigger>
             <Button
-              size='md'
-              variant='bordered'
-              color='secondary'
+              size="md"
+              variant="bordered"
+              color="secondary"
               startContent={<RuleIcon />}
             >
               Select Columns
@@ -66,9 +66,9 @@ const TopContent = ({
           </DropdownTrigger>
           <DropdownMenu
             closeOnSelect={false}
-            aria-label='Choose Columns'
+            aria-label="Choose Columns"
             onAction={toggleColumnVisibility}
-            className='max-h-[70vh] overflow-auto'
+            className="max-h-[70vh] overflow-auto"
           >
             {analyzersWithOutputs.map((analyzer) => (
               <DropdownSection key={analyzer.id} title={analyzer.analyzer_name}>
@@ -93,9 +93,9 @@ const TopContent = ({
         <Dropdown>
           <DropdownTrigger>
             <Button
-              size='md'
-              variant='bordered'
-              color='secondary'
+              size="md"
+              variant="bordered"
+              color="secondary"
               startContent={<FilterAltIcon />}
             >
               Filter
@@ -103,9 +103,9 @@ const TopContent = ({
           </DropdownTrigger>
           <DropdownMenu
             closeOnSelect={false}
-            aria-label='Choose Filter Columns'
+            aria-label="Choose Filter Columns"
             onAction={toggleColumnFilters}
-            className='max-h-[70vh] overflow-auto'
+            className="max-h-[70vh] overflow-auto"
           >
             {analyzersWithOutputs.map((analyzer) => (
               <DropdownSection key={analyzer.id} title={analyzer.analyzer_name}>
@@ -115,7 +115,7 @@ const TopContent = ({
                       ValueTypesOutput.Int,
                       ValueTypesOutput.Range,
                       ValueTypesOutput.Bool,
-                    ].includes(output.value_type)
+                    ].includes(output.value_type),
                   )
                   .map((output) => (
                     <DropdownItem
@@ -124,7 +124,7 @@ const TopContent = ({
                     >
                       <Checkbox
                         isSelected={selectedOutputFilterIds.has(
-                          output.id.toString()
+                          output.id.toString(),
                         )}
                       >
                         {output.display_name
@@ -141,18 +141,18 @@ const TopContent = ({
           onClick={() => {
             resetView();
           }}
-          color='warning'
-          className='text-white'
+          color="warning"
+          className="text-white"
           startContent={<RestartAltIcon />}
         >
           Reset
         </Button>
       </div>
-      <div className='flex flex-col items-center justify-center'>
-        <div className='flex'>{renderFilterParameters()}</div>
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex">{renderFilterParameters()}</div>
       </div>
       <div>
-        <span className='text-small text-default-400'>
+        <span className="text-small text-default-400">
           Total {tableLength} teams
         </span>
       </div>

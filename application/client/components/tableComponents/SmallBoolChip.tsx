@@ -6,7 +6,7 @@ type SmallBoolProps = {
 export const SmallBool = ({ text, isGreen }: SmallBoolProps) => {
   return (
     <div
-      className={`px-2 py-1 w-[45px] text-center rounded-full text-white text-xs ${
+      className={`w-[45px] rounded-full px-2 py-1 text-center text-xs text-white ${
         isGreen === undefined
           ? "bg-gray-100"
           : isGreen

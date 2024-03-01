@@ -16,20 +16,20 @@ export default function AssignmentOverview({
   const router = useRouter();
 
   return (
-    <Card className='mb-5'>
+    <Card className="mb-5">
       <CardBody>
-        <div className='flex'>
-          <div className='flex-auto'>
-            <h3 className='h3'>{name}</h3>
+        <div className="flex">
+          <div className="flex-auto">
+            <h3 className="h3">{name}</h3>
             <b>Due: </b>
             {due_date ? new Date(due_date).toLocaleDateString("no-NO") : ""}
           </div>
-          <div className='my-auto flex flex-row gap-4'>
+          <div className="my-auto flex flex-row gap-4">
             <Button
               onClick={() => {
                 router.push(`/courses/${course_id}/assignments/${id}/reports`);
               }}
-              color='primary'
+              color="primary"
             >
               View
             </Button>

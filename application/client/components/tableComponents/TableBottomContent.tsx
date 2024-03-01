@@ -9,7 +9,7 @@ import {
 
 import NotificationImportantIcon from "@mui/icons-material/NotificationImportant";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 
 interface BottomContentProps {
   tableLength: number;
@@ -34,7 +34,9 @@ const BottomContent = ({ tableLength, selectedKeys }: BottomContentProps) => {
               </Button>
             </DropdownTrigger>
             <DropdownMenu>
-              <DropdownItem startContent={<PictureAsPdfIcon className="h-[18px]" />}>
+              <DropdownItem
+                startContent={<PictureAsPdfIcon className="h-[18px]" />}
+              >
                 Generate Report
               </DropdownItem>
               <DropdownItem

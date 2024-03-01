@@ -54,7 +54,7 @@ export default function OutputParamsStep({
   const updateExtendedMetadata = (
     index: number,
     key: keyof RangeMetadata,
-    value: string
+    value: string,
   ) => {
     const updatedParameters = formData.outputs.map((param, i) => {
       if (i === index) {
@@ -204,7 +204,7 @@ export default function OutputParamsStep({
                         updateExtendedMetadata(
                           index,
                           "fromRange",
-                          e.target.value
+                          e.target.value,
                         )
                       }
                     />

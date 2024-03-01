@@ -16,13 +16,13 @@ export default function AssignmentMetadata({
       <h3 className="h3">Metadata</h3>
       {metadata.map((data) => {
         return (
-            <div key={data.id}>
-              {renderParameter({
-                id: data.id.toString(),
-                key_name: data.key_name,
-                value_type: data.value_type as ValueTypesInput,
-              })}
-            </div>
+          <div key={data.id}>
+            {renderParameter({
+              id: data.id.toString(),
+              key_name: data.key_name,
+              value_type: data.value_type as ValueTypesInput,
+            })}
+          </div>
         );
       })}
     </div>
