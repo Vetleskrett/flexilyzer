@@ -54,6 +54,7 @@ docs/_build/
 .env
 .next
 venv/
+.vscode/
 
 # dependencies
 node_modules
