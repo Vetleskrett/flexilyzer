@@ -81,14 +81,14 @@ export default function NewAnalyzerPage() {
       case 2:
         const allInputFieldsValid = formData.inputs.every(
           (input) =>
-            input.key_name.trim() !== "" && input.value_type.trim() !== ""
+            input.key_name.trim() !== "" && input.value_type.trim() !== "",
         );
 
         const allInputNamesUnique = formData.inputs.every(
           (input, index, self) =>
             self.findIndex(
-              (i) => i.key_name.toLowerCase() === input.key_name.toLowerCase()
-            ) === index
+              (i) => i.key_name.toLowerCase() === input.key_name.toLowerCase(),
+            ) === index,
         );
 
         return allInputFieldsValid && allInputNamesUnique;
@@ -96,14 +96,14 @@ export default function NewAnalyzerPage() {
       case 3:
         const allOutputFieldsValid = formData.outputs.every(
           (output) =>
-            output.key_name.trim() !== "" && output.value_type.trim() !== ""
+            output.key_name.trim() !== "" && output.value_type.trim() !== "",
         );
 
         const allOutputNamesUnique = formData.outputs.every(
           (output, index, self) =>
             self.findIndex(
-              (i) => i.key_name.toLowerCase() === output.key_name.toLowerCase()
-            ) === index
+              (i) => i.key_name.toLowerCase() === output.key_name.toLowerCase(),
+            ) === index,
         );
 
         return allOutputFieldsValid && allOutputNamesUnique;

@@ -10,13 +10,17 @@ import {
   ReportResponse,
   ValueTypesOutput,
 } from "@/extensions/data-contracts";
-import { AvgMetric, DateAvgMetric, DistributionMetric } from "@/types/componentDefinitions";
+import {
+  AvgMetric,
+  DateAvgMetric,
+  DistributionMetric,
+} from "@/types/componentDefinitions";
 import React from "react";
 
 export const renderMetrics = (
   report: ReportResponse,
   outputs: AnalyzerOutputResponse[],
-  batchStats: BatchStatsResponse | undefined
+  batchStats: BatchStatsResponse | undefined,
 ) => {
   if (!report.report) {
     return null; // If the report does not have any metrics, don't render anything.

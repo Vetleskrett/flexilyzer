@@ -1,12 +1,10 @@
 "use client";
 
-import api from "@/utils/apiUtils";
 import { BatchResponse } from "@/extensions/data-contracts";
-import { Select, SelectItem, Spinner } from "@nextui-org/react";
+import { Select, SelectItem } from "@nextui-org/react";
 import { format } from "date-fns";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { useQuery } from "react-query";
 
 export default function AnalyzerBatchSelect({
   batches,
@@ -15,7 +13,7 @@ export default function AnalyzerBatchSelect({
 }) {
   const pathname = usePathname();
   const [selectedBatch, setSelectedBatch] = useState<string | undefined>(
-    undefined
+    undefined,
   );
 
   const searchParams = useSearchParams();
@@ -44,34 +42,34 @@ export default function AnalyzerBatchSelect({
 
       return params.toString();
     },
-    [searchParams]
+    [searchParams],
   );
 
   return (
-      <Select
-        disallowEmptySelection={true}
-        size="sm"
-        label="Selected batch"
-        placeholder="Select a batch"
-        selectedKeys={selectedBatch ? [selectedBatch] : selectedBatch}
-        onChange={(e) => {
-          if (e.target.value !== "") {
-            handleSelectionChange(e.target.value);
-          }
-        }}
-        aria-label="batch-select"
-      >
-        {batches
-          .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
-          .map((batch) => (
-            <SelectItem
-              key={batch.id}
-              value={batch.id}
-              textValue={format(new Date(batch.timestamp), "PP HH:mm:ss")}
-            >
-              <>{format(new Date(batch.timestamp), "PP HH:mm:ss")}</>
-            </SelectItem>
-          ))}
-      </Select>
+    <Select
+      disallowEmptySelection={true}
+      size="sm"
+      label="Selected batch"
+      placeholder="Select a batch"
+      selectedKeys={selectedBatch ? [selectedBatch] : selectedBatch}
+      onChange={(e) => {
+        if (e.target.value !== "") {
+          handleSelectionChange(e.target.value);
+        }
+      }}
+      aria-label="batch-select"
+    >
+      {batches
+        .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+        .map((batch) => (
+          <SelectItem
+            key={batch.id}
+            value={batch.id}
+            textValue={format(new Date(batch.timestamp), "PP HH:mm:ss")}
+          >
+            <>{format(new Date(batch.timestamp), "PP HH:mm:ss")}</>
+          </SelectItem>
+        ))}
+    </Select>
   );
 }

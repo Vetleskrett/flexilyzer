@@ -9,12 +9,12 @@ export default async function CourseAssignments({ params }: Props) {
   const course_details = await api.getCourse(Number(params.course_id));
 
   const course_assignments = await api.getCourseAssignments(
-    Number(params.course_id)
+    Number(params.course_id),
   );
 
   return (
-    <div className=''>
-      <h2 className='h2'>
+    <div className="">
+      <h2 className="h2">
         Course {course_details.data.tag} - {course_details.data.name}
       </h2>
 

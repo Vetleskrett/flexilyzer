@@ -37,7 +37,7 @@ export default function AssignmentSideBar({
     fetchTeams,
     {
       refetchOnWindowFocus: false,
-    }
+    },
   );
 
   const createQueryString = useCallback(
@@ -47,16 +47,16 @@ export default function AssignmentSideBar({
 
       return params.toString();
     },
-    [searchParams]
+    [searchParams],
   );
 
   useEffect(() => {
     if (teams && !currentTeamId) {
       router.push(
-        pathname + "?" + createQueryString("team_id", `${teams[0].id}`)
+        pathname + "?" + createQueryString("team_id", `${teams[0].id}`),
       );
     }
-  }, [teams, createQueryString, pathname, router]);
+  }, [teams, createQueryString, pathname, router, currentTeamId]);
 
   return (
     <div className="sticky top-16 flex h-[calc(100vh-200px)] min-w-[100px] flex-col overflow-y-auto border-r p-4">
@@ -74,7 +74,7 @@ export default function AssignmentSideBar({
             className="mb-2 cursor-pointer"
             onClick={() => {
               router.push(
-                pathname + "?" + createQueryString("team_id", `${team.id}`)
+                pathname + "?" + createQueryString("team_id", `${team.id}`),
               );
             }}
           >

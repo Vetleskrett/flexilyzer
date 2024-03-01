@@ -14,23 +14,23 @@ export default async function CourseHomePage({ params }: Props) {
   });
   const course_assignments = await api.getCourseAssignments(
     Number(params.course_id),
-    { cache: "no-cache" }
+    { cache: "no-cache" },
   );
 
   const course_teams = await api.getCourseTeams(Number(params.course_id));
 
   return (
-    <div className='ml-10 mt-10'>
-      <div className='flex flex-row justify-between items-center'>
-        <BackButton targetURL={"/courses"} buttonText='Courses' />
-        <h2 className='h2 flex-grow text-center mx-4'>
+    <div className="ml-10 mt-10">
+      <div className="flex flex-row items-center justify-between">
+        <BackButton targetURL={"/courses"} buttonText="Courses" />
+        <h2 className="h2 mx-4 grow text-center">
           Course {course_details.data.tag} - {course_details.data.name}
         </h2>
       </div>
-      <div className='flex w-full justify-between p-4 pt-1'>
-        <div className='max-w-50p grow p-4'>
-          <div className='flex flex-row justify-between mx-2 mb-2'>
-            <h2 className='h2'>Assignments</h2>
+      <div className="flex w-full justify-between p-4 pt-1">
+        <div className="max-w-50p grow p-4">
+          <div className="mx-2 mb-2 flex flex-row justify-between">
+            <h2 className="h2">Assignments</h2>
             <CreateButton
               pushRoute={`/courses/${params.course_id}/assignments/new`}
               text={"Create Assignment"}
@@ -46,9 +46,9 @@ export default async function CourseHomePage({ params }: Props) {
             />
           ))}
         </div>
-        <div className='max-w-50p grow p-4'>
-          <div className='flex flex-row justify-between mx-2 mb-2'>
-            <h2 className='h2'>Teams</h2>
+        <div className="max-w-50p grow p-4">
+          <div className="mx-2 mb-2 flex flex-row justify-between">
+            <h2 className="h2">Teams</h2>
             <CreateButton
               pushRoute={`/courses/${params.course_id}/teams/new`}
               text={"Add Team"}

@@ -50,7 +50,7 @@ const ConnectAssignmentAnalyzer = ({
     fetchAnalyzers,
     {
       refetchOnWindowFocus: false,
-    }
+    },
   );
 
   const [notConnectedAnalyzers, setNotConnectedAnalyzers] = useState<
@@ -61,8 +61,8 @@ const ConnectAssignmentAnalyzer = ({
     const newNotConnectedAnalyzers = analyzers.filter(
       (analyzer) =>
         !connected_analyzers.find(
-          (connected_analyzer) => connected_analyzer.id == analyzer.id
-        )
+          (connected_analyzer) => connected_analyzer.id == analyzer.id,
+        ),
     );
     setNotConnectedAnalyzers(newNotConnectedAnalyzers);
   }, [analyzers, connected_analyzers]);
@@ -73,7 +73,7 @@ const ConnectAssignmentAnalyzer = ({
 
   const updateSelection = (e: string) => {
     const selectedAnalyzer = notConnectedAnalyzers.find(
-      (analyzer) => analyzer.id === Number(e)
+      (analyzer) => analyzer.id === Number(e),
     );
     setSelecedAnalyzer(selectedAnalyzer);
   };
@@ -82,7 +82,7 @@ const ConnectAssignmentAnalyzer = ({
     if (selectedAnalyzer) {
       const res = await api.connectAssignmentAnalyzers(
         assignment_id,
-        selectedAnalyzer.id
+        selectedAnalyzer.id,
       );
       if (res.ok) {
         openSnackbar({ message: "Anlyzer connected", severity: "success" });

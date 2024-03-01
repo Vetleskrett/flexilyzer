@@ -18,13 +18,13 @@ export default function AnalyzerSummary({
 }) {
   return (
     <>
-      <Card className='mb-5 p-3'>
-        <h3 className='h3'>{analyzer.name}</h3>
+      <Card className="mb-5 p-3">
+        <h3 className="h3">{analyzer.name}</h3>
         <p>{analyzer.description}</p>
       </Card>
 
-      <Card className='mb-5 p-3'>
-        <h3 className='h3'>Input Parameters</h3>
+      <Card className="mb-5 p-3">
+        <h3 className="h3">Input Parameters</h3>
         {inputs.map((param) => (
           <div key={param.id}>
             {renderParameter({
@@ -36,8 +36,8 @@ export default function AnalyzerSummary({
         ))}
       </Card>
 
-      <Card className='p-3'>
-        <h3 className='h3'>Output Parameters</h3>
+      <Card className="p-3">
+        <h3 className="h3">Output Parameters</h3>
         {outputs.map((param) => (
           <div key={param.id}>
             {renderParameter({

@@ -39,7 +39,7 @@ export default function AnalyzerTabs({
 
       return params.toString();
     },
-    [searchParams]
+    [searchParams],
   );
 
   const handleSelectionChange = (key: React.Key) => {
@@ -52,7 +52,7 @@ export default function AnalyzerTabs({
       router.push(
         pathname +
           "?" +
-          createQueryString("analyzer", assignment_analyzers[0]?.id.toString())
+          createQueryString("analyzer", assignment_analyzers[0]?.id.toString()),
       );
     }
   }, [
@@ -67,7 +67,7 @@ export default function AnalyzerTabs({
     const resp = await api.getAssignmentAnalyzersBatches(
       assignment_id,
       Number(currentAnalyzerId),
-      { cache: "no-cache" }
+      { cache: "no-cache" },
     );
     if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
     return resp.data;
@@ -83,18 +83,18 @@ export default function AnalyzerTabs({
     {
       refetchOnWindowFocus: false,
       enabled: !!currentAnalyzerId,
-    }
+    },
   );
 
   return (
     <>
-      <div className='flex flex-col items-center justify-center mt-2'>
-        <div className='mb-4 flex flex-row'>
+      <div className="mt-2 flex flex-col items-center justify-center">
+        <div className="mb-4 flex flex-row">
           <Tabs
-            aria-label='Analyzer Tabs'
+            aria-label="Analyzer Tabs"
             selectedKey={currentAnalyzerId}
             onSelectionChange={handleSelectionChange}
-            variant='underlined'
+            variant="underlined"
           >
             {assignment_analyzers.map((analyzer) => (
               <Tab
@@ -110,16 +110,16 @@ export default function AnalyzerTabs({
         ) : isBatchesLoading ? (
           ""
         ) : batches && batches.length > 0 ? (
-          <div className='flex w-full flex-row items-center justify-center'>
-            <div className='flex flex-1 items-center justify-center'>
+          <div className="flex w-full flex-row items-center justify-center">
+            <div className="flex flex-1 items-center justify-center">
               <CompareModeSwitch />
             </div>
 
-            <div className='flex w-full max-w-[500px] flex-1 items-center justify-center md:w-[500px]'>
+            <div className="flex w-full max-w-[500px] flex-1 items-center justify-center md:w-[500px]">
               <AnalyzerBatchSelect batches={batches} />
             </div>
 
-            <div className='flex flex-1 items-center justify-center'></div>
+            <div className="flex flex-1 items-center justify-center"></div>
           </div>
         ) : (
           <NoReportData />
