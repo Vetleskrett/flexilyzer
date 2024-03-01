@@ -111,7 +111,7 @@ export default function NewAnalyzerPage() {
   }
 
   return (
-    <div className="relative min-h-screen-minus-navbar">
+    <div className="min-h-screen-minus-navbar relative">
       <Progress value={(currentStep / TOTAL_STEPS) * 100} className="my-8" />
       {renderStep()}
       <div className="absolute inset-x-0 bottom-5 px-4">
