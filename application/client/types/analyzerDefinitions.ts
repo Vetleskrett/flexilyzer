@@ -1,4 +1,9 @@
-import { AnalyzerOutputResponse, ReportTeamResponse, ValueTypesInput, ValueTypesOutput } from "@/extensions/data-contracts";
+import {
+  AnalyzerOutputResponse,
+  ReportTeamResponse,
+  ValueTypesInput,
+  ValueTypesOutput,
+} from "@/extensions/data-contracts";
 
 export type InputParameter = {
   id: string;
