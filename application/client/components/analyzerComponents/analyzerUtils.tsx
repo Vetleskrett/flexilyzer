@@ -33,6 +33,7 @@ export function renderParameter(
     case "str":
     case "int":
     case "bool":
+    case "zip":
     case "date":
       return (
         <div key={param.id}>

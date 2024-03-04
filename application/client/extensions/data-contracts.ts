@@ -293,6 +293,7 @@ export enum ValueTypesInput {
   Str = "str",
   Int = "int",
   Bool = "bool",
+  Zip = "zip",
 }
 
 /** ValueTypesOutput */
