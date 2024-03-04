@@ -112,7 +112,7 @@ def run_seed():
 
         print("Creating course 2 ...")
         course2 = Course(tag="IT4334", name="Store, distribuerte datamengder")
-        session.add(course)
+        session.add(course2)
 
         print("Creating assignment 2...")
         assignment2 = Assignment(
@@ -161,6 +161,44 @@ def run_seed():
             assignment_metadata_id=assignment_metadata2.id,
         )
         session.add(project_metadata4)
+
+        print("Creating course 3 ...")
+        course3 = Course(tag="IT6206", name="Grunnleggende Python")
+        session.add(course3)
+
+        print("Creating assignment 3 ...")
+        assignment3 = Assignment(
+            name="Intro til Python",
+            due_date=datetime(2024, 3, 23, 23, 59),
+            course=course3,
+        )
+        session.add(assignment3)
+        session.flush()
+
+        assignment_metadata3 = AssignmentMetadata(
+            assignment_id=assignment3.id, key_name="zip_file_name", value_type="zip"
+        )
+        session.add(assignment_metadata3)
+        session.flush()
+
+        print("Creating teams in loop ...")
+        for i in range(2):
+            print(f"Team {i}...")
+            team = Team(course=course3)
+            session.add(team)
+            project = Project(
+                team=team,
+                assignment=assignment3,
+            )
+            session.add(project)
+
+            print("Creating project metadata ...")
+            project_metadata = ProjectMetadata(
+                value=f"{team.id}.zip",
+                project=project,
+                assignment_metadata_id=assignment_metadata3.id,
+            )
+            session.add(project_metadata)
 
         print("Creating analyzer ...")
         analyzer = Analyzer(
