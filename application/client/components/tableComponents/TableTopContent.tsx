@@ -56,7 +56,7 @@ const TopContent = ({
         <Dropdown>
           <DropdownTrigger>
             <Button
-              size="md"
+              size="sm"
               variant="bordered"
               color="secondary"
               startContent={<RuleIcon />}
@@ -93,7 +93,7 @@ const TopContent = ({
         <Dropdown>
           <DropdownTrigger>
             <Button
-              size="md"
+              size="sm"
               variant="bordered"
               color="secondary"
               startContent={<FilterAltIcon />}
@@ -138,6 +138,7 @@ const TopContent = ({
           </DropdownMenu>
         </Dropdown>
         <Button
+          size="sm"
           onClick={() => {
             resetView();
           }}
@@ -152,7 +153,7 @@ const TopContent = ({
         <div className="flex">{renderFilterParameters()}</div>
       </div>
       <div>
-        <span className="text-small text-default-400">
+        <span className="text-default-400 text-sm">
           Total {tableLength} teams
         </span>
       </div>

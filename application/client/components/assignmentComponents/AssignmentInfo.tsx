@@ -20,22 +20,20 @@ export default function AssignmentInfo({
   const segment = useSelectedLayoutSegment();
 
   return (
-    <Card className="mx-2 mt-2 p-0">
-      <CardBody>
+    <Card className="mx-2 mt-2 h-14">
+      <CardBody className="flex flex-col justify-center marker:py-0">
         <div className="flex flex-row items-center justify-between text-center">
           <div
-            className="flex w-1/4 cursor-pointer flex-row items-center text-left"
+            className="flex w-1/3 cursor-pointer flex-row items-center text-left"
             onClick={() => {
               router.push(`/courses/${course_id}/assignments/${assignment_id}`);
             }}
           >
             <BackButton targetURL={`/courses/${course_id}`} />
-            <p>
-              <b>{left_text}</b>
-            </p>
+            <p className="text-sm font-bold">{left_text}</p>
           </div>
 
-          <div className="w-1/2">
+          <div className="w-1/3">
             <Tabs
               variant="underlined"
               selectedKey={segment}
@@ -51,7 +49,7 @@ export default function AssignmentInfo({
             </Tabs>
           </div>
 
-          <div className="w-1/4 text-right">
+          <div className="w-1/3 text-right">
             <p>
               <b>Due: </b>
               {due_date

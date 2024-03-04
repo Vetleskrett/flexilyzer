@@ -106,6 +106,8 @@ const renderCell = (
   flatMappedOutputs: FlatMappedOutputs[],
 ) => {
   const [name, id] = columnKey.split("-");
+
+  // TODO: add tooltip for team with the team's input params
   if (name === "Team") return item[0].team_id;
 
   const report = item.find(
