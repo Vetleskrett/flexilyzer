@@ -15,6 +15,8 @@ class Settings(Base):
     CELERY_BROKER_URL: str
     DATABASE_URL: str
     BASE_DIR: str
+    SCRIPTS_FOLDER: str
+    DELIVERIES_FOLDER: str
     DEFAULT_SCRIPT_NAME: str
     DEFAULT_VENV_NAME: str
     DEFAULT_REQUIREMENTS_NAME: str

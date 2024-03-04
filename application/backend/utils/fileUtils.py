@@ -10,7 +10,7 @@ def create_if_not_exists(path: Path):
 
 async def store_file(analyzer_id: int, file: UploadFile, requirements: bool = False):
     try:
-        directory = Path(settings.BASE_DIR) / str(analyzer_id)
+        directory = Path(settings.BASE_DIR + settings.SCRIPTS_FOLDER) / str(analyzer_id)
         create_if_not_exists(directory)
 
         file_path = directory / (
@@ -30,7 +30,7 @@ async def store_file(analyzer_id: int, file: UploadFile, requirements: bool = Fa
 
 def script_exists(analyzer_id: int, requirements: bool = False):
     file_path = (
-        Path(settings.BASE_DIR)
+        Path(settings.BASE_DIR + settings.SCRIPTS_FOLDER)
         / str(analyzer_id)
         / (
             settings.DEFAULT_SCRIPT_NAME
@@ -50,7 +50,7 @@ def script_exists(analyzer_id: int, requirements: bool = False):
 def read_file(analyzer_id: int, requirements: bool = False):
     try:
         file_path = (
-            Path(settings.BASE_DIR)
+            Path(settings.BASE_DIR + settings.SCRIPTS_FOLDER)
             / str(analyzer_id)
             / (
                 settings.DEFAULT_SCRIPT_NAME
@@ -70,7 +70,7 @@ def read_file(analyzer_id: int, requirements: bool = False):
 def delete_file(analyzer_id: int, requirements: bool = False):
     try:
         file_path = (
-            Path(settings.BASE_DIR)
+            Path(settings.BASE_DIR + settings.SCRIPTS_FOLDER)
             / str(analyzer_id)
             / (
                 settings.DEFAULT_SCRIPT_NAME
