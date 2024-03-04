@@ -16,10 +16,11 @@ from db.crud.batches_crud import BatchesRepository
 from db.crud.reports_crud import ReportRepository
 from configs.config import settings
 from typing import Dict
+from configs.config import settings
 
 
 @app.task
-def run_analyzer(project_ids: list[int], batch_id: int):
+def run_analyzer(project_ids: list[int], batch_id: int, course_id: int):
     db = next(get_db())
 
     batch = BatchesRepository.update_batch_status(
@@ -40,6 +41,15 @@ def run_analyzer(project_ids: list[int], batch_id: int):
         db, project_ids, required_inputs, assignment_id
     )
 
+    
+    file_delivery_path = None
+    if "zip" in required_inputs:
+        file_delivery_path = Path(settings.BASE_DIR + settings.DELIVERIES_FOLDER) / course_id / assignment_id 
+
+
+    volumes = {}    
+    if file_delivery_path:
+        volumes[str(file_delivery_path)] = {'bind': f'/app/{assignment_id}', 'mode': 'rw'}
 
     try:
         client = docker.from_env()
@@ -52,14 +62,19 @@ def run_analyzer(project_ids: list[int], batch_id: int):
         container: Container = client.containers.create(
             f"analyzer-app:{analyzer_id}",
             "tail -f /dev/null",
+            volumes=volumes,
             detach=True,
         )
+
         container.start()
 
         errors = False
 
         for project_id, metadata in projects_with_metadata.items():
             run_command = f"python {str(container_script_path)}"
+
+            if file_delivery_path:
+                metadata["zip"] = str(container_base_path / assignment_id / metadata["zip"])
 
             try:
                 result = container.exec_run(run_command, environment=metadata)
