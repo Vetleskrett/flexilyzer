@@ -13,14 +13,14 @@ export default function TeamOverview({
 
   return (
     <Card className="mb-5">
-      <CardBody>
+      <CardBody className="flex flex-col justify-center py-3">
         <div className="flex">
           <div className="flex-auto">
             <h3 className="h3">Team {team_id}</h3>
-            More info here ? ...
           </div>
           <div className="my-auto flex-initial">
             <Button
+              size="sm"
               onClick={() => {
                 router.push(`/courses/${course_id}/teams/${team_id}`);
               }}
