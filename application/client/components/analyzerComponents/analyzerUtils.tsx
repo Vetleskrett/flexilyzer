@@ -4,6 +4,7 @@ import {
   InputParameter,
   OutputParameter,
 } from "@/types/analyzerDefinitions";
+import { pythonTypesMap } from "@/utils/valueTypesMapping";
 import { Kbd } from "@nextui-org/react";
 
 export function formatAnalyzerData(formData: FormDataT | AnalyzerResponse) {
@@ -38,7 +39,8 @@ export function renderParameter(
       return (
         <div key={param.id}>
           <p>
-            <b>{param.key_name}</b>: <Kbd>{param.value_type}</Kbd>
+            <b>{param.key_name}</b>:{" "}
+            <Kbd>{pythonTypesMap[param.value_type].pythonType}</Kbd>
           </p>
         </div>
       );
@@ -50,7 +52,8 @@ export function renderParameter(
             <p>
               <b>{param.key_name}</b>:{" "}
               <Kbd>
-                int (range: {param.extended_metadata.fromRange} -{" "}
+                {pythonTypesMap[param.value_type].pythonType} (range:{" "}
+                {param.extended_metadata.fromRange} -{" "}
                 {param.extended_metadata.toRange})
               </Kbd>
             </p>
