@@ -1,6 +1,6 @@
 from typing import List, Set, Tuple
 from schemas.analyzer_schema import AnalyzerInputCreate, AnalyzerOutputCreate
-from schemas.shared import ValueTypesMapping, ValueTypesOutput, ExtendedTypeMappings
+from schemas.shared import ValueTypesMapping, ValueTypesOutput, ExtendedTypeMappings, ValueTypesInput
 
 
 
@@ -15,7 +15,7 @@ def get_extended_types_and_classes(outputs: List[AnalyzerOutputCreate]) -> Tuple
         needed_extended_types.add(output_type)
 
     for type_needed in needed_extended_types:
-        extended_class_name = getattr(ExtendedTypeMappings, type_needed, None)
+        extended_class_name = ExtendedTypeMappings[type_needed]
         if extended_class_name:
             extended_classes += f"""
 class {extended_class_name.value}(BaseModel):
@@ -26,7 +26,7 @@ class {extended_class_name.value}(BaseModel):
 
 def generate_env_vars(inputs: List[AnalyzerInputCreate]) -> str:
     env_vars = "\n    ".join([
-        f"{input.key_name} = {ValueTypesMapping[ValueTypesOutput[input.value_type.value].name].value}(os.getenv('{input.key_name.upper()}'))"
+        f"{input.key_name} = {ValueTypesMapping[ValueTypesInput[input.value_type.value].name].value}(os.getenv('{input.key_name.upper()}'))"
         for input in inputs
     ])
     return env_vars
@@ -36,7 +36,7 @@ def generate_template(inputs: List[AnalyzerInputCreate], outputs: List[AnalyzerO
     needed_extended_types, extended_classes = get_extended_types_and_classes(outputs)
 
     output_class_fields = "\n    ".join([
-        f"{output.key_name}: Optional[{ValueTypesMapping[ValueTypesOutput[output.value_type.value].name].value} | {getattr(ExtendedTypeMappings, ValueTypesMapping[ValueTypesOutput[output.value_type.value].name].value, '')}]"
+        f"{output.key_name}: Optional[{ValueTypesMapping[ValueTypesOutput[output.value_type.value].name].value} | {ExtendedTypeMappings[ValueTypesMapping[ValueTypesOutput[output.value_type.value].name].value].value}]"
         for output in outputs
     ])
 
