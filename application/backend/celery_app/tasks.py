@@ -34,6 +34,14 @@ def run_analyzer(project_ids: list[int], batch_id: int):
     container_script_path = container_base_path / settings.DEFAULT_SCRIPT_NAME
     dockerfile_path = Path(settings.BASE_DIR)
 
+
+    
+    required_inputs, required_outputs = fetchIOHelper(db, analyzer_id)
+
+    projects_with_metadata: Dict[int, Dict] = fetchProjectsAndMetadataHelper(
+        db, project_ids, required_inputs, assignment_id
+    )
+
     try:
         client = docker.from_env()
 
@@ -49,11 +57,6 @@ def run_analyzer(project_ids: list[int], batch_id: int):
         )
         container.start()
 
-        required_inputs, required_outputs = fetchIOHelper(db, analyzer_id)
-
-        projects_with_metadata: Dict[int, Dict] = fetchProjectsAndMetadataHelper(
-            db, project_ids, required_inputs, assignment_id
-        )
         errors = False
 
         for project_id, metadata in projects_with_metadata.items():

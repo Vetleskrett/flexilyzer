@@ -12,6 +12,7 @@ class ValueTypesInput(enum.Enum):
     str = "str"
     int = "int"
     bool = "bool"
+    zip = "zip"
 
 
 class ValueTypesOutput(enum.Enum):
@@ -28,3 +29,11 @@ class ValueTypesMapping(enum.Enum):
     bool = "bool"
     range = "int"
     date = "datetime"
+    zip = "Path"
+
+
+class ExtendedTypeMappings(enum.Enum):
+    str = "ExtendedStr"
+    bool = "ExtendedBool"
+    int = "ExtendedInt"
+    datetime = "ExtendedDatetime"
