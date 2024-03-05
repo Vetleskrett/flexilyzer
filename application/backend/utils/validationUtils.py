@@ -2,8 +2,14 @@ from types import NoneType
 from fastapi import HTTPException
 from pydantic import ValidationError
 import json
-from schemas.shared import ValueTypesOutput, ExtendedBool, ExtendedDatetime, ExtendedInt, ExtendedStr
-
+from schemas.shared import (
+    ValueTypesOutput,
+    ExtendedBool,
+    ExtendedDatetime,
+    ExtendedInt,
+    ExtendedStr,
+)
+from datetime import datetime
 
 
 def validatePydanticToHTTPError(schema, to_validate):
@@ -19,16 +25,12 @@ def validatePydanticToHTTPError(schema, to_validate):
         raise HTTPException(status_code=400, detail=simplified_errors)
 
 
-
-
 def cast_to_pydantic(value, type):
     try:
         type(**value)
         return True
     except ValidationError:
         return False
-    
-
 
 
 def validate_type(key, value, expected_type, extended_metadata=None):
@@ -52,6 +54,8 @@ def validate_type(key, value, expected_type, extended_metadata=None):
     if expected_type == ValueTypesOutput.range:
         if not isinstance(value, (int, float)):
             return False, f"{base_error_msg}, got {type(value).__name__}"
+        elif not cast_to_pydantic(value, ExtendedInt):
+            return False, f"{base_error_msg}, got {type(value).__name__}"
 
         if "fromRange" in extended_metadata and "toRange" in extended_metadata:
             if not (
@@ -64,11 +68,15 @@ def validate_type(key, value, expected_type, extended_metadata=None):
                 )
         # If the value is within the range or no range is specified, consider it valid
         return True, ""
+    
     elif expected_type == ValueTypesOutput.int:
-        return (
-            isinstance(value, (int, float)),
-            f"{base_error_msg}, got {type(value).__name__}",
-        )
+        if isinstance(value, int):
+            return True, f"{base_error_msg}, got {type(value).__name__}"
+        elif cast_to_pydantic(value, ExtendedInt):
+            return True, f"{base_error_msg}, got {type(value).__name__}"
+        else:
+            return False, f"{base_error_msg}, got {type(value).__name__}"
+
     elif expected_type == ValueTypesOutput.bool:
         if isinstance(value, bool):
             return True, f"{base_error_msg}, got {type(value).__name__}"
@@ -78,9 +86,21 @@ def validate_type(key, value, expected_type, extended_metadata=None):
             return False, f"{base_error_msg}, got {type(value).__name__}"
 
     elif expected_type == ValueTypesOutput.str:
-        return isinstance(value, str), f"{base_error_msg}, got {type(value).__name__}"
+        if isinstance(value, str):
+            return True, f"{base_error_msg}, got {type(value).__name__}"
+        elif cast_to_pydantic(value, ExtendedStr):
+            return True, f"{base_error_msg}, got {type(value).__name__}"
+        else:
+            return False, f"{base_error_msg}, got {type(value).__name__}"
+
     elif expected_type == ValueTypesOutput.date:
-        return isinstance(value, str), f"{base_error_msg}, got {type(value).__name__}"
+        if isinstance(value, str):
+            return True, f"{base_error_msg}, got {type(value).__name__}"
+        elif cast_to_pydantic(value, ExtendedDatetime):
+            return True, f"{base_error_msg}, got {type(value).__name__}"
+        else:
+            return False, f"{base_error_msg}, got {type(value).__name__}"
+
     else:
         print(type(key))
         print(type(expected_type))
