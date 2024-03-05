@@ -176,7 +176,7 @@ def run_seed():
         session.flush()
 
         assignment_metadata3 = AssignmentMetadata(
-            assignment_id=assignment3.id, key_name="zip_file_name", value_type="zip"
+            assignment_id=assignment3.id, key_name="zip_file_path", value_type="zip"
         )
         session.add(assignment_metadata3)
         session.flush()

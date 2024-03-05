@@ -43,7 +43,7 @@ def run_analyzer(project_ids: list[int], batch_id: int, course_id: int):
 
     
     file_delivery_path = None
-    if "zip_file_name" in required_inputs:
+    if "zip_file_path" in required_inputs:
         file_delivery_path = Path(settings.BASE_DIR + settings.DELIVERIES_FOLDER) / str(course_id) / str(assignment_id) 
 
 
@@ -74,7 +74,7 @@ def run_analyzer(project_ids: list[int], batch_id: int, course_id: int):
             run_command = f"python {str(container_script_path)}"
 
             if file_delivery_path:
-                metadata["ZIP_FILE_NAME"] = str(container_base_path / str(assignment_id) / metadata["ZIP_FILE_NAME"])
+                metadata["ZIP_FILE_PATH"] = str(container_base_path / str(assignment_id) / metadata["ZIP_FILE_PATH"])
 
             try:
                 result = container.exec_run(run_command, environment=metadata)

@@ -36,7 +36,7 @@ class TestMathFunctions(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.module = extract_and_load_module_from_zip(zip_file_name)
+        cls.module = extract_and_load_module_from_zip(zip_file_path)
 
     def test_add(self):
         add = self.module.add
@@ -113,5 +113,5 @@ def main(zip_file_name: Path) -> Return:
     return test_result
 
 if __name__ == "__main__":
-    zip_file_name = Path(os.getenv('ZIP_FILE_NAME'))
-    print(main(zip_file_name).model_dump_json())  
+    zip_file_path = Path(os.getenv('ZIP_FILE_PATH'))
+    print(main(zip_file_path).model_dump_json())  
