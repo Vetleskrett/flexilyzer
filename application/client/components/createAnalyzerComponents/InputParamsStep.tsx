@@ -10,7 +10,7 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
       if (i === index) {
         // If value_type is "zip", key_name should be set to a default key_name accordingly
         if (key === "value_type" && value === ValueTypesInput.Zip) {
-          return { ...param, [key]: value, key_name: "zip_file_name" };
+          return { ...param, [key]: value, key_name: "zip_file_path" };
         } else {
           return { ...param, [key]: value };
         }

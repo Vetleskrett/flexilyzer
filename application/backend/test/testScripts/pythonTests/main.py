@@ -36,7 +36,7 @@ class TestMathFunctions(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.module = extract_and_load_module_from_zip(zip_file_name)
+        cls.module = extract_and_load_module_from_zip(zip_file_path)
 
     def test_add(self):
         add = self.module.add
@@ -82,7 +82,7 @@ class TestMathFunctions(unittest.TestCase):
         self.assertEqual(modify_list([4,5,6,7]),[5,6,7,4])    
         self.assertEqual(modify_list([6,2,8,1]),[2,8,1,6])  
 
-def main(zip_file_name: Path) -> Return:
+def main(zip_file_path: Path) -> Return:
     # code goes here
     loader = unittest.TestLoader()
     suite = loader.loadTestsFromTestCase(TestMathFunctions)
@@ -99,5 +99,5 @@ def main(zip_file_name: Path) -> Return:
     return test_result
 
 if __name__ == "__main__":
-    zip_file_name = Path(os.getenv('ZIP_FILE_NAME'))
-    print(main(zip_file_name).model_dump_json())  
+    zip_file_path = Path(os.getenv('ZIP_FILE_PATH'))
+    print(main(zip_file_path).model_dump_json())  
