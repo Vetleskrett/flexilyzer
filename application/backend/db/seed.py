@@ -191,6 +191,8 @@ def run_seed():
                 assignment=assignment3,
             )
             session.add(project)
+            session.flush()
+
 
             print("Creating project metadata ...")
             project_metadata = ProjectMetadata(

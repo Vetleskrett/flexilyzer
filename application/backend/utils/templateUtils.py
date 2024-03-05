@@ -59,6 +59,6 @@ def main({input_params}) -> {'Return' if outputs else 'None'}:
 
 if __name__ == "__main__":
     {env_vars}
-    main({', '.join([input.key_name for input in inputs])}).model_dump_json()  
+    print(main({', '.join([input.key_name for input in inputs])}).model_dump_json())  
 """
     return template

@@ -1,3 +1,4 @@
+
 import unittest
 import importlib.util
 import os
@@ -22,13 +23,17 @@ def load_module_from_path(path):
     spec.loader.exec_module(module)
     return module
 
-def extract_and_load_module_from_zip(zip_path):
+def extract_and_load_module_from_zip(zip_path: Path):
+
+    group = zip_path.stem
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-        zip_ref.extractall("/tmp")  
-    return load_module_from_path(f"/tmp/{PYTHON_FILE_NAME}")
+        zip_ref.extractall(f"/app/tmp/{group}")  
+    return load_module_from_path(f"/app/tmp/{group}/{PYTHON_FILE_NAME}")
 
 
 class TestMathFunctions(unittest.TestCase):
+    module = None 
+
     @classmethod
     def setUpClass(cls):
         cls.module = extract_and_load_module_from_zip(zip_file_name)
@@ -38,6 +43,8 @@ class TestMathFunctions(unittest.TestCase):
         self.assertEqual(add(1, 2), 3)
         self.assertEqual(add(-1, 1), 0)
         self.assertEqual(add(-1, -1), -2)
+
+    
         
 
 def main(zip_file_name: Path) -> Return:
@@ -47,9 +54,15 @@ def main(zip_file_name: Path) -> Return:
     runner = unittest.TextTestRunner(stream=open(os.devnull, 'w'))  
     result = runner.run(suite)
     
-    test_result = Return(tests=result.wasSuccessful())
+    res = ""
+
+    for test, desc in result.failures + result.errors:
+        res += f" {test.id()}, {desc}"
+
+    
+    test_result = Return(tests=ExtendedBool(value=result.wasSuccessful(), desc=res))
     return test_result
 
 if __name__ == "__main__":
     zip_file_name = Path(os.getenv('ZIP_FILE_NAME'))
-    main(zip_file_name).model_dump_json()  
+    print(main(zip_file_name).model_dump_json())  
