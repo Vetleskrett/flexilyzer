@@ -43,17 +43,16 @@ def run_analyzer(project_ids: list[int], batch_id: int, course_id: int):
 
     
     file_delivery_path = None
-    if "zip" in required_inputs:
-        file_delivery_path = Path(settings.BASE_DIR + settings.DELIVERIES_FOLDER) / course_id / assignment_id 
+    if "zip_file_name" in required_inputs:
+        file_delivery_path = Path(settings.BASE_DIR + settings.DELIVERIES_FOLDER) / str(course_id) / str(assignment_id) 
 
 
     volumes = {}    
     if file_delivery_path:
-        volumes[str(file_delivery_path)] = {'bind': f'/app/{assignment_id}', 'mode': 'rw'}
+        volumes[str(file_delivery_path.absolute())] = {'bind': f'/app/{assignment_id}', 'mode': 'rw'}
 
     try:
         client = docker.from_env()
-
         client.images.build(
             path=str(dockerfile_path.resolve()),
             buildargs={"ANALYZER_ID": str(analyzer_id)},
@@ -66,6 +65,7 @@ def run_analyzer(project_ids: list[int], batch_id: int, course_id: int):
             detach=True,
         )
 
+
         container.start()
 
         errors = False
@@ -74,7 +74,7 @@ def run_analyzer(project_ids: list[int], batch_id: int, course_id: int):
             run_command = f"python {str(container_script_path)}"
 
             if file_delivery_path:
-                metadata["zip"] = str(container_base_path / assignment_id / metadata["zip"])
+                metadata["ZIP_FILE_NAME"] = str(container_base_path / str(assignment_id) / metadata["ZIP_FILE_NAME"])
 
             try:
                 result = container.exec_run(run_command, environment=metadata)
@@ -125,6 +125,7 @@ def run_analyzer(project_ids: list[int], batch_id: int, course_id: int):
             )
 
     except Exception as e:
+        print("Catch")
         print(e)
         BatchesRepository.update_batch_status(
             db=db, batch_id=batch_id, status=BatchEnum.FAILED
