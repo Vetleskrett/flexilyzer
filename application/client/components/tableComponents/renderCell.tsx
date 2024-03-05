@@ -6,7 +6,6 @@ import { FlatMappedOutputs } from "@/types/tableDefinitions";
 import { formatter } from "@/utils/formatUtils";
 import { standardTimeFormatter } from "@/utils/timeUtils";
 import { Tooltip, Progress } from "@nextui-org/react";
-import { SmallBool } from "@/components/tableComponents/SmallBoolChip";
 
 type ExtendedValueObj = {
   value: string | number | boolean | Date;
@@ -32,7 +31,7 @@ type TooltipWrapperProps = {
 
 const TooltipWrapper = ({ desc, children }: TooltipWrapperProps) => {
   return desc ? (
-    <Tooltip delay={0} closeDelay={0} content={desc} placement='right'>
+    <Tooltip delay={0} closeDelay={0} content={desc} placement="right">
       {children}
     </Tooltip>
   ) : (
@@ -53,7 +52,7 @@ const render = (value: any, outputDef: FlatMappedOutputs, desc?: string) => {
         <TooltipWrapper desc={desc}>
           <Progress
             aria-label={outputDef.key_name}
-            size='md'
+            size="md"
             value={value as number}
             minValue={extendedMetadata.fromRange}
             maxValue={extendedMetadata.toRange}
@@ -62,7 +61,7 @@ const render = (value: any, outputDef: FlatMappedOutputs, desc?: string) => {
                 ? "success"
                 : "warning"
             }
-            className='max-w-md'
+            className="max-w-md"
           />
         </TooltipWrapper>
       );
@@ -70,14 +69,14 @@ const render = (value: any, outputDef: FlatMappedOutputs, desc?: string) => {
     case ValueTypesOutput.Str:
       return (
         <TooltipWrapper desc={desc}>
-          <div className='text-xs'>{value as string}</div>
+          <div className="text-xs">{value as string}</div>
         </TooltipWrapper>
       );
 
     case ValueTypesOutput.Date:
       return (
         <TooltipWrapper desc={desc}>
-          <div className='text-xs'>{standardTimeFormatter(value as Date)}</div>
+          <div className="text-xs">{standardTimeFormatter(value as Date)}</div>
         </TooltipWrapper>
       );
 
@@ -97,7 +96,7 @@ const render = (value: any, outputDef: FlatMappedOutputs, desc?: string) => {
     case ValueTypesOutput.Int:
       return (
         <TooltipWrapper desc={desc}>
-          <div className='text-xs'>{formatter.format(value as number)}</div>
+          <div className="text-xs">{formatter.format(value as number)}</div>
         </TooltipWrapper>
       );
 
@@ -124,7 +123,7 @@ const renderCell = (
     (o) => o.analyzerId === Number(id) && o.key_name === name,
   );
 
-  if (!outputDef || value === undefined) return <p className='font-light'>-</p>;
+  if (!outputDef || value === undefined) return <p className="font-light">-</p>;
 
   return isExtendedValueObj(value)
     ? render(value.value, outputDef, value.desc)
