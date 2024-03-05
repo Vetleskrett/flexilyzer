@@ -20,8 +20,8 @@ export default function AssignmentInfo({
   const segment = useSelectedLayoutSegment();
 
   return (
-    <Card className="mx-2 mt-2 h-14">
-      <CardBody className="flex flex-col justify-center marker:py-0">
+    <Card className="mx-2 mt-2">
+      <CardBody className="flex flex-col justify-center px-4 py-2">
         <div className="flex flex-row items-center justify-between text-center">
           <div
             className="flex w-1/3 cursor-pointer flex-row items-center text-left"
