@@ -5,8 +5,13 @@ from datetime import datetime
 import random
 
 
+class ExtendedDatetime(BaseModel):
+    value: Optional[datetime]
+    desc: Optional[str]
+
+
 class Return(BaseModel):
-    datetimenow: Optional[datetime]
+    randdate: Optional[datetime | ExtendedDatetime]
 
 
 def generate_random_date(start_year: int, end_year: int) -> datetime:
@@ -24,7 +29,9 @@ def generate_random_date(start_year: int, end_year: int) -> datetime:
 
 def main(url: str):
     random_date = generate_random_date(1970, 2028)
-    return Return(**{"datetimenow": random_date})
+    return Return(
+        randdate=ExtendedDatetime(value=random_date, desc="This is a random date")
+    )
 
 
 if __name__ == "__main__":
