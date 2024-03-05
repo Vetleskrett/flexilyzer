@@ -1,10 +1,11 @@
-const guides = () => {
+import { Guides } from "@/components/guides/Guides";
+
+const GuidesPage = () => {
   return (
     <div>
-      Here we want to implement comprehensive userguides on the use of this
-      system
+      <Guides />
     </div>
   );
 };
 
-export default guides;
+export default GuidesPage;
