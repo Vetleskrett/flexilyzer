@@ -15,7 +15,7 @@ class JobsService:
     @staticmethod
     def run_job(db, analyzer_id, assignment_id, project_ids):
         analyzer = AnalyzerService.get_analyzer(db, analyzer_id=analyzer_id)
-        AssignmentService.get_assignment(db, assignment_id=assignment_id)
+        assignment = AssignmentService.get_assignment(db, assignment_id=assignment_id)
 
         if project_ids:
             errors = []
@@ -54,6 +54,6 @@ class JobsService:
             batch=BatchCreate(assignment_id=assignment_id, analyzer_id=analyzer_id),
         )
 
-        run_analyzer.delay(project_ids, batch.id)
+        run_analyzer.delay(project_ids, batch.id, assignment.course_id)
 
         return batch
