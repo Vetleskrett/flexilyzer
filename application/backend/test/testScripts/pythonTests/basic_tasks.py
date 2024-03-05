@@ -13,12 +13,12 @@ def multiply(a, b):
     # Implement the mulitplication and return the result
     pass
 
-# Determine if a number is positive, negative, or zero
+# Return true if a number is positive, else false
 def check_number(number):
     # Implement the logic to check the number and return the result as a bool
     pass
 
-# Function that creates a list of continuous numbers from "start" value to "end" value
+# Function that creates a list of continuous numbers from "start" value to "end" value, including both start and end number
 def list_of_numbers(start, end):
     # Implement logic and return the list
     pass
