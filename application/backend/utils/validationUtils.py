@@ -2,7 +2,8 @@ from types import NoneType
 from fastapi import HTTPException
 from pydantic import ValidationError
 import json
-from schemas.shared import ValueTypesOutput
+from schemas.shared import ValueTypesOutput, ExtendedBool, ExtendedDatetime, ExtendedInt, ExtendedStr
+
 
 
 def validatePydanticToHTTPError(schema, to_validate):
@@ -16,6 +17,18 @@ def validatePydanticToHTTPError(schema, to_validate):
             for error in e.errors()
         ]
         raise HTTPException(status_code=400, detail=simplified_errors)
+
+
+
+
+def cast_to_pydantic(value, type):
+    try:
+        type(**value)
+        return True
+    except ValidationError:
+        return False
+    
+
 
 
 def validate_type(key, value, expected_type, extended_metadata=None):
@@ -57,7 +70,13 @@ def validate_type(key, value, expected_type, extended_metadata=None):
             f"{base_error_msg}, got {type(value).__name__}",
         )
     elif expected_type == ValueTypesOutput.bool:
-        return isinstance(value, bool), f"{base_error_msg}, got {type(value).__name__}"
+        if isinstance(value, bool):
+            return True, f"{base_error_msg}, got {type(value).__name__}"
+        elif cast_to_pydantic(value, ExtendedBool):
+            return True, f"{base_error_msg}, got {type(value).__name__}"
+        else:
+            return False, f"{base_error_msg}, got {type(value).__name__}"
+
     elif expected_type == ValueTypesOutput.str:
         return isinstance(value, str), f"{base_error_msg}, got {type(value).__name__}"
     elif expected_type == ValueTypesOutput.date:

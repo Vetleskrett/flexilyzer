@@ -1,4 +1,8 @@
+from datetime import datetime
 import enum
+from typing import Optional
+
+from pydantic import BaseModel
 
 
 class BatchEnum(enum.Enum):
@@ -37,3 +41,21 @@ class ExtendedTypeMappings(enum.Enum):
     bool = "ExtendedBool"
     int = "ExtendedInt"
     datetime = "ExtendedDatetime"
+
+
+
+class ExtendedBool(BaseModel):
+    value: Optional[bool]
+    desc: Optional[str]
+
+class ExtendedInt(BaseModel):
+    value: Optional[int]
+    desc: Optional[str]
+
+class ExtendedStr(BaseModel):
+    value: Optional[str]
+    desc: Optional[str]
+
+class ExtendedDatetime(BaseModel):
+    value: Optional[datetime]
+    desc: Optional[str]
