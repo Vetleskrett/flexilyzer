@@ -95,10 +95,12 @@ export const renderMetrics = (
                   : keyName
               }
               avgValue={
-                <TrueFalseDistributionChips
-                  truePercent={boolMetric?.distribution.true.toPrecision(2)}
-                  falsePercent={boolMetric?.distribution.false.toPrecision(2)}
-                />
+                boolMetric && (
+                  <TrueFalseDistributionChips
+                    truePercent={boolMetric?.distribution.true.toPrecision(2)}
+                    falsePercent={boolMetric?.distribution.false.toPrecision(2)}
+                  />
+                )
               }
             >
               {isExtendedValueObj(value)
