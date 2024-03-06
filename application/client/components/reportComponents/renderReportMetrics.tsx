@@ -17,7 +17,11 @@ import {
 } from "@/types/componentDefinitions";
 import React from "react";
 import { RangeMetadataCertain } from "@/types/analyzerDefinitions";
-import { isExtendedValueObj, render } from "../tableComponents/renderCell";
+import {
+  TooltipWrapper,
+  isExtendedValueObj,
+  render,
+} from "../tableComponents/renderCell";
 
 export const renderMetrics = (
   report: ReportResponse,
@@ -47,18 +51,26 @@ export const renderMetrics = (
 
           const avgMetric = batchMetric as AvgMetric;
           return (
-            <RangeComponent
-              key={keyName}
-              keyName={
-                metricMetadata.display_name
-                  ? metricMetadata.display_name
-                  : keyName
-              }
-              value={value as number}
-              fromValue={extendedMetadata.fromRange}
-              toValue={extendedMetadata.toRange}
-              avg={avgMetric}
-            />
+            <TooltipWrapper
+              desc={isExtendedValueObj(value) ? value.desc : undefined}
+            >
+              <RangeComponent
+                key={keyName}
+                keyName={
+                  metricMetadata.display_name
+                    ? metricMetadata.display_name
+                    : keyName
+                }
+                value={
+                  isExtendedValueObj(value)
+                    ? (value.value as number)
+                    : (value as number)
+                }
+                fromValue={extendedMetadata.fromRange}
+                toValue={extendedMetadata.toRange}
+                avg={avgMetric}
+              />
+            </TooltipWrapper>
           );
         case ValueTypesOutput.Str:
           return (

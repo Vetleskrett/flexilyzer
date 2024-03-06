@@ -30,7 +30,7 @@ type TooltipWrapperProps = {
   children: JSX.Element;
 };
 
-const TooltipWrapper = ({ desc, children }: TooltipWrapperProps) => {
+export const TooltipWrapper = ({ desc, children }: TooltipWrapperProps) => {
   return desc ? (
     <Tooltip delay={0} closeDelay={0} content={desc} placement="right">
       {children}
