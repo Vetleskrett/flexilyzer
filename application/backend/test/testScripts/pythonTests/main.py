@@ -45,9 +45,9 @@ class TestMathFunctions(unittest.TestCase):
         self.assertEqual(add(-1, -1), -2)
 
     def test_subtract(self):
-        substract = self.module.substract
-        self.assertEqual(substract(1,1),0)
-        self.assertEqual(substract(10,6),4)
+        subtract = self.module.subtract
+        self.assertEqual(subtract(1,1),0)
+        self.assertEqual(subtract(10,6),4)
 
     def test_multiply(self):
         multiply = self.module.multiply
@@ -82,20 +82,34 @@ class TestMathFunctions(unittest.TestCase):
         self.assertEqual(modify_list([4,5,6,7]),[5,6,7,4])    
         self.assertEqual(modify_list([6,2,8,1]),[2,8,1,6])  
 
-def main(zip_file_path: Path) -> Return:
-    # code goes here
+def simplify_description(desc: str) -> str:
+    """
+    Simplify and clean up the failure or error description.
+    """
+    lines = desc.splitlines()
+    for line in lines:
+        if 'AssertionError' in line:
+            parts = line.split('AssertionError: ')
+            if len(parts) > 1:
+                message = parts[1].replace('\n', ' ').strip()
+                return message
+    return "Error occurred, but specific details are not available."
+
+def main(zip_file_name: Path) -> Return:
     loader = unittest.TestLoader()
     suite = loader.loadTestsFromTestCase(TestMathFunctions)
     runner = unittest.TextTestRunner(stream=open(os.devnull, 'w'))  
     result = runner.run(suite)
     
-    res = ""
+    simplified_results = []
 
     for test, desc in result.failures + result.errors:
-        res += f" {test.id()}, {desc}"
+        simplified_desc = simplify_description(desc)
+        simplified_results.append(f"{test.id().split('.')[-1]}: {simplified_desc}")
 
+    simplified_res = " | ".join(simplified_results)
     
-    test_result = Return(tests=ExtendedBool(value=result.wasSuccessful(), desc=res))
+    test_result = Return(tests=ExtendedBool(value=result.wasSuccessful(), desc=simplified_res))
     return test_result
 
 if __name__ == "__main__":
