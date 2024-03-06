@@ -2,37 +2,37 @@
 def add(a, b):
     return a + b
 
+
 # Function that subtracts two numbers
 def subtract(a, b):
-    # Implement the subtraction and return the result
-    pass
+    return a - b
+
 
 # Function that multiplies two numbers
 def multiply(a, b):
-    # Implement the mulitplication and return the result
-    pass
+    return a * b
+
 
 # Determine if a number is positive, negative, or zero
 def check_number(number):
-    # Implement the logic to check the number and return the result as a bool
-    pass
+    return number < 0
 
-# Function that creates a list of continuous numbers from "start" value to "end" value
+
+# Function that creates a list of continuous numbers from "start" value to "end" value, starting
 def list_of_numbers(start, end):
-    # Implement logic and return the list
-    pass
+    return [i for i in range(start, end + 1)]
+
 
 # Function that duplicates all letters in a string, e.g. "hello" -> "hheelllloo"
 def duplicate_letters(string):
-    # Implement logic and return the duplicated string
-    pass
+    return "".join([letter * 3 for letter in string])
+
 
 # Function that removes all vowels from a string
 def remove_vowels(string):
-    # Implement logic and return the modifified string
-    pass
+    return "".join([letter for letter in string if letter not in "aeiouyæøå"])
+
 
 # Function that moves the first element of the list to the end of the list
 def modify_list(input_list):
-    # Implement the logic that modifies the list and returns it
-    pass
+    return input_list[1:] + input_list[0:1]
