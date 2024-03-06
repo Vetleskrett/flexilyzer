@@ -5,22 +5,24 @@ import { Progress } from "@nextui-org/react";
 import { Card, CardBody } from "@nextui-org/react";
 
 import { useSearchParams } from "next/navigation";
+import { TooltipWrapper } from "../tableComponents/renderCell";
 
 export const RangeComponent = ({
-  avg,
   keyName,
   value,
   fromValue,
   toValue,
+  avg,
+  desc,
 }: RangeComponentT) => {
   const searchParams = useSearchParams();
 
   const isCompareMode = searchParams.get("compare") === "true";
 
   return (
-    <>
-      <Card className="min-w-[400px] max-w-[500px] px-4">
-        <CardBody className="">
+    <Card className="min-w-[400px] max-w-[500px] px-4">
+      <CardBody className="">
+        <TooltipWrapper desc={desc}>
           <Progress
             label={<p className="font-semibold">{keyName}</p>}
             aria-label={keyName}
@@ -43,8 +45,8 @@ export const RangeComponent = ({
               </>
             }
           />
-        </CardBody>
-      </Card>
-    </>
+        </TooltipWrapper>
+      </CardBody>
+    </Card>
   );
 };

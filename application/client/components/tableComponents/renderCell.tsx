@@ -25,14 +25,14 @@ export const isExtendedValueObj = (value: any): value is ExtendedValueObj => {
   );
 };
 
-type TooltipWrapperProps = {
+export type TooltipWrapperProps = {
   desc: JSX.Element | string | undefined;
   children: JSX.Element;
 };
 
 export const TooltipWrapper = ({ desc, children }: TooltipWrapperProps) => {
   return desc ? (
-    <Tooltip delay={0} closeDelay={0} content={desc} placement="right">
+    <Tooltip delay={0} closeDelay={0} content={desc} placement="left">
       {children}
     </Tooltip>
   ) : (

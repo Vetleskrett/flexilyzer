@@ -1,9 +1,12 @@
+import { TooltipWrapperProps } from "@/components/tableComponents/renderCell";
+
 export type RangeComponentT = {
   keyName: string;
   value: number;
   fromValue: number;
   toValue: number;
   avg: AvgMetric | undefined;
+  desc: TooltipWrapperProps["desc"];
 };
 
 export type BoolComponentT = {
