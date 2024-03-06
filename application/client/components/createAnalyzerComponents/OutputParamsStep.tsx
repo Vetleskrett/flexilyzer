@@ -120,8 +120,8 @@ export default function OutputParamsStep({
             </PopoverTrigger>
             <PopoverContent>
               <div className="w-full max-w-sm px-1 py-2">
-                <div className="text-small font-bold">Output Parameters</div>
-                <div className="text-tiny">
+                <div className="text-sm font-bold">Output Parameters</div>
+                <div className="text-sm">
                   In this step, you define the different parameters your
                   analyzer script is expected to return, i.e., what the report
                   will consist of. <br />
