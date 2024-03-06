@@ -1,21 +1,34 @@
-import json
 import os
+from typing import Optional
 from pydantic import BaseModel
 import random
 
 
+class ExtendedInt(BaseModel):
+    value: Optional[int]
+    desc: Optional[str]
+
+
+class ExtendedBool(BaseModel):
+    value: Optional[bool]
+    desc: Optional[str]
+
+
+class ExtendedStr(BaseModel):
+    value: Optional[str]
+    desc: Optional[str]
+
+
 class Return(BaseModel):
-    commits: int
-    total_code_lines: int
-    language: str
-    is_public: bool
-    url: str
-    test_coverage: int
+    commits: Optional[int | ExtendedInt]
+    total_code_lines: Optional[int | ExtendedInt]
+    language: Optional[str | ExtendedStr]
+    is_public: Optional[bool | ExtendedBool]
+    url: Optional[str | ExtendedStr]
+    test_coverage: Optional[int | ExtendedInt]
 
 
 def main(url: str) -> Return:
-    # mocked git data
-
     response_obj = {
         "commits": random.randint(8, 40),
         "total_code_lines": random.randint(500, 5000),
@@ -31,5 +44,5 @@ def main(url: str) -> Return:
 
 
 if __name__ == "__main__":
-    url = os.getenv("URL")
-    print(json.dumps(main(url).model_dump()))
+    url = str(os.getenv("URL"))
+    print(main(url).model_dump_json())

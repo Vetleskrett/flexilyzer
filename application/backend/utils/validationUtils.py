@@ -29,8 +29,12 @@ def cast_to_pydantic(value, type):
     try:
         type(**value)
         return True
-    except ValidationError:
+    except Exception:
         return False
+
+
+def value_inside_range(value, from_range, to_range):
+    return from_range <= value <= to_range
 
 
 def validate_type(key, value, expected_type, extended_metadata=None):
@@ -52,52 +56,52 @@ def validate_type(key, value, expected_type, extended_metadata=None):
         return True, ""
 
     if expected_type == ValueTypesOutput.range:
-        if not isinstance(value, (int, float)):
-            return False, f"{base_error_msg}, got {type(value).__name__}"
-        elif not cast_to_pydantic(value, ExtendedInt):
+        if "fromRange" in extended_metadata and "toRange" in extended_metadata:
+            from_range = extended_metadata["fromRange"]
+            to_range = extended_metadata["toRange"]
+        else:
+            return False, "Missing range definitions in metric metadata"
+
+        if isinstance(value, (int, float)) and value_inside_range(
+            value, from_range, to_range
+        ):
+            return True, ""
+        elif cast_to_pydantic(value, ExtendedInt) and value_inside_range(
+            value["value"], from_range, to_range
+        ):
+            return True, ""
+        else:
             return False, f"{base_error_msg}, got {type(value).__name__}"
 
-        if "fromRange" in extended_metadata and "toRange" in extended_metadata:
-            if not (
-                extended_metadata["fromRange"] <= value <= extended_metadata["toRange"]
-            ):
-                # Provide a detailed error message for range violations
-                return False, (
-                    f"Value for key '{key}' ({value}) is outside the allowed range "
-                    f"[{extended_metadata['fromRange']}, {extended_metadata['toRange']}]"
-                )
-        # If the value is within the range or no range is specified, consider it valid
-        return True, ""
-    
     elif expected_type == ValueTypesOutput.int:
         if isinstance(value, int):
-            return True, f"{base_error_msg}, got {type(value).__name__}"
+            return True, ""
         elif cast_to_pydantic(value, ExtendedInt):
-            return True, f"{base_error_msg}, got {type(value).__name__}"
+            return True, ""
         else:
             return False, f"{base_error_msg}, got {type(value).__name__}"
 
     elif expected_type == ValueTypesOutput.bool:
         if isinstance(value, bool):
-            return True, f"{base_error_msg}, got {type(value).__name__}"
+            return True, ""
         elif cast_to_pydantic(value, ExtendedBool):
-            return True, f"{base_error_msg}, got {type(value).__name__}"
+            return True, ""
         else:
             return False, f"{base_error_msg}, got {type(value).__name__}"
 
     elif expected_type == ValueTypesOutput.str:
         if isinstance(value, str):
-            return True, f"{base_error_msg}, got {type(value).__name__}"
+            return True, ""
         elif cast_to_pydantic(value, ExtendedStr):
-            return True, f"{base_error_msg}, got {type(value).__name__}"
+            return True, ""
         else:
             return False, f"{base_error_msg}, got {type(value).__name__}"
 
     elif expected_type == ValueTypesOutput.date:
         if isinstance(value, str):
-            return True, f"{base_error_msg}, got {type(value).__name__}"
+            return True, ""
         elif cast_to_pydantic(value, ExtendedDatetime):
-            return True, f"{base_error_msg}, got {type(value).__name__}"
+            return True, ""
         else:
             return False, f"{base_error_msg}, got {type(value).__name__}"
 
