@@ -14,7 +14,7 @@ export const IntComponent = ({ avg, keyName, value }: IntComponentT) => {
         {keyName}
       </CardHeader>
       <Divider />
-      <CardBody className="pt-2 text-center text-small">
+      <CardBody className="pt-2 text-center text-sm">
         <div>
           {value}
           {isCompareMode && avg && (

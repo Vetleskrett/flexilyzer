@@ -8,24 +8,24 @@ export type RangeComponentT = {
 
 export type BoolComponentT = {
   keyName: string;
-  value: boolean;
+  value: JSX.Element;
   distribution: TrueFalseDistribution | undefined;
 };
 
 export type TextComponentT = {
   keyName: string;
-  value: string;
+  value: JSX.Element;
 };
 
 export type IntComponentT = {
   keyName: string;
-  value: number;
+  value: JSX.Element;
   avg: AvgMetric | undefined;
 };
 
 export type DateComponentT = {
   keyName: string;
-  value: string;
+  value: JSX.Element;
   avg: DateAvgMetric | undefined;
 };
 

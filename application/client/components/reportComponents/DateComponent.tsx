@@ -15,7 +15,7 @@ export const DateComponent = ({ avg, keyName, value }: DateComponentT) => {
       </CardHeader>
       <Divider />
       <CardBody className="flex flex-col items-center justify-center gap-2 pt-2">
-        {standardTimeFormatter(new Date(value))}
+        {value}
         {isCompareMode && avg?.avg && (
           <div className="text-gray-500">
             (Avg: {standardTimeFormatter(new Date(avg.avg))})

@@ -8,7 +8,7 @@ import { SortDescriptor } from "@nextui-org/react";
 const filterReports = (
   allReportsList: ReportTeamResponse[][],
   filterState: FilterState,
-  allFlatMappedOutputs: FlatMappedOutputs[]
+  allFlatMappedOutputs: FlatMappedOutputs[],
 ) => {
   return allReportsList.filter((teamReports) => {
     return teamReports.every((report) => {
@@ -16,7 +16,7 @@ const filterReports = (
 
       for (const [key, filter] of Object.entries(filterState)) {
         const output = allFlatMappedOutputs.find(
-          (output) => output.id === Number(key)
+          (output) => output.id === Number(key),
         );
         if (output === undefined) {
           continue;
@@ -59,12 +59,12 @@ const filterReports = (
 
 const sortReports = (
   sortDescriptor: SortDescriptor | undefined,
-  filteredReports: ReportTeamResponse[][]
+  filteredReports: ReportTeamResponse[][],
 ) => {
   if (sortDescriptor == undefined) return filteredReports;
 
   const col = sortDescriptor.column as string;
-  const [descriptor, id] = col.split("-");
+  const [descriptor] = col.split("-");
 
   if ("Team" === descriptor)
     return sortDescriptor.direction == "ascending"
@@ -73,10 +73,10 @@ const sortReports = (
 
   return [...filteredReports].sort((a, b) => {
     const firstReport = a.find((report) =>
-      report.report.hasOwnProperty(descriptor)
+      report.report.hasOwnProperty(descriptor),
     );
     const secondReport = b.find((report) =>
-      report.report.hasOwnProperty(descriptor)
+      report.report.hasOwnProperty(descriptor),
     );
 
     let firstValue = firstReport ? firstReport.report[descriptor] : null;

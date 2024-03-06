@@ -2,6 +2,7 @@ import {
   ReportTeamResponse,
   ValueTypesOutput,
 } from "@/extensions/data-contracts";
+import { RangeMetadataCertain } from "@/types/analyzerDefinitions";
 import { FlatMappedOutputs } from "@/types/tableDefinitions";
 import { formatter } from "@/utils/formatUtils";
 import { standardTimeFormatter } from "@/utils/timeUtils";
@@ -14,7 +15,7 @@ type ExtendedValueObj = {
 
 // Type guard for ExtendedValueObj
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const isExtendedValueObj = (value: any): value is ExtendedValueObj => {
+export const isExtendedValueObj = (value: any): value is ExtendedValueObj => {
   return (
     value &&
     typeof value === "object" &&
@@ -39,25 +40,26 @@ const TooltipWrapper = ({ desc, children }: TooltipWrapperProps) => {
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const render = (value: any, outputDef: FlatMappedOutputs, desc?: string) => {
-  switch (outputDef.value_type) {
+export const render = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value: any,
+  valueType: ValueTypesOutput,
+  extendedMetadata?: null,
+  desc?: string,
+) => {
+  switch (valueType) {
     case ValueTypesOutput.Range:
-      const extendedMetadata = outputDef.extended_metadata as unknown as {
-        fromRange: number;
-        toRange: number;
-      };
-
+      const extended = extendedMetadata as unknown as RangeMetadataCertain;
       return (
         <TooltipWrapper desc={desc}>
           <Progress
-            aria-label={outputDef.key_name}
+            aria-label={"Progress bar"}
             size="md"
             value={value as number}
-            minValue={extendedMetadata.fromRange}
-            maxValue={extendedMetadata.toRange}
+            minValue={extended.fromRange}
+            maxValue={extended.toRange}
             color={
-              (value as number) / extendedMetadata.toRange > 0.65
+              (value as number) / extended.toRange > 0.65
                 ? "success"
                 : "warning"
             }
@@ -101,7 +103,7 @@ const render = (value: any, outputDef: FlatMappedOutputs, desc?: string) => {
       );
 
     default:
-      return "N/A";
+      return <>N/A</>;
   }
 };
 
@@ -126,8 +128,13 @@ const renderCell = (
   if (!outputDef || value === undefined) return <p className="font-light">-</p>;
 
   return isExtendedValueObj(value)
-    ? render(value.value, outputDef, value.desc)
-    : render(value, outputDef);
+    ? render(
+        value.value,
+        outputDef.value_type,
+        outputDef.extended_metadata,
+        value.desc,
+      )
+    : render(value, outputDef.value_type, outputDef.extended_metadata);
 };
 
 export { renderCell };

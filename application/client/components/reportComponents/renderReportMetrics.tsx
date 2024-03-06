@@ -16,6 +16,8 @@ import {
   DistributionMetric,
 } from "@/types/componentDefinitions";
 import React from "react";
+import { RangeMetadataCertain } from "@/types/analyzerDefinitions";
+import { isExtendedValueObj, render } from "../tableComponents/renderCell";
 
 export const renderMetrics = (
   report: ReportResponse,
@@ -40,13 +42,8 @@ export const renderMetrics = (
 
       switch (metricMetadata.value_type) {
         case ValueTypesOutput.Range:
-          interface RangeMetadata {
-            fromRange: number;
-            toRange: number;
-          }
-
           const extendedMetadata =
-            metricMetadata.extended_metadata as unknown as RangeMetadata;
+            metricMetadata.extended_metadata as unknown as RangeMetadataCertain;
 
           const avgMetric = batchMetric as AvgMetric;
           return (
@@ -72,7 +69,16 @@ export const renderMetrics = (
                   ? metricMetadata.display_name
                   : keyName
               }
-              value={value as string}
+              value={
+                isExtendedValueObj(value)
+                  ? render(
+                      value.value,
+                      metricMetadata.value_type,
+                      undefined,
+                      value.desc,
+                    )
+                  : render(value, metricMetadata.value_type, undefined)
+              }
             />
           );
         case ValueTypesOutput.Bool:
@@ -85,7 +91,16 @@ export const renderMetrics = (
                   ? metricMetadata.display_name
                   : keyName
               }
-              value={value as boolean}
+              value={
+                isExtendedValueObj(value)
+                  ? render(
+                      value.value,
+                      metricMetadata.value_type,
+                      undefined,
+                      value.desc,
+                    )
+                  : render(value, metricMetadata.value_type)
+              }
               distribution={boolMetric?.distribution}
             />
           );
@@ -99,7 +114,16 @@ export const renderMetrics = (
                   ? metricMetadata.display_name
                   : keyName
               }
-              value={value}
+              value={
+                isExtendedValueObj(value)
+                  ? render(
+                      value.value,
+                      metricMetadata.value_type,
+                      undefined,
+                      value.desc,
+                    )
+                  : render(value, metricMetadata.value_type)
+              }
               avg={intAvgMetric}
             />
           );
@@ -113,7 +137,16 @@ export const renderMetrics = (
                   ? metricMetadata.display_name
                   : keyName
               }
-              value={value}
+              value={
+                isExtendedValueObj(value)
+                  ? render(
+                      value.value,
+                      metricMetadata.value_type,
+                      undefined,
+                      value.desc,
+                    )
+                  : render(value, metricMetadata.value_type)
+              }
               avg={dateAvgMetric}
             />
           );

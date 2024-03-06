@@ -10,7 +10,7 @@ export const TextComponent = ({ keyName, value }: TextComponentT) => {
         {keyName}
       </CardHeader>
       <Divider />
-      <CardBody className="pt-2 text-center text-small">{value}</CardBody>
+      <CardBody className="pt-2 text-center text-sm">{value}</CardBody>
     </Card>
   );
 };

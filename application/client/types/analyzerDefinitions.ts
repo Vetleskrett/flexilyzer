@@ -16,6 +16,11 @@ export type RangeMetadata = {
   toRange: number | undefined;
 };
 
+export type RangeMetadataCertain = {
+  fromRange: number;
+  toRange: number;
+};
+
 export type OutputParameter = {
   id: string;
   key_name: string;

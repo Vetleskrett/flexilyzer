@@ -21,14 +21,7 @@ export const BoolComponent = ({
       </CardHeader>
       <Divider />
       <CardBody className="flex flex-col items-center justify-center gap-2 pt-2">
-        <Chip
-          size="sm"
-          variant="solid"
-          color={value ? "success" : "danger"}
-          className="text-white"
-        >
-          {value ? "Yes" : "No"}
-        </Chip>
+        {value}
         {isCompareMode && distribution && (
           <>
             <div className="flex flex-row gap-2">
