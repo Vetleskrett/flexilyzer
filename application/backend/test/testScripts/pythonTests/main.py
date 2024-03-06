@@ -95,7 +95,7 @@ def simplify_description(desc: str) -> str:
                 return message
     return "Error occurred, but specific details are not available."
 
-def main(zip_file_name: Path) -> Return:
+def main(zip_file_path: Path) -> Return:
     loader = unittest.TestLoader()
     suite = loader.loadTestsFromTestCase(TestMathFunctions)
     runner = unittest.TextTestRunner(stream=open(os.devnull, 'w'))  
