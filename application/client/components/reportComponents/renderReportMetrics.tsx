@@ -12,10 +12,11 @@ import {
 } from "@/types/componentDefinitions";
 import React from "react";
 import { RangeMetadataCertain } from "@/types/analyzerDefinitions";
-import { isExtendedValueObj, render } from "../tableComponents/renderCell";
+import { render } from "../tableComponents/renderCell";
 import { ReportCard } from "./ReportCard";
 import { standardTimeFormatter } from "@/utils/timeUtils";
 import { TrueFalseDistributionChips } from "./TrueFalseDistributionChips";
+import { isExtendedValueObj } from "@/utils/formatUtils";
 
 export const renderMetrics = (
   report: ReportResponse,
@@ -112,6 +113,7 @@ export const renderMetrics = (
           );
         case ValueTypesOutput.Int:
           const intAvgMetric = batchMetric as AvgMetric;
+          console.log(intAvgMetric);
           return (
             <ReportCard
               key={keyName}
@@ -120,7 +122,7 @@ export const renderMetrics = (
                   ? metricMetadata.display_name
                   : keyName
               }
-              avgValue={intAvgMetric.avg?.toFixed(0)}
+              avgValue={intAvgMetric && intAvgMetric.avg?.toFixed(0)}
             >
               {isExtendedValueObj(value)
                 ? render(
@@ -143,8 +145,8 @@ export const renderMetrics = (
                   : keyName
               }
               avgValue={
-                dateAvgMetric.avg &&
-                standardTimeFormatter(new Date(dateAvgMetric.avg))
+                dateAvgMetric &&
+                standardTimeFormatter(new Date(dateAvgMetric.avg!))
               }
             >
               {isExtendedValueObj(value)
@@ -158,8 +160,8 @@ export const renderMetrics = (
             </ReportCard>
           );
         default:
-          return null; // If the value_type is not recognized, don't render a component.
+          return null;
       }
     })
-    .filter((component) => component !== null); // Filter out null values to avoid rendering issues.
+    .filter((component) => component !== null);
 };

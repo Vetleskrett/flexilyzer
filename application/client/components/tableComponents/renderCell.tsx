@@ -4,41 +4,10 @@ import {
 } from "@/extensions/data-contracts";
 import { RangeMetadataCertain } from "@/types/analyzerDefinitions";
 import { FlatMappedOutputs } from "@/types/tableDefinitions";
-import { formatter } from "@/utils/formatUtils";
+import { formatter, isExtendedValueObj } from "@/utils/formatUtils";
 import { standardTimeFormatter } from "@/utils/timeUtils";
-import { Tooltip, Progress } from "@nextui-org/react";
-
-type ExtendedValueObj = {
-  value: string | number | boolean | Date;
-  desc: string;
-};
-
-// Type guard for ExtendedValueObj
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const isExtendedValueObj = (value: any): value is ExtendedValueObj => {
-  return (
-    value &&
-    typeof value === "object" &&
-    "value" in value &&
-    "desc" in value &&
-    typeof value.desc === "string"
-  );
-};
-
-export type TooltipWrapperProps = {
-  desc: JSX.Element | string | undefined;
-  children: JSX.Element;
-};
-
-export const TooltipWrapper = ({ desc, children }: TooltipWrapperProps) => {
-  return desc ? (
-    <Tooltip delay={0} closeDelay={0} content={desc} placement="left">
-      {children}
-    </Tooltip>
-  ) : (
-    children
-  );
-};
+import { Progress } from "@nextui-org/react";
+import { TooltipWrapper } from "../TooltipWrapper";
 
 export const render = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

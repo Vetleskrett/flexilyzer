@@ -1,4 +1,4 @@
-import { TooltipWrapperProps } from "@/components/tableComponents/renderCell";
+import { TooltipWrapperProps } from "@/components/TooltipWrapper";
 
 export type RangeComponentT = {
   keyName: string;

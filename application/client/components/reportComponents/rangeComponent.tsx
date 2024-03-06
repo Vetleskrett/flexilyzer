@@ -5,7 +5,7 @@ import { Progress } from "@nextui-org/react";
 import { Card, CardBody } from "@nextui-org/react";
 
 import { useSearchParams } from "next/navigation";
-import { TooltipWrapper } from "../tableComponents/renderCell";
+import { TooltipWrapper } from "../TooltipWrapper";
 
 export const RangeComponent = ({
   keyName,
@@ -37,10 +37,7 @@ export const RangeComponent = ({
               <div className="text-sm">
                 {value} / {toValue}
                 {isCompareMode && avg && (
-                  <text className="text-gray-500">
-                    {" "}
-                    (Avg: {avg.avg?.toFixed(0)})
-                  </text>
+                  <p className="text-gray-500">(Avg: {avg.avg?.toFixed(0)})</p>
                 )}
               </div>
             }
