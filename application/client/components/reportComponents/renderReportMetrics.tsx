@@ -1,9 +1,4 @@
-import { BoolComponent } from "@/components/reportComponents/BoolComponent";
-import { IntComponent } from "@/components/reportComponents/IntComponent";
 import { RangeComponent } from "@/components/reportComponents/RangeComponent";
-import { TextComponent } from "@/components/reportComponents/TextComponent";
-import { DateComponent } from "@/components/reportComponents/DateComponent";
-
 import {
   AnalyzerOutputResponse,
   BatchStatsResponse,
@@ -18,6 +13,9 @@ import {
 import React from "react";
 import { RangeMetadataCertain } from "@/types/analyzerDefinitions";
 import { isExtendedValueObj, render } from "../tableComponents/renderCell";
+import { ReportCard } from "./ReportCard";
+import { standardTimeFormatter } from "@/utils/timeUtils";
+import { TrueFalseDistributionChips } from "./TrueFalseDistributionChips";
 
 export const renderMetrics = (
   report: ReportResponse,
@@ -67,93 +65,97 @@ export const renderMetrics = (
           );
         case ValueTypesOutput.Str:
           return (
-            <TextComponent
+            <ReportCard
               key={keyName}
               keyName={
                 metricMetadata.display_name
                   ? metricMetadata.display_name
                   : keyName
               }
-              value={
-                isExtendedValueObj(value)
-                  ? render(
-                      value.value,
-                      metricMetadata.value_type,
-                      undefined,
-                      value.desc,
-                    )
-                  : render(value, metricMetadata.value_type, undefined)
-              }
-            />
+            >
+              {isExtendedValueObj(value)
+                ? render(
+                    value.value,
+                    metricMetadata.value_type,
+                    undefined,
+                    value.desc,
+                  )
+                : render(value, metricMetadata.value_type, undefined)}
+            </ReportCard>
           );
         case ValueTypesOutput.Bool:
           const boolMetric = batchMetric as DistributionMetric;
           return (
-            <BoolComponent
+            <ReportCard
               key={keyName}
               keyName={
                 metricMetadata.display_name
                   ? metricMetadata.display_name
                   : keyName
               }
-              value={
-                isExtendedValueObj(value)
-                  ? render(
-                      value.value,
-                      metricMetadata.value_type,
-                      undefined,
-                      value.desc,
-                    )
-                  : render(value, metricMetadata.value_type)
+              avgValue={
+                <TrueFalseDistributionChips
+                  truePercent={boolMetric?.distribution.true.toPrecision(2)}
+                  falsePercent={boolMetric?.distribution.false.toPrecision(2)}
+                />
               }
-              distribution={boolMetric?.distribution}
-            />
+            >
+              {isExtendedValueObj(value)
+                ? render(
+                    value.value,
+                    metricMetadata.value_type,
+                    undefined,
+                    value.desc,
+                  )
+                : render(value, metricMetadata.value_type)}
+            </ReportCard>
           );
         case ValueTypesOutput.Int:
           const intAvgMetric = batchMetric as AvgMetric;
           return (
-            <IntComponent
+            <ReportCard
               key={keyName}
               keyName={
                 metricMetadata.display_name
                   ? metricMetadata.display_name
                   : keyName
               }
-              value={
-                isExtendedValueObj(value)
-                  ? render(
-                      value.value,
-                      metricMetadata.value_type,
-                      undefined,
-                      value.desc,
-                    )
-                  : render(value, metricMetadata.value_type)
-              }
-              avg={intAvgMetric}
-            />
+              avgValue={intAvgMetric.avg?.toFixed(0)}
+            >
+              {isExtendedValueObj(value)
+                ? render(
+                    value.value,
+                    metricMetadata.value_type,
+                    undefined,
+                    value.desc,
+                  )
+                : render(value, metricMetadata.value_type)}
+            </ReportCard>
           );
         case ValueTypesOutput.Date:
           const dateAvgMetric = batchMetric as DateAvgMetric;
           return (
-            <DateComponent
+            <ReportCard
               key={keyName}
               keyName={
                 metricMetadata.display_name
                   ? metricMetadata.display_name
                   : keyName
               }
-              value={
-                isExtendedValueObj(value)
-                  ? render(
-                      value.value,
-                      metricMetadata.value_type,
-                      undefined,
-                      value.desc,
-                    )
-                  : render(value, metricMetadata.value_type)
+              avgValue={
+                dateAvgMetric.avg &&
+                standardTimeFormatter(new Date(dateAvgMetric.avg))
               }
-              avg={dateAvgMetric}
-            />
+            >
+              {isExtendedValueObj(value)
+                ? render(
+                    value.value,
+                    metricMetadata.value_type,
+                    undefined,
+                    value.desc,
+                  )
+                : render(value, metricMetadata.value_type)}
+            </ReportCard>
           );
         default:
           return null; // If the value_type is not recognized, don't render a component.

@@ -34,7 +34,7 @@ export const RangeComponent = ({
             showValueLabel={true}
             className="max-w-md"
             valueLabel={
-              <>
+              <div className="text-sm">
                 {value} / {toValue}
                 {isCompareMode && avg && (
                   <text className="text-gray-500">
@@ -42,7 +42,7 @@ export const RangeComponent = ({
                     (Avg: {avg.avg?.toFixed(0)})
                   </text>
                 )}
-              </>
+              </div>
             }
           />
         </TooltipWrapper>

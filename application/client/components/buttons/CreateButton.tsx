@@ -1,18 +1,20 @@
 "use client";
 
-import { Button } from "@nextui-org/react";
+import { Button, ButtonProps } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
 type CreateButtonProps = {
   pushRoute?: string;
   text: string;
   onClickFunction?: () => void;
+  size?: ButtonProps["size"];
 };
 
 const CreateButton = ({
   pushRoute,
   text,
   onClickFunction,
+  size,
 }: CreateButtonProps) => {
   const { push } = useRouter();
 
@@ -25,7 +27,12 @@ const CreateButton = ({
   };
 
   return (
-    <Button color="secondary" onClick={handleClick} variant="bordered">
+    <Button
+      size={size}
+      color="secondary"
+      onClick={handleClick}
+      variant="bordered"
+    >
       {text}
     </Button>
   );

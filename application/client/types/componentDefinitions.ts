@@ -26,6 +26,12 @@ export type IntComponentT = {
   avg: AvgMetric | undefined;
 };
 
+export type ReportComponentT = {
+  keyName: string;
+  children: JSX.Element;
+  avgValue?: JSX.Element | string;
+};
+
 export type DateComponentT = {
   keyName: string;
   value: JSX.Element;

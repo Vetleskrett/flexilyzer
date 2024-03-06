@@ -101,7 +101,7 @@ const ConnectAssignmentAnalyzer = ({
 
   return (
     <>
-      <CreateButton text="+" onClickFunction={onOpen} />
+      <CreateButton size={"sm"} text="Connect new" onClickFunction={onOpen} />
       <Modal
         isOpen={isOpen}
         onOpenChange={() => {
