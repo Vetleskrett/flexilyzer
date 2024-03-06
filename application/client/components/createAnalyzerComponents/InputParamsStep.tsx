@@ -56,7 +56,6 @@ const InputParameters = ({ formData, setFormData }: SummaryStepProps) => {
               placeholder="Enter key name"
               value={param.key_name}
               onChange={(e) => {
-                console.log("here");
                 // Regular expression: starts with a lowercase letter, followed by any mix of lowercase, uppercase letters, or underscores
                 const isValid = /^[a-z][a-zA-Z_]*$/.test(e.target.value);
                 if (isValid || e.target.value === "") {

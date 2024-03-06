@@ -22,7 +22,11 @@ const filterReports = (
           continue;
         }
 
-        const reportValue = report.report[output.key_name];
+        let reportValue = report.report[output.key_name];
+
+        if (typeof reportValue === "object") {
+          reportValue = reportValue["value"];
+        }
 
         if (reportValue === undefined) {
           continue;
@@ -81,6 +85,14 @@ const sortReports = (
 
     let firstValue = firstReport ? firstReport.report[descriptor] : null;
     let secondValue = secondReport ? secondReport.report[descriptor] : null;
+
+    if (typeof firstValue === "object") {
+      firstValue = firstValue["value"];
+    }
+
+    if (typeof secondValue === "object") {
+      secondValue = secondValue["value"];
+    }
 
     if (typeof firstValue === "string") {
       firstValue = parseFloat(firstValue);

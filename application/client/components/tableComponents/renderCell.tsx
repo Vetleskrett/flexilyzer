@@ -136,7 +136,6 @@ const renderCell = (
 
   if (!outputDef || value === undefined) return <p className="font-light">-</p>;
 
-  console.log(value.desc);
   return isExtendedValueObj(value)
     ? render(
         value.value,

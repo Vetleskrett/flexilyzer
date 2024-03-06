@@ -34,8 +34,6 @@ export default function NewAnalyzerPage() {
 
   // Submit form
   async function submitForm() {
-    console.log(formatAnalyzerData(formData));
-    console.log(formData);
     const resp = await api.postAnalyzer(formatAnalyzerData(formData));
     if (resp.ok) {
       openSnackbar({
