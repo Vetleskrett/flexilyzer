@@ -52,7 +52,8 @@ export const renderMetrics = (
           const avgMetric = batchMetric as AvgMetric;
           return (
             <TooltipWrapper
-              desc={isExtendedValueObj(value) ? value.desc : undefined}
+              desc={"gyuuyyuf"}
+              // desc={isExtendedValueObj(value) ? value.desc : undefined}
             >
               <RangeComponent
                 key={keyName}

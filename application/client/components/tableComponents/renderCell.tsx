@@ -26,7 +26,7 @@ export const isExtendedValueObj = (value: any): value is ExtendedValueObj => {
 };
 
 type TooltipWrapperProps = {
-  desc: string | undefined;
+  desc: JSX.Element | string | undefined;
   children: JSX.Element;
 };
 
@@ -51,7 +51,16 @@ export const render = (
     case ValueTypesOutput.Range:
       const extended = extendedMetadata as unknown as RangeMetadataCertain;
       return (
-        <TooltipWrapper desc={desc}>
+        <TooltipWrapper
+          desc={
+            <div className="flex flex-col justify-center space-y-2 py-2 text-center">
+              <div className="text-sm">
+                {value} / {extended.toRange}
+              </div>
+              {desc ? <div className="text-xs font-light">{desc}</div> : ""}
+            </div>
+          }
+        >
           <Progress
             aria-label={"Progress bar"}
             size="md"
@@ -127,6 +136,7 @@ const renderCell = (
 
   if (!outputDef || value === undefined) return <p className="font-light">-</p>;
 
+  console.log(value.desc);
   return isExtendedValueObj(value)
     ? render(
         value.value,
