@@ -94,6 +94,9 @@ class BatchService:
                 if not output:
                     continue
 
+                if type(value) == dict:
+                    value = value["value"] 
+
                 # Handle boolean values: Update distribution counts
                 if output.value_type == ValueTypesOutput.bool:
                     bool_value = str(
