@@ -12,7 +12,7 @@ export const TrueFalseDistributionChips = ({
   falsePercent,
 }: TrueFalseProps) => {
   return (
-    <div className="flex flex-row gap-2 mt-2">
+    <div className="mt-2 flex flex-row gap-2">
       <Chip
         size="sm"
         variant="bordered"
