@@ -42,11 +42,6 @@ def script_exists(analyzer_id: int, requirements: bool = False):
     return file_path.is_file()
 
 
-# def venv_exists(analyzer_id: int):
-#     venv_path = Path(settings.BASE_DIR) / str(analyzer_id) / settings.DEFAULT_VENV_NAME
-#     return venv_path.is_dir()
-
-
 def read_file(analyzer_id: int, requirements: bool = False):
     try:
         file_path = (
