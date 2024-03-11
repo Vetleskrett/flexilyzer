@@ -4,7 +4,6 @@ import uvicorn
 from api.v1.routers import (
     courses,
     assignments,
-    test,
     teams,
     reports,
     projects,
@@ -18,20 +17,17 @@ from db import models
 
 models.Base.metadata.create_all(bind=engine)
 
-# Initialize FastAPI instance
 app = FastAPI()
 
 # TODO: fix for prod
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
+    allow_origins=["*"],  
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
+    allow_methods=["*"],  
+    allow_headers=["*"],  
 )
 
-
-app.include_router(test.router, tags=["tests"])
 app.include_router(courses.router, tags=["courses"])
 app.include_router(assignments.router, tags=["assignments"])
 app.include_router(teams.router, tags=["teams"])
