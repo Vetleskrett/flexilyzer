@@ -23,18 +23,5 @@ services:
     volumes: 
       - postgres_volume:/var/lib/postgresql/data
   
-  # celery_worker:
-  #   image: python:3.11
-  #   command: bash -c "pip install -r requirements.txt && celery -A your_celery_app worker --loglevel=info"
-  #   volumes:
-  #     - ./backend/:/app
-  #   depends_on:
-  #     - rabbitmq
-  #     - db
-  #   environment:
-  #     - CELERY_BROKER_URL="amqp://guest:guest@rabbitmq:5672/%2F"
-  #     - DATABASE_URL="postgresql://postgres:postgres@db"
-  #   working_dir: /app
-
 volumes:
   postgres_volume:
