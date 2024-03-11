@@ -38,19 +38,21 @@ export default function AnalyzerSummary({
 
       <Card className="p-3">
         <h3 className="h3">Output Parameters</h3>
-        {outputs.map((param) => (
-          <div key={param.id}>
-            {renderParameter({
-              id: param.id.toString(),
-              key_name: param.key_name,
-              value_type: param.value_type,
-              display_name: param.display_name ? param.display_name : "",
-              extended_metadata: param.extended_metadata
-                ? param.extended_metadata
-                : undefined,
-            })}
-          </div>
-        ))}
+        <div className="mb-2 space-y-2">
+          {outputs.map((param) => (
+            <div key={param.id}>
+              {renderParameter({
+                id: param.id.toString(),
+                key_name: param.key_name,
+                value_type: param.value_type,
+                display_name: param.display_name ? param.display_name : "",
+                extended_metadata: param.extended_metadata
+                  ? param.extended_metadata
+                  : undefined,
+              })}
+            </div>
+          ))}
+        </div>
       </Card>
     </>
   );
