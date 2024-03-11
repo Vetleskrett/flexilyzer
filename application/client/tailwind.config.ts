@@ -1,7 +1,7 @@
 import { nextui } from "@nextui-org/react";
 
 /** @type {import('tailwindcss').Config} */
-const config = {
+const config: import("tailwindcss").Config = {
   content: [
     "./app/**/*.{ts,tsx}",
     "./components/**/*.{js, jsx, ts,tsx}",
@@ -14,7 +14,7 @@ const config = {
         mono: ["var(--font-roboto-mono)"],
       },
       maxHeight: {
-        "screen-minus-navbar": "calc(100vh - 250px)", // Replace 60px with your navbar's height
+        "screen-minus-navbar": "calc(100vh - 250px)",
       },
       minHeight: {
         "screen-minus-navbar": "calc(100vh - 130px)",
