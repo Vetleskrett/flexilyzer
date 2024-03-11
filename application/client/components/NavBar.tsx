@@ -45,9 +45,17 @@ export default function NavBar() {
             width="0"
             height="0"
             sizes="100vw"
-            className="h-auto w-[170px]"
+            className="hidden md:h-auto md:w-[170px] md:flex"
             alt="Flexilyzer logo"
             src="/flexilyzer.png"
+          ></Image>
+          <Image
+            width="0"
+            height="0"
+            sizes="100vw"
+            className="h-auto w-[40px] md:hidden"
+            alt="Flexilyzer logo"
+            src="/flexilyzer_small.png"
           ></Image>
         </NavbarBrand>
       </NavbarContent>
