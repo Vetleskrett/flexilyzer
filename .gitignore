@@ -88,6 +88,8 @@ yarn-error.log*
 next-env.d.ts
 
 
-# upload folder
-**/upload
+# mount folder
+**/mount/deliveries
+**/mount/scripts
+
 

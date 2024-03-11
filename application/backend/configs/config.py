@@ -18,7 +18,6 @@ class Settings(Base):
     SCRIPTS_FOLDER: str
     DELIVERIES_FOLDER: str
     DEFAULT_SCRIPT_NAME: str
-    DEFAULT_VENV_NAME: str
     DEFAULT_REQUIREMENTS_NAME: str
 
     class Config:
