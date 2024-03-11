@@ -12,7 +12,7 @@ import Providers from "./providers";
 import NavBar from "@/components/NavBar";
 
 export const metadata: Metadata = {
-  title: "GitSpect",
+  title: "Flexilyzer",
   description: "Git analyzer dashboard",
 };
 

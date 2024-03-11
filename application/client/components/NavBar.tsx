@@ -42,10 +42,12 @@ export default function NavBar() {
           }}
         >
           <Image
-            width={170}
-            height={35.86}
-            alt="GitSpect logo"
-            src="/gitspect_logo1.png"
+            width="0"
+            height="0"
+            sizes="100vw"
+            className="h-auto w-[170px]"
+            alt="Flexilyzer logo"
+            src="/flexilyzer.png"
           ></Image>
         </NavbarBrand>
       </NavbarContent>
