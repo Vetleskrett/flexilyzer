@@ -211,7 +211,6 @@ def run_seed():
         session.add(analyzer)
 
         # Associate the analyzer with the assignment
-        # assignment.analyzers.append(analyzer)
         session.flush()
 
         print("Creating analyzer 2 ...")
@@ -221,7 +220,6 @@ def run_seed():
             creator="Enthe Nu",
         )
         session.add(analyzer2)
-        # assignment.analyzers.append(analyzer2)
         session.flush()
 
         print("Creating batch")
@@ -260,26 +258,7 @@ def run_seed():
                 key_name="b",
                 display_name="Main output",
                 value_type="str",
-                # extended_metadata=json.dumps({"fromRange": 1, "toRange": 100}),
                 analyzer=analyzer,
-                # ),
-                # AnalyzerOutput(
-                #     key_name="hasViewport",
-                #     display_name="Viewport",
-                #     value_type="bool",
-                #     analyzer=analyzer,
-                # ),
-                # AnalyzerOutput(
-                #     key_name="hasHTTPS",
-                #     display_name="HTTPS",
-                #     value_type="bool",
-                #     analyzer=analyzer,
-                # ),
-                # AnalyzerOutput(
-                #     key_name="js_workload",
-                #     display_name="JS Main thread work",
-                #     value_type="text",
-                #     analyzer=analyzer,
             ),
         ]
         session.add_all(analyzer_outputs)
@@ -313,30 +292,6 @@ def run_seed():
             ),
         ]
         session.add_all(analyzer_outputs2)
-
-        # print("Creating report 1 ...")
-        # report1_data = {
-        #     "performance": 65,
-        #     "hasViewport": False,
-        #     "hasHTTPS": False,
-        #     "js_workload": "JS main thread workload is high, consider optimizing JS code.",
-        # }
-        # report1 = Report(
-        #     report=json.dumps(report1_data), project=project, batch_id=batch.id
-        # )
-        # session.add(report1)
-
-        # print("Creating report 2 ...")
-        # report2_data = {
-        #     "performance": 88,
-        #     "hasViewport": True,
-        #     "hasHTTPS": False,
-        #     "js_workload": "JS main thread workload is high, consider optimizing JS code.",
-        # }
-        # report2 = Report(
-        #     report=json.dumps(report2_data), project=project, batch_id=batch2.id
-        # )
-        # session.add(report2)
 
         session.commit()
         print("Finished!")
