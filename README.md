@@ -81,11 +81,11 @@ npx swagger-typescript-api -p http://127.0.0.1:8000/openapi.json -o ./extensions
 
 ## Further reading
 
-This project is a part of out master thesis at NTNU. For further reading and more in depth explanations of the system, read our thesis, which can be searched for at https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/227489.
+This project is a part of our master thesis at NTNU. For further reading and more in depth explanations of the system, read our thesis, which can be searched for at https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/227489.
 
 ## Contact
 
-If you have any questions, please don't hesitate to reach out to us at 113.
+If you have any questions, please don't hesitate to reach out to us at `petter.lauvrak@hotmail.com` or `jacobtheisen2211@gmail.com`.
 
 
 
