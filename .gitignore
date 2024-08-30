@@ -51,7 +51,6 @@ docs/_build/
 
 # Other 
 .venv
-.env
 .next
 venv/
 .vscode/
