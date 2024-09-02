@@ -15,9 +15,6 @@ The main workflow of the system begins when a professor or TA creates an analyze
 Before you can set up the project locally, ensure you have the following prerequisites installed on your system:
 
 ```
-node: ^18.17
-python: ^3.11
-celery: ^5.3.4
 docker
 docker-compose
 ```
@@ -35,10 +32,20 @@ cd flexilyzer
 
 ### Running the project
 
-In application run:
+```
+cd application
+```
+
+Production:
 
 ```
-docker compose up
+docker compose up --build
+```
+
+Development:
+
+```
+docker compose -f dev-docker-compose.yml up --build
 ```
 
 ### Other commands

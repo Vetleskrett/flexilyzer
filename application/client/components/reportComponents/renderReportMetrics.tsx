@@ -1,4 +1,3 @@
-import { RangeComponent } from "@/components/reportComponents/RangeComponent";
 import {
   AnalyzerOutputResponse,
   BatchStatsResponse,
@@ -17,6 +16,7 @@ import { ReportCard } from "./ReportCard";
 import { standardTimeFormatter } from "@/utils/timeUtils";
 import { TrueFalseDistributionChips } from "./TrueFalseDistributionChips";
 import { isExtendedValueObj } from "@/utils/formatUtils";
+import { RangeComponent } from "./RangeComponent";
 
 export const renderMetrics = (
   report: ReportResponse,
