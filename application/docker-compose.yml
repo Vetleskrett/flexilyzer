@@ -31,6 +31,8 @@ services:
     depends_on:
       - rabbitmq
       - db
+    volumes:
+      - shared-volume:/app/files/shared
 
   celery:
     container_name: celery
@@ -39,6 +41,7 @@ services:
       dockerfile: celery.Dockerfile
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - shared-volume:/app/files/shared
     depends_on:
       - rabbitmq
 
@@ -57,3 +60,4 @@ services:
 
 volumes:
   postgres_volume:
+  shared-volume:

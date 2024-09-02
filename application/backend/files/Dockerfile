@@ -8,7 +8,7 @@ WORKDIR /app
 ARG ANALYZER_ID
 
 # Use the build argument to copy the specific requirements file
-COPY ./scripts/${ANALYZER_ID}/requirements.txt /app/requirements.txt
+COPY ./shared/scripts/${ANALYZER_ID}/requirements.txt /app/requirements.txt
 
 # Create a virtual environment and install dependencies with pip
 RUN python -m venv /app/venv && \
@@ -25,7 +25,7 @@ ENV PATH="/app/venv/bin:$PATH"
 ENV CHROME_PATH=/usr/bin/chromium
 
 # Copy the rest of your application code to the container (as needed)
-COPY ./scripts/${ANALYZER_ID}/main.py /app
+COPY ./shared/scripts/${ANALYZER_ID}/main.py /app
 
 # Keep the container running for service-like behavior (adjust as needed)
 CMD ["tail", "-f", "/dev/null"]
