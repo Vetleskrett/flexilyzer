@@ -16,7 +16,7 @@ import { ReportCard } from "./ReportCard";
 import { standardTimeFormatter } from "@/utils/timeUtils";
 import { TrueFalseDistributionChips } from "./TrueFalseDistributionChips";
 import { isExtendedValueObj } from "@/utils/formatUtils";
-import { RangeComponent } from "./RangeComponent";
+import { RangeComponent } from "./rangeComponent";
 
 export const renderMetrics = (
   report: ReportResponse,

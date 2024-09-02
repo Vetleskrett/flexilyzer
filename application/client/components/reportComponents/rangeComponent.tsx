@@ -1,4 +1,5 @@
 "use client";
+
 import { RangeComponentT } from "@/types/componentDefinitions";
 import { Progress } from "@nextui-org/react";
 
