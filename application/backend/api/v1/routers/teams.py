@@ -15,14 +15,14 @@ async def get_all_teams(db=Depends(get_db)) -> List[team_schema.TeamResponse]:
 
 
 @router.get("/{team_id}", operation_id="get-team")
-async def get_all_teams(
+async def get_team(
     team_id: int, db=Depends(get_db)
 ) -> List[team_schema.TeamResponse]:
     return TeamService.get_team(db, team_id)
 
 
 @router.get("/{team_id}/projects", operation_id="get-team-projects")
-async def get_all_teams(
+async def get_team_projects(
     team_id: int, db=Depends(get_db)
-) -> List[team_schema.TeamResponse]:
+) -> List[project_schema.ProjectResponse]:
     return TeamService.get_team_projects(db, team_id)

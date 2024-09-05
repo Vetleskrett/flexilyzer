@@ -61,7 +61,7 @@ In our project we´ve used `Swagger` to create most of the `TypeScript Types` as
 To update these `TypeScript Types` schemas for the `frontend` whenever there has been a relevate change to the `backend`, go to `application/client` and run
 
 ```
-npx swagger-typescript-api -p http://127.0.0.1:8000/openapi.json -o ./extensions --modulart f
+npx swagger-typescript-api -p http://127.0.0.1:8000/openapi.json -o ./extensions --modular
 ```
 
 ## Further reading

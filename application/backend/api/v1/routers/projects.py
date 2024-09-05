@@ -15,6 +15,11 @@ async def get_all_teams(
 ) -> List[project_schema.ProjectResponse]:
     return ProjectsService.get_all_projects(db)
 
+@router.post("/", operation_id="create-project")
+async def create_project(
+    project: project_schema.ProjectCreate, db = Depends(get_db)
+):
+    return ProjectsService.create_project(db, project)
 
 @router.get("/{project_id}", operation_id="get-project")
 async def get_all_teams(

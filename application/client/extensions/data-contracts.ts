@@ -207,29 +207,42 @@ export interface HTTPValidationError {
   detail?: ValidationError[];
 }
 
-/** Item */
-export interface Item {
-  /** Name */
-  name: string;
-  /** Description */
-  description?: string | null;
-  /** Price */
-  price: number;
-  /** Tax */
-  tax?: number | null;
-  /**
-   * Tags
-   * @default []
-   */
-  tags?: string[];
-}
-
 /** JobCreate */
 export interface JobCreate {
   /** Assignment Id */
   assignment_id: number;
   /** Project Ids */
   project_ids?: number[] | null;
+}
+
+/** ProjectCreate */
+export interface ProjectCreate {
+  /** Team Id */
+  team_id: number;
+  /** Assignment Id */
+  assignment_id: number;
+  /** Project Metadata */
+  project_metadata: ProjectMetadataCreate[];
+}
+
+/** ProjectMetadataCreate */
+export interface ProjectMetadataCreate {
+  /** Value */
+  value: string;
+  /** Assignment Metadata Id */
+  assignment_metadata_id: number;
+}
+
+/** ProjectMetadataResponse */
+export interface ProjectMetadataResponse {
+  /** Value */
+  value: string;
+  /** Project Id */
+  project_id: number;
+  /** Assignment Metadata Id */
+  assignment_metadata_id: number;
+  /** Id */
+  id: number;
 }
 
 /** ProjectResponse */
@@ -240,6 +253,8 @@ export interface ProjectResponse {
   assignment_id: number;
   /** Id */
   id: number;
+  /** Project Metadata */
+  project_metadata: ProjectMetadataResponse[];
 }
 
 /** ReportResponse */
@@ -303,10 +318,4 @@ export enum ValueTypesOutput {
   Bool = "bool",
   Range = "range",
   Date = "date",
-}
-
-/** testE */
-export enum TestE {
-  Value1 = 1,
-  Value2 = 2,
 }

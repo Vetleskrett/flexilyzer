@@ -43,6 +43,7 @@ export default function AssignmentInfo({
                 );
               }}
             >
+              <Tab className="w-[75px]" key="delivery" title="Delivery"></Tab>
               <Tab className="w-[75px]" key="reports" title="Reports"></Tab>
               <Tab className="w-[75px]" key="overview" title="Overview"></Tab>
               <Tab className="w-[75px]" key="details" title="Details"></Tab>

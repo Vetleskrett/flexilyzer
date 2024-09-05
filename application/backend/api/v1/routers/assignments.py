@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from schemas import batch_schema
 from services.batch_service import BatchService
@@ -46,6 +46,23 @@ def create_assignment(
     assignment: assingment_schema.AssignmentCreate, db: Session = Depends(get_db)
 ):
     return AssignmentService.create_assignment(db, assignment)
+
+
+@router.get(
+    "/{assignment_id}/teams/{team_id}/project",
+    operation_id="get-assignment-project",
+)
+def get_assignment_team_project(
+    assignment_id: int, team_id: int, db=Depends(get_db)
+) -> project_schema.ProjectResponse:
+    project = AssignmentService.get_assignment_team_project(
+        db=db, assignment_id=assignment_id, team_id=team_id
+    )
+    if not project:
+        raise HTTPException(
+            status_code=404, detail=f"Project with assignment_id {assignment_id} and team_id {team_id} not found"
+        )
+    return project
 
 
 @router.get(

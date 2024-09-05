@@ -37,6 +37,19 @@ class AssignmentService:
 
         return AssignmentRepository.create_assignment(db=db, assignment=assignment)
 
+
+    @staticmethod
+    def get_assignment_team_project(
+        db: Session, assignment_id: int, team_id: int
+    ):
+        AssignmentService.get_assignment(db, assignment_id)
+        TeamService.get_team(db, team_id)
+
+        return AssignmentRepository.get_assignment_team_project(
+            db, assignment_id=assignment_id, team_id=team_id
+        )
+
+
     @staticmethod
     def get_assignment_team_projects_reports(
         db: Session, assignment_id: int, team_id: int

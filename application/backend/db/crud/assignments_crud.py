@@ -52,7 +52,7 @@ class AssignmentRepository:
         Returns:
         A list of projects for the specified assignment.
         """
-        return db.query(Project).filter(Project == assignment_id)
+        return db.query(Project).filter(Project.assignment_id == assignment_id)
 
     @staticmethod
     def create_assignment(db: Session, assignment: assingment_schema.AssignmentCreate):
@@ -71,6 +71,17 @@ class AssignmentRepository:
         db.commit()
         db.refresh(db_assignment)
         return db_assignment
+
+    @staticmethod
+    def get_assignment_team_project(
+        db: Session, assignment_id: int, team_id: int
+    ):
+
+        return (
+            db.query(Project)
+            .filter(Project.assignment_id == assignment_id, Project.team_id == team_id)
+            .first()
+        )
 
     @staticmethod
     def get_assignment_team_projects_reports(

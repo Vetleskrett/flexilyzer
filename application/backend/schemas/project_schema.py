@@ -9,15 +9,13 @@ class ProjectBase(BaseModel):
     assignment_id: int
 
 
+class ProjectMetadataCreate(BaseModel):
+    value: str
+    assignment_metadata_id: int
+
+
 class ProjectCreate(ProjectBase):
-    pass
-
-
-class ProjectResponse(ProjectBase):
-    id: int
-
-    class Config:
-        from_attributes = True
+    project_metadata: List[ProjectMetadataCreate]
 
 
 class ProjectMetadataBase(BaseModel):
@@ -28,6 +26,14 @@ class ProjectMetadataBase(BaseModel):
 
 class ProjectMetadataResponse(ProjectMetadataBase):
     id: int
+
+    class Config:
+        from_attributes = True
+
+
+class ProjectResponse(ProjectBase):
+    id: int
+    project_metadata: List[ProjectMetadataResponse]
 
     class Config:
         from_attributes = True
