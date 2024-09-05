@@ -26,3 +26,11 @@ async def get_team_projects(
     team_id: int, db=Depends(get_db)
 ) -> List[project_schema.ProjectResponse]:
     return TeamService.get_team_projects(db, team_id)
+
+@router.post("/", operation_id="post-team")
+async def post_team(team: team_schema.TeamCreate, db=Depends(get_db)):
+    return TeamService.post_team(db=db, team=team)
+
+@router.post("/{course_id}/{number_of_teams}", operation_id="post-teams")
+async def post_teams(course_id: int, number_of_teams: int, db=Depends(get_db)):
+    return TeamService.post_teams(db=db, course_id=course_id, number_of_teams=number_of_teams)
