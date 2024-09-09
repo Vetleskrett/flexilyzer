@@ -2,6 +2,7 @@
 import api from "@/utils/apiUtils";
 import { Input } from "@nextui-org/react";
 import CreateButton from "@/components/buttons/CreateButton";
+import BackButton from "@/components/buttons/BackButton";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -25,16 +26,19 @@ export default function NewTeamPage({ params: _params }: Props) {
     }
   return (
     <>
-      <h2 className="h2">Add new Team</h2>
-      <Input
-        type="number"
-        label="Number of teams"
-        onValueChange={(value => setNumberOfTeams(Number(value)))}
-      />
-      <CreateButton
-        onClickFunction={addTeam}
-        text={"Add Team"}
-      />
+      <div className="max-w-50p grow p-4">
+        <BackButton targetURL={`/courses/${_params.course_id}`} buttonText={`Course ${_params.course_id}`} />
+        <h2 className="h2">Add new Team</h2>
+        <Input
+          type="number"
+          label="Number of teams"
+          onValueChange={(value => setNumberOfTeams(Number(value)))}
+        />
+        <CreateButton
+          onClickFunction={addTeam}
+          text={"Add Team"}
+        />
+      </div>
     </>
   );
 }
