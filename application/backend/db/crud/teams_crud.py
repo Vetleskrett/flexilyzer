@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from db.models import Team, Project
+from schemas.team_schema import TeamCreate
 
 
 def get_teams(db: Session):
@@ -41,3 +42,24 @@ def get_team_projects(db: Session, team_id: int):
     A list of all projects for the specified team.
     """
     return db.query(Project).filter(Project.team_id == team_id).all()
+
+@staticmethod
+def create_team(db: Session, team: TeamCreate):
+        """
+        Creates a new team.
+
+        Parameters:
+        - db (Session): The database session.
+        - team (TeamCreate): The team.
+
+        Returns:
+        The created team.
+        """
+        # Create a new Analyzer object
+
+        new_team = Team(**team.model_dump())
+        db.add(new_team)
+        db.commit()
+        db.refresh(new_team)
+
+        return new_team

@@ -285,6 +285,12 @@ export interface ReportTeamResponse {
   analyzer_id: number;
 }
 
+/** TeamCreate */
+export interface TeamCreate {
+  /** Course Id */
+  course_id: number;
+}
+
 /** TeamResponse */
 export interface TeamResponse {
   /** Course Id */

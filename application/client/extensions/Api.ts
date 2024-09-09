@@ -30,6 +30,7 @@ import {
   ProjectResponse,
   ReportResponse,
   ReportTeamResponse,
+  TeamCreate,
   TeamResponse,
 } from "./data-contracts";
 import { ContentType, HttpClient, RequestParams } from "./http-client";
@@ -350,6 +351,23 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags teams
+   * @name PostTeam
+   * @summary Post Team
+   * @request POST:/api/v1/teams/
+   */
+  postTeam = (data: TeamCreate, params: RequestParams = {}) =>
+    this.request<any, HTTPValidationError>({
+      path: `/api/v1/teams/`,
+      method: "POST",
+      body: data,
+      type: ContentType.Json,
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags teams
    * @name GetTeam
    * @summary Get Team
    * @request GET:/api/v1/teams/{team_id}
@@ -373,6 +391,21 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
     this.request<ProjectResponse[], HTTPValidationError>({
       path: `/api/v1/teams/${teamId}/projects`,
       method: "GET",
+      format: "json",
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags teams
+   * @name PostTeams
+   * @summary Post Teams
+   * @request POST:/api/v1/teams/{course_id}/{number_of_teams}
+   */
+  postTeams = (courseId: number, numberOfTeams: number, params: RequestParams = {}) =>
+    this.request<any, HTTPValidationError>({
+      path: `/api/v1/teams/${courseId}/${numberOfTeams}`,
+      method: "POST",
       format: "json",
       ...params,
     });
