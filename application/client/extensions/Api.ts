@@ -369,7 +369,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags teams
    * @name GetTeam
-   * @summary Get All Teams
+   * @summary Get Team
    * @request GET:/api/v1/teams/{team_id}
    */
   getTeam = (teamId: number, params: RequestParams = {}) =>
@@ -379,7 +379,21 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       format: "json",
       ...params,
     });
-
+  /**
+   * No description
+   *
+   * @tags teams
+   * @name GetTeamProjects
+   * @summary Get Team Projects
+   * @request GET:/api/v1/teams/{team_id}/projects
+   */
+  getTeamProjects = (teamId: number, params: RequestParams = {}) =>
+    this.request<ProjectResponse[], HTTPValidationError>({
+      path: `/api/v1/teams/${teamId}/projects`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
   /**
    * No description
    *
@@ -392,21 +406,6 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
     this.request<any, HTTPValidationError>({
       path: `/api/v1/teams/${courseId}/${numberOfTeams}`,
       method: "POST",
-      format: "json",
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags teams
-   * @name GetTeamProjects
-   * @summary Get All Teams
-   * @request GET:/api/v1/teams/{team_id}/projects
-   */
-  getTeamProjects = (teamId: number, params: RequestParams = {}) =>
-    this.request<TeamResponse[], HTTPValidationError>({
-      path: `/api/v1/teams/${teamId}/projects`,
-      method: "GET",
       format: "json",
       ...params,
     });
