@@ -36,7 +36,7 @@ export default function NewCoursePage() {
         />
         <CreateButton
           onClickFunction={addCourse}
-          text={"Add Course"}
+          text={"Submit Course"}
         />
       </div>
     </>

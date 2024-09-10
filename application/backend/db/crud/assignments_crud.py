@@ -55,13 +55,13 @@ class AssignmentRepository:
         return db.query(Project).filter(Project.assignment_id == assignment_id)
 
     @staticmethod
-    def create_assignment(db: Session, assignment: assingment_schema.AssignmentCreate):
+    def create_assignment(db: Session, assignment: assingment_schema.AssignmentBase):
         """
         Creates a new assignment record.
 
         Parameters:
         - db (Session): The database session
-        - assignment (AssignmentCreate): A object containg the details of the assignment to be created
+        - assignment (AssignmentBase): A object containg the details of the assignment to be created
 
         Returns:
         The created assignment record.
@@ -71,6 +71,24 @@ class AssignmentRepository:
         db.commit()
         db.refresh(db_assignment)
         return db_assignment
+    
+    @staticmethod
+    def create_assignment_metadata(db: Session, assignment_metadata: assingment_schema.AssignmentMetadataBase):
+        """
+        Creates a new assignment metadata record.
+
+        Parameters:
+        - db (Session): The database session
+        - assignment (AssignmentMetadataBase): A object containg the details of the assignment to be created
+
+        Returns:
+        The created assignment metadata record.
+        """
+        db_assignment_metadata = AssignmentMetadata(**assignment_metadata.model_dump())
+        db.add(db_assignment_metadata)
+        db.commit()
+        db.refresh(db_assignment_metadata)
+        return db_assignment_metadata
 
     @staticmethod
     def get_assignment_team_project(

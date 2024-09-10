@@ -9,8 +9,13 @@ class AssignmentBase(BaseModel):
     course_id: int
 
 
+class AssignmentMetadataCreate(BaseModel):
+    key_name: str
+    value_type: str
+
+
 class AssignmentCreate(AssignmentBase):
-    pass
+    metadata: List[AssignmentMetadataCreate]
 
 
 class AssignmentResponse(AssignmentBase):

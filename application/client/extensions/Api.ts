@@ -164,11 +164,11 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags assignments
-   * @name CreateAssignmentApiV1AssignmentsPost
+   * @name CreateAssignment
    * @summary Create Assignment
    * @request POST:/api/v1/assignments/
    */
-  createAssignmentApiV1AssignmentsPost = (data: AssignmentCreate, params: RequestParams = {}) =>
+  createAssignment = (data: AssignmentCreate, params: RequestParams = {}) =>
     this.request<any, HTTPValidationError>({
       path: `/api/v1/assignments/`,
       method: "POST",

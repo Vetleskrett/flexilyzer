@@ -41,7 +41,7 @@ async def get_assignment_metadata(
     return AssignmentService.get_assignment_metadata(db, assignment_id)
 
 
-@router.post("/")
+@router.post("/", operation_id="create-assignment")
 def create_assignment(
     assignment: assingment_schema.AssignmentCreate, db: Session = Depends(get_db)
 ):

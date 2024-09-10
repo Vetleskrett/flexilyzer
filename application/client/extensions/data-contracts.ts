@@ -107,6 +107,16 @@ export interface AssignmentCreate {
   due_date?: string | null;
   /** Course Id */
   course_id: number;
+  /** Metadata */
+  metadata: AssignmentMetadataCreate[];
+}
+
+/** AssignmentMetadataCreate */
+export interface AssignmentMetadataCreate {
+  /** Key Name */
+  key_name: string;
+  /** Value Type */
+  value_type: string;
 }
 
 /** AssignmentMetadataResponse */

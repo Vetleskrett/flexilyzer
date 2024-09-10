@@ -35,7 +35,23 @@ class AssignmentService:
         course_id = assignment.course_id
         CourseService.get_course(db=db, course_id=course_id)
 
-        return AssignmentRepository.create_assignment(db=db, assignment=assignment)
+        assignment_base = assingment_schema.AssignmentBase(
+            name=assignment.name,
+            due_date=assignment.due_date,
+            course_id=assignment.course_id
+        )
+
+        assignment_record = AssignmentRepository.create_assignment(db=db, assignment=assignment_base)
+
+        for metadata in assignment.metadata:
+            assignment_metadata = assingment_schema.AssignmentMetadataBase(
+                assignment_id=assignment_record.id,
+                key_name=metadata.key_name,
+                value_type=metadata.value_type
+            )
+            AssignmentRepository.create_assignment_metadata(db=db, assignment_metadata=assignment_metadata)
+
+        return assignment
 
 
     @staticmethod

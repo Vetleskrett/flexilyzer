@@ -28,7 +28,7 @@ export default function NewTeamPage({ params: _params }: Props) {
     <>
       <div className="max-w-50p grow p-4">
         <BackButton targetURL={`/courses/${_params.course_id}`} buttonText={`Course ${_params.course_id}`} />
-        <h2 className="h2">Add new Team</h2>
+        <h2 className="h2">Add new teams</h2>
         <Input
           type="number"
           label="Number of teams"
@@ -36,7 +36,7 @@ export default function NewTeamPage({ params: _params }: Props) {
         />
         <CreateButton
           onClickFunction={addTeam}
-          text={"Add Team"}
+          text={"Submit Teams"}
         />
       </div>
     </>
