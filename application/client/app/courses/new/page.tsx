@@ -1,22 +1,18 @@
+"use client";
+
 import { Input } from "@nextui-org/react";
 import BackButton from "@/components/buttons/BackButton";
 import CreateButton from "@/components/buttons/CreateButton";
 import { redirect } from "next/navigation";
-import api from "@/utils/apiUtils";
-
-async function addCourse(data: FormData) {
-  "use server"
-  
-  const tag = data.get("tag") as string;
-  const name = data.get("name") as string;
-
-  await api.postCourse({ tag, name });
-
-  redirect("/courses");
-}
+import { addCourse } from "./serverActions"
 
 export default function NewCoursePage() {
-  "use client";
+
+  async function submit(data: FormData) {  
+    await addCourse(data);
+  
+    redirect("/courses");
+  }
 
   return (
     <>
@@ -24,7 +20,7 @@ export default function NewCoursePage() {
         <BackButton targetURL={"/courses"} buttonText="Courses" />
         <h2 className="h2">Create new course</h2>
 
-        <form action={addCourse} className="g-4">
+        <form action={submit} className="g-4">
           <Input
             className="mt-4"
             type="string"

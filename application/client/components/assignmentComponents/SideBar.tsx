@@ -1,11 +1,11 @@
 "use client";
 import DividerComponent from "../DividerComponent";
 
-import api from "@/utils/apiUtils";
 import { useQuery } from "react-query";
 import { TeamResponse } from "@/extensions/data-contracts";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
+import { fetchTeams } from "./serverActions";
 
 interface SideBarProps {
   course_id: number;
@@ -22,19 +22,13 @@ export default function AssignmentSideBar({
 
   const currentTeamId = searchParams.get("team_id");
 
-  const fetchTeams = async () => {
-    const resp = await api.getCourseTeams(Number(course_id));
-    if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
-    return resp.data;
-  };
-
   const {
     data: teams,
     error,
     isLoading: isTeamsLoading,
   } = useQuery<TeamResponse[], Error>(
     ["teams", { course_id, assignment_id }],
-    fetchTeams,
+    () => fetchTeams(Number(course_id)),
     {
       refetchOnWindowFocus: false,
     },

@@ -32,7 +32,7 @@ export default function TeamDeliveryPage({ params }: Props) {
       getAssignmentProject(assignment_id, Number(team_id))
         .then((project) => {
           const newFormData = new Map<number, string>();
-          project.project_metadata.forEach((metadata: any) => {
+          project.project_metadata.forEach((metadata) => {
             newFormData.set(metadata.assignment_metadata_id, metadata.value);
           });
           setFormData(newFormData);
