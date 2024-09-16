@@ -32,6 +32,8 @@ const CreateButton = ({
       color="secondary"
       onClick={handleClick}
       variant="bordered"
+      type="submit"
+      className="mt-4"
     >
       {text}
     </Button>

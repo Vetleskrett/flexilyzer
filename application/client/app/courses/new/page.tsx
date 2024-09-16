@@ -1,43 +1,47 @@
-"use client"
-import api from "@/utils/apiUtils";
 import { Input } from "@nextui-org/react";
-import CreateButton from "@/components/buttons/CreateButton";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import BackButton from "@/components/buttons/BackButton";
+import CreateButton from "@/components/buttons/CreateButton";
+import { redirect } from "next/navigation";
+import api from "@/utils/apiUtils";
+
+async function addCourse(data: FormData) {
+  "use server"
+  
+  const tag = data.get("tag") as string;
+  const name = data.get("name") as string;
+
+  await api.postCourse({ tag, name });
+
+  redirect("/courses");
+}
 
 export default function NewCoursePage() {
+  "use client";
 
-    const router = useRouter();
-
-    const [tag, setTag] = useState<string>("")
-    const [name, setName] = useState<string>("")
-
-     async function addCourse() {
-      await api.postCourse({tag: tag, name: name})
-      router.push(`/courses`)
-      router.refresh();
-    }
   return (
     <>
       <div className="max-w-50p grow p-4">
         <BackButton targetURL={"/courses"} buttonText="Courses" />
         <h2 className="h2">Create new course</h2>
-        <Input
-          type="string"
-          label="Course tag"
-          defaultValue={"course"}
-          onValueChange={(value => setTag(value))}
-        />
-        <Input
-          type="string"
-          label="Course Name"
-          onValueChange={(value => setName(value))}
-        />
-        <CreateButton
-          onClickFunction={addCourse}
-          text={"Submit Course"}
-        />
+
+        <form action={addCourse} className="g-4">
+          <Input
+            className="mt-4"
+            type="string"
+            label="Course tag"
+            name="tag"
+            defaultValue={"course"}
+          />
+          <Input
+            className="mt-4"
+            type="string"
+            label="Course Name"
+            name="name"
+          />
+          <CreateButton
+            text={"Submit Course"}
+          />
+        </form>
       </div>
     </>
   );
