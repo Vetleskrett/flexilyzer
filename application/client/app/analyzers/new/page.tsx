@@ -7,10 +7,10 @@ import BasicInfoStep from "@/components/createAnalyzerComponents/BasicInfoStep";
 import OutputParamsStep from "@/components/createAnalyzerComponents/OutputParamsStep";
 import InputParameters from "@/components/createAnalyzerComponents/InputParamsStep";
 
-import api from "@/utils/apiUtils";
-import { formatAnalyzerData } from "@/components/analyzerComponents/analyzerUtils";
 import { useSnackbar } from "@/context/snackbarContext";
 import { useRouter } from "next/navigation";
+import { submitAnalyzerAction } from "./serverActions";
+import { formatAnalyzerData } from "@/components/analyzerComponents/analyzerUtils";
 
 export default function NewAnalyzerPage() {
   const TOTAL_STEPS = 4;
@@ -34,8 +34,10 @@ export default function NewAnalyzerPage() {
 
   // Submit form
   async function submitForm() {
-    const resp = await api.postAnalyzer(formatAnalyzerData(formData));
-    if (resp.ok) {
+    const formattedData = formatAnalyzerData(formData);
+    const result = await submitAnalyzerAction(formattedData);
+
+    if (result.success) {
       openSnackbar({
         message: "Analyzer submitted successfully!",
         severity: "success",
@@ -44,8 +46,8 @@ export default function NewAnalyzerPage() {
       router.refresh();
     } else {
       openSnackbar({
-        message: `Something wrong while submitting Analyzer: ${resp.error}`,
-        severity: "warning",
+        message: `Something wrong while submitting Analyzer: ${result.message}`,
+        severity: "error",
       });
     }
   }
