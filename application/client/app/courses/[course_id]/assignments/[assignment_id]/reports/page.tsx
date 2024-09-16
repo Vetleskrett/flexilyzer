@@ -1,14 +1,13 @@
 "use client";
-import api from "@/utils/apiUtils";
-import {
-  AnalyzerOutputResponse,
-  BatchStatsResponse,
-  ReportResponse,
-} from "@/extensions/data-contracts";
-import { renderMetrics } from "@/components/reportComponents/renderReportMetrics";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "react-query";
 import { LoadingComponent } from "@/components/LoadingComponent";
+import { renderMetrics } from "@/components/reportComponents/renderReportMetrics";
+import {
+  fetchTeamBatch,
+  fetchAnalyzerOutputs,
+  fetchBatchStats,
+} from "./serverActions";
 
 interface Props {
   params: { course_id: number; assignment_id: number };
@@ -22,80 +21,53 @@ export default function TeamReportsPage({ params }: Props) {
   const analyzer_id = searchParams.get("analyzer");
   const isCompareMode = searchParams.get("compare") === "true";
 
-  // Define the fetch function
-  const fetchTeamBatch = async () => {
-    const resp = await api.getAssignmentProjectsReportsBatch(
-      params.assignment_id,
-      Number(team_id),
-      Number(batch_id),
-      { cache: "no-cache" },
-    );
-    if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
-    return resp.data;
-  };
-
-  // Define the fetch function
-  const fetchAnalyzerOutputs = async () => {
-    const resp = await api.getAnalyzerOutputs(Number(analyzer_id), {
-      cache: "no-cache",
-    });
-    if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
-    return resp.data;
-  };
-
-  // Define the fetch function
-  const fetchBatchStats = async () => {
-    const resp = await api.getBatchStats(Number(batch_id));
-    if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
-    return resp.data;
-  };
-
-  // Use useQuery hook to fetch data
+  // Fetch Team Batch
   const {
     data: report,
     isLoading: isLoadingReport,
     error: errorReport,
-  } = useQuery<ReportResponse, Error>(
+  } = useQuery(
     ["teamBatches", { team_id, batch_id }],
-    fetchTeamBatch,
+    () =>
+      fetchTeamBatch(params.assignment_id, Number(team_id), Number(batch_id)),
     {
       refetchOnWindowFocus: false,
-      // Only proceed with the query if team_id is not null
       enabled: !!team_id && !!batch_id,
       retry: false,
     },
   );
 
+  // Fetch Analyzer Outputs
   const {
     data: analyzerOutputs,
     isLoading: isLoadingAnalyzer,
     error: errorAnalyzer,
-  } = useQuery<AnalyzerOutputResponse[], Error>(
+  } = useQuery(
     ["analyzerOutputs", { analyzer_id }],
-    fetchAnalyzerOutputs,
+    () => fetchAnalyzerOutputs(Number(analyzer_id)),
     {
       refetchOnWindowFocus: false,
-      // Only proceed with the query if team_id is not null
-      enabled: !!team_id && !!batch_id,
+      enabled: !!analyzer_id && !!batch_id,
       retry: false,
     },
   );
 
-  const { data: batchStats, isLoading: isLoadingStats } = useQuery<
-    BatchStatsResponse,
-    Error
-  >(["batchStats", { batch_id }], fetchBatchStats, {
-    refetchOnWindowFocus: false,
-    // Only proceed with the query if team_id is not null
-    enabled: isCompareMode,
-    retry: false,
-    staleTime: Infinity,
-  });
+  // Fetch Batch Stats
+  const { data: batchStats, isLoading: isLoadingStats } = useQuery(
+    ["batchStats", { batch_id }],
+    () => fetchBatchStats(Number(batch_id)),
+    {
+      refetchOnWindowFocus: false,
+      enabled: isCompareMode,
+      retry: false,
+      staleTime: Infinity,
+    },
+  );
 
   if (isLoadingReport || isLoadingAnalyzer || isLoadingStats) {
-    <LoadingComponent text={"Report is loading ..."} />;
+    return <LoadingComponent text={"Report is loading ..."} />;
   }
-  //add stat here
+
   if (errorReport || errorAnalyzer) {
     return (
       <div className="mt-14 text-center">
@@ -112,5 +84,3 @@ export default function TeamReportsPage({ params }: Props) {
     </div>
   );
 }
-
-// Fetch all batches for assignment and specific analyzer

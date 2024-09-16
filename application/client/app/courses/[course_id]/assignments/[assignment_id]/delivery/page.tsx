@@ -1,23 +1,18 @@
 "use client";
-import { AssignmentMetadataResponse, ProjectCreate, ProjectMetadataCreate } from "@/extensions/data-contracts";
-import api from "@/utils/apiUtils";
+import { ProjectMetadataCreate } from "@/extensions/data-contracts";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
-
-import {
-  Input,
-  Button,
-} from "@nextui-org/react";
+import { Input, Button } from "@nextui-org/react";
 import { useSnackbar } from "@/context/snackbarContext";
 import { LoadingComponent } from "@/components/LoadingComponent";
+import { getAssignmentProject, fetchAssignmentMetadata, submitProjectForm } from "./serverActions";
 
 interface Props {
   params: { course_id: number; assignment_id: number };
 }
 
 export default function TeamDeliveryPage({ params }: Props) {
-
   const [formData, setFormData] = useState<Map<number, string>>(new Map<number, string>());
   const updateFormData = (id: number, value: string) => {
     const newFormData = new Map(formData);
@@ -26,86 +21,73 @@ export default function TeamDeliveryPage({ params }: Props) {
   };
 
   const searchParams = useSearchParams();
-
   const team_id = searchParams.get("team_id");
   const assignment_id = params.assignment_id;
 
   const { openSnackbar } = useSnackbar();
 
+  // Fetch project data and populate the form
   useEffect(() => {
-    api.getAssignmentProject(assignment_id, Number(team_id)).then(response => {
-      const project = response.data;
-      const newFormData = new Map<number, string>();
+    if (team_id && assignment_id) {
+      getAssignmentProject(assignment_id, Number(team_id))
+        .then((project) => {
+          const newFormData = new Map<number, string>();
+          project.project_metadata.forEach((metadata: any) => {
+            newFormData.set(metadata.assignment_metadata_id, metadata.value);
+          });
+          setFormData(newFormData);
+        })
+        .catch((error) => {
+          console.error("Error loading project:", error);
+        });
+    }
+  }, [team_id, assignment_id]);
 
-      project.project_metadata.forEach((metadata => {
-        newFormData.set(metadata.assignment_metadata_id, metadata.value);
-      }))
-
-      setFormData(newFormData);
-    })
-    .catch(error => {
-      console.error(error);
-    })
-
-  }, [team_id])
-
-  const fetchAssignmentMetadata = async () => {
-    const resp = await api.getAssignmentMetadata(
-      params.assignment_id,
-      { cache: "no-cache" },
-    );
-    if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
-    return resp.data;
-  };
-
+  // Fetch assignment metadata using react-query
   const {
     data: assignment_metadatas,
     isLoading: isLoadingAssignmentMetadata,
     error: errorAssignmentMetadata,
-  } = useQuery<AssignmentMetadataResponse[], Error>(
-    ["assignment_metadatas", { assignment_id }],
-    fetchAssignmentMetadata,
-    {
-      refetchOnWindowFocus: false,
-      // Only proceed with the query if team_id is not null
-      enabled: !!assignment_id,
-      retry: false,
-    },
-  );
+  } = useQuery(["assignment_metadatas", assignment_id], () => fetchAssignmentMetadata(assignment_id), {
+    enabled: !!assignment_id,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 
+  // Handle form submission
   async function submitForm() {
+    if (!team_id) return;
 
     const project_metadata: ProjectMetadataCreate[] = [];
     formData.forEach((value, id) => {
       project_metadata.push({
-          value: value,
-          assignment_metadata_id: id
-      })
-    })
+        value: value,
+        assignment_metadata_id: id,
+      });
+    });
 
-    const data : ProjectCreate = {
+    const data = {
       team_id: Number(team_id),
       assignment_id: params.assignment_id,
-      project_metadata: project_metadata
-    }
+      project_metadata,
+    };
 
-    const resp = await api.createProject(data)
-    
-    if (resp.ok) {
+    try {
+      await submitProjectForm(data);
       openSnackbar({
         message: "Delivery submitted successfully!",
         severity: "success",
       });
-    } else {
+    } catch (error) {
       openSnackbar({
-        message: `Something wrong while submitting Delivery: ${resp.error}`,
-        severity: "warning",
+        message: `An error occurred while submitting: ${(error as Error).message}`,
+        severity: "error",
       });
     }
   }
 
   if (isLoadingAssignmentMetadata) {
-    <LoadingComponent text={"Loading ..."} />;
+    return <LoadingComponent text="Loading ..." />;
   }
 
   if (errorAssignmentMetadata) {
@@ -118,35 +100,24 @@ export default function TeamDeliveryPage({ params }: Props) {
 
   return (
     <div className="my-8 flex flex-col items-center justify-center text-center">
-
       <h3 className="h3">Delivery for Team {team_id}</h3>
-
-      {
-
-        assignment_metadatas?.map(assignment_metadata => {
-          return (
-            <div key={assignment_metadata.id}>
-              
-              <Input
-                isRequired
-                size="lg"
-                label={assignment_metadata.key_name}
-                placeholder={assignment_metadata.key_name}
-                value={formData.get(assignment_metadata.id) || ""}
-                className="mb-8"
-                onChange={(e) => updateFormData(assignment_metadata.id, e.target.value)}
-              />
-
-            </div>
-          )
-        })
-      }
+      {assignment_metadatas?.map((assignment_metadata) => (
+        <div key={assignment_metadata.id}>
+          <Input
+            isRequired
+            size="lg"
+            label={assignment_metadata.key_name}
+            placeholder={assignment_metadata.key_name}
+            value={formData.get(assignment_metadata.id) || ""}
+            className="mb-8"
+            onChange={(e) => updateFormData(assignment_metadata.id, e.target.value)}
+          />
+        </div>
+      ))}
 
       <Button color="primary" onClick={submitForm}>
         Submit
       </Button>
-
     </div>
-
   );
 }
