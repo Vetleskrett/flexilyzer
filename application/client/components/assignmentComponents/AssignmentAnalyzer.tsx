@@ -3,7 +3,7 @@
 import { BatchResponse, JobCreate } from "@/extensions/data-contracts";
 import { Button, Card, Skeleton } from "@nextui-org/react";
 import AnalyzerBatchInfo from "../analyzerComponents/AnalyzerBatchInfo";
-import api from "@/utils/apiUtils";
+import { getAssignmentAnalyzersBatches, runJob } from "@/utils/apiUtils";
 import { useRouter } from "next/navigation";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { useSnackbar } from "@/context/snackbarContext";
@@ -22,23 +22,13 @@ export default function AssignmentAnalyzer({
   const { openSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
 
-  const fetchBatches = async () => {
-    const resp = await api.getAssignmentAnalyzersBatches(
-      assignment_id,
-      analyzer_id,
-      { cache: "no-cache" },
-    );
-    if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
-    return resp.data;
-  };
-
   const {
     data: batches,
     error,
     isLoading: isBatchesLoading,
   } = useQuery<BatchResponse[], Error>(
     ["batches", { assignment_id, analyzer_id }],
-    fetchBatches,
+    () => getAssignmentAnalyzersBatches(assignment_id, analyzer_id),
     {
       refetchOnWindowFocus: false,
     },
@@ -47,7 +37,7 @@ export default function AssignmentAnalyzer({
   const runAnalyzerMutation = useMutation(
     async () => {
       const payload: JobCreate = { assignment_id: assignment_id };
-      return await api.runJob(analyzer_id, payload);
+      return await runJob(analyzer_id, payload);
     },
     {
       onSuccess: () => {

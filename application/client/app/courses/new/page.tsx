@@ -4,12 +4,15 @@ import { Input } from "@nextui-org/react";
 import BackButton from "@/components/buttons/BackButton";
 import CreateButton from "@/components/buttons/CreateButton";
 import { redirect } from "next/navigation";
-import { addCourse } from "./serverActions"
+import { postCourse } from "@/utils/apiUtils";
 
 export default function NewCoursePage() {
 
   async function submit(data: FormData) {  
-    await addCourse(data);
+    const tag = data.get("tag") as string;
+    const name = data.get("name") as string;
+  
+    await postCourse({ tag, name });
   
     redirect("/courses");
   }

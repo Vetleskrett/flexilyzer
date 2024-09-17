@@ -1,4 +1,4 @@
-import api from "@/utils/apiUtils";
+import { getAnalyzer, getAnalyzerScript, getAnalyzerRequirements, getAnalyzerInputs, getAnalyzerOutputs } from "@/utils/apiUtils";
 import AnalyzerScriptDisplay from "@/components/analyzerComponents/AnalyzerScriptDisplay";
 import AnalyzerSummary from "@/components/analyzerComponents/AnalyzerSummary";
 import AnalyzerMissingScript from "@/components/analyzerComponents/AnalyzerMissingScript";
@@ -8,23 +8,16 @@ interface Props {
 }
 
 export default async function Analyzer({ params }: Props) {
-  const analyzer = (
-    await api.getAnalyzer(Number(params.analyzer_id), { cache: "no-cache" })
-  ).data;
-  const inputs = (await api.getAnalyzerInputs(Number(params.analyzer_id))).data;
-  const outputs = (await api.getAnalyzerOutputs(Number(params.analyzer_id)))
-    .data;
+  const analyzer = await getAnalyzer(Number(params.analyzer_id));
+  const inputs = await getAnalyzerInputs(Number(params.analyzer_id));
+  const outputs = await getAnalyzerOutputs(Number(params.analyzer_id));
 
   const script = analyzer.has_script
-    ? await api.getAnalyzerScript(Number(params.analyzer_id), {
-        cache: "no-cache",
-      })
+    ? await getAnalyzerScript(Number(params.analyzer_id))
     : null;
 
   const requirements = analyzer.has_requirements
-    ? await api.getAnalyzerRequirements(Number(params.analyzer_id), {
-        cache: "no-cache",
-      })
+    ? await getAnalyzerRequirements(Number(params.analyzer_id))
     : null;
 
   return (
@@ -44,11 +37,11 @@ export default async function Analyzer({ params }: Props) {
             <div className="mt-4 flex items-start justify-center">
               <AnalyzerScriptDisplay
                 analyzer_id={analyzer.id}
-                script={script ? script?.data : null}
+                script={script ? script : null}
                 has_requirements={
                   analyzer.has_requirements ? analyzer.has_requirements : false
                 }
-                requirements={requirements ? requirements?.data : null}
+                requirements={requirements ? requirements : null}
               />
             </div>
           ) : (

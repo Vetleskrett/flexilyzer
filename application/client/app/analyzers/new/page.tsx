@@ -9,7 +9,7 @@ import InputParameters from "@/components/createAnalyzerComponents/InputParamsSt
 
 import { useSnackbar } from "@/context/snackbarContext";
 import { useRouter } from "next/navigation";
-import { submitAnalyzerAction } from "./serverActions";
+import { postAnalyzer } from "@/utils/apiUtils";
 import { formatAnalyzerData } from "@/components/analyzerComponents/analyzerUtils";
 
 export default function NewAnalyzerPage() {
@@ -35,18 +35,17 @@ export default function NewAnalyzerPage() {
   // Submit form
   async function submitForm() {
     const formattedData = formatAnalyzerData(formData);
-    const result = await submitAnalyzerAction(formattedData);
-
-    if (result.success) {
+    try {
+      await postAnalyzer(formattedData);
       openSnackbar({
         message: "Analyzer submitted successfully!",
         severity: "success",
       });
       router.push("/analyzers");
       router.refresh();
-    } else {
+    } catch(error) {
       openSnackbar({
-        message: `Something wrong while submitting Analyzer: ${result.message}`,
+        message: `Something wrong while submitting Analyzer: ${error}`,
         severity: "error",
       });
     }

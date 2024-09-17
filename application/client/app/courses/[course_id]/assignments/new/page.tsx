@@ -7,7 +7,8 @@ import BackButton from "@/components/buttons/BackButton";
 import { useState } from "react";
 import { ValueTypesInput } from "@/extensions/data-contracts";
 import { InputParameter } from "@/types/analyzerDefinitions";
-import { addAssignment } from "./serverActions";
+import { createAssignment } from "@/utils/apiUtils";
+import { redirect } from "next/navigation";
 
 interface Props {
   params: { course_id: string };
@@ -28,6 +29,36 @@ export default function NewAssignment({ params: _params }: Props) {
       ]
       setInputs(updatedParameters);
     };
+
+    async function addAssignment(
+      data: FormData,
+      numberOfInputs: number,
+      courseId: string) {
+  
+      const metadata = [];
+  
+      for(let i = 0; i < numberOfInputs; i++) {
+          const keyName = data.get(`keyName${i}`) as string
+          const valueType = data.get(`valueType${i}`) as string
+    
+          metadata.push({
+            key_name: keyName,
+            value_type: valueType,
+          });
+      }
+  
+      const name = data.get("name") as string
+      const dueDate = data.get("dueDate") as string
+  
+      await createAssignment({
+        course_id: Number(courseId),
+        name: name,
+        due_date: dueDate.substring(0, dueDate.toString().indexOf("[")), 
+        metadata: metadata
+      })
+      redirect(`/courses/${courseId}`)
+  
+  }
 
   return (
     <>

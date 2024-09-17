@@ -1,4 +1,4 @@
-import api from "@/utils/apiUtils";
+import { getAnalyzerTemplate } from "@/utils/apiUtils";
 import { FormDataT } from "@/types/analyzerDefinitions";
 import { Button } from "@nextui-org/react";
 
@@ -15,13 +15,14 @@ export default function CodeTemplate({ formData }: { formData: FormDataT }) {
 
   useEffect(() => {
     async function fetchCodeTemplate() {
-      const resp = await api.getAnalyzerTemplate(formatAnalyzerData(formData));
 
-      if (resp.ok) {
-        setCodeTemplate(resp.data);
-      } else {
-        console.error(resp.error);
+      try {
+        const data = await getAnalyzerTemplate(formatAnalyzerData(formData));
+        setCodeTemplate(data);
+      } catch(error) {
+        console.error(error);
       }
+      
     }
     fetchCodeTemplate();
   }, [formData]);

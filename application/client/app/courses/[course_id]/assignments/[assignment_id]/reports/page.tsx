@@ -4,10 +4,10 @@ import { useQuery } from "react-query";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { renderMetrics } from "@/components/reportComponents/renderReportMetrics";
 import {
-  fetchTeamBatch,
-  fetchAnalyzerOutputs,
-  fetchBatchStats,
-} from "./serverActions";
+  getAssignmentProjectsReportsBatch,
+  getAnalyzerOutputs,
+  getBatchStats,
+} from "@/utils/apiUtils";
 
 interface Props {
   params: { course_id: number; assignment_id: number };
@@ -29,7 +29,7 @@ export default function TeamReportsPage({ params }: Props) {
   } = useQuery(
     ["teamBatches", { team_id, batch_id }],
     () =>
-      fetchTeamBatch(params.assignment_id, Number(team_id), Number(batch_id)),
+      getAssignmentProjectsReportsBatch(params.assignment_id, Number(team_id), Number(batch_id)),
     {
       refetchOnWindowFocus: false,
       enabled: !!team_id && !!batch_id,
@@ -44,7 +44,7 @@ export default function TeamReportsPage({ params }: Props) {
     error: errorAnalyzer,
   } = useQuery(
     ["analyzerOutputs", { analyzer_id }],
-    () => fetchAnalyzerOutputs(Number(analyzer_id)),
+    () => getAnalyzerOutputs(Number(analyzer_id)),
     {
       refetchOnWindowFocus: false,
       enabled: !!analyzer_id && !!batch_id,
@@ -55,7 +55,7 @@ export default function TeamReportsPage({ params }: Props) {
   // Fetch Batch Stats
   const { data: batchStats, isLoading: isLoadingStats } = useQuery(
     ["batchStats", { batch_id }],
-    () => fetchBatchStats(Number(batch_id)),
+    () => getBatchStats(Number(batch_id)),
     {
       refetchOnWindowFocus: false,
       enabled: isCompareMode,

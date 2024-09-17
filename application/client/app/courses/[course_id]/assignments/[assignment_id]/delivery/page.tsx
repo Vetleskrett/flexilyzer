@@ -6,7 +6,7 @@ import { useQuery } from "react-query";
 import { Input, Button } from "@nextui-org/react";
 import { useSnackbar } from "@/context/snackbarContext";
 import { LoadingComponent } from "@/components/LoadingComponent";
-import { getAssignmentProject, fetchAssignmentMetadata, submitProjectForm } from "./serverActions";
+import { getAssignmentProject, getAssignmentMetadata, createProject } from "@/utils/apiUtils";
 
 interface Props {
   params: { course_id: number; assignment_id: number };
@@ -48,7 +48,8 @@ export default function TeamDeliveryPage({ params }: Props) {
     data: assignment_metadatas,
     isLoading: isLoadingAssignmentMetadata,
     error: errorAssignmentMetadata,
-  } = useQuery(["assignment_metadatas", assignment_id], () => fetchAssignmentMetadata(assignment_id), {
+  } = useQuery(["assignment_metadatas", assignment_id],
+    () => getAssignmentMetadata(assignment_id), {
     enabled: !!assignment_id,
     refetchOnWindowFocus: false,
     retry: false,
@@ -73,7 +74,7 @@ export default function TeamDeliveryPage({ params }: Props) {
     };
 
     try {
-      await submitProjectForm(data);
+      await createProject(data);
       openSnackbar({
         message: "Delivery submitted successfully!",
         severity: "success",

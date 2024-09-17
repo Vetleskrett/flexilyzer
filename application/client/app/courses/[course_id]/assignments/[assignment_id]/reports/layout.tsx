@@ -1,4 +1,4 @@
-import api from "@/utils/apiUtils";
+import { getAssignmentAnalyzers } from "@/utils/apiUtils";
 import AssignmentSideBar from "@/components/assignmentComponents/SideBar";
 import AnalyzerTabs from "@/components/analyzerComponents/AnalyzerTabs";
 
@@ -12,10 +12,7 @@ export default async function AssignmentLayout({
     assignment_id: number;
   };
 }) {
-  const assignment_analyzers = await api.getAssignmentAnalyzers(
-    params.assignment_id,
-    { cache: "no-cache" },
-  );
+  const assignment_analyzers = await getAssignmentAnalyzers(params.assignment_id);
 
   return (
     <>
@@ -29,7 +26,7 @@ export default async function AssignmentLayout({
           <div className="flex flex-row justify-center">
             <div className="">
               <AnalyzerTabs
-                assignment_analyzers={assignment_analyzers.data}
+                assignment_analyzers={assignment_analyzers}
                 course_id={params.course_id}
                 assignment_id={params.assignment_id}
               />

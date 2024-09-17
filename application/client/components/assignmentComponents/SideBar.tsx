@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import { TeamResponse } from "@/extensions/data-contracts";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
-import { fetchTeams } from "./serverActions";
+import { getCourseTeams } from "@/utils/apiUtils";
 
 interface SideBarProps {
   course_id: number;
@@ -28,7 +28,7 @@ export default function AssignmentSideBar({
     isLoading: isTeamsLoading,
   } = useQuery<TeamResponse[], Error>(
     ["teams", { course_id, assignment_id }],
-    () => fetchTeams(Number(course_id)),
+    () => getCourseTeams(Number(course_id)),
     {
       refetchOnWindowFocus: false,
     },

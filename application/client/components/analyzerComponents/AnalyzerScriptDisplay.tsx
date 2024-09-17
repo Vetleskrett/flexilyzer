@@ -1,5 +1,5 @@
 "use client";
-import api from "@/utils/apiUtils";
+import { uploadAnalyzerRequirements } from "@/utils/apiUtils";
 import CodeDisplay from "./CodeDisplay";
 import React, { useState } from "react";
 import { Button, Card, Tab, Tabs } from "@nextui-org/react";
@@ -38,18 +38,18 @@ export default function AnalyzerScriptDisplay({
       return;
     }
 
-    const resp = await api.uploadAnalyzerRequirements(analyzer_id, {
-      file: selectedFile,
-    });
-    if (resp.ok) {
+    try {
+      await uploadAnalyzerRequirements(analyzer_id, {
+        file: selectedFile,
+      });
       openSnackbar({
         message: "Requirements file submitted successfully!",
         severity: "success",
       });
       router.refresh();
-    } else {
+    } catch(error) {
       openSnackbar({
-        message: `Something wrong while submitting Requirements file: ${resp.error}`,
+        message: `Something wrong while submitting Requirements file: ${error}`,
         severity: "warning",
       });
     }

@@ -1,5 +1,5 @@
 "use client";
-import api from "@/utils/apiUtils";
+import { uploadAnalyzerScript, uploadAnalyzerRequirements, getAnalyzerTemplate } from "@/utils/apiUtils";
 import { useSnackbar } from "@/context/snackbarContext";
 import { Button, Spinner } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
@@ -29,20 +29,20 @@ export default function AnalyzerMissingScript({
 
   useEffect(() => {
     async function fetchCodeTemplate() {
-      const resp = await api.getAnalyzerTemplate(
-        formatAnalyzerData({
-          id: analyzer.id,
-          name: analyzer.name,
-          description: analyzer.description,
-          inputs: inputs,
-          outputs: outputs,
-        }),
-      );
+      try {
+        const data = await getAnalyzerTemplate(
+          formatAnalyzerData({
+            id: analyzer.id,
+            name: analyzer.name,
+            description: analyzer.description,
+            inputs: inputs,
+            outputs: outputs,
+          }),
+        );
+        setCodeTemplate(data);
+      } catch (error) {
+        console.error(error);
 
-      if (resp.ok) {
-        setCodeTemplate(resp.data);
-      } else {
-        console.error(resp.error);
       }
     }
     fetchCodeTemplate();
@@ -76,18 +76,18 @@ export default function AnalyzerMissingScript({
       return;
     }
 
-    const resp = await api.uploadAnalyzerScript(analyzer.id, {
-      file: selectedScriptFile,
-    });
-    if (resp.ok) {
+    try {
+      await uploadAnalyzerScript(analyzer.id, {
+        file: selectedScriptFile,
+      });
       openSnackbar({
         message: "Analyzer script submitted successfully!",
         severity: "success",
       });
       router.refresh();
-    } else {
+    } catch(error) {
       openSnackbar({
-        message: `Something wrong while submitting Analyzer: ${resp.error}`,
+        message: `Something wrong while submitting Analyzer: ${error}`,
         severity: "warning",
       });
     }
@@ -99,18 +99,18 @@ export default function AnalyzerMissingScript({
       return;
     }
 
-    const resp = await api.uploadAnalyzerRequirements(analyzer.id, {
-      file: selectedReqFile,
-    });
-    if (resp.ok) {
+    try {
+      await uploadAnalyzerRequirements(analyzer.id, {
+        file: selectedReqFile,
+      });
       openSnackbar({
         message: "Requirements.txt file submitted successfully!",
         severity: "success",
       });
       router.refresh();
-    } else {
+    } catch(error) {
       openSnackbar({
-        message: `Something wrong while submitting requirements.txt: ${resp.error}`,
+        message: `Something wrong while submitting requirements.txt: ${error}`,
         severity: "warning",
       });
     }

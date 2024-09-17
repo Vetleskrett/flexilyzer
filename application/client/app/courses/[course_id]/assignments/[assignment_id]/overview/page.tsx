@@ -1,4 +1,4 @@
-import api from "@/utils/apiUtils";
+import { getAssignmentAnalyzers, getAnalyzerOutputs, getAssignmentAnalyzersBatchesLatestReports } from "@/utils/apiUtils";
 import OverViewTable from "@/components/tableComponents/Table";
 import { AnalyzerWithOutputs, TeamReports } from "@/types/analyzerDefinitions";
 import { NoReportData } from "@/components/NoReportData";
@@ -11,31 +11,24 @@ export default async function AssignmentOverviewPage({ params }: Props) {
   const analyzersWithOutputs: AnalyzerWithOutputs[] = [];
   const allReports: TeamReports = {};
 
-  const analyzersResponse = await api.getAssignmentAnalyzers(
-    params.assignment_id,
-    {
-      cache: "no-cache",
-    },
-  );
+  const analyzersResponse = await getAssignmentAnalyzers(params.assignment_id);
 
-  if (analyzersResponse.ok) {
-    for (const analyzer of analyzersResponse.data) {
-      const analyzerOutputsResponse = await api.getAnalyzerOutputs(analyzer.id);
-      if (analyzerOutputsResponse.status === 200) {
-        analyzersWithOutputs.push({
-          id: analyzer.id,
-          analyzer_name: analyzer.name,
-          outputs: analyzerOutputsResponse.data,
-        });
-      }
+  for (const analyzer of analyzersResponse) {
+    const analyzerOutputsResponse = await getAnalyzerOutputs(analyzer.id);
+    analyzersWithOutputs.push({
+      id: analyzer.id,
+      analyzer_name: analyzer.name,
+      outputs: analyzerOutputsResponse,
+    });
 
-      const reportsResponse =
-        await api.getAssignmentAnalyzersBatchesLatestReports(
-          params.assignment_id,
-          analyzer.id,
-        );
-      if (reportsResponse.status === 200) {
-        for (const report of reportsResponse.data) {
+    const reportsResponse =
+      await getAssignmentAnalyzersBatchesLatestReports(
+        params.assignment_id,
+        analyzer.id,
+      );
+
+      if (reportsResponse) {
+        for (const report of reportsResponse) {
           if (allReports[report.team_id]) {
             allReports[report.team_id].reports.push(report);
           } else {
@@ -45,7 +38,6 @@ export default async function AssignmentOverviewPage({ params }: Props) {
           }
         }
       }
-    }
   }
   return (
     <div>

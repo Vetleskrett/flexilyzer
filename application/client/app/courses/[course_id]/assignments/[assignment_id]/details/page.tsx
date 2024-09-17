@@ -1,4 +1,4 @@
-import api from "@/utils/apiUtils";
+import { getAssignmentAnalyzers, getAssignmentMetadata } from "@/utils/apiUtils";
 import AssignmentAnalyzer from "@/components/assignmentComponents/AssignmentAnalyzer";
 import AssignmentMetadata from "@/components/assignmentComponents/AssignmentMetadata";
 import ConnectAssignmentAnalyzer from "@/components/assignmentComponents/ConnectAssignmentAnalyzer";
@@ -8,32 +8,24 @@ interface Props {
 }
 
 export default async function AssignmentDetails({ params }: Props) {
-  const analyzers = await api.getAssignmentAnalyzers(params.assignment_id, {
-    cache: "no-cache",
-  });
+  const analyzers = await getAssignmentAnalyzers(params.assignment_id);
 
-  const assignment_metadata = await api.getAssignmentMetadata(
-    params.assignment_id,
-  );
-
-  if (!assignment_metadata.ok) {
-    return "something wrong";
-  }
+  const assignment_metadata = await getAssignmentMetadata(params.assignment_id);
 
   return (
     <>
       <div className="grow">
-        <AssignmentMetadata metadata={assignment_metadata.data} />
+        <AssignmentMetadata metadata={assignment_metadata} />
       </div>
       <div className="my-8 flex flex-col items-center justify-center text-center">
         <h3 className="h3">Connected analyzers:</h3>
         <ConnectAssignmentAnalyzer
           assignment_id={params.assignment_id}
-          connected_analyzers={analyzers.data}
+          connected_analyzers={analyzers}
         />
       </div>
       <div className="flex max-w-[1500px] space-x-4 overflow-x-auto p-2">
-        {analyzers.data.map((analyzer) => {
+        {analyzers.map((analyzer) => {
           return (
             <>
               <AssignmentAnalyzer

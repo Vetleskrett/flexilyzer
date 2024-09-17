@@ -15,7 +15,7 @@ import {
   SelectItem,
 } from "@nextui-org/react";
 
-import api from "@/utils/apiUtils";
+import { getAllAnalyzers, connectAssignmentAnalyzers } from "@/utils/apiUtils";
 import { AnalyzerSimplifiedResponse } from "@/extensions/data-contracts";
 import { useQuery } from "react-query";
 import { useSnackbar } from "@/context/snackbarContext";
@@ -35,19 +35,12 @@ const ConnectAssignmentAnalyzer = ({
 
   const { openSnackbar } = useSnackbar();
 
-  const fetchAnalyzers = async () => {
-    const resp = await api.getAllAnalyzers({ cache: "no-cache" });
-    if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
-    return resp.data;
-  };
-
   const {
     data: analyzers = [],
-    error,
     isLoading: isAnlyzersLoading,
   } = useQuery<AnalyzerSimplifiedResponse[], Error>(
     ["analyzers"],
-    fetchAnalyzers,
+    () => getAllAnalyzers(),
     {
       refetchOnWindowFocus: false,
     },
@@ -80,22 +73,20 @@ const ConnectAssignmentAnalyzer = ({
 
   const createConnection = async (onClose: () => void) => {
     if (selectedAnalyzer) {
-      const res = await api.connectAssignmentAnalyzers(
-        assignment_id,
-        selectedAnalyzer.id,
-      );
-      if (res.ok) {
+      try {
+        await connectAssignmentAnalyzers(
+          assignment_id,
+          selectedAnalyzer.id,
+        );
         openSnackbar({ message: "Anlyzer connected", severity: "success" });
         router.refresh();
-      } else {
+      } catch(error) {
         openSnackbar({ message: "Something went wrong", severity: "error" });
-        console.error(res.error);
+        console.error(error);
       }
     }
     onClose();
   };
-
-  if (error) return <>Something went wrong while trying to fetch analyzers.</>;
 
   if (isAnlyzersLoading) return <LoadingComponent />;
 

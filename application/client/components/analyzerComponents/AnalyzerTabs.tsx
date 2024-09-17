@@ -8,7 +8,7 @@ import { Tab, Tabs } from "@nextui-org/react";
 import { useCallback, useEffect } from "react";
 import AnalyzerBatchSelect from "../reportPageComponents/AnalyzerBatchSelect";
 import CompareModeSwitch from "../reportPageComponents/CompareModeSwitch";
-import api from "@/utils/apiUtils";
+import { getAssignmentAnalyzersBatches } from "@/utils/apiUtils";
 import { useQuery } from "react-query";
 import { NoReportData } from "@/components/NoReportData";
 
@@ -63,23 +63,13 @@ export default function AnalyzerTabs({
     router,
   ]);
 
-  const fetchBatches = async () => {
-    const resp = await api.getAssignmentAnalyzersBatches(
-      assignment_id,
-      Number(currentAnalyzerId),
-      { cache: "no-cache" },
-    );
-    if (!resp.ok) throw new Error(`${resp.status} - ${resp.error}`);
-    return resp.data;
-  };
-
   const {
     data: batches,
     error,
     isLoading: isBatchesLoading,
   } = useQuery<BatchResponse[], Error>(
     ["batches", { assignment_id, currentAnalyzerId }],
-    fetchBatches,
+    () => getAssignmentAnalyzersBatches(assignment_id, Number(currentAnalyzerId)),
     {
       refetchOnWindowFocus: false,
       enabled: !!currentAnalyzerId,
