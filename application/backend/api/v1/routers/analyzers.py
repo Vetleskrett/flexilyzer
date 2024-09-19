@@ -1,12 +1,9 @@
 from typing import List
-from fastapi import APIRouter, Depends, UploadFile, File
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from services.jobs_service import JobsService
 from schemas import analyzer_schema
 
-from services.analyzers_service import (
-    AnalyzerService,
-)
+from services.analyzers_service import AnalyzerService
 
 from db.database import get_db
 
@@ -67,7 +64,7 @@ async def get_analyzer_template(
 @router.post("/{analyzer_id}/upload/script", operation_id="upload-analyzer-script")
 async def upload_analyzer_script(
     analyzer_id: int,
-    file: UploadFile = File(...),
+    file: analyzer_schema.FileUpload,
     db: Session = Depends(get_db),
 ) -> str:
     return await AnalyzerService.upload_script(
@@ -106,7 +103,7 @@ async def get_analyzer_requirements(
 )
 async def upload_analyzer_requirements(
     analyzer_id: int,
-    file: UploadFile = File(...),
+    file: analyzer_schema.FileUpload,
     db: Session = Depends(get_db),
 ) -> str:
     return await AnalyzerService.upload_requirements(

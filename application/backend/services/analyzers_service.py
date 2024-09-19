@@ -1,17 +1,14 @@
-import json
-from fastapi import HTTPException, UploadFile
+from fastapi import HTTPException
 from db.crud.analyzers_crud import AnalyzerRepository
 from schemas.analyzer_schema import (
-    RequirementsSchema,
-    ScriptSchema,
     AnalyzerBase,
     AnalyzerOutputResponse,
     AnalyzerInputResponse,
     AnalyzerResponse,
     AnalyzerCreate,
     AnalyzerInternalUpdate,
+    FileUpload
 )
-from utils.validationUtils import validatePydanticToHTTPError
 from utils.fileUtils import delete_file, read_file, store_file, script_exists
 from utils.templateUtils import generate_template
 
@@ -137,8 +134,7 @@ class AnalyzerService:
         return generate_template(inputs=analyzer.inputs, outputs=analyzer.outputs)
 
     @staticmethod
-    async def upload_script(db, analyzer_id, file: UploadFile):
-        validatePydanticToHTTPError(ScriptSchema, {"file_name": file.filename})
+    async def upload_script(db, analyzer_id, file: FileUpload):
         analyzer = AnalyzerService.get_analyzer(db=db, analyzer_id=analyzer_id)
 
         if script_exists(analyzer_id=analyzer_id):  # or analyzer.has_script:
@@ -159,8 +155,7 @@ class AnalyzerService:
         return "Script stored successfully."
 
     @staticmethod
-    async def upload_requirements(db, analyzer_id, file: UploadFile):
-        validatePydanticToHTTPError(RequirementsSchema, {"file_name": file.filename})
+    async def upload_requirements(db, analyzer_id, file: FileUpload):
         analyzer = AnalyzerService.get_analyzer(db=db, analyzer_id=analyzer_id)
 
         if script_exists(analyzer_id, requirements=True):

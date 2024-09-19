@@ -20,10 +20,9 @@ import {
   AssignmentResponse,
   BatchResponse,
   BatchStatsResponse,
-  BodyUploadAnalyzerRequirements,
-  BodyUploadAnalyzerScript,
   CourseCreate,
   CourseResponse,
+  FileUpload,
   HTTPValidationError,
   JobCreate,
   ProjectCreate,
@@ -603,12 +602,12 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @summary Upload Analyzer Script
    * @request POST:/api/v1/analyzers/{analyzer_id}/upload/script
    */
-  uploadAnalyzerScript = (analyzerId: number, data: BodyUploadAnalyzerScript, params: RequestParams = {}) =>
+  uploadAnalyzerScript = (analyzerId: number, data: FileUpload, params: RequestParams = {}) =>
     this.request<string, HTTPValidationError>({
       path: `/api/v1/analyzers/${analyzerId}/upload/script`,
       method: "POST",
       body: data,
-      type: ContentType.FormData,
+      type: ContentType.Json,
       format: "json",
       ...params,
     });
@@ -664,12 +663,12 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @summary Upload Analyzer Requirements
    * @request POST:/api/v1/analyzers/{analyzer_id}/upload/requirements
    */
-  uploadAnalyzerRequirements = (analyzerId: number, data: BodyUploadAnalyzerRequirements, params: RequestParams = {}) =>
+  uploadAnalyzerRequirements = (analyzerId: number, data: FileUpload, params: RequestParams = {}) =>
     this.request<string, HTTPValidationError>({
       path: `/api/v1/analyzers/${analyzerId}/upload/requirements`,
       method: "POST",
       body: data,
-      type: ContentType.FormData,
+      type: ContentType.Json,
       format: "json",
       ...params,
     });

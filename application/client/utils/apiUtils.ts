@@ -1,7 +1,7 @@
 "use server";
 
 import { Api } from "@/extensions/Api";
-import { AnalyzerCreate, AssignmentCreate, BodyUploadAnalyzerRequirements, BodyUploadAnalyzerScript, CourseCreate, JobCreate, ProjectCreate, TeamCreate } from "@/extensions/data-contracts";
+import { AnalyzerCreate, AssignmentCreate, FileUpload, CourseCreate, JobCreate, ProjectCreate, TeamCreate } from "@/extensions/data-contracts";
 import { HttpResponse } from "@/extensions/http-client";
 
 const api = new Api({ baseUrl: "http://api:8000" });
@@ -51,11 +51,11 @@ export const getAnalyzer = async (analyzerId: number) => serverApiCall(() => api
 export const getAnalyzerInputs = async (analyzerId: number) => serverApiCall(() => api.getAnalyzerInputs(analyzerId, { cache: "no-cache" }));
 export const getAnalyzerOutputs = async (analyzerId: number) => serverApiCall(() => api.getAnalyzerOutputs(analyzerId, { cache: "no-cache" }));
 export const getAnalyzerTemplate = async (data: AnalyzerCreate) => serverApiCall(() => api.getAnalyzerTemplate(data, { cache: "no-cache" }));
-export const uploadAnalyzerScript = async (analyzerId: number, data: BodyUploadAnalyzerScript) => serverApiCall(() => api.uploadAnalyzerScript(analyzerId, data, { cache: "no-cache" }));
+export const uploadAnalyzerScript = async (analyzerId: number, data: FileUpload) => serverApiCall(() => api.uploadAnalyzerScript(analyzerId, data, { cache: "no-cache" }));
 export const deleteAnalyzerScript = async (analyzerId: number) => serverApiCall(() => api.deleteAnalyzerScript(analyzerId, { cache: "no-cache" }));
 export const getAnalyzerScript = async (analyzerId: number) => serverApiCall(() => api.getAnalyzerScript(analyzerId, { cache: "no-cache" }));
 export const getAnalyzerRequirements = async (analyzerId: number) => serverApiCall(() => api.getAnalyzerRequirements(analyzerId, { cache: "no-cache" }));
-export const uploadAnalyzerRequirements = async (analyzerId: number, data: BodyUploadAnalyzerRequirements) => serverApiCall(() => api.uploadAnalyzerRequirements(analyzerId, data, { cache: "no-cache" }));
+export const uploadAnalyzerRequirements = async (analyzerId: number, data: FileUpload) => serverApiCall(() => api.uploadAnalyzerRequirements(analyzerId, data, { cache: "no-cache" }));
 export const runJob = async (analyzer: number, data: JobCreate) => serverApiCall(() => api.runJob(analyzer, data, { cache: "no-cache" }));
 export const getAllBatches = async () => serverApiCall(() => api.getAllBatches({ cache: "no-cache" }));
 export const getBatch = async (batchId: number) => serverApiCall(() => api.getBatch(batchId, { cache: "no-cache" }));

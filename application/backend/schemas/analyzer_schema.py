@@ -78,38 +78,5 @@ class AnalyzerResponse(AnalyzerBase):
         from_attributes: True
 
 
-class ScriptSchema(BaseModel):
-    file_name: str
-
-    @validator("file_name")
-    def validate_file_type(cls, file_name: str):
-        valid_file_type = ".py"
-
-        if not file_name.endswith(valid_file_type):
-            raise ValueError(
-                f"Unsuported file type, expected {valid_file_type} recived .{file_name.split('.')[-1]}"
-            )
-
-        if "/" in file_name or "\\" in file_name:
-            raise ValueError("Invalid filename")
-
-        return file_name
-
-
-class RequirementsSchema(BaseModel):
-    file_name: str
-
-    @validator("file_name")
-    def validate_file_type(cls, file_name: str):
-        valid_file_name = "requirements"
-        valid_file_type = ".txt"
-
-        if file_name != valid_file_name + valid_file_type:
-            raise ValueError(
-                f"Unsuported requirements file, expected {valid_file_name + valid_file_type} recived {file_name}"
-            )
-
-        if "/" in file_name or "\\" in file_name:
-            raise ValueError("Invalid filename")
-
-        return file_name
+class FileUpload(BaseModel):
+    text: str

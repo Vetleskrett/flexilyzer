@@ -40,7 +40,7 @@ export default function AnalyzerScriptDisplay({
 
     try {
       await uploadAnalyzerRequirements(analyzer_id, {
-        file: selectedFile,
+        text: await selectedFile.text(),
       });
       openSnackbar({
         message: "Requirements file submitted successfully!",

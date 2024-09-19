@@ -175,24 +175,6 @@ export interface BatchStatsResponse {
   stats: Record<string, object>;
 }
 
-/** Body_upload-analyzer-requirements */
-export interface BodyUploadAnalyzerRequirements {
-  /**
-   * File
-   * @format binary
-   */
-  file: File;
-}
-
-/** Body_upload-analyzer-script */
-export interface BodyUploadAnalyzerScript {
-  /**
-   * File
-   * @format binary
-   */
-  file: File;
-}
-
 /** CourseCreate */
 export interface CourseCreate {
   /** Tag */
@@ -209,6 +191,12 @@ export interface CourseResponse {
   name?: string | null;
   /** Id */
   id: number;
+}
+
+/** FileUpload */
+export interface FileUpload {
+  /** Text */
+  text: string;
 }
 
 /** HTTPValidationError */

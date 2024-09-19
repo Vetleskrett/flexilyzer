@@ -78,7 +78,7 @@ export default function AnalyzerMissingScript({
 
     try {
       await uploadAnalyzerScript(analyzer.id, {
-        file: selectedScriptFile,
+        text: await selectedScriptFile.text(),
       });
       openSnackbar({
         message: "Analyzer script submitted successfully!",
@@ -101,7 +101,7 @@ export default function AnalyzerMissingScript({
 
     try {
       await uploadAnalyzerRequirements(analyzer.id, {
-        file: selectedReqFile,
+        text: await selectedReqFile.text(),
       });
       openSnackbar({
         message: "Requirements.txt file submitted successfully!",

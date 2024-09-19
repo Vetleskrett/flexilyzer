@@ -1,14 +1,14 @@
-from fastapi import UploadFile, HTTPException
+from fastapi import HTTPException
 from pathlib import Path
 import aiofiles
 from configs.config import settings
-
+from schemas.analyzer_schema import FileUpload
 
 def create_if_not_exists(path: Path):
     return path.mkdir(parents=True, exist_ok=True)
 
 
-async def store_file(analyzer_id: int, file: UploadFile, requirements: bool = False):
+async def store_file(analyzer_id: int, file: FileUpload, requirements: bool = False):
     try:
         directory = Path(settings.BASE_DIR + settings.SCRIPTS_FOLDER) / str(analyzer_id)
         create_if_not_exists(directory)
@@ -19,9 +19,8 @@ async def store_file(analyzer_id: int, file: UploadFile, requirements: bool = Fa
             else settings.DEFAULT_REQUIREMENTS_NAME
         )
 
-        async with aiofiles.open(file_path, mode="wb") as buffer:
-            while content := await file.read(1024):
-                await buffer.write(content)
+        async with aiofiles.open(file_path, mode="w") as buffer:
+            await buffer.write(file.text)
 
     except OSError as e:
         print(e)
