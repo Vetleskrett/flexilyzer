@@ -41,3 +41,13 @@ def fetchProjectsAndMetadataHelper(db, project_ids, required_inputs, assignment_
         projects_with_metadata[id] = filtered_metadata
 
     return projects_with_metadata
+
+
+def fetchTeamIds(db, project_ids):
+    team_ids = {}
+
+    for project_id in project_ids:
+        project = ProjectsService.get_project(db=db, project_id=project_id)
+        team_ids[project_id] = project.team_id
+
+    return team_ids

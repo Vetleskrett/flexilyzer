@@ -39,6 +39,8 @@ const initalColumn: FlatMappedOutputs[] = [
 export default function OverviewTable({
   allReports,
   analyzersWithOutputs,
+  course_id,
+  assignment_id
 }: OverviewTableParams) {
   const [visibleColumns, setVisibleColumns] = useState<Set<string>>(
     new Set(
@@ -184,7 +186,7 @@ export default function OverviewTable({
 
   const getValue = useCallback(
     (item: ReportTeamResponse[], columnKey: string) => {
-      return renderCell(item, columnKey, flatMappedOutputs);
+      return renderCell(item, columnKey, flatMappedOutputs, course_id, assignment_id);
     },
     [flatMappedOutputs],
   );

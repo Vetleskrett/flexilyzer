@@ -1,8 +1,10 @@
 from typing import List
 from fastapi import APIRouter, Depends
+from fastapi.responses import FileResponse
 from schemas import course_schema, assingment_schema, team_schema
 
 from services.courses_service import CourseService
+from services.batch_service import BatchService
 from db.database import get_db
 
 
@@ -52,3 +54,25 @@ async def get_courses_teams(
     course_id: int, db=Depends(get_db)
 ) -> List[team_schema.TeamResponse]:
     return CourseService.get_course_teams(db, course_id)
+
+@router.get(
+    "/{course_id}/assignments/{assignment_id}/teams/{team_id}/projects/reports/batch/{batch_id}/{key_name}",
+    operation_id="get-assignment-projects-reports-batch-file",
+    response_class=FileResponse
+)
+def get_assignment_team_projects_report_batch_file(
+    assignment_id: int,
+    course_id: int,
+    team_id: int,
+    batch_id: int,
+    key_name: str,
+    db=Depends(get_db)
+):
+    return BatchService.get_assignment_team_projects_reports_batch_file(
+        db=db,
+        course_id=course_id,
+        assignment_id=assignment_id,
+        team_id=team_id,
+        batch_id=batch_id,
+        key_name=key_name
+    )

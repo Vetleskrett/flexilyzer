@@ -45,6 +45,8 @@ export default async function AssignmentOverviewPage({ params }: Props) {
         <OverViewTable
           analyzersWithOutputs={analyzersWithOutputs}
           allReports={allReports}
+          course_id={params.course_id}
+          assignment_id={params.assignment_id}
         />
       ) : (
         <NoReportData />

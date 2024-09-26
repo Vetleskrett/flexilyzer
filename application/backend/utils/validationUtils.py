@@ -105,6 +105,14 @@ def validate_type(key, value, expected_type, extended_metadata=None):
         else:
             return False, f"{base_error_msg}, got {type(value).__name__}"
 
+    elif expected_type == ValueTypesOutput.file:
+        if isinstance(value, str):
+            return True, ""
+        elif cast_to_pydantic(value, ExtendedStr):
+            return True, ""
+        else:
+            return False, f"{base_error_msg}, got {type(value).__name__}"
+
     else:
         print(type(key))
         print(type(expected_type))

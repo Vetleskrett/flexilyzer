@@ -13,8 +13,13 @@ export const render = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any,
   valueType: ValueTypesOutput,
-  extendedMetadata?: null,
-  desc?: string,
+  extendedMetadata: null | undefined,
+  desc: string | undefined,
+  keyName: string,
+  course_id: number,
+  assignment_id: number,
+  team_id: number,
+  batch_id: number
 ) => {
   switch (valueType) {
     case ValueTypesOutput.Range:
@@ -80,6 +85,19 @@ export const render = (
         </TooltipWrapper>
       );
 
+    case ValueTypesOutput.File:
+      const href = `${process.env.externalApiUrl}/api/v1/courses/${course_id}/assignments/${assignment_id}/teams/${team_id}/projects/reports/batch/${batch_id}/${keyName}`;
+      return (
+        <TooltipWrapper desc={value.desc}>
+        <a href={href} target="_blank" className="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">
+          {value as string}
+          <svg className="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+          </svg>
+        </a>
+      </TooltipWrapper>
+      );
+
     default:
       return <>N/A</>;
   }
@@ -89,6 +107,8 @@ const renderCell = (
   item: ReportTeamResponse[],
   columnKey: string,
   flatMappedOutputs: FlatMappedOutputs[],
+  course_id: number,
+  assignment_id: number,
 ) => {
   const [name, id] = columnKey.split("-");
 
@@ -111,8 +131,23 @@ const renderCell = (
         outputDef.value_type,
         outputDef.extended_metadata,
         value.desc,
+        name,
+        course_id,
+        assignment_id,
+        report!.team_id,
+        report!.batch_id
       )
-    : render(value, outputDef.value_type, outputDef.extended_metadata);
+    : render(
+      value, 
+      outputDef.value_type, 
+      outputDef.extended_metadata,
+      undefined,
+      name,
+      course_id,
+      assignment_id,
+      report!.team_id,
+      report!.batch_id
+    );
 };
 
 export { renderCell };

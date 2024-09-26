@@ -3,39 +3,39 @@ import os
 from typing import Optional
 from pydantic import BaseModel
 import subprocess
-import pathlib
+
+
+class ExtendedInt(BaseModel):
+    value: Optional[int]
+    desc: Optional[str]
+
+
+class ExtendedStr(BaseModel):
+    value: Optional[str]
+    desc: Optional[str]
 
 
 class Return(BaseModel):
-    hasHTTPS: Optional[bool]
-    first_contentful_paint: Optional[int]
-    first_meaningful_paint: Optional[int]
-    speed_index: Optional[int]
-    no_redirects: Optional[bool]
-    responsive_images: Optional[bool]
-    has_console_errors: Optional[bool]
+    frontend_url: Optional[str | ExtendedStr]
+    performance: Optional[int | ExtendedInt]
+    accessibility: Optional[int | ExtendedInt]
+    best_practices: Optional[int | ExtendedInt]
+    report: Optional[str | ExtendedStr]
 
 
-def run_lighthouse(url: str):
+def run_lighthouse(url: str, output_path: str):
     """Function for running the lighthouse command in cmd line"""
-    output_file = (
-        f"{url.replace('http://', '').replace('https://', '').replace('/', '_')}.json"
-    )
-
-    if not url.startswith("https://"):
-        url = "https://" + url
 
     command = [
         "npx",
         "lighthouse",
         url,
         "--quiet",
-        "--output=json",
-        f"--output-path={output_file}",
+        "--output=json,html",
+        f"--output-path={output_path}",
         '--chrome-flags="--headless --no-sandbox"',
     ]
     subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-    return output_file
 
 
 def read_lighthouse_report(file_path: str):
@@ -43,55 +43,30 @@ def read_lighthouse_report(file_path: str):
     with open(file_path, "r") as file:
         report = json.load(file)
 
-    pathlib.Path(file_path).unlink()
-
     return report
 
 
-def safe_int(value, multiplier=100):
-    """Safely convert a value to an int, applying a multiplier, or return None if conversion is not possible."""
-    try:
-        return int(value * multiplier)
-    except (TypeError, ValueError):
-        return 0
+def main(team_nr: int) -> Return:
+    frontend_url = f"http://it2810-{str(team_nr).zfill(2)}.idi.ntnu.no/project1/"
+    output_path = f"team{team_nr}"
+    json_path = f"{output_path}.report.json"
+    html_path = f"{output_path}.report.html"
 
+    run_lighthouse(frontend_url, output_path)
+    report = read_lighthouse_report(json_path)
 
-def lighthouse_analyzer(url):
-    # Assuming run_lighthouse and read_lighthouse_report are defined elsewhere
-    output_file = run_lighthouse(url)  # Run lighthouse and get file name in return
-    report = read_lighthouse_report(output_file)  # Load newly generated report
+    performance = 100 * report["categories"]["performance"]["score"]
+    accessibility = 100 * report["categories"]["accessibility"]["score"]
+    best_practices = 100 * report["categories"]["best-practices"]["score"]
 
-    # Safely extract and convert report values, defaulting to None on failure
-    cleaned_report = {
-        "hasHTTPS": report.get("audits", {}).get("is-on-https", {}).get("score") == 1,
-        "first_contentful_paint": safe_int(
-            report.get("audits", {}).get("first-contentful-paint", {}).get("score")
-        ),
-        "first_meaningful_paint": safe_int(
-            report.get("audits", {}).get("first-meaningful-paint", {}).get("score")
-        ),
-        "speed_index": safe_int(
-            report.get("audits", {}).get("speed-index", {}).get("score")
-        ),
-        "no_redirects": report.get("audits", {}).get("redirects", {}).get("score") == 1,
-        "responsive_images": report.get("audits", {})
-        .get("image-size-responsive", {})
-        .get("score")
-        == 1,
-        "has_console_errors": report.get("audits", {})
-        .get("errors-in-console", {})
-        .get("score")
-        == 1,
-    }
-
-    # Assuming Return is a constructor for a result object
-    return Return(**cleaned_report)
-
-
-def main(url: str) -> Return:
-    return lighthouse_analyzer(url)
-
+    return Return(
+        frontend_url=frontend_url,
+        performance=performance,
+        accessibility=accessibility,
+        best_practices=best_practices,
+        report=html_path
+    )
 
 if __name__ == "__main__":
-    url = str(os.getenv("URL"))
-    print(main(url).model_dump_json())
+    team_nr = str(os.getenv("TEAM_NR"))
+    print(main(team_nr).model_dump_json())

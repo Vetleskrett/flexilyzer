@@ -14,11 +14,12 @@ class Base(BaseSettings):
 class Settings(Base):
     CELERY_BROKER_URL: str
     DATABASE_URL: str
-    BASE_DIR: str
-    SCRIPTS_FOLDER: str
-    DELIVERIES_FOLDER: str
-    DEFAULT_SCRIPT_NAME: str
-    DEFAULT_REQUIREMENTS_NAME: str
+    BASE_DIR: str = "./files/"
+    SCRIPTS_FOLDER: str = "shared/scripts"
+    DELIVERIES_FOLDER: str = "shared/deliveries"
+    OUTPUT_FILES_FOLDER: str = "shared/output_files"
+    DEFAULT_SCRIPT_NAME: str = "main.py"
+    DEFAULT_REQUIREMENTS_NAME: str = "requirements.txt"
 
     class Config:
         env_file = ".env" if Base().ENVIRONMENT == Environments.DEV else None

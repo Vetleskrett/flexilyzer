@@ -31,19 +31,6 @@ export function renderParameter(
   param: InputParameter | OutputParameter,
 ): React.ReactNode {
   switch (param.value_type) {
-    case "str":
-    case "int":
-    case "bool":
-    case "zip":
-    case "date":
-      return (
-        <div key={param.id}>
-          <p>
-            <b>{param.key_name}</b>:{" "}
-            <Kbd>{pythonTypesMap[param.value_type].pythonType}</Kbd>
-          </p>
-        </div>
-      );
     case "range":
       // Here, check if the parameter has extended_metadata
       if ("extended_metadata" in param && param.extended_metadata) {
@@ -62,6 +49,13 @@ export function renderParameter(
       }
       return <p>{param.key_name}: Range (No data)</p>;
     default:
-      return null;
+      return (
+        <div key={param.id}>
+          <p>
+            <b>{param.key_name}</b>:{" "}
+            <Kbd>{pythonTypesMap[param.value_type].pythonType}</Kbd>
+          </p>
+        </div>
+      );
   }
 }

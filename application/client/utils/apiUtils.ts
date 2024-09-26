@@ -4,7 +4,8 @@ import { Api } from "@/extensions/Api";
 import { AnalyzerCreate, AssignmentCreate, FileUpload, CourseCreate, JobCreate, ProjectCreate, TeamCreate } from "@/extensions/data-contracts";
 import { HttpResponse } from "@/extensions/http-client";
 
-const api = new Api({ baseUrl: "http://api:8000" });
+const api = new Api({ baseUrl: process.env.internalApiUrl });
+
 
 async function serverApiCall<T>(apiCall: () => Promise<HttpResponse<T, any>>) {
     const response = await apiCall();

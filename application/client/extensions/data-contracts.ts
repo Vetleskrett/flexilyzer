@@ -322,4 +322,5 @@ export enum ValueTypesOutput {
   Bool = "bool",
   Range = "range",
   Date = "date",
+  File = "file",
 }

@@ -7,4 +7,5 @@ export const pythonTypesMap = {
   [ValueTypesInput.Zip]: { pythonType: "Path" },
   [ValueTypesOutput.Date]: { pythonType: "datetime" },
   [ValueTypesOutput.Range]: { pythonType: "int" },
+  [ValueTypesOutput.File]: { pythonType: "str" },
 } satisfies Record<ValueTypesInput | ValueTypesOutput, { pythonType: string }>;

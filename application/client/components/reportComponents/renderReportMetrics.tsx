@@ -22,6 +22,9 @@ export const renderMetrics = (
   report: ReportResponse,
   outputs: AnalyzerOutputResponse[],
   batchStats: BatchStatsResponse | undefined,
+  course_id: number,
+  assignment_id: number,
+  team_id: number,
 ) => {
   if (!report.report) {
     return null; // If the report does not have any metrics, don't render anything.
@@ -80,8 +83,24 @@ export const renderMetrics = (
                     metricMetadata.value_type,
                     undefined,
                     value.desc,
+                    keyName,
+                    course_id,
+                    assignment_id,
+                    team_id,
+                    report.batch_id
                   )
-                : render(value, metricMetadata.value_type, undefined)}
+                : render(
+                    value,
+                    metricMetadata.value_type,
+                    undefined,
+                    undefined,
+                    keyName,
+                    course_id,
+                    assignment_id,
+                    team_id,
+                    report.batch_id
+                  )
+              }
             </ReportCard>
           );
         case ValueTypesOutput.Bool:
@@ -109,8 +128,24 @@ export const renderMetrics = (
                     metricMetadata.value_type,
                     undefined,
                     value.desc,
+                    keyName,
+                    course_id,
+                    assignment_id,
+                    team_id,
+                    report.batch_id
                   )
-                : render(value, metricMetadata.value_type)}
+                : render(
+                    value,
+                    metricMetadata.value_type,
+                    undefined,
+                    undefined,
+                    keyName,
+                    course_id,
+                    assignment_id,
+                    team_id,
+                    report.batch_id
+                  )
+              }
             </ReportCard>
           );
         case ValueTypesOutput.Int:
@@ -132,8 +167,24 @@ export const renderMetrics = (
                     metricMetadata.value_type,
                     undefined,
                     value.desc,
+                    keyName,
+                    course_id,
+                    assignment_id,
+                    team_id,
+                    report.batch_id
                   )
-                : render(value, metricMetadata.value_type)}
+                : render(
+                    value,
+                    metricMetadata.value_type,
+                    undefined,
+                    undefined,
+                    keyName,
+                    course_id,
+                    assignment_id,
+                    team_id,
+                    report.batch_id
+                  )
+              }
             </ReportCard>
           );
         case ValueTypesOutput.Date:
@@ -157,8 +208,60 @@ export const renderMetrics = (
                     metricMetadata.value_type,
                     undefined,
                     value.desc,
+                    keyName,
+                    course_id,
+                    assignment_id,
+                    team_id,
+                    report.batch_id
                   )
-                : render(value, metricMetadata.value_type)}
+                : render(
+                    value,
+                    metricMetadata.value_type,
+                    undefined,
+                    undefined,
+                    keyName,
+                    course_id,
+                    assignment_id,
+                    team_id,
+                    report.batch_id
+                  )
+              }
+            </ReportCard>
+          );
+        case ValueTypesOutput.File:
+          return (
+            <ReportCard
+              key={keyName}
+              keyName={
+                metricMetadata.display_name
+                  ? metricMetadata.display_name
+                  : keyName
+              }
+            >
+              {isExtendedValueObj(value)
+                ? render(
+                    value.value,
+                    metricMetadata.value_type,
+                    undefined,
+                    value.desc,
+                    keyName,
+                    course_id,
+                    assignment_id,
+                    team_id,
+                    report.batch_id
+                  )
+                : render(
+                    value,
+                    metricMetadata.value_type,
+                    undefined,
+                    undefined,
+                    keyName,
+                    course_id,
+                    assignment_id,
+                    team_id,
+                    report.batch_id
+                  )
+              }
             </ReportCard>
           );
         default:

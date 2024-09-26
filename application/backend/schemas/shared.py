@@ -25,6 +25,7 @@ class ValueTypesOutput(enum.Enum):
     bool = "bool"
     range = "range"
     date = "date"
+    file = "file"
 
 
 class ValueTypesMapping(enum.Enum):
@@ -34,6 +35,7 @@ class ValueTypesMapping(enum.Enum):
     range = "int"
     date = "datetime"
     zip = "Path"
+    file = "str"
 
 
 class ExtendedTypeMappings(enum.Enum):

@@ -33,6 +33,9 @@ services:
       - db
     volumes:
       - shared-volume:/app/files/shared
+    environment:
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432
 
   celery:
     container_name: celery
@@ -44,6 +47,9 @@ services:
       - shared-volume:/app/files/shared
     depends_on:
       - rabbitmq
+    environment:
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432
 
   client:
     container_name: client
@@ -57,6 +63,9 @@ services:
       - /app/node_modules
     depends_on:
       - api
+    environment:
+      - internalApiUrl=http://api:8000
+      - externalApiUrl=http://localhost:8000
 
 volumes:
   postgres_volume:

@@ -9,6 +9,8 @@ from services.teams_service import TeamService
 from db.crud.batches_crud import BatchesRepository
 from db.crud.assignments_crud import AssignmentRepository
 from datetime import datetime, timedelta
+from configs.config import settings
+from pathlib import Path
 
 
 class BatchService:
@@ -195,3 +197,34 @@ class BatchService:
                 detail=f"Could not find report for Team with ID {team_id} in Batch with ID {batch_id}",
             )
         return report
+
+    @staticmethod
+    def get_assignment_team_projects_reports_batch_file(
+        db, course_id: int, assignment_id: int, team_id: int, batch_id: int, key_name: str
+    ):
+        batch = BatchService.get_batch(db, batch_id)
+
+        if batch.status in [BatchEnum.STARTED, BatchEnum.RUNNING]:
+            raise HTTPException(
+                status_code=404,
+                detail=f"The batch you are trying to fetch report from is not successfully finished. Batch status: {BatchEnum(batch.status).value}",
+            )
+        AssignmentService.get_assignment(db, assignment_id)
+        TeamService.get_team(db, team_id)
+
+        report = AssignmentRepository.get_assignment_team_projects_reports_batch(
+            db, assignment_id=assignment_id, team_id=team_id, batch_id=batch_id
+        )
+        if report is None:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Could not find report for Team with ID {team_id} in Batch with ID {batch_id}",
+            )
+        
+        file_name = json.loads(report.report)[key_name]
+
+        file_output_path = Path(settings.BASE_DIR) / settings.OUTPUT_FILES_FOLDER / str(course_id) / str(assignment_id) / str(batch_id)
+        file_path = file_output_path / str(team_id) / file_name
+
+        return file_path
+

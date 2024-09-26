@@ -4,6 +4,8 @@ import { AnalyzerWithOutputs, TeamReports } from "./analyzerDefinitions";
 export interface OverviewTableParams {
   analyzersWithOutputs: AnalyzerWithOutputs[];
   allReports: TeamReports;
+  course_id: number;
+  assignment_id: number;
 }
 
 export type FlatMappedOutputs = {
