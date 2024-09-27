@@ -7,25 +7,37 @@ from typing import Optional
 from datetime import datetime
 
 
+class ExtendedDatetime(BaseModel):
+    value: Optional[datetime]
+    desc: Optional[str]
+
+class ExtendedInt(BaseModel):
+    value: Optional[int]
+    desc: Optional[str]
+
+class ExtendedBool(BaseModel):
+    value: Optional[bool]
+    desc: Optional[str]
+
+class ExtendedStr(BaseModel):
+    value: Optional[str]
+    desc: Optional[str]
+
 class Return(BaseModel):
-    name: Optional[str]
-    owner: Optional[str]
-    users: Optional[str]
-    description: Optional[str]
-    stars: Optional[int]
-    forks: Optional[int]
-    open_issues: Optional[int]
-    total_commits: Optional[int]
-    commits_per_user: Optional[str]
-    untracked_commits: Optional[int]
-    total_pull_requests: Optional[int]
-    pushed_at: Optional[datetime]
-    created_at: Optional[datetime]
-    private: Optional[bool]
-    language: Optional[str]
-    bytes_of_language: Optional[str]
-    license: Optional[str]
-    size: Optional[int]
+    name: Optional[str | ExtendedStr]
+    owner: Optional[str | ExtendedStr]
+    users: Optional[str | ExtendedStr]
+    description: Optional[str | ExtendedStr]
+    open_issues: Optional[int | ExtendedInt]
+    total_commits: Optional[int | ExtendedInt]
+    commits_per_user: Optional[str | ExtendedStr]
+    untracked_commits: Optional[int | ExtendedInt]
+    total_pull_requests: Optional[int | ExtendedInt]
+    pushed_at: Optional[datetime | ExtendedDatetime]
+    created_at: Optional[datetime | ExtendedDatetime]
+    private: Optional[bool | ExtendedBool]
+    language: Optional[str | ExtendedStr]
+    bytes_of_language: Optional[str | ExtendedStr]
 
 
 def get_last_page_number(link_header):
@@ -49,6 +61,7 @@ def main(url: str) -> Return:
     parts = url.split("/")
     owner, repo_name = parts[-2], parts[-1]
 
+
     # Construct the API URLs
     repo_api_url = f"https://api.github.com/repos/{owner}/{repo_name}"
     contributers_api_url = f"https://api.github.com/repos/{owner}/{repo_name}/contributors"
@@ -60,11 +73,9 @@ def main(url: str) -> Return:
     # Make a request to the GitHub API for repository info
     repo_response = requests.get(repo_api_url)
     if repo_response.status_code != 200:
-        return {
-            "Error": f"GitHub API responded with status code {repo_response.status_code} for repo info"
-        }
-
-    repo_data = repo_response.json()
+        repo_data = None
+    else:
+        repo_data = repo_response.json()
 
     # Make a request to get the total number of commits
     commits_response = requests.get(commits_api_url, params={"per_page": 1})
@@ -89,7 +100,7 @@ def main(url: str) -> Return:
                 all_users += ", "
                 commits_per_user += ", "
             all_users += name
-            commits_per_user += f"{name} : {total_contributions} "
+            commits_per_user += f"{name} : {total_contributions}"
 
     language_string = ""
     languages_response = requests.get(languages_api_url)
@@ -114,8 +125,6 @@ def main(url: str) -> Return:
         "owner": repo_data["owner"]["login"],
         "users": all_users,
         "description": repo_data["description"],
-        "stars": repo_data["stargazers_count"],
-        "forks": repo_data["forks_count"],
         "open_issues": repo_data["open_issues_count"],
         "total_commits": total_commits,
         "commits_per_user": commits_per_user,
@@ -126,8 +135,6 @@ def main(url: str) -> Return:
         "private": repo_data["private"],
         "language": repo_data["language"],
         "bytes_of_language": language_string,
-        "license": repo_data["license"]["name"] if repo_data["license"] != None else "",
-        "size": repo_data["size"],
     }
 
     resp = Return(**my_obj)
@@ -136,9 +143,5 @@ def main(url: str) -> Return:
 
 
 if __name__ == "__main__":
-    url = str(os.getenv("URL"))
-    model = main(url)
-    if type(model) == type(Return):
-        print(model.model_dump_json())
-    else:
-        print(model)
+    url = str(os.getenv('URL'))
+    print(main(url).model_dump_json())  
