@@ -18,4 +18,4 @@ async def run_job(
     analyzer: int,
     db: Session = Depends(get_db),
 ) -> batch_schema.BatchResponse:
-    return JobsService.run_job(db, analyzer, data.assignment_id, data.project_ids)
+    return JobsService.run_job(db, analyzer, data.assignment_id, data.project_ids, data.run_input)

@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ValidationError, validator
 from datetime import datetime
-from typing import List, Optional
+from typing import List, Optional, Dict
 from pydantic import Json
 from sqlalchemy import true
 
@@ -15,4 +15,4 @@ class JobResponse(JobBase):
 
 
 class JobCreate(JobBase):
-    pass
+    run_input: Optional[Dict] = None

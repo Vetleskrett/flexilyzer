@@ -147,6 +147,27 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
+   * @tags courses
+   * @name GetAssignmentProjectsReportsBatchFile
+   * @summary Get Assignment Team Projects Report Batch File
+   * @request GET:/api/v1/courses/{course_id}/assignments/{assignment_id}/teams/{team_id}/projects/reports/batch/{batch_id}/{key_name}
+   */
+  getAssignmentProjectsReportsBatchFile = (
+    assignmentId: number,
+    courseId: number,
+    teamId: number,
+    batchId: number,
+    keyName: string,
+    params: RequestParams = {},
+  ) =>
+    this.request<void, HTTPValidationError>({
+      path: `/api/v1/courses/${courseId}/assignments/${assignmentId}/teams/${teamId}/projects/reports/batch/${batchId}/${keyName}`,
+      method: "GET",
+      ...params,
+    });
+  /**
+   * No description
+   *
    * @tags assignments
    * @name GetAllAssignments
    * @summary Get All Assignments

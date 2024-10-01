@@ -211,6 +211,8 @@ export interface JobCreate {
   assignment_id: number;
   /** Project Ids */
   project_ids?: number[] | null;
+  /** Run Input */
+  run_input?: object | null;
 }
 
 /** ProjectCreate */

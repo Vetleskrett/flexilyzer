@@ -1,12 +1,13 @@
 "use client";
 
 import { BatchResponse, JobCreate } from "@/extensions/data-contracts";
-import { Button, Card, Skeleton } from "@nextui-org/react";
+import { Button, Card, Input, Skeleton } from "@nextui-org/react";
 import AnalyzerBatchInfo from "../analyzerComponents/AnalyzerBatchInfo";
 import { getAssignmentAnalyzersBatches, runJob } from "@/utils/apiUtils";
 import { useRouter } from "next/navigation";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { useSnackbar } from "@/context/snackbarContext";
+import { useState } from "react";
 
 interface AssignmentAnalyzerProps {
   analyzer_id: number;
@@ -21,6 +22,8 @@ export default function AssignmentAnalyzer({
   const router = useRouter();
   const { openSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
+  const [paramName, setParamName] = useState("")
+  const [paramValue, setParamValue] = useState("")
 
   const {
     data: batches,
@@ -36,7 +39,8 @@ export default function AssignmentAnalyzer({
 
   const runAnalyzerMutation = useMutation(
     async () => {
-      const payload: JobCreate = { assignment_id: assignment_id };
+      const isEmpty = !(paramName.trim() != "" && paramValue.trim() != "");
+      const payload: JobCreate = { assignment_id: assignment_id, run_input: isEmpty ? null : {[paramName] : paramValue}};
       return await runJob(analyzer_id, payload);
     },
     {
@@ -71,6 +75,20 @@ export default function AssignmentAnalyzer({
         >
           {analyzer_name}
         </h3>
+        <div>
+          <Input
+            type="string"
+            label="Param name"
+            value={paramName}
+            onValueChange={(value => setParamName(value))}
+          />
+          <Input
+            type="string"
+            label="Param value"
+            value={paramValue}
+            onValueChange={(value => setParamValue(value))}
+          />
+        </div>
         <div className="mx-5 flex h-[30px] flex-row justify-center gap-5">
           <Button
             size="sm"

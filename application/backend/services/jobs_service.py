@@ -13,7 +13,7 @@ from fastapi import HTTPException
 
 class JobsService:
     @staticmethod
-    def run_job(db, analyzer_id, assignment_id, project_ids):
+    def run_job(db, analyzer_id, assignment_id, project_ids, run_input):
         analyzer = AnalyzerService.get_analyzer(db, analyzer_id=analyzer_id)
         assignment = AssignmentService.get_assignment(db, assignment_id=assignment_id)
 
@@ -54,6 +54,6 @@ class JobsService:
             batch=BatchCreate(assignment_id=assignment_id, analyzer_id=analyzer_id),
         )
 
-        run_analyzer.delay(project_ids, batch.id, assignment.course_id)
+        run_analyzer.delay(project_ids, batch.id, assignment.course_id, run_input)
 
         return batch

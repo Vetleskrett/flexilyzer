@@ -16,14 +16,14 @@ from schemas.reports_schema import ReportCreate
 from db.crud.batches_crud import BatchesRepository
 from db.crud.reports_crud import ReportRepository
 from configs.config import settings
-from typing import Dict
+from typing import Dict, Optional
 
 
 class RunAnalyzer(Task):
 
     name = "celery_app.tasks.run_analyzer"
 
-    def run(self, project_ids: list[int], batch_id: int, course_id: int):
+    def run(self, project_ids: list[int], batch_id: int, course_id: int, run_input: Optional[Dict]):
         db = next(get_db())
 
         batch = BatchesRepository.update_batch_status(
@@ -87,6 +87,8 @@ class RunAnalyzer(Task):
                     metadata["ZIP_FILE_PATH"] = str(container_base_path / str(assignment_id) / metadata["ZIP_FILE_PATH"])
 
                 try:
+                    if run_input:
+                        metadata.update(run_input)
                     result = container.exec_run(run_command, environment=metadata)
                 except APIError as e:
                     print(e)
